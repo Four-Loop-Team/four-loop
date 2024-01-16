@@ -1,2 +1,2 @@
-# four-loop-app
+# four-loop
 Company website
