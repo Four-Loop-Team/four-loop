@@ -1,7 +1,6 @@
 'use client'
 
 import React, { Component } from "react";
-// import "./Preloader.css";
 
 import styles from "../preloader/preloader.module.scss";
 
