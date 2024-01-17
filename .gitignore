@@ -25,7 +25,6 @@ chrome-user-data
 *.swp
 *.swo
 .next/
-.next2/
 
 
 packages/react-devtools-core/dist
