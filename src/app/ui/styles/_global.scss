@@ -1,28 +1,30 @@
+@use 'variables';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .app {
+  align-items: center;
+  background-color: variables.$fourloop-brown;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
+  justify-content: center;
   width: 100vw;
-  background-color: #232323;
 }
 
 .logo {
-  background-image: url(./ui/images/logo.png);
+  background-image: url(../images/logo.png);
   background-repeat: no-repeat;
   background-size: contain;
-  width: calc(360px * 0.6);
   height: calc(442px * 0.6);
+  width: calc(360px * 0.6);
 }
 
 @media (min-width: 768px) {
   .logo {
-    width: calc(360px * 0.8);
     height: calc(442px * 0.8);
+    width: calc(360px * 0.8);
   }
 }
