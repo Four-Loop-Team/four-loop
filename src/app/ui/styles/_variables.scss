@@ -1,7 +1,11 @@
+$logo-img-url: '../images/logo.png';
 $fld-brown: #232323;
 
 :export {
-  colors: {
-    primary: $fld-brown,
+  logo: {
+    url: $logo-img-url;
   }
-};
+  colors: {
+    primary: $fld-brown;
+  }
+}
