@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prettier --check . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "prettier --check . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next lint",
+    "format": "prettier --write .",
+    "build:local": "prettier --write . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next build",
+    "prepare": "husky"
   },
   "dependencies": {
     "next": "^14.0",
@@ -21,13 +24,22 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "autoprefixer": "^10.0",
-    "eslint": "^8",
+    "eslint": "^8.56.0",
     "eslint-config-next": "14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
     "lodash": "^4.17",
     "npm": "^10.3",
     "postcss": "^8",
+    "prettier": "^3.2.5",
     "sass": "^1.69",
+    "stylelint": "^16.2.1",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-standard-scss": "^13.0.0",
     "tailwindcss": "^3.4",
     "typescript": "^5"
   }
