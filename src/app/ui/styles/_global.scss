@@ -1,0 +1,30 @@
+@use 'variables';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.app {
+  align-items: center;
+  background-color: variables.$fld-brown;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+.logo {
+  background-image: url(../images/logo.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: calc(442px * 0.6);
+  width: calc(360px * 0.6);
+}
+
+@media (min-width: 768px) {
+  .logo {
+    height: calc(442px * 0.8);
+    width: calc(360px * 0.8);
+  }
+}
