@@ -15,14 +15,14 @@
 }
 
 .logo {
-  background-image: url(../images/logo.png);
+  background-image: variables.$logo-img-url;
   background-repeat: no-repeat;
   background-size: contain;
   height: calc(442px * 0.6);
   width: calc(360px * 0.6);
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .logo {
     height: calc(442px * 0.8);
     width: calc(360px * 0.8);
