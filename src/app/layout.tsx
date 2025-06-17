@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { inter } from '@/app/ui/fonts';
+import { poppins } from '@/app/ui/fonts';
 import './ui/styles/_global.scss';
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function RootLayout({
       <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5' />
       <meta name='msapplication-TileColor' content='#da532c' />
       <meta name='theme-color' content='#ffffff'></meta>
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${poppins.variable} antialiased`}>{children}</body>
     </html>
   );
 }

@@ -1,11 +1,44 @@
 $logo-img-url: url('../images/logo.png');
+
+// Four Loop Brand Colors
+$fld-dark: #232323; // Main background color
+$fld-light-green: #e2e891; // Component background color
+$fld-logo-green: #69685a; // Main logo color
+$fld-white: #fff; // Font and border color
+$fld-dark-gray: #353535; // Font and border color
+
+// Legacy color (keeping for compatibility)
 $fld-brown: #232323;
+
+// Font Variables
+$font-family-primary:
+  var(--font-poppins),
+  -apple-system,
+  blinkmacsystemfont,
+  'Segoe UI',
+  roboto,
+  sans-serif;
+$font-size-base: 1rem;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$line-height-base: 1.6;
+$line-height-tight: 1.2;
 
 :export {
   logo: {
     url: $logo-img-url;
   }
   colors: {
+    dark: $fld-dark;
+    lightgreen: $fld-light-green;
+    logogreen: $fld-logo-green;
+    white: $fld-white;
+    darkgray: $fld-dark-gray;
+
+    // Legacy
     primary: $fld-brown;
   }
 }
