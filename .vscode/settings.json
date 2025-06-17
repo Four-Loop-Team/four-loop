@@ -23,7 +23,5 @@
   "css.validate": false,
   "scss.validate": false,
   "less.validate": false,
-  "cSpell.words": [
-    "blinkmacsystemfont"
-  ]
+  "cSpell.words": ["blinkmacsystemfont", "Segoe"]
 }
