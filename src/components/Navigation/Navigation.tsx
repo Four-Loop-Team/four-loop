@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -30,13 +30,55 @@ const navigationItems = [
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [sliderPosition, setSliderPosition] = useState({ left: 0, width: 0 });
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const pathname = usePathname();
+  const buttonRefs = useRef<(HTMLElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted || isMobile) return;
+
+    const updateSliderPosition = () => {
+      const activeIndex = navigationItems.findIndex(
+        (item) => pathname === item.href,
+      );
+      if (
+        activeIndex === -1 ||
+        !buttonRefs.current[activeIndex] ||
+        !containerRef.current
+      ) {
+        return;
+      }
+
+      const activeButton = buttonRefs.current[activeIndex];
+      const container = containerRef.current;
+
+      const containerRect = container.getBoundingClientRect();
+      const buttonRect = activeButton.getBoundingClientRect();
+
+      const left = buttonRect.left - containerRect.left;
+      const width = buttonRect.width;
+
+      setSliderPosition({ left, width });
+    };
+
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(updateSliderPosition, 50);
+
+    // Update on resize
+    window.addEventListener('resize', updateSliderPosition);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', updateSliderPosition);
+    };
+  }, [mounted, isMobile, pathname]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -164,14 +206,32 @@ export default function Navigation() {
             {/* Desktop Navigation */}
             {mounted && !isMobile && (
               <Box
+                ref={containerRef}
                 sx={{
                   backgroundColor: '#a8c686',
                   borderRadius: '50px',
                   padding: '0px',
                   display: 'flex',
                   gap: '0px',
+                  position: 'relative',
                 }}
               >
+                {/* Animated Background Slider */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    height: '100%',
+                    backgroundColor: '#3a5a5a',
+                    borderRadius: '50px',
+                    border: '2px solid #a8c686',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    zIndex: 1,
+                    left: `${sliderPosition.left}px`,
+                    width: `${sliderPosition.width}px`,
+                    opacity: sliderPosition.width > 0 ? 1 : 0,
+                  }}
+                />
                 {navigationItems.map((item, index) => {
                   const active = isActive(item.href);
                   return (
@@ -179,6 +239,9 @@ export default function Navigation() {
                       key={item.label}
                       component={Link}
                       href={item.href}
+                      ref={(el) => {
+                        buttonRefs.current[index] = el;
+                      }}
                       sx={{
                         color: active ? 'white' : '#3a5a5a',
                         textTransform: 'none',
@@ -188,12 +251,12 @@ export default function Navigation() {
                         py: 1,
                         borderRadius: '50px',
                         minWidth: 'auto',
-                        backgroundColor: active ? '#3a5a5a' : 'transparent',
-                        border: active ? '2px solid #a8c686' : 'none',
+                        backgroundColor: 'transparent',
+                        border: 'none',
                         marginLeft: index > 0 ? '-20px' : '0px',
-                        zIndex: active ? 2 : 1,
+                        zIndex: 2,
+                        position: 'relative',
                         '&:hover': {
-                          backgroundColor: active ? '#3a5a5a' : 'transparent',
                           color: active ? 'white' : 'white',
                           zIndex: 3,
                         },
