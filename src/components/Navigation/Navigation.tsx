@@ -180,7 +180,7 @@ export default function Navigation() {
                       component={Link}
                       href={item.href}
                       sx={{
-                        color: active ? '#a8c686' : 'white',
+                        color: active ? 'white' : '#3a5a5a',
                         textTransform: 'none',
                         fontSize: '1rem',
                         fontWeight: 500,
@@ -194,7 +194,7 @@ export default function Navigation() {
                         zIndex: active ? 2 : 1,
                         '&:hover': {
                           backgroundColor: active ? '#3a5a5a' : 'transparent',
-                          color: active ? '#a8c686' : '#3a5a5a',
+                          color: active ? 'white' : 'white',
                           zIndex: 3,
                         },
                       }}
