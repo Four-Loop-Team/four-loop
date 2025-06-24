@@ -169,10 +169,10 @@ export default function Navigation() {
                   borderRadius: '50px',
                   padding: '0px',
                   display: 'flex',
-                  gap: '4px',
+                  gap: '0px',
                 }}
               >
-                {navigationItems.map((item) => {
+                {navigationItems.map((item, index) => {
                   const active = isActive(item.href);
                   return (
                     <Button
@@ -190,10 +190,13 @@ export default function Navigation() {
                         minWidth: 'auto',
                         backgroundColor: active ? '#3a5a5a' : 'transparent',
                         border: active ? '2px solid #a8c686' : 'none',
+                        marginLeft: index > 0 ? '-20px' : '0px',
+                        zIndex: active ? 2 : 1,
                         '&:hover': {
                           backgroundColor: active
                             ? '#3a5a5a'
                             : 'rgba(255, 255, 255, 0.1)',
+                          zIndex: 3,
                         },
                       }}
                     >
