@@ -193,9 +193,8 @@ export default function Navigation() {
                         marginLeft: index > 0 ? '-20px' : '0px',
                         zIndex: active ? 2 : 1,
                         '&:hover': {
-                          backgroundColor: active
-                            ? '#3a5a5a'
-                            : 'rgba(255, 255, 255, 0.1)',
+                          backgroundColor: active ? '#3a5a5a' : 'transparent',
+                          color: active ? '#a8c686' : '#3a5a5a',
                           zIndex: 3,
                         },
                       }}
