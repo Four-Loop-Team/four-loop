@@ -1,15 +1,14 @@
-import React from 'react';
 import { Container, Typography, Box } from '@mui/material';
 
-export default function App() {
+export default function ContactPage() {
   return (
     <Container maxWidth='lg' sx={{ py: 8 }}>
       <Box textAlign='center'>
         <Typography variant='h2' component='h1' gutterBottom>
-          Welcome to Four Loop Digital
+          Contact Us
         </Typography>
         <Typography variant='h6' color='text.secondary'>
-          Digital Consulting Services
+          Get in touch with our team to discuss your next digital project.
         </Typography>
       </Box>
     </Container>
