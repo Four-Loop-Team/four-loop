@@ -246,6 +246,8 @@ export default function Navigation() {
       <AppBar
         position='sticky'
         elevation={0}
+        component='nav'
+        aria-label='Main navigation'
         sx={{
           backgroundColor: 'var(--nav-background)',
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
@@ -365,6 +367,11 @@ export default function Navigation() {
                 edge='end'
                 onClick={handleDrawerToggle}
                 sx={{ color: 'white' }}
+                aria-label={
+                  mobileOpen ? 'Close navigation menu' : 'Open navigation menu'
+                }
+                aria-expanded={mobileOpen}
+                aria-controls='mobile-navigation-menu'
               >
                 <MenuIcon />
               </IconButton>
@@ -382,6 +389,11 @@ export default function Navigation() {
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile
+          }}
+          PaperProps={{
+            id: 'mobile-navigation-menu',
+            role: 'navigation',
+            'aria-label': 'Mobile navigation menu',
           }}
           sx={{
             display: { xs: 'block', md: 'none' },

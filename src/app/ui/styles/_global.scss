@@ -1,6 +1,7 @@
 /* stylelint-disable rule-empty-line-before, media-feature-range-notation */
 
 @use 'variables';
+@use 'accessibility';
 
 @tailwind base;
 @tailwind components;
@@ -23,6 +24,14 @@
   --drawer-inactive-text: #{variables.$drawer-inactive-text};
   --drawer-hover-background: #{variables.$drawer-hover-background};
   --drawer-border-accent: #{variables.$drawer-border-accent};
+
+  /* Accessibility Color Variables */
+  --color-primary: #{variables.$color-primary};
+  --color-secondary: #{variables.$color-secondary};
+  --color-text-primary: #{variables.$color-text-primary};
+  --color-text-secondary: #{variables.$color-text-secondary};
+  --color-background: #{variables.$color-background};
+  --color-surface: #{variables.$color-surface};
 
   /* Spacing Variables */
   --space-xs: #{variables.$space-xs};

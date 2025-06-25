@@ -3,6 +3,7 @@ import { poppins } from '@/app/ui/fonts';
 import './ui/styles/_global.scss';
 import MuiThemeProvider from '@/components/MuiThemeProvider';
 import Navigation from '@/components/Navigation';
+import SkipNavigationLink from '@/components/SkipNavigationLink';
 import { homeMetadata } from '@/lib/metadata';
 import {
   generateOrganizationSchema,
@@ -68,9 +69,10 @@ export default function RootLayout({
         />
       </head>
       <body className={`${poppins.variable} antialiased`}>
+        <SkipNavigationLink />
         <MuiThemeProvider>
           <Navigation />
-          <main>{children}</main>
+          <main id='main-content'>{children}</main>
         </MuiThemeProvider>
       </body>
     </html>

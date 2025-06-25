@@ -50,7 +50,12 @@ export default function App() {
             <Typography variant='h2' component='h2' gutterBottom>
               Our Work
             </Typography>
-            <Typography variant='h6' color='text.secondary' sx={{ mb: 6 }}>
+            <Typography
+              variant='h6'
+              component='h3'
+              color='text.secondary'
+              sx={{ mb: 6 }}
+            >
               Discover our portfolio of digital solutions and client success
               stories.
             </Typography>
@@ -79,10 +84,15 @@ export default function App() {
       >
         <Container maxWidth='lg'>
           <Box textAlign='center'>
-            <Typography variant='h2' component='h3' gutterBottom>
+            <Typography variant='h2' component='h2' gutterBottom>
               About Us
             </Typography>
-            <Typography variant='h6' color='text.secondary' sx={{ mb: 6 }}>
+            <Typography
+              variant='h6'
+              component='h3'
+              color='text.secondary'
+              sx={{ mb: 6 }}
+            >
               Learn more about Four Loop Digital and our mission to deliver
               exceptional digital experiences.
             </Typography>
@@ -113,10 +123,15 @@ export default function App() {
       >
         <Container maxWidth='lg'>
           <Box textAlign='center'>
-            <Typography variant='h2' component='h3' gutterBottom>
+            <Typography variant='h2' component='h2' gutterBottom>
               Contact Us
             </Typography>
-            <Typography variant='h6' color='text.secondary' sx={{ mb: 6 }}>
+            <Typography
+              variant='h6'
+              component='h3'
+              color='text.secondary'
+              sx={{ mb: 6 }}
+            >
               Get in touch with our team to discuss your next digital project.
             </Typography>
             <Typography

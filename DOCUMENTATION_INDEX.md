@@ -12,6 +12,8 @@ This directory contains comprehensive documentation for the Four Loop Digital ap
 | **[GRID_SYSTEM_DOCUMENTATION.md](./GRID_SYSTEM_DOCUMENTATION.md)**                             | 12-column grid system and components                  | Frontend developers |
 | **[NAVIGATION_IMPLEMENTATION.md](./NAVIGATION_IMPLEMENTATION.md)**                             | Navigation animations and scroll detection            | Frontend developers |
 | **[LINTING_FORMATTING_IMPROVEMENTS.md](./LINTING_FORMATTING_IMPROVEMENTS.md)**                 | Enhanced linting, formatting, and code quality rules  | All developers      |
+| **[ACCESSIBILITY_AUDIT_REPORT.md](./ACCESSIBILITY_AUDIT_REPORT.md)**                           | Initial accessibility assessment and improvement plan | Accessibility/UX    |
+| **[ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md](./ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md)**           | 🎉 **Perfect 100/100 accessibility score achieved!**  | All team members    |
 | **[SEO_AUDIT_REPORT.md](./SEO_AUDIT_REPORT.md)**                                               | Comprehensive SEO assessment and recommendations      | SEO/Marketing       |
 | **[SEO_IMPLEMENTATION_SUMMARY.md](./SEO_IMPLEMENTATION_SUMMARY.md)**                           | Complete SEO solution implementation guide            | SEO/Marketing       |
 
@@ -31,6 +33,12 @@ This directory contains comprehensive documentation for the Four Loop Digital ap
 - **Layout**: [GRID_SYSTEM_DOCUMENTATION.md](./GRID_SYSTEM_DOCUMENTATION.md)
 - **Navigation**: [NAVIGATION_IMPLEMENTATION.md](./NAVIGATION_IMPLEMENTATION.md)
 - **Code Quality**: [LINTING_FORMATTING_IMPROVEMENTS.md](./LINTING_FORMATTING_IMPROVEMENTS.md)
+
+### For Accessibility/UX
+
+- **Accessibility Assessment**: [ACCESSIBILITY_AUDIT_REPORT.md](./ACCESSIBILITY_AUDIT_REPORT.md)
+- **🎉 Perfect Score Achievement**:
+  [ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md](./ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md)
 
 ### For SEO/Marketing
 
