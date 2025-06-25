@@ -4,14 +4,21 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prettier --check . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next build",
+    "build": "npm run lint:check && npm run type-check && next build",
     "start": "next start",
-    "lint": "prettier --check . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next lint",
+    "lint": "npm run lint:js && npm run lint:styles && npm run format:check",
+    "lint:js": "next lint",
+    "lint:styles": "stylelint \"**/*.{css,scss}\"",
+    "lint:fix": "npm run lint:js -- --fix && npm run lint:styles -- --fix",
+    "lint:check": "npm run lint:js && npm run lint:styles",
     "format": "prettier --write .",
-    "build:local": "prettier --write . && stylelint --allow-empty-input \"**/*.{css,scss}\" && next build",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "build:local": "npm run format && npm run lint:fix && npm run type-check && next build",
     "prepare": "husky",
     "test": "jest",
-    "watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "next": "^14.1.0",

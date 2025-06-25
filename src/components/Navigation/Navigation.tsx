@@ -85,7 +85,7 @@ export default function Navigation() {
 
     const updateSliderPosition = () => {
       const activeIndex = navigationItems.findIndex(
-        (item) => activeSection === item.href.substring(1), // Remove # from href
+        (item) => activeSection === item.href.substring(1) // Remove # from href
       );
       if (
         activeIndex === -1 ||

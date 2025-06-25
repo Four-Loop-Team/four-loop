@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Four Loop Digital application now includes a comprehensive, responsive 12-column grid system that integrates seamlessly with the existing design system. The grid system provides both CSS Grid and Flexbox implementations, ensuring maximum flexibility and browser compatibility.
+The Four Loop Digital application now includes a comprehensive, responsive 12-column grid system
+that integrates seamlessly with the existing design system. The grid system provides both CSS Grid
+and Flexbox implementations, ensuring maximum flexibility and browser compatibility.
 
 ## Table of Contents
 
@@ -366,16 +368,12 @@ const MyComponent = () => (
   <GridContainer>
     <GridItem xs={12} md={8}>
       <h1>Main Content</h1>
-      <p>
-        This content takes full width on mobile, 8 columns on medium+ screens.
-      </p>
+      <p>This content takes full width on mobile, 8 columns on medium+ screens.</p>
     </GridItem>
     <GridItem xs={12} md={4}>
       <aside>
         <h2>Sidebar</h2>
-        <p>
-          This sidebar stacks below on mobile, alongside on medium+ screens.
-        </p>
+        <p>This sidebar stacks below on mobile, alongside on medium+ screens.</p>
       </aside>
     </GridItem>
   </GridContainer>
@@ -754,4 +752,5 @@ import Grid from '@/components/Grid'; // Imports all components
 **Framework Compatibility**: Next.js 14.2.30, Material UI 5.x  
 **Browser Support**: Modern browsers with CSS Grid and Flexbox support
 
-This comprehensive 12-column grid system provides a robust foundation for responsive layouts while maintaining consistency with the existing design system and theme architecture.
+This comprehensive 12-column grid system provides a robust foundation for responsive layouts while
+maintaining consistency with the existing design system and theme architecture.

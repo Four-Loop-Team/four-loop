@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Four Loop Digital
 
-## Getting Started
+A modern, responsive web application built with Next.js 14, TypeScript, and Material UI, featuring
+advanced styling architecture, responsive grid system, and smooth navigation animations.
 
-First, run the development server:
+## 🚀 Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Open browser
+open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Modern Tech Stack**: Next.js 14, React 18, TypeScript, Material UI 5
+- **Advanced Styling System**: SCSS variables, CSS custom properties, semantic design tokens
+- **12-Column Grid System**: Comprehensive responsive layout system
+- **Smooth Navigation**: Performance-optimized animations with scroll detection
+- **Type-Safe Development**: Full TypeScript implementation
+- **Quality Assured**: ESLint, Prettier, Stylelint, and comprehensive testing
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 📚 Documentation
 
-## Learn More
+### 📖 **[Complete Application Documentation](./COMPREHENSIVE_APPLICATION_DOCUMENTATION.md)**
 
-To learn more about Next.js, take a look at the following resources:
+_Master documentation covering the entire application architecture, systems, and implementation
+details._
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Specialized Documentation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **[Styling System](./STYLING_SYSTEM_DOCUMENTATION.md)** - SCSS variables, CSS custom properties,
+  theming
+- **[Grid System](./GRID_SYSTEM_DOCUMENTATION.md)** - 12-column responsive grid implementation
+- **[Navigation System](./NAVIGATION_IMPLEMENTATION.md)** - Navigation animations and scroll
+  detection
 
-## Deploy on Vercel
+## 🛠️ Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+| Script           | Description                          |
+| ---------------- | ------------------------------------ |
+| `npm run dev`    | Start development server             |
+| `npm run build`  | Production build with quality checks |
+| `npm run lint`   | Run linting and type checking        |
+| `npm run format` | Format code with Prettier            |
+| `npm run test`   | Run test suite                       |
+
+### Technology Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **UI Library**: Material UI 5 + Emotion
+- **Styling**: SCSS + CSS Custom Properties
+- **Testing**: Jest + React Testing Library
+- **Quality**: ESLint + Prettier + Stylelint
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+├── components/             # Reusable React components
+│   ├── Navigation/         # Navigation system
+│   ├── Grid/              # Grid system components
+│   └── MuiThemeProvider/  # Theme configuration
+└── ui/                    # Design system
+    └── styles/            # SCSS variables and global styles
+```
+
+## 🎯 Getting Started
+
+1. **Clone and install**
+
+   ```bash
+   git clone <repository-url>
+   cd four-loop
+   npm install
+   ```
+
+2. **Start development**
+
+   ```bash
+   npm run dev
+   ```
+
+3. **Explore the documentation**
+   - Review
+     [COMPREHENSIVE_APPLICATION_DOCUMENTATION.md](./COMPREHENSIVE_APPLICATION_DOCUMENTATION.md) for
+     complete details
+   - Check specialized documentation for specific systems
+   - Examine component source code for implementation examples
+
+## 📈 Performance & Quality
+
+- **Build Pipeline**: Automated linting, formatting, and type checking
+- **Git Hooks**: Pre-commit quality checks with Husky and lint-staged
+- **Optimized Animations**: Hardware-accelerated transitions with performance monitoring
+- **Responsive Design**: Mobile-first approach with 5 breakpoints
+- **Type Safety**: Strict TypeScript configuration with full type coverage
+
+---
+
+For comprehensive documentation including architecture details, implementation guides, and
+troubleshooting, see the
+[Complete Application Documentation](./COMPREHENSIVE_APPLICATION_DOCUMENTATION.md).

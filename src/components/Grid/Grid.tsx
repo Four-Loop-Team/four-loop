@@ -351,7 +351,7 @@ export const useGridSystem = () => {
 
   const getResponsiveColumns = (
     breakpoint: 'xs' | 'sm' | 'md' | 'lg' | 'xl',
-    columns: number,
+    columns: number
   ): string => {
     return `${breakpoint}-col-${columns}`;
   };

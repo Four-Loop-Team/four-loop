@@ -2,7 +2,11 @@
 
 ## Overview
 
-This documentation covers the complete implementation of a pixel-perfect, animated, responsive navigation bar for a Next.js/Material UI project. The navigation features overlapping pill-shaped buttons, a sliding animated background for the selected item, smooth scrolling between page sections, and specific hover/text color behaviors. The implementation uses a single-page application (SPA) approach with scroll-based section detection.
+This documentation covers the complete implementation of a pixel-perfect, animated, responsive
+navigation bar for a Next.js/Material UI project. The navigation features overlapping pill-shaped
+buttons, a sliding animated background for the selected item, smooth scrolling between page
+sections, and specific hover/text color behaviors. The implementation uses a single-page application
+(SPA) approach with scroll-based section detection.
 
 ## Project Structure
 
@@ -110,8 +114,8 @@ const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
 ### Step 6: Scroll Detection and Animation System
 
-**Core Algorithm:**
-The navigation uses scroll position detection to determine the active section and positions the sliding background accordingly.
+**Core Algorithm:** The navigation uses scroll position detection to determine the active section
+and positions the sliding background accordingly.
 
 **Scroll Detection Logic:**
 
@@ -151,13 +155,9 @@ useEffect(() => {
 
   const updateSliderPosition = () => {
     const activeIndex = navigationItems.findIndex(
-      (item) => activeSection === item.href.substring(1), // Remove # from href
+      (item) => activeSection === item.href.substring(1) // Remove # from href
     );
-    if (
-      activeIndex === -1 ||
-      !buttonRefs.current[activeIndex] ||
-      !containerRef.current
-    ) {
+    if (activeIndex === -1 || !buttonRefs.current[activeIndex] || !containerRef.current) {
       setSliderPosition({ left: 0, width: 0 });
       return;
     }
@@ -243,8 +243,8 @@ sx={{
 
 ### Step 8: Single-Page Layout Implementation
 
-**Page Structure:**
-The application uses a single-page layout with distinct sections for each navigation item:
+**Page Structure:** The application uses a single-page layout with distinct sections for each
+navigation item:
 
 ```tsx
 // Home Section
@@ -554,4 +554,6 @@ Potential improvements that could be implemented:
 **UI Library**: Material UI  
 **Styling**: SCSS + Material UI sx prop
 
-This implementation provides a production-ready, accessible, and visually stunning navigation system that meets all the original design requirements while handling edge cases and providing smooth user interactions across all device sizes.
+This implementation provides a production-ready, accessible, and visually stunning navigation system
+that meets all the original design requirements while handling edge cases and providing smooth user
+interactions across all device sizes.

@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document provides comprehensive guidance on how styling, variables, and themes are handled in the Four Loop Digital application. The system is built with scalability, maintainability, and theme flexibility in mind, following modern CSS architecture principles.
+This document provides comprehensive guidance on how styling, variables, and themes are handled in
+the Four Loop Digital application. The system is built with scalability, maintainability, and theme
+flexibility in mind, following modern CSS architecture principles.
 
 ## Table of Contents
 
@@ -71,7 +73,8 @@ $color-text-secondary: #353535; // Secondary text on light backgrounds
 $color-accent: #69685a; // Logo accent color
 ```
 
-**Naming Convention**: `$color-{purpose}` where purpose describes the semantic role, not the visual appearance.
+**Naming Convention**: `$color-{purpose}` where purpose describes the semantic role, not the visual
+appearance.
 
 #### 2. Component-Specific Colors
 
@@ -118,7 +121,8 @@ $nav-container-border-radius: 50px;
 $nav-mobile-width: 300px;
 ```
 
-**Design System**: Based on 8px grid for consistent visual rhythm and easier designer-developer handoff.
+**Design System**: Based on 8px grid for consistent visual rhythm and easier designer-developer
+handoff.
 
 #### 4. Animation System
 
@@ -200,7 +204,8 @@ $font-size-base: 1rem;
 
 ### Implementation
 
-CSS custom properties are defined in `/src/app/ui/styles/_global.scss` and make SCSS variables available at runtime:
+CSS custom properties are defined in `/src/app/ui/styles/_global.scss` and make SCSS variables
+available at runtime:
 
 ```scss
 /* CSS Custom Properties for Navigation using semantic SCSS variables */
@@ -444,7 +449,9 @@ sx={{
 
 ## Grid System Integration
 
-The application includes a comprehensive 12-column grid system that integrates seamlessly with the styling system. The grid system follows the same architectural patterns and uses the established variable system.
+The application includes a comprehensive 12-column grid system that integrates seamlessly with the
+styling system. The grid system follows the same architectural patterns and uses the established
+variable system.
 
 ### Grid Variables Integration
 
@@ -516,7 +523,8 @@ For comprehensive grid system documentation, see:
 **Navigation-Specific Optimizations**:
 
 - **Immediate State Updates**: Navigation clicks update state immediately for instant feedback
-- **Scroll Interference Prevention**: Navigation flags prevent scroll events from interrupting transitions
+- **Scroll Interference Prevention**: Navigation flags prevent scroll events from interrupting
+  transitions
 - **Custom Easing Curves**: Optimized cubic-bezier functions for natural motion
 
 ### Animation Categories
@@ -865,7 +873,9 @@ html { ... }
 body { ... }
 ```
 
-This styling system provides a robust foundation for scalable, maintainable, and theme-ready applications. The three-layer architecture ensures that design changes can be made efficiently while maintaining consistency across all components.
+This styling system provides a robust foundation for scalable, maintainable, and theme-ready
+applications. The three-layer architecture ensures that design changes can be made efficiently while
+maintaining consistency across all components.
 
 ## Recent Updates & Improvements
 
@@ -873,7 +883,8 @@ This styling system provides a robust foundation for scalable, maintainable, and
 
 **Enhanced Navigation Slider Performance**:
 
-- ✅ **Smooth Direct Movement**: Slider now moves directly to selected items without intermediate stops
+- ✅ **Smooth Direct Movement**: Slider now moves directly to selected items without intermediate
+  stops
 - ✅ **Debounced Scroll Detection**: 100ms debouncing prevents rapid state changes during scroll
 - ✅ **Navigation Priority System**: Click navigation takes precedence over scroll detection
 - ✅ **Performance Optimizations**:
