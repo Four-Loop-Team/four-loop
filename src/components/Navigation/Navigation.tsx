@@ -30,29 +30,42 @@ export default function Navigation() {
   const [mounted, setMounted] = useState(false);
   const [sliderPosition, setSliderPosition] = useState({ left: 0, width: 0 });
   const [activeSection, setActiveSection] = useState('home');
+  const [isNavigating, setIsNavigating] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const buttonRefs = useRef<(HTMLElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Scroll-based active section detection
+  // Scroll-based active section detection with debouncing
   useEffect(() => {
     if (!mounted) return;
 
     const handleScroll = () => {
-      const sections = ['home', 'work', 'about', 'contact'];
-      const scrollPosition = window.scrollY + 200; // Offset for navigation height
+      // Skip scroll updates if user is actively navigating
+      if (isNavigating) return;
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i]);
-          break;
-        }
+      // Clear existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
       }
+
+      // Debounce scroll updates to prevent rapid state changes
+      scrollTimeoutRef.current = setTimeout(() => {
+        const sections = ['home', 'work', 'about', 'contact'];
+        const scrollPosition = window.scrollY + 200; // Offset for navigation height
+
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = document.getElementById(sections[i]);
+          if (section && section.offsetTop <= scrollPosition) {
+            setActiveSection(sections[i]);
+            break;
+          }
+        }
+      }, 100); // 100ms debounce
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -60,8 +73,11 @@ export default function Navigation() {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
     };
-  }, [mounted]);
+  }, [mounted, isNavigating]);
 
   // Update slider position based on active section
   useEffect(() => {
@@ -92,12 +108,19 @@ export default function Navigation() {
       setSliderPosition({ left, width });
     };
 
-    const timer = setTimeout(updateSliderPosition, 50);
-    window.addEventListener('resize', updateSliderPosition);
+    // Use requestAnimationFrame for smooth updates
+    const rafId = requestAnimationFrame(updateSliderPosition);
+
+    // Only add resize listener, not during every effect run
+    const handleResize = () => {
+      requestAnimationFrame(updateSliderPosition);
+    };
+
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', updateSliderPosition);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', handleResize);
     };
   }, [mounted, isMobile, activeSection]);
 
@@ -112,6 +135,13 @@ export default function Navigation() {
 
   const handleNavClick = (href: string) => {
     const sectionId = href.substring(1);
+
+    // Immediately update active section for instant slider movement
+    setActiveSection(sectionId);
+
+    // Set navigation flag to prevent scroll interference
+    setIsNavigating(true);
+
     const section = document.getElementById(sectionId);
     if (section) {
       const offsetTop = section.offsetTop - 100; // Account for sticky navigation
@@ -119,7 +149,16 @@ export default function Navigation() {
         top: offsetTop,
         behavior: 'smooth',
       });
+
+      // Clear navigation flag after scroll is likely complete
+      setTimeout(() => {
+        setIsNavigating(false);
+      }, 1000); // Give enough time for smooth scroll to complete
+    } else {
+      // If section not found, clear navigation flag immediately
+      setIsNavigating(false);
     }
+
     if (mobileOpen) {
       setMobileOpen(false);
     }
@@ -272,6 +311,7 @@ export default function Navigation() {
                     borderRadius: 'var(--nav-container-border-radius)',
                     border: '2px solid var(--nav-slider-border)',
                     transition: 'var(--nav-slider-transition)',
+                    willChange: 'left, width, opacity',
                     zIndex: 1,
                     left: `${sliderPosition.left}px`,
                     width: `${sliderPosition.width}px`,

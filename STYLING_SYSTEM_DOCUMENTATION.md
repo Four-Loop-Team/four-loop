@@ -12,10 +12,11 @@ This document provides comprehensive guidance on how styling, variables, and the
 4. [Component Styling Patterns](#component-styling-patterns)
 5. [Theme System](#theme-system)
 6. [Responsive Design](#responsive-design)
-7. [Animation System](#animation-system)
-8. [Best Practices](#best-practices)
-9. [Adding New Components](#adding-new-components)
-10. [Theme Customization](#theme-customization)
+7. [Grid System Integration](#grid-system-integration)
+8. [Animation System](#animation-system)
+9. [Best Practices](#best-practices)
+10. [Adding New Components](#adding-new-components)
+11. [Theme Customization](#theme-customization)
 
 ## Architecture Overview
 
@@ -133,13 +134,24 @@ $transition-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 $transition-easing-ease-in: ease-in;
 $transition-easing-ease-out: ease-out;
 
-// Component-specific animations
-$nav-slider-transition: all $transition-normal $transition-easing;
-$nav-button-transition: all $transition-fast $transition-easing;
+// Component-specific animations (optimized for performance)
+$nav-slider-transition:
+  left $transition-normal cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  width $transition-normal cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  opacity $transition-fast $transition-easing;
+$nav-button-transition:
+  color $transition-fast $transition-easing,
+  background-color $transition-fast $transition-easing,
+  transform $transition-fast $transition-easing;
 $drawer-transition: transform $transition-normal $transition-easing;
 ```
 
-**Standards**: Follows Material Design motion principles for consistent, delightful animations.
+**Key Features**:
+
+- **Performance Optimized**: Specific property transitions instead of generic `all` transitions
+- **Material Design Standards**: Follows Material Design motion principles
+- **Custom Easing**: Enhanced navigation slider with smooth acceleration/deceleration curves
+- **Browser Optimized**: Uses `will-change` CSS property for hardware acceleration
 
 #### 5. Responsive Breakpoints
 
@@ -430,13 +442,82 @@ sx={{
 }}
 ```
 
+## Grid System Integration
+
+The application includes a comprehensive 12-column grid system that integrates seamlessly with the styling system. The grid system follows the same architectural patterns and uses the established variable system.
+
+### Grid Variables Integration
+
+```scss
+// Grid system variables follow the same semantic naming
+$grid-columns: 12;
+$grid-max-width: 1200px;
+$grid-max-width-lg: 1400px;
+$grid-max-width-xl: 1600px;
+
+// Responsive gutters using spacing system
+$grid-gutter-xs: $space-md; // 16px
+$grid-gutter-sm: $space-lg; // 24px
+$grid-gutter-md: $space-xl; // 32px
+$grid-gutter-lg: $space-2xl; // 48px
+$grid-gutter-xl: $space-3xl; // 64px
+```
+
+### CSS Custom Properties Exposure
+
+```scss
+:root {
+  // Grid variables exposed as CSS custom properties
+  --grid-columns: #{variables.$grid-columns};
+  --grid-max-width: #{variables.$grid-max-width};
+  --grid-gutter-xs: #{variables.$grid-gutter-xs};
+  // ... all grid variables
+}
+```
+
+### Component Integration
+
+```tsx
+import { GridContainer, GridItem } from '@/components/Grid';
+
+// React component usage
+<GridContainer size="lg" gap="md">
+  <GridItem xs={12} md={6} lg={4}>
+    <YourComponent />
+  </GridItem>
+</GridContainer>
+
+// CSS class usage
+<div className="container grid">
+  <div className="col-12 col-md-6 col-lg-4">
+    Content
+  </div>
+</div>
+```
+
+### Documentation
+
+For comprehensive grid system documentation, see:
+
+- **[Grid System Documentation](./GRID_SYSTEM_DOCUMENTATION.md)**
+
 ## Animation System
 
 ### Performance Optimizations
 
 1. **GPU Acceleration**: Use `transform` and `opacity` for smooth animations
-2. **Consistent Timing**: Standardized transition durations and easing
-3. **Reduced Motion**: Respect user preferences for reduced motion
+2. **Specific Property Transitions**: Target specific CSS properties instead of using `all`
+3. **Hardware Optimization**: Use `will-change` CSS property for browser optimization
+4. **Debounced Updates**: Prevent rapid state changes during scroll events
+5. **requestAnimationFrame**: Use for smooth, synchronized updates
+6. **Consistent Timing**: Standardized transition durations and easing
+7. **Reduced Motion**: Respect user preferences for reduced motion
+
+**Navigation-Specific Optimizations**:
+
+- **Immediate State Updates**: Navigation clicks update state immediately for instant feedback
+- **Scroll Interference Prevention**: Navigation flags prevent scroll events from interrupting transitions
+- **Custom Easing Curves**: Optimized cubic-bezier functions for natural motion
 
 ### Animation Categories
 
@@ -463,14 +544,22 @@ sx={{
 #### Navigation Slider Animation
 
 ```tsx
-// Smooth slider movement with precise positioning
+// Enhanced smooth slider movement with performance optimization
 sx={{
   transition: 'var(--nav-slider-transition)',
+  willChange: 'left, width, opacity', // Browser optimization
   left: `${sliderPosition.left}px`,
   width: `${sliderPosition.width}px`,
   opacity: sliderPosition.width > 0 ? 1 : 0,
 }}
 ```
+
+**Key Features**:
+
+- **Debounced Updates**: 100ms debouncing prevents rapid state changes during scroll
+- **Navigation Priority**: Click navigation takes precedence over scroll detection
+- **Performance Optimized**: Uses `requestAnimationFrame` and `will-change` for smooth animations
+- **Smooth Easing**: Custom cubic-bezier curves for natural acceleration/deceleration
 
 #### Button Hover Effects
 
@@ -777,3 +866,37 @@ body { ... }
 ```
 
 This styling system provides a robust foundation for scalable, maintainable, and theme-ready applications. The three-layer architecture ensures that design changes can be made efficiently while maintaining consistency across all components.
+
+## Recent Updates & Improvements
+
+### Navigation Animation System (Latest)
+
+**Enhanced Navigation Slider Performance**:
+
+- ✅ **Smooth Direct Movement**: Slider now moves directly to selected items without intermediate stops
+- ✅ **Debounced Scroll Detection**: 100ms debouncing prevents rapid state changes during scroll
+- ✅ **Navigation Priority System**: Click navigation takes precedence over scroll detection
+- ✅ **Performance Optimizations**:
+  - Specific property transitions (`left`, `width`, `opacity`) instead of generic `all`
+  - Hardware acceleration with `will-change` CSS property
+  - `requestAnimationFrame` for smooth updates
+- ✅ **Enhanced Easing**: Custom cubic-bezier curves for natural motion
+
+**Technical Improvements**:
+
+```scss
+// Before: Generic transition
+$nav-slider-transition: all $transition-normal $transition-easing;
+
+// After: Optimized specific properties
+$nav-slider-transition:
+  left $transition-normal cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  width $transition-normal cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  opacity $transition-fast $transition-easing;
+```
+
+**Component Enhancements**:
+
+- Added `isNavigating` state to prevent scroll interference
+- Implemented scroll timeout management for clean state handling
+- Added `will-change` CSS property for browser optimization

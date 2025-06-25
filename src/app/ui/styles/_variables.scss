@@ -53,6 +53,51 @@ $nav-container-border-radius: 50px;
 $nav-mobile-width: 300px;
 
 // =============================================================================
+// 12-COLUMN GRID SYSTEM - Flexible layout system
+// =============================================================================
+
+// Grid Configuration
+$grid-columns: 12;
+$grid-max-width: 1200px;
+$grid-max-width-lg: 1400px;
+$grid-max-width-xl: 1600px;
+
+// Grid Gutters (responsive)
+$grid-gutter-xs: $space-md; // 16px
+$grid-gutter-sm: $space-lg; // 24px
+$grid-gutter-md: $space-xl; // 32px
+$grid-gutter-lg: $space-2xl; // 48px
+$grid-gutter-xl: $space-3xl; // 64px
+
+// Container Padding (responsive)
+$container-padding-xs: $space-md; // 16px
+$container-padding-sm: $space-lg; // 24px
+$container-padding-md: $space-xl; // 32px
+$container-padding-lg: $space-2xl; // 48px
+$container-padding-xl: $space-3xl; // 64px
+
+// Column Percentages (for CSS Grid and Flexbox)
+$col-1: calc(100% / 12 * 1);
+$col-2: calc(100% / 12 * 2);
+$col-3: calc(100% / 12 * 3);
+$col-4: calc(100% / 12 * 4);
+$col-5: calc(100% / 12 * 5);
+$col-6: calc(100% / 12 * 6);
+$col-7: calc(100% / 12 * 7);
+$col-8: calc(100% / 12 * 8);
+$col-9: calc(100% / 12 * 9);
+$col-10: calc(100% / 12 * 10);
+$col-11: calc(100% / 12 * 11);
+$col-12: calc(100% / 12 * 12);
+
+// Grid Areas (common layouts)
+$grid-sidebar-content: 'sidebar content content content';
+$grid-content-sidebar: 'content content content sidebar';
+$grid-header-main-footer: 'header header header header' 'main main main main'
+  'footer footer footer footer';
+$grid-three-column: 'left center right';
+
+// =============================================================================
 // ANIMATION SYSTEM - Consistent timing and easing
 // =============================================================================
 
@@ -68,8 +113,14 @@ $transition-easing-ease-in: ease-in;
 $transition-easing-ease-out: ease-out;
 
 // Component-specific animations
-$nav-slider-transition: all $transition-normal $transition-easing;
-$nav-button-transition: all $transition-fast $transition-easing;
+$nav-slider-transition:
+  left $transition-normal cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  width $transition-normal cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  opacity $transition-fast $transition-easing;
+$nav-button-transition:
+  color $transition-fast $transition-easing,
+  background-color $transition-fast $transition-easing,
+  transform $transition-fast $transition-easing;
 $drawer-transition: transform $transition-normal $transition-easing;
 
 // =============================================================================
@@ -148,6 +199,36 @@ $line-height-tight: 1.2;
     navslider: $nav-slider-transition;
     navbutton: $nav-button-transition;
     drawer: $drawer-transition;
+  }
+
+  // Grid system exports
+  grid: {
+    columns: $grid-columns;
+    maxwidth: $grid-max-width;
+    maxwidthlg: $grid-max-width-lg;
+    maxwidthxl: $grid-max-width-xl;
+    gutterxs: $grid-gutter-xs;
+    guttersm: $grid-gutter-sm;
+    guttermd: $grid-gutter-md;
+    gutterlg: $grid-gutter-lg;
+    gutterxl: $grid-gutter-xl;
+    containerpadxs: $container-padding-xs;
+    containerpadssm: $container-padding-sm;
+    containerpadmd: $container-padding-md;
+    containerpadlg: $container-padding-lg;
+    containerpadxl: $container-padding-xl;
+    col1: $col-1;
+    col2: $col-2;
+    col3: $col-3;
+    col4: $col-4;
+    col5: $col-5;
+    col6: $col-6;
+    col7: $col-7;
+    col8: $col-8;
+    col9: $col-9;
+    col10: $col-10;
+    col11: $col-11;
+    col12: $col-12;
   }
 
   // Breakpoint exports

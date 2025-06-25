@@ -16,6 +16,11 @@
   --drawer-inactive-text: #{variables.$drawer-inactive-text};
   --drawer-hover-background: #{variables.$drawer-hover-background};
   --drawer-border-accent: #{variables.$drawer-border-accent};
+
+  // Animation variables for smooth transitions
+  --nav-slider-transition: #{variables.$nav-slider-transition};
+  --nav-button-transition: #{variables.$nav-button-transition};
+  --drawer-transition: #{variables.$drawer-transition};
 }
 
 // Navigation-specific utility classes
@@ -23,14 +28,18 @@
   // These classes can be used for any additional custom styling
   &__container {
     background-color: var(--nav-container-background);
+    transition: var(--nav-slider-transition);
   }
 
   &__slider {
     background-color: var(--nav-slider-background);
     border: 2px solid var(--nav-slider-border);
+    transition: var(--nav-slider-transition);
   }
 
   &__button {
+    transition: var(--nav-button-transition);
+
     &--active {
       color: var(--nav-text-active) !important;
     }
@@ -48,9 +57,12 @@
 .drawer {
   &__background {
     background-color: var(--drawer-background);
+    transition: var(--drawer-transition);
   }
 
   &__item {
+    transition: var(--nav-button-transition);
+
     &--active {
       background-color: var(--drawer-active-background);
       border-left: 3px solid var(--drawer-active-border);
