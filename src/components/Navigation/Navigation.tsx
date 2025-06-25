@@ -18,74 +18,106 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 const navigationItems = [
-  { label: 'Work', href: '/work' },
-  { label: 'About Us', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Work', href: '#work' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Contact', href: '#contact' },
 ];
 
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [sliderPosition, setSliderPosition] = useState({ left: 0, width: 0 });
+  const [activeSection, setActiveSection] = useState('home');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const pathname = usePathname();
   const buttonRefs = useRef<(HTMLElement | null)[]>([]);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
+  const containerRef = useRef<HTMLDivElement | null>(null);  useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Scroll-based active section detection
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleScroll = () => {
+      const sections = ['home', 'work', 'about', 'contact'];
+      const scrollPosition = window.scrollY + 200; // Offset for navigation height
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [mounted]);
+
+  // Update slider position based on active section
   useEffect(() => {
     if (!mounted || isMobile) return;
-
+    
     const updateSliderPosition = () => {
-      const activeIndex = navigationItems.findIndex(
-        (item) => pathname === item.href,
+      const activeIndex = navigationItems.findIndex(item => 
+        activeSection === item.href.substring(1) // Remove # from href
       );
-      if (
-        activeIndex === -1 ||
-        !buttonRefs.current[activeIndex] ||
-        !containerRef.current
-      ) {
+      if (activeIndex === -1 || !buttonRefs.current[activeIndex] || !containerRef.current) {
+        setSliderPosition({ left: 0, width: 0 });
         return;
       }
 
       const activeButton = buttonRefs.current[activeIndex];
       const container = containerRef.current;
-
+      
       const containerRect = container.getBoundingClientRect();
       const buttonRect = activeButton.getBoundingClientRect();
-
+      
       const left = buttonRect.left - containerRect.left;
       const width = buttonRect.width;
-
+      
       setSliderPosition({ left, width });
     };
 
-    // Small delay to ensure DOM is ready
     const timer = setTimeout(updateSliderPosition, 50);
-
-    // Update on resize
     window.addEventListener('resize', updateSliderPosition);
-
+    
     return () => {
       clearTimeout(timer);
       window.removeEventListener('resize', updateSliderPosition);
     };
-  }, [mounted, isMobile, pathname]);
+  }, [mounted, isMobile, activeSection]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const isActive = (href: string) => {
-    return pathname === href;
+    const sectionId = href.substring(1); // Remove # from href
+    return activeSection === sectionId;
+  };
+
+  const handleNavClick = (href: string) => {
+    const sectionId = href.substring(1);
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const offsetTop = section.offsetTop - 100; // Account for sticky navigation
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+    if (mobileOpen) {
+      setMobileOpen(false);
+    }
   };
 
   // Mobile drawer content
@@ -118,9 +150,7 @@ export default function Navigation() {
           return (
             <ListItem key={item.label} disablePadding sx={{ mb: 1.5 }}>
               <ListItemButton
-                component={Link}
-                href={item.href}
-                onClick={handleDrawerToggle}
+                onClick={() => handleNavClick(item.href)}
                 sx={{
                   borderRadius: 3,
                   color: active ? '#e2e891' : 'white',
@@ -179,13 +209,13 @@ export default function Navigation() {
           >
             {/* Logo */}
             <Box
-              component={Link}
-              href='/'
+              onClick={() => handleNavClick('#home')}
               sx={{
                 textDecoration: 'none',
                 color: 'white',
                 display: 'flex',
                 alignItems: 'center',
+                cursor: 'pointer',
               }}
             >
               <Box
@@ -237,8 +267,7 @@ export default function Navigation() {
                   return (
                     <Button
                       key={item.label}
-                      component={Link}
-                      href={item.href}
+                      onClick={() => handleNavClick(item.href)}
                       ref={(el) => {
                         buttonRefs.current[index] = el;
                       }}
