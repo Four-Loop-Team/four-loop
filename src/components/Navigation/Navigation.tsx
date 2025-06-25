@@ -33,7 +33,8 @@ export default function Navigation() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const buttonRefs = useRef<(HTMLElement | null)[]>([]);
-  const containerRef = useRef<HTMLDivElement | null>(null);  useEffect(() => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
     setMounted(true);
   }, []);
 
@@ -65,31 +66,35 @@ export default function Navigation() {
   // Update slider position based on active section
   useEffect(() => {
     if (!mounted || isMobile) return;
-    
+
     const updateSliderPosition = () => {
-      const activeIndex = navigationItems.findIndex(item => 
-        activeSection === item.href.substring(1) // Remove # from href
+      const activeIndex = navigationItems.findIndex(
+        (item) => activeSection === item.href.substring(1), // Remove # from href
       );
-      if (activeIndex === -1 || !buttonRefs.current[activeIndex] || !containerRef.current) {
+      if (
+        activeIndex === -1 ||
+        !buttonRefs.current[activeIndex] ||
+        !containerRef.current
+      ) {
         setSliderPosition({ left: 0, width: 0 });
         return;
       }
 
       const activeButton = buttonRefs.current[activeIndex];
       const container = containerRef.current;
-      
+
       const containerRect = container.getBoundingClientRect();
       const buttonRect = activeButton.getBoundingClientRect();
-      
+
       const left = buttonRect.left - containerRect.left;
       const width = buttonRect.width;
-      
+
       setSliderPosition({ left, width });
     };
 
     const timer = setTimeout(updateSliderPosition, 50);
     window.addEventListener('resize', updateSliderPosition);
-    
+
     return () => {
       clearTimeout(timer);
       window.removeEventListener('resize', updateSliderPosition);
@@ -112,7 +117,7 @@ export default function Navigation() {
       const offsetTop = section.offsetTop - 100; // Account for sticky navigation
       window.scrollTo({
         top: offsetTop,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
     if (mobileOpen) {

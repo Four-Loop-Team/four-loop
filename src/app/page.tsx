@@ -6,7 +6,7 @@ export default function App() {
     <>
       {/* Home Section */}
       <Box
-        id="home"
+        id='home'
         sx={{
           minHeight: '100vh',
           display: 'flex',
@@ -36,7 +36,7 @@ export default function App() {
 
       {/* Work Section */}
       <Box
-        id="work"
+        id='work'
         sx={{
           minHeight: '100vh',
           display: 'flex',
@@ -50,12 +50,18 @@ export default function App() {
               Our Work
             </Typography>
             <Typography variant='h6' color='text.secondary' sx={{ mb: 6 }}>
-              Discover our portfolio of digital solutions and client success stories.
+              Discover our portfolio of digital solutions and client success
+              stories.
             </Typography>
-            <Typography variant='body1' color='text.secondary' sx={{ maxWidth: '800px', mx: 'auto' }}>
-              We specialize in creating innovative digital experiences that drive business growth. 
-              Our portfolio showcases web applications, mobile solutions, and digital transformation 
-              projects that have helped our clients achieve their goals.
+            <Typography
+              variant='body1'
+              color='text.secondary'
+              sx={{ maxWidth: '800px', mx: 'auto' }}
+            >
+              We specialize in creating innovative digital experiences that
+              drive business growth. Our portfolio showcases web applications,
+              mobile solutions, and digital transformation projects that have
+              helped our clients achieve their goals.
             </Typography>
           </Box>
         </Container>
@@ -63,7 +69,7 @@ export default function App() {
 
       {/* About Section */}
       <Box
-        id="about"
+        id='about'
         sx={{
           minHeight: '100vh',
           display: 'flex',
@@ -76,12 +82,19 @@ export default function App() {
               About Us
             </Typography>
             <Typography variant='h6' color='text.secondary' sx={{ mb: 6 }}>
-              Learn more about Four Loop Digital and our mission to deliver exceptional digital experiences.
+              Learn more about Four Loop Digital and our mission to deliver
+              exceptional digital experiences.
             </Typography>
-            <Typography variant='body1' color='text.secondary' sx={{ maxWidth: '800px', mx: 'auto' }}>
-              Four Loop Digital is a forward-thinking digital consultancy dedicated to transforming 
-              businesses through innovative technology solutions. Our team of experienced developers, 
-              designers, and strategists work collaboratively to bring your digital vision to life.
+            <Typography
+              variant='body1'
+              color='text.secondary'
+              sx={{ maxWidth: '800px', mx: 'auto' }}
+            >
+              Four Loop Digital is a forward-thinking digital consultancy
+              dedicated to transforming businesses through innovative technology
+              solutions. Our team of experienced developers, designers, and
+              strategists work collaboratively to bring your digital vision to
+              life.
             </Typography>
           </Box>
         </Container>
@@ -89,7 +102,7 @@ export default function App() {
 
       {/* Contact Section */}
       <Box
-        id="contact"
+        id='contact'
         sx={{
           minHeight: '100vh',
           display: 'flex',
@@ -105,10 +118,14 @@ export default function App() {
             <Typography variant='h6' color='text.secondary' sx={{ mb: 6 }}>
               Get in touch with our team to discuss your next digital project.
             </Typography>
-            <Typography variant='body1' color='text.secondary' sx={{ maxWidth: '800px', mx: 'auto' }}>
-              Ready to start your digital transformation journey? We&apos;d love to hear about your project 
-              and explore how we can help you achieve your business objectives through innovative 
-              digital solutions.
+            <Typography
+              variant='body1'
+              color='text.secondary'
+              sx={{ maxWidth: '800px', mx: 'auto' }}
+            >
+              Ready to start your digital transformation journey? We&apos;d love
+              to hear about your project and explore how we can help you achieve
+              your business objectives through innovative digital solutions.
             </Typography>
           </Box>
         </Container>
