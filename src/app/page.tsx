@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Typography, Box } from '@mui/material';
+import Logo from '@/components/Logo';
 
 export default function App() {
   return (
@@ -16,18 +17,18 @@ export default function App() {
       >
         <Container maxWidth='lg'>
           <Box textAlign='center'>
-            <Box
-              className='logo'
+            <Logo
               sx={{
                 mx: 'auto',
                 mb: 4,
                 display: 'inline-block',
               }}
+              alt='Four Loop Digital - Professional Digital Consulting Services'
             />
-            <Typography variant='h2' component='h1' gutterBottom>
+            <Typography variant='h1' component='h1' gutterBottom>
               Welcome to Four Loop Digital
             </Typography>
-            <Typography variant='h6' color='text.secondary'>
+            <Typography variant='h5' component='h2' color='text.secondary'>
               Digital Consulting Services
             </Typography>
           </Box>
@@ -78,7 +79,7 @@ export default function App() {
       >
         <Container maxWidth='lg'>
           <Box textAlign='center'>
-            <Typography variant='h2' component='h2' gutterBottom>
+            <Typography variant='h2' component='h3' gutterBottom>
               About Us
             </Typography>
             <Typography variant='h6' color='text.secondary' sx={{ mb: 6 }}>
@@ -112,7 +113,7 @@ export default function App() {
       >
         <Container maxWidth='lg'>
           <Box textAlign='center'>
-            <Typography variant='h2' component='h2' gutterBottom>
+            <Typography variant='h2' component='h3' gutterBottom>
               Contact Us
             </Typography>
             <Typography variant='h6' color='text.secondary' sx={{ mb: 6 }}>

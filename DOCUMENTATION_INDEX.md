@@ -11,6 +11,9 @@ This directory contains comprehensive documentation for the Four Loop Digital ap
 | **[STYLING_SYSTEM_DOCUMENTATION.md](./STYLING_SYSTEM_DOCUMENTATION.md)**                       | SCSS variables, CSS custom properties, theming        | Frontend developers |
 | **[GRID_SYSTEM_DOCUMENTATION.md](./GRID_SYSTEM_DOCUMENTATION.md)**                             | 12-column grid system and components                  | Frontend developers |
 | **[NAVIGATION_IMPLEMENTATION.md](./NAVIGATION_IMPLEMENTATION.md)**                             | Navigation animations and scroll detection            | Frontend developers |
+| **[LINTING_FORMATTING_IMPROVEMENTS.md](./LINTING_FORMATTING_IMPROVEMENTS.md)**                 | Enhanced linting, formatting, and code quality rules  | All developers      |
+| **[SEO_AUDIT_REPORT.md](./SEO_AUDIT_REPORT.md)**                                               | Comprehensive SEO assessment and recommendations      | SEO/Marketing       |
+| **[SEO_IMPLEMENTATION_SUMMARY.md](./SEO_IMPLEMENTATION_SUMMARY.md)**                           | Complete SEO solution implementation guide            | SEO/Marketing       |
 
 ## 🎯 Quick Navigation
 
@@ -27,6 +30,12 @@ This directory contains comprehensive documentation for the Four Loop Digital ap
 - **Styling**: [STYLING_SYSTEM_DOCUMENTATION.md](./STYLING_SYSTEM_DOCUMENTATION.md)
 - **Layout**: [GRID_SYSTEM_DOCUMENTATION.md](./GRID_SYSTEM_DOCUMENTATION.md)
 - **Navigation**: [NAVIGATION_IMPLEMENTATION.md](./NAVIGATION_IMPLEMENTATION.md)
+- **Code Quality**: [LINTING_FORMATTING_IMPROVEMENTS.md](./LINTING_FORMATTING_IMPROVEMENTS.md)
+
+### For SEO/Marketing
+
+- **SEO Assessment**: [SEO_AUDIT_REPORT.md](./SEO_AUDIT_REPORT.md)
+- **SEO Implementation**: [SEO_IMPLEMENTATION_SUMMARY.md](./SEO_IMPLEMENTATION_SUMMARY.md)
 
 ### For Project Management
 

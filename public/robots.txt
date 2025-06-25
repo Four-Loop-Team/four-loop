@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+
+# Allow important resources
+Allow: /_next/static/
+Allow: /favicon.ico
+Allow: /sitemap.xml
+
+# Sitemap location
+Sitemap: https://fourloop.digital/sitemap.xml
+
+# Crawl delay (optional, can be removed if not needed)
+Crawl-delay: 1
