@@ -182,11 +182,11 @@ useEffect(() => {
 
 ```tsx
 sx={{
-  color: active ? 'white' : '#353535',           // White for active, dark gray for inactive
+  color: active ? '#fff' : '#353535',           // White for active, dark gray for inactive
   marginLeft: index > 0 ? '-20px' : '0px',       // Overlap effect
   zIndex: 2,                                     // Above slider
   '&:hover': {
-    color: active ? 'white' : 'white',           // White text on hover
+    color: active ? '#fff' : '#fff',           // White text on hover
     zIndex: 3,                                   // Bring to front on hover
   },
 }}
@@ -226,7 +226,7 @@ $fld-dark-gray: #353535; // Secondary text
 - Navigation background: `#353535` ($fld-dark-gray)
 - Pill container: `#e2e891` ($fld-light-green)
 - Active slider: `#353535` ($fld-dark-gray)
-- Active text: `white`
+- Active text: `#fff` ($fld-white)
 - Inactive text: `#353535` ($fld-dark-gray)
 
 ### Step 10: Critical Bug Fixes
@@ -345,11 +345,11 @@ export default function Navigation() {
             buttonRefs.current[index] = el;
           }}
           sx={{
-            color: isActive(item.href) ? 'white' : '#353535',
+            color: isActive(item.href) ? '#fff' : '#353535',
             marginLeft: index > 0 ? '-20px' : '0px',
             zIndex: 2,
             '&:hover': {
-              color: 'white',
+              color: '#fff',
               zIndex: 3,
             },
           }}

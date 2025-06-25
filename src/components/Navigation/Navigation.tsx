@@ -243,7 +243,7 @@ export default function Navigation() {
                         buttonRefs.current[index] = el;
                       }}
                       sx={{
-                        color: active ? 'white' : '#353535',
+                        color: active ? '#fff' : '#353535',
                         textTransform: 'none',
                         fontSize: '1rem',
                         fontWeight: 500,
@@ -257,7 +257,7 @@ export default function Navigation() {
                         zIndex: 2,
                         position: 'relative',
                         '&:hover': {
-                          color: active ? 'white' : 'white',
+                          color: active ? '#fff' : '#fff',
                           zIndex: 3,
                         },
                       }}
