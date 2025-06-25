@@ -1,14 +1,90 @@
 $logo-img-url: url('../images/logo.png');
 
-// Four Loop Brand Colors
-$fld-dark: #232323; // Main background color
-$fld-light-green: #e2e891; // Component background color
-$fld-logo-green: #69685a; // Main logo color
-$fld-white: #fff; // Font and border color
-$fld-dark-gray: #353535; // Font and border color
+// =============================================================================
+// SEMANTIC COLOR SYSTEM - Theme-aware and reusable
+// =============================================================================
 
-// Legacy color (keeping for compatibility)
-$fld-brown: #232323;
+// Base Palette
+$color-primary: #e2e891; // Light green - primary brand color
+$color-secondary: #353535; // Dark gray - secondary/neutral
+$color-background: #232323; // Dark background
+$color-surface: #353535; // Component surfaces
+$color-text-primary: #fff; // Primary text on dark backgrounds
+$color-text-secondary: #353535; // Secondary text on light backgrounds
+$color-accent: #69685a; // Logo accent color
+
+// Navigation-specific semantic variables
+$nav-background: $color-surface;
+$nav-container-background: $color-primary;
+$nav-slider-background: $color-secondary;
+$nav-slider-border: $color-primary;
+$nav-text-active: $color-text-primary;
+$nav-text-inactive: $color-text-secondary;
+$nav-text-hover: $color-text-primary;
+
+// Mobile drawer semantic variables
+$drawer-background: $color-surface;
+$drawer-active-background: rgba($color-primary, 0.15);
+$drawer-active-border: rgba($color-primary, 0.3);
+$drawer-active-text: $color-primary;
+$drawer-inactive-text: $color-text-primary;
+$drawer-hover-background: rgba($color-primary, 0.25);
+$drawer-border-accent: rgba($color-primary, 0.2);
+
+// =============================================================================
+// SPACING SYSTEM - Consistent spacing scale
+// =============================================================================
+
+// Base spacing scale (following 8px grid)
+$space-xs: 0.25rem; // 4px
+$space-sm: 0.5rem; // 8px
+$space-md: 1rem; // 16px
+$space-lg: 1.5rem; // 24px
+$space-xl: 2rem; // 32px
+$space-2xl: 3rem; // 48px
+$space-3xl: 4rem; // 64px
+
+// Navigation-specific spacing
+$nav-padding: $space-md;
+$nav-button-padding-x: $space-lg;
+$nav-button-padding-y: 0.25rem;
+$nav-button-overlap: -20px;
+$nav-container-border-radius: 50px;
+$nav-mobile-width: 300px;
+
+// =============================================================================
+// ANIMATION SYSTEM - Consistent timing and easing
+// =============================================================================
+
+// Animation timing
+$transition-fast: 0.2s;
+$transition-normal: 0.4s;
+$transition-slow: 0.6s;
+
+// Easing functions
+$transition-easing: cubic-bezier(0.4, 0, 0.2, 1); // Material Design standard
+$transition-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+$transition-easing-ease-in: ease-in;
+$transition-easing-ease-out: ease-out;
+
+// Component-specific animations
+$nav-slider-transition: all $transition-normal $transition-easing;
+$nav-button-transition: all $transition-fast $transition-easing;
+$drawer-transition: transform $transition-normal $transition-easing;
+
+// =============================================================================
+// BREAKPOINT SYSTEM - Responsive design breakpoints
+// =============================================================================
+
+// Breakpoint values (matching Material UI defaults)
+$breakpoint-xs: 0px;
+$breakpoint-sm: 600px;
+$breakpoint-md: 960px;
+$breakpoint-lg: 1280px;
+$breakpoint-xl: 1920px;
+
+// Navigation-specific breakpoints
+$nav-mobile-breakpoint: $breakpoint-md;
 
 // Font Variables
 $font-family-primary:
@@ -31,14 +107,55 @@ $line-height-tight: 1.2;
   logo: {
     url: $logo-img-url;
   }
-  colors: {
-    dark: $fld-dark;
-    lightgreen: $fld-light-green;
-    logogreen: $fld-logo-green;
-    white: $fld-white;
-    darkgray: $fld-dark-gray;
 
-    // Legacy
-    primary: $fld-brown;
+  // Theme-aware color exports
+  navigation: {
+    background: $nav-background;
+    containerbackground: $nav-container-background;
+    sliderbackground: $nav-slider-background;
+    sliderborder: $nav-slider-border;
+    textactive: $nav-text-active;
+    textinactive: $nav-text-inactive;
+    texthover: $nav-text-hover;
+  }
+  drawer: {
+    background: $drawer-background;
+    activebackground: $drawer-active-background;
+    activeborder: $drawer-active-border;
+    activetext: $drawer-active-text;
+    inactivetext: $drawer-inactive-text;
+    hoverbackground: $drawer-hover-background;
+    borderaccent: $drawer-border-accent;
+  }
+
+  // Spacing exports
+  spacing: {
+    xs: $space-xs;
+    sm: $space-sm;
+    md: $space-md;
+    lg: $space-lg;
+    xl: $space-xl;
+    xxl: $space-2xl;
+    xxxl: $space-3xl;
+  }
+
+  // Animation exports
+  animations: {
+    fast: $transition-fast;
+    normal: $transition-normal;
+    slow: $transition-slow;
+    easing: $transition-easing;
+    navslider: $nav-slider-transition;
+    navbutton: $nav-button-transition;
+    drawer: $drawer-transition;
+  }
+
+  // Breakpoint exports
+  breakpoints: {
+    xs: $breakpoint-xs;
+    sm: $breakpoint-sm;
+    md: $breakpoint-md;
+    lg: $breakpoint-lg;
+    xl: $breakpoint-xl;
   }
 }

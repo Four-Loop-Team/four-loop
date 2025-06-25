@@ -4,6 +4,56 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS Custom Properties for Navigation using semantic SCSS variables */
+:root {
+  /* Color Variables */
+  --nav-background: #{variables.$nav-background};
+  --nav-container-background: #{variables.$nav-container-background};
+  --nav-slider-background: #{variables.$nav-slider-background};
+  --nav-slider-border: #{variables.$nav-slider-border};
+  --nav-text-active: #{variables.$nav-text-active};
+  --nav-text-inactive: #{variables.$nav-text-inactive};
+  --nav-text-hover: #{variables.$nav-text-hover};
+  --drawer-background: #{variables.$drawer-background};
+  --drawer-active-background: #{variables.$drawer-active-background};
+  --drawer-active-border: #{variables.$drawer-active-border};
+  --drawer-active-text: #{variables.$drawer-active-text};
+  --drawer-inactive-text: #{variables.$drawer-inactive-text};
+  --drawer-hover-background: #{variables.$drawer-hover-background};
+  --drawer-border-accent: #{variables.$drawer-border-accent};
+
+  /* Spacing Variables */
+  --space-xs: #{variables.$space-xs};
+  --space-sm: #{variables.$space-sm};
+  --space-md: #{variables.$space-md};
+  --space-lg: #{variables.$space-lg};
+  --space-xl: #{variables.$space-xl};
+  --space-2xl: #{variables.$space-2xl};
+  --space-3xl: #{variables.$space-3xl};
+  --nav-padding: #{variables.$nav-padding};
+  --nav-button-padding-x: #{variables.$nav-button-padding-x};
+  --nav-button-padding-y: #{variables.$nav-button-padding-y};
+  --nav-button-overlap: #{variables.$nav-button-overlap};
+  --nav-container-border-radius: #{variables.$nav-container-border-radius};
+  --nav-mobile-width: #{variables.$nav-mobile-width};
+
+  /* Animation Variables */
+  --transition-fast: #{variables.$transition-fast};
+  --transition-normal: #{variables.$transition-normal};
+  --transition-slow: #{variables.$transition-slow};
+  --transition-easing: #{variables.$transition-easing};
+  --nav-slider-transition: #{variables.$nav-slider-transition};
+  --nav-button-transition: #{variables.$nav-button-transition};
+  --drawer-transition: #{variables.$drawer-transition};
+
+  /* Breakpoint Variables */
+  --breakpoint-xs: #{variables.$breakpoint-xs};
+  --breakpoint-sm: #{variables.$breakpoint-sm};
+  --breakpoint-md: #{variables.$breakpoint-md};
+  --breakpoint-lg: #{variables.$breakpoint-lg};
+  --breakpoint-xl: #{variables.$breakpoint-xl};
+}
+
 /* Global Font Styles */
 html {
   font-family:
@@ -22,8 +72,8 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: variables.$fld-white;
-  background-color: variables.$fld-dark;
+  color: variables.$color-text-primary;
+  background-color: variables.$color-background;
 }
 
 /* Four Loop Typography System - Mobile First */
@@ -141,7 +191,7 @@ p {
 
 .app {
   align-items: center;
-  background-color: variables.$fld-brown;
+  background-color: variables.$color-background;
   display: flex;
   flex-direction: column;
   height: 100vh;

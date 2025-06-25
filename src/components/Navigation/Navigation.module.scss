@@ -1,0 +1,68 @@
+@use '../../app/ui/styles/variables';
+
+// CSS Custom Properties for Navigation using semantic SCSS variables
+:root {
+  --nav-background: #{variables.$nav-background};
+  --nav-container-background: #{variables.$nav-container-background};
+  --nav-slider-background: #{variables.$nav-slider-background};
+  --nav-slider-border: #{variables.$nav-slider-border};
+  --nav-text-active: #{variables.$nav-text-active};
+  --nav-text-inactive: #{variables.$nav-text-inactive};
+  --nav-text-hover: #{variables.$nav-text-hover};
+  --drawer-background: #{variables.$drawer-background};
+  --drawer-active-background: #{variables.$drawer-active-background};
+  --drawer-active-border: #{variables.$drawer-active-border};
+  --drawer-active-text: #{variables.$drawer-active-text};
+  --drawer-inactive-text: #{variables.$drawer-inactive-text};
+  --drawer-hover-background: #{variables.$drawer-hover-background};
+  --drawer-border-accent: #{variables.$drawer-border-accent};
+}
+
+// Navigation-specific utility classes
+.navigation {
+  // These classes can be used for any additional custom styling
+  &__container {
+    background-color: var(--nav-container-background);
+  }
+
+  &__slider {
+    background-color: var(--nav-slider-background);
+    border: 2px solid var(--nav-slider-border);
+  }
+
+  &__button {
+    &--active {
+      color: var(--nav-text-active) !important;
+    }
+
+    &--inactive {
+      color: var(--nav-text-inactive) !important;
+    }
+
+    &:hover {
+      color: var(--nav-text-hover) !important;
+    }
+  }
+}
+
+.drawer {
+  &__background {
+    background-color: var(--drawer-background);
+  }
+
+  &__item {
+    &--active {
+      background-color: var(--drawer-active-background);
+      border-left: 3px solid var(--drawer-active-border);
+      color: var(--drawer-active-text);
+    }
+
+    &--inactive {
+      color: var(--drawer-inactive-text);
+    }
+
+    &:hover {
+      background-color: var(--drawer-hover-background);
+    }
+  }
+}

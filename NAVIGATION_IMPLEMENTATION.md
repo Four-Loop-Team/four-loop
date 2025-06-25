@@ -2,10 +2,7 @@
 
 ## Overview
 
-This documentation covers the complete implementation of a pixel-perfect, animated, responsive navigation bar for a Next.js/Material UI project. The navigation features overlapping pill-shaped buttons, a sliding animated background for the selected item, and specific hover/text color behaviors.
-zIndex: 3,
-},
-}}
+This documentation covers the complete implementation of a pixel-perfect, animated, responsive navigation bar for a Next.js/Material UI project. The navigation features overlapping pill-shaped buttons, a sliding animated background for the selected item, smooth scrolling between page sections, and specific hover/text color behaviors. The implementation uses a single-page application (SPA) approach with scroll-based section detection.
 
 ## Project Structure
 
@@ -13,12 +10,12 @@ zIndex: 3,
 src/
 ├── components/
 │   └── Navigation/
-│       └── Navigation.tsx          # Main navigation component
+│       └── Navigation.tsx          # Main navigation component with scroll detection
 ├── app/
-│   ├── page.tsx                   # Home page
+│   ├── page.tsx                   # Single-page layout with all sections
 │   └── ui/
 │       └── styles/
-│           ├── _global.scss       # Global styles
+│           ├── _global.scss       # Global styles with smooth scroll behavior
 │           └── _variables.scss    # SCSS variables and colors
 ```
 
@@ -81,11 +78,13 @@ import { usePathname } from 'next/navigation';
 
 ```tsx
 const navigationItems = [
-  { label: 'Work', href: '/work' },
-  { label: 'About Us', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Work', href: '#work' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Contact', href: '#contact' },
 ];
 ```
+
+The navigation uses hash-based anchors to scroll to different sections within the single page.
 
 ### Step 4: State Management Setup
 
@@ -95,6 +94,7 @@ const navigationItems = [
 const [mobileOpen, setMobileOpen] = useState(false); // Mobile drawer state
 const [mounted, setMounted] = useState(false); // Hydration safety
 const [sliderPosition, setSliderPosition] = useState({ left: 0, width: 0 }); // Slider positioning
+const [activeSection, setActiveSection] = useState('home'); // Currently active section
 const buttonRefs = useRef<(HTMLElement | null)[]>([]); // Button references
 const containerRef = useRef<HTMLDivElement | null>(null); // Container reference
 ```
@@ -106,30 +106,60 @@ const containerRef = useRef<HTMLDivElement | null>(null); // Container reference
 ```tsx
 const theme = useTheme();
 const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-const pathname = usePathname();
 ```
 
-### Step 6: Sliding Background Animation System
+### Step 6: Scroll Detection and Animation System
 
 **Core Algorithm:**
-The sliding background uses precise measurements via `getBoundingClientRect()` to position itself behind the active navigation item.
+The navigation uses scroll position detection to determine the active section and positions the sliding background accordingly.
 
-**Position Calculation Logic:**
+**Scroll Detection Logic:**
 
 ```tsx
+// Scroll-based active section detection
+useEffect(() => {
+  if (!mounted) return;
+
+  const handleScroll = () => {
+    const sections = ['home', 'work', 'about', 'contact'];
+    const scrollPosition = window.scrollY + 200; // Offset for navigation height
+
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const section = document.getElementById(sections[i]);
+      if (section && section.offsetTop <= scrollPosition) {
+        setActiveSection(sections[i]);
+        break;
+      }
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  handleScroll(); // Check initial position
+
+  return () => {
+    window.removeEventListener('scroll', handleScroll);
+  };
+}, [mounted]);
+```
+
+**Slider Position Calculation:**
+
+```tsx
+// Update slider position based on active section
 useEffect(() => {
   if (!mounted || isMobile) return;
 
   const updateSliderPosition = () => {
     const activeIndex = navigationItems.findIndex(
-      (item) => pathname === item.href,
+      (item) => activeSection === item.href.substring(1), // Remove # from href
     );
     if (
       activeIndex === -1 ||
       !buttonRefs.current[activeIndex] ||
       !containerRef.current
     ) {
-      return; // Hide slider when no item is active (home page)
+      setSliderPosition({ left: 0, width: 0 });
+      return;
     }
 
     const activeButton = buttonRefs.current[activeIndex];
@@ -151,7 +181,26 @@ useEffect(() => {
     clearTimeout(timer);
     window.removeEventListener('resize', updateSliderPosition);
   };
-}, [mounted, isMobile, pathname]);
+}, [mounted, isMobile, activeSection]);
+```
+
+**Smooth Scroll Navigation:**
+
+```tsx
+const handleNavClick = (href: string) => {
+  const sectionId = href.substring(1);
+  const section = document.getElementById(sectionId);
+  if (section) {
+    const offsetTop = section.offsetTop - 100; // Account for sticky navigation
+    window.scrollTo({
+      top: offsetTop,
+      behavior: 'smooth',
+    });
+  }
+  if (mobileOpen) {
+    setMobileOpen(false);
+  }
+};
 ```
 
 ### Step 7: Desktop Navigation Layout
@@ -192,7 +241,41 @@ sx={{
 }}
 ```
 
-### Step 8: Mobile Navigation Implementation
+### Step 8: Single-Page Layout Implementation
+
+**Page Structure:**
+The application uses a single-page layout with distinct sections for each navigation item:
+
+```tsx
+// Home Section
+<Box id="home" sx={{ minHeight: '100vh', pt: { xs: 10, md: 12 } }}>
+  {/* Home content with logo and welcome message */}
+</Box>
+
+// Work Section
+<Box id="work" sx={{ minHeight: '100vh', backgroundColor: 'rgba(53, 53, 53, 0.05)' }}>
+  {/* Work portfolio content */}
+</Box>
+
+// About Section
+<Box id="about" sx={{ minHeight: '100vh' }}>
+  {/* About company content */}
+</Box>
+
+// Contact Section
+<Box id="contact" sx={{ minHeight: '100vh', backgroundColor: 'rgba(53, 53, 53, 0.05)' }}>
+  {/* Contact information content */}
+</Box>
+```
+
+**Key Features:**
+
+- **Full viewport sections**: Each section uses `minHeight: '100vh'` for proper scrolling
+- **Visual separation**: Alternating background colors for better section distinction
+- **Responsive spacing**: Proper padding to account for sticky navigation
+- **Semantic HTML**: Each section has a unique ID for scroll targeting
+
+### Step 9: Mobile Navigation Implementation
 
 **Features:**
 
@@ -210,7 +293,7 @@ sx={{
 - Border and hover effects
 - Transform animation on hover
 
-### Step 9: Color System and Variables
+### Step 10: Color System and Variables
 
 **Brand Colors:**
 
@@ -229,7 +312,20 @@ $fld-dark-gray: #353535; // Secondary text
 - Active text: `#fff` ($fld-white)
 - Inactive text: `#353535` ($fld-dark-gray)
 
-### Step 10: Critical Bug Fixes
+### Step 11: Global Styles and Smooth Scroll
+
+**CSS Enhancements:**
+
+```scss
+// In _global.scss
+html {
+  scroll-behavior: smooth; // Enable native smooth scrolling
+}
+```
+
+This ensures smooth scrolling behavior across all browsers that support it.
+
+### Step 12: Critical Bug Fixes
 
 **Issue 1: Slider Covering Adjacent Text**
 
@@ -248,7 +344,7 @@ $fld-dark-gray: #353535; // Secondary text
 - **Problem**: Button refs expecting HTMLButtonElement but receiving HTMLAnchorElement
 - **Solution**: Changed ref type to `HTMLElement | null`
 
-### Step 11: Performance Optimizations
+### Step 13: Performance Optimizations
 
 1. **Hydration Safety**: `mounted` state prevents SSR mismatches
 2. **Resize Handling**: Automatic slider repositioning on window resize
@@ -366,35 +462,56 @@ export default function Navigation() {
 
 ### Visual Testing Process
 
-1. **Home Page**: Verify no slider visible
-2. **Work Page**: Slider behind "Work" button, white text
-3. **About Page**: Slider behind "About Us" button, precise alignment
-4. **Contact Page**: Slider behind "Contact" button, no text overlap
-5. **Mobile View**: Drawer functionality and responsive design
-6. **Hover States**: Text color changes, no background hover effects
+1. **Home Section**: Verify no slider visible on initial load, logo displays correctly
+2. **Scroll to Work**: Navigation slider animates behind "Work" button, smooth scrolling
+3. **Scroll to About**: Navigation slider moves to "About Us" button, precise alignment
+4. **Scroll to Contact**: Navigation slider moves to "Contact" button, no text overlap
+5. **Manual Navigation**: Click navigation items to test smooth scrolling functionality
+6. **Mobile View**: Drawer functionality, smooth scrolling, and responsive design
+7. **Hover States**: Text color changes, no background hover effects
+8. **Auto-detection**: Scroll manually and verify navigation automatically updates active state
 
 ### Browser Compatibility
 
 - Modern browsers supporting CSS Grid, Flexbox
 - Material UI browser support requirements
 - Next.js 14.2.30 compatibility
+- Native smooth scroll behavior (`scroll-behavior: smooth`) support
+- JavaScript scroll detection and smooth scrolling fallback
+- Next.js 14.2.30 compatibility
 
 ## Development Notes
 
 ### Adding New Navigation Items
 
-To add new navigation items, simply update the `navigationItems` array:
+To add new navigation items and sections:
+
+1. **Update navigation items array:**
 
 ```tsx
 const navigationItems = [
-  { label: 'Work', href: '/work' },
-  { label: 'About Us', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'New Page', href: '/new-page' }, // Add here
+  { label: 'Work', href: '#work' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+  { label: 'Services', href: '#services' }, // Add new item
 ];
 ```
 
-The sliding animation will automatically adapt to the new item count and positioning.
+2. **Add corresponding section to page.tsx:**
+
+```tsx
+<Box id='services' sx={{ minHeight: '100vh' }}>
+  {/* New section content */}
+</Box>
+```
+
+3. **Update scroll detection array:**
+
+```tsx
+const sections = ['home', 'work', 'about', 'contact', 'services']; // Add new section
+```
+
+The sliding animation and scroll detection will automatically adapt to the new sections.
 
 ### Customizing Colors
 

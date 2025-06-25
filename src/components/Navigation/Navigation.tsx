@@ -127,7 +127,13 @@ export default function Navigation() {
 
   // Mobile drawer content
   const drawer = (
-    <Box sx={{ width: 300, height: '100%', bgcolor: 'transparent' }}>
+    <Box
+      sx={{
+        width: 'var(--nav-mobile-width)',
+        height: '100%',
+        bgcolor: 'transparent',
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -149,7 +155,7 @@ export default function Navigation() {
           <CloseIcon sx={{ fontSize: '1.5rem' }} />
         </IconButton>
       </Box>
-      <List sx={{ px: 3, pt: 2 }}>
+      <List sx={{ px: 'var(--space-lg)', pt: 'var(--space-md)' }}>
         {navigationItems.map((item) => {
           const active = isActive(item.href);
           return (
@@ -158,19 +164,21 @@ export default function Navigation() {
                 onClick={() => handleNavClick(item.href)}
                 sx={{
                   borderRadius: 3,
-                  color: active ? '#e2e891' : 'white',
+                  color: active
+                    ? 'var(--drawer-active-text)'
+                    : 'var(--drawer-inactive-text)',
                   backgroundColor: active
-                    ? 'rgba(226, 232, 145, 0.15)'
+                    ? 'var(--drawer-active-background)'
                     : 'transparent',
                   border: active
-                    ? '1px solid rgba(226, 232, 145, 0.3)'
+                    ? '1px solid var(--drawer-active-border)'
                     : '1px solid transparent',
-                  py: 1.5,
-                  px: 2.5,
-                  transition: 'all 0.2s ease-in-out',
+                  py: 'var(--space-lg)',
+                  px: 'var(--space-2xl)',
+                  transition: 'var(--nav-button-transition)',
                   '&:hover': {
                     backgroundColor: active
-                      ? 'rgba(226, 232, 145, 0.25)'
+                      ? 'var(--drawer-hover-background)'
                       : 'rgba(255, 255, 255, 0.08)',
                     transform: 'translateX(4px)',
                   },
@@ -200,7 +208,7 @@ export default function Navigation() {
         position='sticky'
         elevation={0}
         sx={{
-          backgroundColor: '#353535',
+          backgroundColor: 'var(--nav-background)',
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         }}
       >
@@ -209,7 +217,7 @@ export default function Navigation() {
             sx={{
               justifyContent: 'space-between',
               minHeight: { xs: 64, md: 80 },
-              px: { xs: 2, md: 3 },
+              px: { xs: 'var(--space-md)', md: 'var(--space-lg)' },
             }}
           >
             {/* Logo */}
@@ -232,7 +240,10 @@ export default function Navigation() {
                 }}
               >
                 FOUR LOOP{' '}
-                <Box component='span' sx={{ color: '#e2e891' }}>
+                <Box
+                  component='span'
+                  sx={{ color: 'var(--nav-container-background)' }}
+                >
                   DIGITAL
                 </Box>
               </Box>
@@ -243,8 +254,8 @@ export default function Navigation() {
               <Box
                 ref={containerRef}
                 sx={{
-                  backgroundColor: '#e2e891',
-                  borderRadius: '50px',
+                  backgroundColor: 'var(--nav-container-background)',
+                  borderRadius: 'var(--nav-container-border-radius)',
                   padding: '0px',
                   display: 'flex',
                   gap: '0px',
@@ -257,10 +268,10 @@ export default function Navigation() {
                     position: 'absolute',
                     top: 0,
                     height: '100%',
-                    backgroundColor: '#353535',
-                    borderRadius: '50px',
-                    border: '2px solid #e2e891',
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    backgroundColor: 'var(--nav-slider-background)',
+                    borderRadius: 'var(--nav-container-border-radius)',
+                    border: '2px solid var(--nav-slider-border)',
+                    transition: 'var(--nav-slider-transition)',
                     zIndex: 1,
                     left: `${sliderPosition.left}px`,
                     width: `${sliderPosition.width}px`,
@@ -277,21 +288,26 @@ export default function Navigation() {
                         buttonRefs.current[index] = el;
                       }}
                       sx={{
-                        color: active ? '#fff' : '#353535',
+                        color: active
+                          ? 'var(--nav-text-active)'
+                          : 'var(--nav-text-inactive)',
                         textTransform: 'none',
                         fontSize: '1rem',
                         fontWeight: 500,
-                        px: 3,
-                        py: 1,
-                        borderRadius: '50px',
+                        px: 'var(--nav-button-padding-x)',
+                        py: 'var(--nav-button-padding-y)',
+                        borderRadius: 'var(--nav-container-border-radius)',
                         minWidth: 'auto',
                         backgroundColor: 'transparent',
                         border: 'none',
-                        marginLeft: index > 0 ? '-20px' : '0px',
+                        marginLeft:
+                          index > 0 ? 'var(--nav-button-overlap)' : '0px',
                         zIndex: 2,
                         position: 'relative',
                         '&:hover': {
-                          color: active ? '#fff' : '#fff',
+                          color: active
+                            ? 'var(--nav-text-active)'
+                            : 'var(--nav-text-hover)',
                           zIndex: 3,
                         },
                       }}
@@ -331,10 +347,10 @@ export default function Navigation() {
             display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
-              width: 300,
-              backgroundColor: '#353535',
+              width: 'var(--nav-mobile-width)',
+              backgroundColor: 'var(--drawer-background)',
               backgroundImage:
-                'linear-gradient(135deg, #353535 0%, #2d4747 100%)',
+                'linear-gradient(135deg, var(--drawer-background) 0%, #2d4747 100%)',
             },
           }}
         >
