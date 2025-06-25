@@ -96,7 +96,7 @@ export default function Navigation() {
           display: 'flex',
           justifyContent: 'flex-end',
           p: 3,
-          borderBottom: '1px solid rgba(168, 198, 134, 0.2)',
+          borderBottom: '1px solid rgba(226, 232, 145, 0.2)',
         }}
       >
         <IconButton
@@ -105,7 +105,7 @@ export default function Navigation() {
             color: 'white',
             p: 1,
             '&:hover': {
-              backgroundColor: 'rgba(168, 198, 134, 0.1)',
+              backgroundColor: 'rgba(226, 232, 145, 0.1)',
             },
           }}
         >
@@ -123,19 +123,19 @@ export default function Navigation() {
                 onClick={handleDrawerToggle}
                 sx={{
                   borderRadius: 3,
-                  color: active ? '#a8c686' : 'white',
+                  color: active ? '#e2e891' : 'white',
                   backgroundColor: active
-                    ? 'rgba(168, 198, 134, 0.15)'
+                    ? 'rgba(226, 232, 145, 0.15)'
                     : 'transparent',
                   border: active
-                    ? '1px solid rgba(168, 198, 134, 0.3)'
+                    ? '1px solid rgba(226, 232, 145, 0.3)'
                     : '1px solid transparent',
                   py: 1.5,
                   px: 2.5,
                   transition: 'all 0.2s ease-in-out',
                   '&:hover': {
                     backgroundColor: active
-                      ? 'rgba(168, 198, 134, 0.25)'
+                      ? 'rgba(226, 232, 145, 0.25)'
                       : 'rgba(255, 255, 255, 0.08)',
                     transform: 'translateX(4px)',
                   },
@@ -165,7 +165,7 @@ export default function Navigation() {
         position='sticky'
         elevation={0}
         sx={{
-          backgroundColor: '#3a5a5a',
+          backgroundColor: '#353535',
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         }}
       >
@@ -197,7 +197,7 @@ export default function Navigation() {
                 }}
               >
                 FOUR LOOP{' '}
-                <Box component='span' sx={{ color: '#a8c686' }}>
+                <Box component='span' sx={{ color: '#e2e891' }}>
                   DIGITAL
                 </Box>
               </Box>
@@ -208,7 +208,7 @@ export default function Navigation() {
               <Box
                 ref={containerRef}
                 sx={{
-                  backgroundColor: '#a8c686',
+                  backgroundColor: '#e2e891',
                   borderRadius: '50px',
                   padding: '0px',
                   display: 'flex',
@@ -222,9 +222,9 @@ export default function Navigation() {
                     position: 'absolute',
                     top: 0,
                     height: '100%',
-                    backgroundColor: '#3a5a5a',
+                    backgroundColor: '#353535',
                     borderRadius: '50px',
-                    border: '2px solid #a8c686',
+                    border: '2px solid #e2e891',
                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                     zIndex: 1,
                     left: `${sliderPosition.left}px`,
@@ -243,7 +243,7 @@ export default function Navigation() {
                         buttonRefs.current[index] = el;
                       }}
                       sx={{
-                        color: active ? 'white' : '#3a5a5a',
+                        color: active ? 'white' : '#353535',
                         textTransform: 'none',
                         fontSize: '1rem',
                         fontWeight: 500,
@@ -298,9 +298,9 @@ export default function Navigation() {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: 300,
-              backgroundColor: '#3a5a5a',
+              backgroundColor: '#353535',
               backgroundImage:
-                'linear-gradient(135deg, #3a5a5a 0%, #2d4747 100%)',
+                'linear-gradient(135deg, #353535 0%, #2d4747 100%)',
             },
           }}
         >
