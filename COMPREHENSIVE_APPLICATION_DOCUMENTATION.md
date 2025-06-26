@@ -849,7 +849,7 @@ development best practices with a focus on performance, maintainability, and dev
 
 ### Key Achievements
 
-✅ **Modern Architecture**: Next.js 14 with App Router and TypeScript  
+✅ **Modern Architecture**: Next.js 15 with App Router and TypeScript  
 ✅ **Sophisticated Styling**: Three-layer architecture with theme support  
 ✅ **Responsive Grid**: Comprehensive 12-column layout system  
 ✅ **Smooth Navigation**: Performance-optimized animations and interactions  

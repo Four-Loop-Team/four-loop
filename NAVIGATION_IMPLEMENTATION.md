@@ -473,10 +473,10 @@ export default function Navigation() {
 
 - Modern browsers supporting CSS Grid, Flexbox
 - Material UI browser support requirements
-- Next.js 14.2.30 compatibility
+- Next.js 15.3.4 compatibility
 - Native smooth scroll behavior (`scroll-behavior: smooth`) support
 - JavaScript scroll detection and smooth scrolling fallback
-- Next.js 14.2.30 compatibility
+- Next.js 15.3.4 compatibility
 
 ## Development Notes
 
@@ -548,7 +548,7 @@ Potential improvements that could be implemented:
 ---
 
 **Implementation Date**: June 24-25, 2025  
-**Framework**: Next.js 14.2.30  
+**Framework**: Next.js 15.3.4  
 **UI Library**: Material UI  
 **Styling**: SCSS + Material UI sx prop
 
