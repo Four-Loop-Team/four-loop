@@ -12,6 +12,7 @@ Core application architecture and system design documentation.
 | File                                                                                                    | Purpose                                               |
 | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | [COMPREHENSIVE_APPLICATION_DOCUMENTATION.md](./architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md) | **Master documentation** - Complete application guide |
+| [UI_COMPONENT_LIBRARY.md](./architecture/UI_COMPONENT_LIBRARY.md)                                       | **Component library** - Reusable UI components guide  |
 | [STYLING_SYSTEM_DOCUMENTATION.md](./architecture/STYLING_SYSTEM_DOCUMENTATION.md)                       | SCSS variables, CSS custom properties, theming        |
 | [GRID_SYSTEM_DOCUMENTATION.md](./architecture/GRID_SYSTEM_DOCUMENTATION.md)                             | 12-column grid system and components                  |
 | [NAVIGATION_IMPLEMENTATION.md](./architecture/NAVIGATION_IMPLEMENTATION.md)                             | Navigation animations and scroll detection            |

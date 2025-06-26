@@ -1,10 +1,16 @@
 /**
- * UI components export
- * Basic reusable UI components
+ * UI Component Library
+ * Reusable components for Four Loop Digital
  */
 
-// This directory is ready for future UI components like buttons, inputs, etc.
-// For now, it serves as a placeholder for the organized structure
+// Export all UI components
+export * from './Button';
+export * from './Card';
+export * from './Input';
 
-// Export an empty object to make this a proper module
-export {};
+// Future components can be added here:
+// export * from './Modal';
+// export * from './Dropdown';
+// export * from './Tooltip';
+// export * from './Badge';
+// export * from './Spinner';

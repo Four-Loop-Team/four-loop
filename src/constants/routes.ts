@@ -8,6 +8,7 @@ export const ROUTES = {
   WORK: '/work',
   CONTACT: '/contact',
   FAQ: '/faq',
+  COMPONENTS_DEMO: '/components-demo',
 } as const;
 
 export const EXTERNAL_LINKS = {
