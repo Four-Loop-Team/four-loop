@@ -1,6 +1,5 @@
-import React from 'react';
-import { Container, Typography, Box } from '@mui/material';
-import Logo from '@/components/Logo';
+import { Logo } from '@/components/brand';
+import { Box, Container, Typography } from '@mui/material';
 
 export default function App() {
   return (

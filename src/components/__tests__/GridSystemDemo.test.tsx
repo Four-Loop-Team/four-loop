@@ -1,6 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import GridSystemDemo from '../GridSystemDemo';
+import React from 'react';
+import GridSystemDemo from '../system/GridSystemDemo';
 
 // Mock MUI components to avoid theme provider requirements
 jest.mock('@mui/material', () => ({
@@ -69,7 +69,7 @@ jest.mock('@mui/material', () => ({
 }));
 
 // Mock the Grid components
-jest.mock('../Grid', () => ({
+jest.mock('../system/Grid', () => ({
   GridContainer: ({
     children,
     size,

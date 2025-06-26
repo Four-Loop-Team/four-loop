@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import HomePage from './page';
 
 // Mock the MuiThemeProvider to avoid Material-UI issues in tests
-jest.mock('@/components/MuiThemeProvider', () => {
+jest.mock('@/components/system/MuiThemeProvider', () => {
   return {
     __esModule: true,
     default: ({ children }: { children: React.ReactNode }) => (
@@ -12,7 +12,7 @@ jest.mock('@/components/MuiThemeProvider', () => {
 });
 
 // Mock the Logo component to avoid image loading issues
-jest.mock('@/components/Logo', () => {
+jest.mock('@/components/brand/Logo', () => {
   return {
     __esModule: true,
     default: () => <div data-testid='logo'>Logo</div>,

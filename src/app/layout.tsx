@@ -1,15 +1,14 @@
-import type { Metadata, Viewport } from 'next';
 import { poppins } from '@/app/ui/fonts';
-import './ui/styles/_global.scss';
-import MuiThemeProvider from '@/components/MuiThemeProvider';
-import Navigation from '@/components/Navigation';
-import SkipNavigationLink from '@/components/SkipNavigationLink';
+import { Navigation, SkipNavigationLink } from '@/components/layout';
+import { MuiThemeProvider } from '@/components/system';
 import { homeMetadata } from '@/lib/metadata';
 import {
   generateOrganizationSchema,
   generateWebSiteSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+import type { Metadata, Viewport } from 'next';
+import './ui/styles/_global.scss';
 
 export const metadata: Metadata = homeMetadata;
 

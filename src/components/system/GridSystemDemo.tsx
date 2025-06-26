@@ -1,12 +1,12 @@
+import { Box, Card, CardContent, Paper, Typography } from '@mui/material';
 import React from 'react';
-import { Box, Card, CardContent, Typography, Paper } from '@mui/material';
 import {
+  CardGrid,
   GridContainer,
   GridItem,
-  TwoColumnLayout,
   ThreeColumnLayout,
-  CardGrid,
-} from '../components/Grid';
+  TwoColumnLayout,
+} from './Grid';
 
 const GridSystemDemo: React.FC = () => {
   // Sample items for card grid

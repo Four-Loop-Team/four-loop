@@ -44,25 +44,29 @@ This application has been completely modernized with the latest stable versions:
 
 ## 📚 Documentation
 
-### 📖 **[Complete Application Documentation](./COMPREHENSIVE_APPLICATION_DOCUMENTATION.md)**
+### 📖 **[Complete Application Documentation](./docs/architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md)**
 
 _Master documentation covering the entire application architecture, systems, and implementation
 details._
 
 ### Specialized Documentation
 
-- **[Styling System](./STYLING_SYSTEM_DOCUMENTATION.md)** - SCSS variables, CSS custom properties,
-  theming
-- **[Grid System](./GRID_SYSTEM_DOCUMENTATION.md)** - 12-column responsive grid implementation
-- **[Navigation System](./NAVIGATION_IMPLEMENTATION.md)** - Navigation animations and scroll
-  detection
-- **[Code Quality Automation](./CODE_QUALITY_AUTOMATION.md)** - Git hooks, CI/CD, and quality gates
-- **[Testing Strategy](./TESTING_STRATEGY_IMPLEMENTATION.md)** - Comprehensive testing approach
-- **[SEO Implementation](./SEO_IMPLEMENTATION_SUMMARY.md)** - SEO optimization and perfect score
-  achievement
-- **[Accessibility Improvements](./ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md)** - Perfect 100/100
-  accessibility score
-- **[Performance Guide](./PERFORMANCE_UPDATE_GUIDE.md)** - Performance optimization strategies
+- **[Styling System](./docs/architecture/STYLING_SYSTEM_DOCUMENTATION.md)** - SCSS variables, CSS
+  custom properties, theming
+- **[Grid System](./docs/architecture/GRID_SYSTEM_DOCUMENTATION.md)** - 12-column responsive grid
+  implementation
+- **[Navigation System](./docs/architecture/NAVIGATION_IMPLEMENTATION.md)** - Navigation animations
+  and scroll detection
+- **[Code Quality Automation](./docs/quality/CODE_QUALITY_AUTOMATION.md)** - Git hooks, CI/CD, and
+  quality gates
+- **[Testing Strategy](./docs/quality/TESTING_STRATEGY_IMPLEMENTATION.md)** - Comprehensive testing
+  approach
+- **[SEO Implementation](./docs/performance/SEO_IMPLEMENTATION_SUMMARY.md)** - SEO optimization and
+  perfect score achievement
+- **[Accessibility Improvements](./docs/performance/ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md)** -
+  Perfect 100/100 accessibility score
+- **[Performance Guide](./docs/performance/PERFORMANCE_UPDATE_GUIDE.md)** - Performance optimization
+  strategies
 - **[Documentation Index](./DOCUMENTATION_INDEX.md)** - Complete documentation navigation
 
 ## 🛠️ Development
@@ -165,29 +169,47 @@ Four Loop Digital/
 │   │   └── sitemap.ts          # Dynamic sitemap
 │   ├── components/             # Reusable React components
 │   │   ├── __tests__/          # Component tests
-│   │   ├── Navigation/         # Navigation system
-│   │   │   ├── Navigation.tsx
-│   │   │   ├── Navigation.module.scss
-│   │   │   ├── __tests__/
-│   │   │   └── index.ts
-│   │   ├── Grid/               # Grid system components
-│   │   │   ├── Grid.tsx
-│   │   │   ├── __tests__/
-│   │   │   └── index.ts
-│   │   ├── MuiThemeProvider/   # Theme configuration
-│   │   │   ├── MuiThemeProvider.tsx
-│   │   │   ├── __tests__/
-│   │   │   └── index.ts
-│   │   ├── BreadcrumbNav.tsx   # Breadcrumb navigation
-│   │   ├── GridSystemDemo.tsx  # Grid system demonstration
-│   │   ├── Logo.tsx            # Company logo component
-│   │   ├── SkipNavigationLink.tsx # Accessibility skip link
-│   │   └── index.ts            # Component exports
+│   │   ├── layout/             # Layout components
+│   │   │   ├── Navigation/     # Navigation system
+│   │   │   ├── BreadcrumbNav.tsx # Breadcrumb navigation
+│   │   │   ├── SkipNavigationLink.tsx # Accessibility skip link
+│   │   │   └── index.ts        # Layout exports
+│   │   ├── system/             # System-level components
+│   │   │   ├── Grid/           # Grid system components
+│   │   │   ├── MuiThemeProvider/ # Theme configuration
+│   │   │   ├── GridSystemDemo.tsx # Grid demonstration
+│   │   │   └── index.ts        # System exports
+│   │   ├── brand/              # Brand components
+│   │   │   ├── Logo.tsx        # Company logo component
+│   │   │   └── index.ts        # Brand exports
+│   │   ├── ui/                 # Basic UI components (placeholder)
+│   │   │   └── index.ts        # UI exports
+│   │   └── index.ts            # All component exports
 │   ├── lib/                    # Utility libraries
 │   │   ├── __tests__/          # Library tests
+│   │   ├── utils/              # General utilities
+│   │   │   ├── format.ts       # Formatting functions
+│   │   │   ├── validation.ts   # Validation utilities
+│   │   │   ├── helpers.ts      # Helper functions
+│   │   │   └── index.ts        # Utils exports
+│   │   ├── hooks/              # Custom React hooks
+│   │   │   ├── useLocalStorage.ts # localStorage hook
+│   │   │   ├── useMediaQuery.ts   # Media query hooks
+│   │   │   ├── useScrollPosition.ts # Scroll tracking
+│   │   │   └── index.ts        # Hooks exports
 │   │   ├── metadata.ts         # SEO and metadata utilities
 │   │   ├── performance.ts      # Performance monitoring
 │   │   └── structured-data.ts  # JSON-LD structured data
+│   ├── types/                  # TypeScript type definitions
+│   │   ├── global.ts           # Global types
+│   │   ├── components.ts       # Component prop types
+│   │   ├── api.ts              # API-related types
+│   │   └── index.ts            # Type exports
+│   ├── constants/              # Application constants
+│   │   ├── routes.ts           # Route definitions
+│   │   ├── breakpoints.ts      # Responsive breakpoints
+│   │   ├── colors.ts           # Design system colors
+│   │   └── index.ts            # Constants exports
 │   └── test/                   # Test utilities
 │       ├── __mocks__/          # Jest mocks
 │       ├── setup.ts            # Test setup configuration
@@ -208,25 +230,15 @@ Four Loop Digital/
 │   ├── .eslintrc.js            # ESLint configuration
 │   ├── .prettierrc             # Prettier configuration
 │   └── .stylelintrc.json       # Stylelint configuration
-├── Documentation Files:
+├── Documentation:
 │   ├── README.md               # Project overview and quick start
-│   ├── COMPREHENSIVE_APPLICATION_DOCUMENTATION.md # Master documentation
 │   ├── DOCUMENTATION_INDEX.md  # Documentation navigation
-│   ├── STYLING_SYSTEM_DOCUMENTATION.md # Styling system guide
-│   ├── GRID_SYSTEM_DOCUMENTATION.md # Grid system documentation
-│   ├── NAVIGATION_IMPLEMENTATION.md # Navigation system guide
-│   ├── CODE_QUALITY_AUTOMATION.md # Quality automation guide
-│   ├── ACCESSIBILITY_AUDIT_REPORT.md # Accessibility assessment
-│   ├── ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md # A11y achievements
-│   ├── SEO_AUDIT_REPORT.md     # SEO assessment
-│   ├── SEO_IMPLEMENTATION_SUMMARY.md # SEO implementation
-│   ├── SEO_PERFECT_SCORE_ACHIEVEMENT.md # SEO achievements
-│   ├── TESTING_STRATEGY_IMPLEMENTATION.md # Testing strategy
-│   ├── TESTING_IMPLEMENTATION_COMPLETE.md # Testing completion
-│   ├── COMPREHENSIVE_TESTING_ANALYSIS.md # Testing analysis
-│   ├── PERFORMANCE_UPDATE_GUIDE.md # Performance guide
-│   ├── GRADUAL_UPDATE_STRATEGY.md # Migration strategy
-│   └── LINTING_FORMATTING_IMPROVEMENTS.md # Code quality improvements
+│   └── docs/                   # Organized documentation
+│       ├── README.md           # Documentation index
+│       ├── architecture/       # Architecture and design docs
+│       ├── quality/            # Testing and quality docs
+│       ├── performance/        # Performance and optimization docs
+│       └── reports/            # Audit reports and achievements
 ├── Automation Scripts:
 │   ├── check-automation-status.sh # Automation status checker
 │   └── setup-dev-env.sh        # Development environment setup
@@ -315,7 +327,8 @@ This project includes comprehensive automation to enforce code quality across th
 - **📋 Templates**: GitHub issue and PR templates for consistent contributions
 - **🔒 Security**: Automated vulnerability scanning and dependency monitoring
 
-For complete automation details, see [CODE_QUALITY_AUTOMATION.md](./CODE_QUALITY_AUTOMATION.md).
+For complete automation details, see
+[docs/quality/CODE_QUALITY_AUTOMATION.md](./docs/quality/CODE_QUALITY_AUTOMATION.md).
 
 #### Quick Setup for New Team Members
 
@@ -353,4 +366,4 @@ npm run test:watch
 
 For comprehensive documentation including architecture details, implementation guides, and
 troubleshooting, see the
-[Complete Application Documentation](./COMPREHENSIVE_APPLICATION_DOCUMENTATION.md).
+[Complete Application Documentation](./docs/architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md).

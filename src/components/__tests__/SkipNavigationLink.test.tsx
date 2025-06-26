@@ -1,7 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SkipNavigationLink from '../SkipNavigationLink';
+import SkipNavigationLink from '../layout/SkipNavigationLink';
 
 describe('SkipNavigationLink', () => {
   it('renders skip navigation link', () => {

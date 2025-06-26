@@ -1,8 +1,7 @@
-import React from 'react';
+import { renderWithTheme } from '@/test/utils';
 import { screen } from '@testing-library/react';
 import { usePathname } from 'next/navigation';
-import BreadcrumbNav from '../BreadcrumbNav';
-import { renderWithTheme } from '@/test/utils';
+import BreadcrumbNav from '../layout/BreadcrumbNav';
 
 // Mock Next.js navigation
 jest.mock('next/navigation', () => ({

@@ -1,6 +1,6 @@
 // Unit tests for the Logo component
 import { render, screen } from '@/test/utils';
-import Logo from '../Logo';
+import Logo from '../brand/Logo';
 
 describe('Logo Component', () => {
   it('renders logo image with correct alt text', () => {
