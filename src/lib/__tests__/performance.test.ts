@@ -12,9 +12,11 @@ import {
 // Mock performance APIs for testing
 const mockPerformanceObserver = jest.fn();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 (global as any).PerformanceObserver = mockPerformanceObserver;
 
 // Type for mock intersection observer entries
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface MockIntersectionObserverEntry {
   isIntersecting: boolean;
   target: HTMLElement;

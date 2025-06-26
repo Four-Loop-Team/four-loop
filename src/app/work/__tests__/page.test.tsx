@@ -6,8 +6,11 @@ import { workMetadata } from '@/lib/metadata';
 import {
   generateWebPageSchema,
   renderStructuredData,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   webDevelopmentServiceSchema,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mobileAppServiceSchema,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   digitalConsultingServiceSchema,
 } from '@/lib/structured-data';
 
