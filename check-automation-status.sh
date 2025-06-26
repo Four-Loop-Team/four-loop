@@ -91,7 +91,7 @@ echo ""
 
 # Check configuration files
 echo "⚙️  Configuration Files:"
-config_files=("lint-staged.config.js" "jest.config.js" "postcss.config.js" "tailwind.config.ts" "tsconfig.json" ".eslintrc.json" ".stylelintrc.json")
+config_files=("lint-staged.config.js" "jest.config.js" "postcss.config.js" "tailwind.config.ts" "tsconfig.json" ".eslintrc.js" ".stylelintrc.json")
 for file in "${config_files[@]}"; do
     if [ -f "$file" ]; then
         echo "  ✅ $file: Present"

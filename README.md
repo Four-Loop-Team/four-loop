@@ -56,52 +56,192 @@ details._
 - **[Grid System](./GRID_SYSTEM_DOCUMENTATION.md)** - 12-column responsive grid implementation
 - **[Navigation System](./NAVIGATION_IMPLEMENTATION.md)** - Navigation animations and scroll
   detection
+- **[Code Quality Automation](./CODE_QUALITY_AUTOMATION.md)** - Git hooks, CI/CD, and quality gates
+- **[Testing Strategy](./TESTING_STRATEGY_IMPLEMENTATION.md)** - Comprehensive testing approach
+- **[SEO Implementation](./SEO_IMPLEMENTATION_SUMMARY.md)** - SEO optimization and perfect score
+  achievement
+- **[Accessibility Improvements](./ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md)** - Perfect 100/100
+  accessibility score
+- **[Performance Guide](./PERFORMANCE_UPDATE_GUIDE.md)** - Performance optimization strategies
+- **[Documentation Index](./DOCUMENTATION_INDEX.md)** - Complete documentation navigation
 
 ## 🛠️ Development
 
 ### Available Scripts
 
-| Script                       | Description                              |
-| ---------------------------- | ---------------------------------------- |
-| `npm run dev`                | Start development server                 |
-| `npm run build`              | Production build with quality checks     |
-| `npm run lint`               | Run linting and type checking            |
-| `npm run lint:fix`           | Fix auto-fixable linting issues          |
-| `npm run format`             | Format code with Prettier                |
-| `npm run test`               | Run test suite                           |
-| `npm run test:coverage`      | Run tests with coverage report           |
-| `npm run test:e2e`           | Run end-to-end tests                     |
-| `npm run test:accessibility` | Run accessibility tests                  |
-| `npm run quality:check`      | Comprehensive quality validation         |
-| `npm run quality:fix`        | Fix common quality issues                |
-| `npm run validate`           | Complete validation (all checks + tests) |
-| `npm run deps:check`         | Check for outdated dependencies          |
-| `npm run security:audit`     | Run security vulnerability audit         |
+| Script                       | Description                                 |
+| ---------------------------- | ------------------------------------------- |
+| `npm run dev`                | Start development server                    |
+| `npm run build`              | Production build with quality checks        |
+| `npm run start`              | Start production server                     |
+| `npm run lint`               | Run linting and type checking               |
+| `npm run lint:js`            | Run ESLint on JavaScript/TypeScript files   |
+| `npm run lint:styles`        | Run Stylelint on CSS/SCSS files             |
+| `npm run lint:fix`           | Fix auto-fixable linting issues             |
+| `npm run lint:check`         | Check linting without fixing                |
+| `npm run format`             | Format code with Prettier                   |
+| `npm run format:check`       | Check code formatting                       |
+| `npm run type-check`         | Run TypeScript type checking                |
+| `npm run build:local`        | Local build with quality checks             |
+| `npm run test`               | Run test suite                              |
+| `npm run test:watch`         | Run tests in watch mode                     |
+| `npm run test:coverage`      | Run tests with coverage report              |
+| `npm run test:e2e`           | Run end-to-end tests                        |
+| `npm run test:e2e:ui`        | Run E2E tests with UI                       |
+| `npm run test:accessibility` | Run accessibility tests                     |
+| `npm run test:all`           | Run all tests (unit + E2E)                  |
+| `npm run deps:check`         | Check for outdated dependencies             |
+| `npm run deps:update`        | Update dependencies and fix security issues |
+| `npm run security:audit`     | Run security vulnerability audit            |
+| `npm run security:audit:fix` | Fix security vulnerabilities                |
+| `npm run quality:check`      | Comprehensive quality validation            |
+| `npm run quality:fix`        | Fix common quality issues                   |
+| `npm run validate`           | Complete validation (all checks + tests)    |
+| `npm run prerelease`         | Pre-release validation and build            |
 
 ### Technology Stack
 
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript 5.8
-- **UI Library**: Material UI 7 + Emotion 11
-- **Styling**: SCSS + CSS Custom Properties + TailwindCSS 4
-- **Testing**: Jest 30 + React Testing Library 16
-- **Quality**: ESLint 8 + Prettier 3 + Stylelint 16
+- **Framework**: Next.js 15.3.4 with App Router
+- **Language**: TypeScript 5.8.3
+- **UI Library**: Material UI 7.1.2 + Emotion 11.14.0
+- **Styling**: SCSS + CSS Custom Properties + TailwindCSS 4.1.10
+- **Testing**: Jest 30.0.3 + React Testing Library 16.3.0 + Playwright 1.53.1
+- **Quality**: ESLint 8.57.1 + Prettier 3.6.1 + Stylelint 16.21.0
+- **Automation**: Husky 9.1.7 + lint-staged 15.5.2 + audit-ci 7.2.0
 - **Build Tools**: Latest stable versions of all dependencies
 
 ## 🏗️ Project Structure
 
 ```
-src/
-├── app/                    # Next.js App Router pages
-├── components/             # Reusable React components
-│   ├── Navigation/         # Navigation system
-│   ├── Grid/              # Grid system components
-│   └── MuiThemeProvider/  # Theme configuration
-└── ui/                    # Design system
-    └── styles/            # SCSS variables and global styles
+Four Loop Digital/
+├── .github/                    # GitHub workflows and templates
+│   ├── workflows/              # CI/CD automation
+│   ├── ISSUE_TEMPLATE/         # Bug report and feature request templates
+│   └── PULL_REQUEST_TEMPLATE.md # PR template
+├── .husky/                     # Git hooks for code quality
+│   ├── _/                      # Husky internal files
+│   ├── pre-commit              # Pre-commit validation
+│   ├── commit-msg              # Commit message format validation
+│   ├── post-commit             # Post-commit checks
+│   └── pre-push                # Pre-push comprehensive validation
+├── .vscode/                    # VS Code configuration
+│   ├── settings.json           # Editor settings for team consistency
+│   ├── extensions.json         # Recommended extensions
+│   └── launch.json             # Debug configuration
+├── e2e/                        # End-to-end tests (Playwright)
+├── public/                     # Static assets
+│   ├── android-chrome-192x192.png # Android app icons
+│   ├── android-chrome-512x512.png
+│   ├── apple-touch-icon.png    # iOS app icons
+│   ├── favicon-16x16.png       # Favicon variants
+│   ├── favicon-32x32.png
+│   ├── favicon.ico
+│   ├── mstile-150x150.png      # Windows tile icon
+│   ├── safari-pinned-tab.svg   # Safari pinned tab icon
+│   ├── browserconfig.xml       # Browser configuration
+│   ├── site.webmanifest        # Web app manifest
+│   ├── robots.txt              # SEO robots file
+│   ├── logo.png                # Company logo
+│   ├── next.svg                # Next.js logo
+│   └── vercel.svg              # Vercel logo
+├── src/                        # Source code
+│   ├── app/                    # Next.js App Router
+│   │   ├── __tests__/          # App-level tests
+│   │   ├── about/              # About page
+│   │   ├── contact/            # Contact page
+│   │   ├── faq/                # FAQ page
+│   │   ├── work/               # Work/Portfolio page
+│   │   ├── ui/                 # UI utilities and styles
+│   │   │   ├── __tests__/      # UI component tests
+│   │   │   ├── fonts.ts        # Font configuration
+│   │   │   ├── images/         # UI images and assets
+│   │   │   └── styles/         # Global SCSS styles
+│   │   │       ├── _variables.scss     # Design tokens
+│   │   │       ├── _global.scss        # Global styles
+│   │   │       └── _accessibility.scss # A11y styles
+│   │   ├── layout.tsx          # Root layout
+│   │   ├── page.tsx            # Homepage
+│   │   ├── page.spec.tsx       # Homepage tests
+│   │   └── sitemap.ts          # Dynamic sitemap
+│   ├── components/             # Reusable React components
+│   │   ├── __tests__/          # Component tests
+│   │   ├── Navigation/         # Navigation system
+│   │   │   ├── Navigation.tsx
+│   │   │   ├── Navigation.module.scss
+│   │   │   ├── __tests__/
+│   │   │   └── index.ts
+│   │   ├── Grid/               # Grid system components
+│   │   │   ├── Grid.tsx
+│   │   │   ├── __tests__/
+│   │   │   └── index.ts
+│   │   ├── MuiThemeProvider/   # Theme configuration
+│   │   │   ├── MuiThemeProvider.tsx
+│   │   │   ├── __tests__/
+│   │   │   └── index.ts
+│   │   ├── BreadcrumbNav.tsx   # Breadcrumb navigation
+│   │   ├── GridSystemDemo.tsx  # Grid system demonstration
+│   │   ├── Logo.tsx            # Company logo component
+│   │   ├── SkipNavigationLink.tsx # Accessibility skip link
+│   │   └── index.ts            # Component exports
+│   ├── lib/                    # Utility libraries
+│   │   ├── __tests__/          # Library tests
+│   │   ├── metadata.ts         # SEO and metadata utilities
+│   │   ├── performance.ts      # Performance monitoring
+│   │   └── structured-data.ts  # JSON-LD structured data
+│   └── test/                   # Test utilities
+│       ├── __mocks__/          # Jest mocks
+│       ├── setup.ts            # Test setup configuration
+│       ├── utils.tsx           # Test utilities
+│       └── globals.d.ts        # Test type definitions
+├── coverage/                   # Test coverage reports
+├── test-results/              # Playwright test results
+├── playwright-report/         # Playwright HTML reports
+├── Configuration Files:
+│   ├── babel.config.ts         # Babel configuration
+│   ├── jest.config.js          # Jest testing configuration
+│   ├── lint-staged.config.js   # Lint-staged configuration
+│   ├── next.config.js          # Next.js configuration
+│   ├── playwright.config.ts    # Playwright E2E configuration
+│   ├── postcss.config.js       # PostCSS configuration
+│   ├── tailwind.config.ts      # TailwindCSS configuration
+│   ├── tsconfig.json           # TypeScript configuration
+│   ├── .eslintrc.js            # ESLint configuration
+│   ├── .prettierrc             # Prettier configuration
+│   └── .stylelintrc.json       # Stylelint configuration
+├── Documentation Files:
+│   ├── README.md               # Project overview and quick start
+│   ├── COMPREHENSIVE_APPLICATION_DOCUMENTATION.md # Master documentation
+│   ├── DOCUMENTATION_INDEX.md  # Documentation navigation
+│   ├── STYLING_SYSTEM_DOCUMENTATION.md # Styling system guide
+│   ├── GRID_SYSTEM_DOCUMENTATION.md # Grid system documentation
+│   ├── NAVIGATION_IMPLEMENTATION.md # Navigation system guide
+│   ├── CODE_QUALITY_AUTOMATION.md # Quality automation guide
+│   ├── ACCESSIBILITY_AUDIT_REPORT.md # Accessibility assessment
+│   ├── ACCESSIBILITY_IMPROVEMENTS_SUMMARY.md # A11y achievements
+│   ├── SEO_AUDIT_REPORT.md     # SEO assessment
+│   ├── SEO_IMPLEMENTATION_SUMMARY.md # SEO implementation
+│   ├── SEO_PERFECT_SCORE_ACHIEVEMENT.md # SEO achievements
+│   ├── TESTING_STRATEGY_IMPLEMENTATION.md # Testing strategy
+│   ├── TESTING_IMPLEMENTATION_COMPLETE.md # Testing completion
+│   ├── COMPREHENSIVE_TESTING_ANALYSIS.md # Testing analysis
+│   ├── PERFORMANCE_UPDATE_GUIDE.md # Performance guide
+│   ├── GRADUAL_UPDATE_STRATEGY.md # Migration strategy
+│   └── LINTING_FORMATTING_IMPROVEMENTS.md # Code quality improvements
+├── Automation Scripts:
+│   ├── check-automation-status.sh # Automation status checker
+│   └── setup-dev-env.sh        # Development environment setup
+└── package.json                # Dependencies and scripts
 ```
 
 ## 🎯 Getting Started
+
+### Prerequisites
+
+- **Node.js**: 18.x or higher (currently using 22.16.0)
+- **npm**: 8.x or higher (currently using 11.4.2)
+- **Git**: For version control and automation hooks
+
+### Quick Setup
 
 1. **Clone and install**
 
@@ -111,18 +251,46 @@ src/
    npm install
    ```
 
-2. **Start development**
+2. **Set up development environment (automated)**
+
+   ```bash
+   # Run the automated setup script
+   ./setup-dev-env.sh
+   ```
+
+3. **Start development**
 
    ```bash
    npm run dev
    ```
 
-3. **Explore the documentation**
-   - Review
-     [COMPREHENSIVE_APPLICATION_DOCUMENTATION.md](./COMPREHENSIVE_APPLICATION_DOCUMENTATION.md) for
-     complete details
-   - Check specialized documentation for specific systems
-   - Examine component source code for implementation examples
+4. **Verify setup**
+
+   ```bash
+   # Check automation status
+   ./check-automation-status.sh
+
+   # Run quality checks
+   npm run validate
+   ```
+
+### Manual Setup (Alternative)
+
+If you prefer manual setup:
+
+```bash
+# Install dependencies
+npm ci
+
+# Install Playwright browsers
+npx playwright install
+
+# Initialize Git hooks
+npm run prepare
+
+# Run initial quality check
+npm run quality:check
+```
 
 ## 📈 Performance & Quality
 
