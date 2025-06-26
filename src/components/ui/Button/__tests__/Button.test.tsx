@@ -10,21 +10,24 @@ describe('Button Component', () => {
   });
 
   it('renders different variants correctly', () => {
-    const { rerender } = render(<Button variant="secondary">Secondary</Button>);
+    const { rerender } = render(<Button variant='secondary'>Secondary</Button>);
     expect(screen.getByRole('button')).toHaveClass('bg-gray-600');
 
-    rerender(<Button variant="outline">Outline</Button>);
+    rerender(<Button variant='outline'>Outline</Button>);
     expect(screen.getByRole('button')).toHaveClass('border', 'border-gray-300');
 
-    rerender(<Button variant="ghost">Ghost</Button>);
-    expect(screen.getByRole('button')).toHaveClass('text-gray-700', 'hover:bg-gray-100');
+    rerender(<Button variant='ghost'>Ghost</Button>);
+    expect(screen.getByRole('button')).toHaveClass(
+      'text-gray-700',
+      'hover:bg-gray-100'
+    );
   });
 
   it('renders different sizes correctly', () => {
-    const { rerender } = render(<Button size="sm">Small</Button>);
+    const { rerender } = render(<Button size='sm'>Small</Button>);
     expect(screen.getByRole('button')).toHaveClass('px-3', 'py-2', 'text-sm');
 
-    rerender(<Button size="lg">Large</Button>);
+    rerender(<Button size='lg'>Large</Button>);
     expect(screen.getByRole('button')).toHaveClass('px-6', 'py-3', 'text-lg');
   });
 
@@ -37,15 +40,15 @@ describe('Button Component', () => {
   });
 
   it('renders with icons correctly', () => {
-    const leftIcon = <span data-testid="left-icon">←</span>;
-    const rightIcon = <span data-testid="right-icon">→</span>;
-    
+    const leftIcon = <span data-testid='left-icon'>←</span>;
+    const rightIcon = <span data-testid='right-icon'>→</span>;
+
     render(
       <Button leftIcon={leftIcon} rightIcon={rightIcon}>
         With Icons
       </Button>
     );
-    
+
     expect(screen.getByTestId('left-icon')).toBeInTheDocument();
     expect(screen.getByTestId('right-icon')).toBeInTheDocument();
   });
@@ -53,7 +56,7 @@ describe('Button Component', () => {
   it('handles click events correctly', () => {
     const handleClick = jest.fn();
     render(<Button onClick={handleClick}>Click me</Button>);
-    
+
     fireEvent.click(screen.getByRole('button'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });

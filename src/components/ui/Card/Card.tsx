@@ -19,18 +19,18 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     ref
   ) => {
     const baseClasses = 'bg-white rounded-lg';
-    
+
     const variantClasses = {
       default: 'border border-gray-200',
       elevated: 'shadow-md',
-      outlined: 'border-2 border-gray-300'
+      outlined: 'border-2 border-gray-300',
     };
 
     const paddingClasses = {
       none: '',
       sm: 'p-4',
       md: 'p-6',
-      lg: 'p-8'
+      lg: 'p-8',
     };
 
     const hoverClasses = hoverable ? 'transition-shadow hover:shadow-lg' : '';
@@ -40,8 +40,10 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       variantClasses[variant],
       paddingClasses[padding],
       hoverClasses,
-      className
-    ].filter(Boolean).join(' ');
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     return (
       <div ref={ref} className={classes} {...props}>
@@ -61,12 +63,16 @@ export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
 
 export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ children, title, subtitle, className = '', ...props }, ref) => {
-    const classes = ['pb-4 border-b border-gray-200', className].filter(Boolean).join(' ');
+    const classes = ['pb-4 border-b border-gray-200', className]
+      .filter(Boolean)
+      .join(' ');
 
     return (
       <div ref={ref} className={classes} {...props}>
-        {title && <h3 className="text-lg font-semibold text-gray-900">{title}</h3>}
-        {subtitle && <p className="mt-1 text-sm text-gray-600">{subtitle}</p>}
+        {title && (
+          <h3 className='text-lg font-semibold text-gray-900'>{title}</h3>
+        )}
+        {subtitle && <p className='mt-1 text-sm text-gray-600'>{subtitle}</p>}
         {children}
       </div>
     );
@@ -95,7 +101,9 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   ({ children, className = '', ...props }, ref) => {
-    const classes = ['pt-4 border-t border-gray-200', className].filter(Boolean).join(' ');
+    const classes = ['pt-4 border-t border-gray-200', className]
+      .filter(Boolean)
+      .join(' ');
 
     return (
       <div ref={ref} className={classes} {...props}>
