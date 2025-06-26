@@ -47,7 +47,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variantClasses[variant],
       sizeClasses[size],
       fullWidth && 'w-full',
-      (disabled || loading) && 'opacity-50 cursor-not-allowed',
+      (disabled ?? loading) && 'opacity-50 cursor-not-allowed',
       className,
     ]
       .filter(Boolean)
@@ -57,7 +57,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={classes}
-        disabled={disabled || loading}
+        disabled={disabled ?? loading}
         {...props}
       >
         {loading && (

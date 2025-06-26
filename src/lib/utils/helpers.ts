@@ -24,6 +24,7 @@ export function deepClone<T>(obj: T): T {
   }
 
   if (obj instanceof Array) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return obj.map((item) => deepClone(item)) as unknown as T;
   }
 

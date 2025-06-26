@@ -26,7 +26,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    const inputId = id ?? `input-${Math.random().toString(36).substr(2, 9)}`;
 
     const baseClasses =
       'w-full rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500';

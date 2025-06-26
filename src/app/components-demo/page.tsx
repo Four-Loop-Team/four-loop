@@ -1,14 +1,13 @@
-import React from 'react';
-import { Metadata } from 'next';
 import {
   Button,
   Card,
-  CardHeader,
   CardContent,
   CardFooter,
+  CardHeader,
   Input,
 } from '@/components/ui';
 import { ROUTES } from '@/constants';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'UI Components Demo - Four Loop Digital',
@@ -121,13 +120,21 @@ export default function ComponentsDemo() {
             <CardContent>
               <div className='bg-gray-100 p-4 rounded-md'>
                 <code className='text-sm'>
-                  <div className='text-green-600'>// ✅ Clean imports</div>
-                  <div>import {`{ Button, Card }`} from '@/components/ui';</div>
-                  <div>import {`{ ROUTES }`} from '@/constants';</div>
-                  <div>import {`{ formatCurrency }`} from '@/utils';</div>
+                  <div className='text-green-600'>{`// ✅ Clean imports`}</div>
+                  <div>
+                    import {`{ Button, Card }`} from
+                    &apos;@/components/ui&apos;;
+                  </div>
+                  <div>import {`{ ROUTES }`} from &apos;@/constants&apos;;</div>
+                  <div>
+                    import {`{ formatCurrency }`} from &apos;@/utils&apos;;
+                  </div>
                   <br />
-                  <div className='text-red-600'>// ❌ Old relative paths</div>
-                  <div>import Button from '../../../components/ui/Button';</div>
+                  <div className='text-red-600'>{`// ❌ Old relative paths`}</div>
+                  <div>
+                    import Button from
+                    &apos;../../../components/ui/Button&apos;;
+                  </div>
                 </code>
               </div>
             </CardContent>

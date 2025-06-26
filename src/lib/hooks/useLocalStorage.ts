@@ -16,7 +16,7 @@ export function useLocalStorage<T>(
     try {
       const item = window.localStorage.getItem(key);
       if (item) {
-        setStoredValue(JSON.parse(item));
+        setStoredValue(JSON.parse(item) as T);
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -28,7 +28,7 @@ export function useLocalStorage<T>(
     try {
       // Allow value to be a function so we have the same API as useState
       const valueToStore =
-        value instanceof Function ? value(storedValue) : (value as T);
+        value instanceof Function ? value(storedValue) : value;
 
       // Save state
       setStoredValue(valueToStore);
