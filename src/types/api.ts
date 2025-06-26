@@ -50,6 +50,7 @@ export interface AnalyticsEvent {
 export interface ErrorResponse {
   error: string;
   code: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   details?: Record<string, any>;
   timestamp: string;
 }

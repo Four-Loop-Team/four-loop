@@ -19,6 +19,7 @@ export function useLocalStorage<T>(
         setStoredValue(JSON.parse(item));
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn(`Error reading localStorage key "${key}":`, error);
     }
   }, [key]);
@@ -27,7 +28,7 @@ export function useLocalStorage<T>(
     try {
       // Allow value to be a function so we have the same API as useState
       const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
+        value instanceof Function ? value(storedValue) : (value as T);
 
       // Save state
       setStoredValue(valueToStore);
@@ -37,6 +38,7 @@ export function useLocalStorage<T>(
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn(`Error setting localStorage key "${key}":`, error);
     }
   };
