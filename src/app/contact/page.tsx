@@ -74,7 +74,7 @@ export default function ContactPage() {
 
         <Grid container spacing={6}>
           {/* Contact Form */}
-          <Grid item xs={12} md={8}>
+          <Grid size={{ xs: 12, md: 8 }}>
             <Card>
               <CardContent sx={{ p: 4 }}>
                 <Typography variant='h4' component='h2' gutterBottom>
@@ -94,7 +94,7 @@ export default function ContactPage() {
                   sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
                 >
                   <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                       <TextField
                         fullWidth
                         label='First Name'
@@ -103,7 +103,7 @@ export default function ContactPage() {
                         variant='outlined'
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                       <TextField
                         fullWidth
                         label='Last Name'
@@ -147,7 +147,7 @@ export default function ContactPage() {
           </Grid>
 
           {/* Contact Information */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Box>
               <Typography variant='h4' component='h2' gutterBottom>
                 Get in Touch

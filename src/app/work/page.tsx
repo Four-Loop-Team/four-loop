@@ -141,7 +141,7 @@ export default function WorkPage() {
               ],
             },
           ].map((service, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid size={{ xs: 12, md: 4 }} key={index}>
               <Card
                 sx={{
                   height: '100%',
@@ -246,7 +246,7 @@ export default function WorkPage() {
                   'Smooth production deployment with comprehensive documentation, training, and ongoing maintenance and support services.',
               },
             ].map((process, index) => (
-              <Grid item xs={12} md={6} key={index}>
+              <Grid size={{ xs: 12, md: 6 }} key={index}>
                 <Box sx={{ display: 'flex', mb: 3 }}>
                   <Box
                     sx={{
