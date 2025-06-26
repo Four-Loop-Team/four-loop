@@ -230,7 +230,7 @@ describe('ContactPage', () => {
 
     expect(firstNameField).toBeInTheDocument();
     expect(lastNameField).toBeInTheDocument();
-    
+
     // Check that both fields are in the same container (indicating grid layout)
     const form = firstNameField.closest('form');
     expect(form).toContain(firstNameField);
