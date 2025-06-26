@@ -16,6 +16,6 @@ module.exports = {
   // Documentation and config
   '*.{md,json,yml,yaml}': ['prettier --write'],
 
-  // Ensure all other files are formatted
-  '!*.{js,jsx,ts,tsx,css,scss,md,json,yml,yaml}': ['prettier --write'],
+  // Shell scripts (no formatting, just make executable)
+  '*.sh': ['chmod +x'],
 };

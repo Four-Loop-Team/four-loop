@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Post-commit hook to run additional checks and maintain project health
 echo "🔍 Running post-commit checks..."
 
