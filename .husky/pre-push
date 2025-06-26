@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-push hook to run comprehensive checks before pushing to remote
+echo "🚀 Running pre-push validation..."
+
+# Check if we're pushing to main/master branch (extra caution)
+protected_branch='main'
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
+if [ "$current_branch" = "$protected_branch" ]; then
+    echo "⚠️  Pushing to protected branch '$protected_branch'"
+    echo "🔍 Running extra validation checks..."
+
+    # Run full test suite for main branch
+    echo "🧪 Running complete test suite..."
+    npm run test:all
+
+    # Run build to ensure everything compiles
+    echo "🏗️  Verifying build..."
+    npm run build
+
+    # Run security audit
+    echo "🔒 Running security audit..."
+    npm run security:audit
+
+    if [ $? -ne 0 ]; then
+        echo "❌ Security audit failed. Push aborted."
+        exit 1
+    fi
+else
+    # For feature branches, run lighter checks
+    echo "🔍 Running standard pre-push checks for branch '$current_branch'..."
+
+    # Run quality checks
+    npm run quality:check
+
+    # Run unit tests only (faster)
+    npm run test
+fi
+
+if [ $? -ne 0 ]; then
+    echo "❌ Pre-push checks failed. Please fix issues before pushing."
+    echo ""
+    echo "💡 Quick fixes:"
+    echo "   npm run quality:fix  - Fix common issues"
+    echo "   npm run test         - Check failing tests"
+    echo "   npm run validate     - Run all checks"
+    exit 1
+fi
+
+echo "✅ All pre-push checks passed!"

@@ -4,17 +4,45 @@
 
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
-    "github.vscode-github-actions",
-    "deque-systems.vscode-axe-linter",
-    "streetsidesoftware.code-spell-checker",
-    "dbaeumer.vscode-eslint",
-    "github.copilot",
-    "eamodio.gitlens",
-    "orta.vscode-jest",
-    "ms-vsliveshare.vsliveshare",
+    // Essential formatting and linting
     "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+
+    // TypeScript and React
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
     "zhang-renyang.vscode-react",
-    "bradlc.vscode-tailwindcss"
+
+    // Testing
+    "orta.vscode-jest",
+    "ms-playwright.playwright",
+
+    // Git and version control
+    "eamodio.gitlens",
+    "github.vscode-github-actions",
+    "donjayamanne.githistory",
+    "mhutchie.git-graph",
+
+    // Code quality and productivity
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "ms-vscode.vscode-json",
+    "deque-systems.vscode-axe-linter",
+
+    // Documentation and markdown
+    "yzhang.markdown-all-in-one",
+    "davidanson.vscode-markdownlint",
+
+    // Collaboration and AI
+    "github.copilot",
+    "ms-vsliveshare.vsliveshare",
+
+    // Optional but helpful
+    "christian-kohler.npm-intellisense",
+    "formulahendry.auto-rename-tag",
+    "ms-vscode.vscode-todo-highlight",
+    "gruntfuggly.todo-tree"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []

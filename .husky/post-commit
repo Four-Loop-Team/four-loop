@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Post-commit hook to run additional checks and maintain project health
+echo "🔍 Running post-commit checks..."
+
+# Check if package.json was modified and remind about dependency updates
+if git diff --name-only HEAD~1 HEAD | grep -q "package.json"; then
+  echo "📦 package.json was modified. Consider running:"
+  echo "   npm audit"
+  echo "   npm outdated"
+fi
+
+# Check if there are any TODO/FIXME comments in staged files
+todo_count=$(git diff --name-only HEAD~1 HEAD | xargs grep -l "TODO\|FIXME" 2>/dev/null | wc -l)
+if [ "$todo_count" -gt 0 ]; then
+  echo "📝 Found TODO/FIXME comments in committed files:"
+  git diff --name-only HEAD~1 HEAD | xargs grep -n "TODO\|FIXME" 2>/dev/null || true
+fi
+
+echo "✅ Post-commit checks completed"

@@ -1,7 +1,8 @@
 # Four Loop Digital
 
-A modern, responsive web application built with the latest Next.js 15, React 19, TypeScript, and Material UI 7, featuring
-advanced styling architecture, responsive grid system, and smooth navigation animations.
+A modern, responsive web application built with the latest Next.js 15, React 19, TypeScript, and
+Material UI 7, featuring advanced styling architecture, responsive grid system, and smooth
+navigation animations.
 
 ## 🚀 Quick Start
 
@@ -32,7 +33,7 @@ open http://localhost:3000
 This application has been completely modernized with the latest stable versions:
 
 - **✅ React 19.1.0** - Latest React with new features and performance improvements
-- **✅ Next.js 15.3.4** - Latest Next.js with enhanced App Router and optimizations  
+- **✅ Next.js 15.3.4** - Latest Next.js with enhanced App Router and optimizations
 - **✅ Material UI 7.1.2** - Latest MUI with new design system and components
 - **✅ TailwindCSS 4.1.10** - Latest TailwindCSS with new CSS engine
 - **✅ Jest 30.0.3** - Latest testing framework with improved performance
@@ -60,14 +61,22 @@ details._
 
 ### Available Scripts
 
-| Script                  | Description                          |
-| ----------------------- | ------------------------------------ |
-| `npm run dev`           | Start development server             |
-| `npm run build`         | Production build with quality checks |
-| `npm run lint`          | Run linting and type checking        |
-| `npm run format`        | Format code with Prettier            |
-| `npm run test`          | Run test suite                       |
-| `npm run test:coverage` | Run tests with coverage report       |
+| Script                       | Description                              |
+| ---------------------------- | ---------------------------------------- |
+| `npm run dev`                | Start development server                 |
+| `npm run build`              | Production build with quality checks     |
+| `npm run lint`               | Run linting and type checking            |
+| `npm run lint:fix`           | Fix auto-fixable linting issues          |
+| `npm run format`             | Format code with Prettier                |
+| `npm run test`               | Run test suite                           |
+| `npm run test:coverage`      | Run tests with coverage report           |
+| `npm run test:e2e`           | Run end-to-end tests                     |
+| `npm run test:accessibility` | Run accessibility tests                  |
+| `npm run quality:check`      | Comprehensive quality validation         |
+| `npm run quality:fix`        | Fix common quality issues                |
+| `npm run validate`           | Complete validation (all checks + tests) |
+| `npm run deps:check`         | Check for outdated dependencies          |
+| `npm run security:audit`     | Run security vulnerability audit         |
 
 ### Technology Stack
 
@@ -118,11 +127,37 @@ src/
 ## 📈 Performance & Quality
 
 - **Comprehensive Testing**: 96.86% test coverage with 305+ passing tests
+- **Automated Code Quality**: Git hooks, CI/CD, and quality gates enforce standards
 - **Build Pipeline**: Automated linting, formatting, and type checking
-- **Git Hooks**: Pre-commit quality checks with Husky and lint-staged
+- **Git Hooks**: Pre-commit, commit-msg, post-commit, and pre-push automation
+- **CI/CD Integration**: GitHub Actions with quality checks, security audits, and E2E testing
+- **VS Code Configuration**: Team-wide editor settings and extension recommendations
 - **Optimized Animations**: Hardware-accelerated transitions with performance monitoring
 - **Responsive Design**: Mobile-first approach with 5 breakpoints
 - **Type Safety**: Strict TypeScript configuration with full type coverage
+- **Security Monitoring**: Automated vulnerability scanning and dependency updates
+
+### Code Quality Automation
+
+This project includes comprehensive automation to enforce code quality across the team:
+
+- **🪝 Git Hooks**: Automated pre-commit validation, commit message formatting, and pre-push checks
+- **🚀 CI/CD Pipeline**: GitHub Actions workflows for quality, testing, security, and deployment
+- **💻 VS Code Integration**: Consistent editor settings and recommended extensions
+- **📋 Templates**: GitHub issue and PR templates for consistent contributions
+- **🔒 Security**: Automated vulnerability scanning and dependency monitoring
+
+For complete automation details, see [CODE_QUALITY_AUTOMATION.md](./CODE_QUALITY_AUTOMATION.md).
+
+#### Quick Setup for New Team Members
+
+```bash
+# Run the automated setup script
+./setup-dev-env.sh
+
+# Check automation status
+./check-automation-status.sh
+```
 
 ### Testing
 
