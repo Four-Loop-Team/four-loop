@@ -18,4 +18,19 @@ module.exports = {
 
   // Shell scripts (no formatting, just make executable)
   '*.sh': ['chmod +x'],
+
+  // Auto-update documentation when component files change
+  'src/components/**/*.{ts,tsx}': [
+    'npm run docs:generate',
+    'git add docs/API_DOCUMENTATION.md docs/PROJECT_STATISTICS.md',
+  ],
+
+  // Auto-update documentation when package.json changes
+  'package.json': [
+    'npm run docs:generate',
+    'git add docs/DEPENDENCY_REPORT.md docs/PROJECT_STATISTICS.md',
+  ],
+
+  // Auto-update README when documentation changes
+  'docs/**/*.md': ['npm run docs:generate', 'git add README.md'],
 };

@@ -1,14 +1,39 @@
 import React, { ButtonHTMLAttributes, forwardRef } from 'react';
 
+/**
+ * Button component props interface
+ */
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Button variant style */
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  /** Button size */
   size?: 'sm' | 'md' | 'lg';
+  /** Shows loading spinner when true */
   loading?: boolean;
+  /** Icon to display on the left side */
   leftIcon?: React.ReactNode;
+  /** Icon to display on the right side */
   rightIcon?: React.ReactNode;
+  /** Makes button full width when true */
   fullWidth?: boolean;
 }
 
+/**
+ * A versatile button component with multiple variants, sizes, and states.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Button variant="primary">Click me</Button>
+ *
+ * // With loading state
+ * <Button loading>Loading...</Button>
+ *
+ * // Full width button
+ * <Button fullWidth>Full Width</Button>
+ * ```
+ */
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {

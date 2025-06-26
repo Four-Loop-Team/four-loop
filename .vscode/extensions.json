@@ -18,6 +18,13 @@
     "orta.vscode-jest",
     "ms-playwright.playwright",
 
+    // Documentation and productivity
+    "ms-vscode.vscode-markdown",
+    "davidanson.vscode-markdownlint",
+    "christian-kohler.path-intellisense",
+    "formulahendry.auto-rename-tag",
+    "ms-vscode.test-adapter-converter",
+
     // Git and version control
     "eamodio.gitlens",
     "github.vscode-github-actions",
@@ -30,17 +37,12 @@
     "ms-vscode.vscode-json",
     "deque-systems.vscode-axe-linter",
 
-    // Documentation and markdown
-    "yzhang.markdown-all-in-one",
-    "davidanson.vscode-markdownlint",
-
     // Collaboration and AI
     "github.copilot",
     "ms-vsliveshare.vsliveshare",
 
     // Optional but helpful
     "christian-kohler.npm-intellisense",
-    "formulahendry.auto-rename-tag",
     "ms-vscode.vscode-todo-highlight",
     "gruntfuggly.todo-tree"
   ],

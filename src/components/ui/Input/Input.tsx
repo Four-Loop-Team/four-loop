@@ -1,15 +1,48 @@
 import React, { InputHTMLAttributes, forwardRef } from 'react';
 
+/**
+ * Input component props interface
+ */
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  /** Input label text */
   label?: string;
+  /** Error message to display */
   error?: string;
+  /** Helper text to display */
   helperText?: string;
+  /** Input variant style */
   variant?: 'default' | 'filled' | 'outlined';
+  /** Input size */
   inputSize?: 'sm' | 'md' | 'lg';
+  /** Icon to display on the left side */
   leftIcon?: React.ReactNode;
+  /** Icon to display on the right side */
   rightIcon?: React.ReactNode;
 }
 
+/**
+ * A comprehensive input component with validation and accessibility features.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * // Basic input
+ * <Input label="Email" placeholder="Enter your email" />
+ *
+ * // With error state
+ * <Input
+ *   label="Password"
+ *   type="password"
+ *   error="Password is required"
+ * />
+ *
+ * // With helper text
+ * <Input
+ *   label="Username"
+ *   helperText="Must be at least 3 characters"
+ * />
+ * ```
+ */
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
