@@ -1,7 +1,9 @@
-import { Breadcrumbs, Link, Typography, Box } from '@mui/material';
-import { usePathname } from 'next/navigation';
-import NextLink from 'next/link';
+'use client';
+
 import { Home } from '@mui/icons-material';
+import { Box, Breadcrumbs, Link, Typography } from '@mui/material';
+import NextLink from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface BreadcrumbItem {
   label: string;

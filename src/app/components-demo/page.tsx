@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Button,
   Card,
@@ -7,12 +9,6 @@ import {
   Input,
 } from '@/components/ui';
 import { ROUTES } from '@/constants';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'UI Components Demo - Four Loop Digital',
-  description: 'Demonstration of the Four Loop Digital UI component library',
-};
 
 export default function ComponentsDemo() {
   return (
