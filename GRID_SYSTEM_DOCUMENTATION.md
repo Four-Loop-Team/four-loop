@@ -644,7 +644,6 @@ The grid system adds approximately **8KB** to the CSS bundle (gzipped), providin
 ### Runtime Performance
 
 1. **CSS Grid Advantages**
-
    - Better performance for complex layouts
    - Native browser grid calculations
    - More efficient than JavaScript-based layouts

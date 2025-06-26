@@ -138,14 +138,12 @@ npm install --save-dev react-test-renderer@^19.0.0
    - Review [React 19 breaking changes](https://react.dev/blog/2024/04/25/react-19-upgrade-guide)
    - Audit components for deprecated patterns
 2. **Code modernization:**
-
    - Update `forwardRef` usage
    - Replace deprecated lifecycle methods
    - Update context API usage
    - Address `StrictMode` changes
 
 3. **Component testing:**
-
    - Test all components individually
    - Update test mocks for React 19
    - Verify performance utilities work

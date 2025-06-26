@@ -208,13 +208,11 @@ const handleNavClick = (href: string) => {
 **Key Design Elements:**
 
 1. **Pill-shaped Container:**
-
    - Background color: `#e2e891` ($fld-light-green)
    - Border radius: `50px`
    - Relative positioning for slider containment
 
 2. **Overlapping Buttons:**
-
    - Negative left margin: `-20px` for buttons after the first
    - Z-index management for proper layering
    - Transparent backgrounds to show container color
