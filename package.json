@@ -25,6 +25,7 @@
     "test:all": "npm run test && npm run test:e2e",
     "docs:generate": "node scripts/generate-docs.js",
     "docs:update": "npm run docs:generate && git add docs/ README.md",
+    "docs:ci": "npm run docs:generate",
     "docs:validate": "node scripts/validate-docs.js",
     "docs:api": "npm run docs:generate && open docs/API_DOCUMENTATION.md",
     "docs:deps": "npm run docs:generate && open docs/DEPENDENCY_REPORT.md",
@@ -35,7 +36,7 @@
     "security:audit:fix": "npm audit fix",
     "quality:check": "npm run lint:check && npm run type-check && npm run test && npm run security:audit",
     "quality:fix": "npm run lint:fix && npm run format",
-    "quality:full": "npm run quality:fix && npm run docs:update && npm run test:coverage",
+    "quality:full": "npm run quality:fix && npm run test:coverage",
     "prerelease": "npm run quality:check && npm run build",
     "validate": "npm run quality:check && npm run test:e2e && npm run test:accessibility"
   },

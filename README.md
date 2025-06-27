@@ -104,6 +104,26 @@ details._
 | `npm run validate`           | Complete validation (all checks + tests)    |
 | `npm run prerelease`         | Pre-release validation and build            |
 
+### Documentation Updates
+
+**Important**: Documentation generation has been removed from pre-commit hooks to prevent infinite
+loops.
+
+| Script                  | Description                                |
+| ----------------------- | ------------------------------------------ |
+| `npm run docs:generate` | Generate all documentation files           |
+| `npm run docs:update`   | Generate docs and stage changes for commit |
+| `npm run docs:validate` | Validate documentation completeness        |
+| `npm run docs:api`      | Generate and open API documentation        |
+| `npm run docs:deps`     | Generate and open dependency report        |
+
+**When to update documentation:**
+
+- After adding new components, hooks, or utilities
+- After changing package.json dependencies
+- Before creating pull requests
+- Manually run: `npm run docs:generate` then commit the changes
+
 ### Technology Stack
 
 - **Framework**: Next.js 15.3.4 with App Router

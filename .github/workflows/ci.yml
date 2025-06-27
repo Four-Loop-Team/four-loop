@@ -50,6 +50,9 @@ jobs:
       - name: Run unit tests
         run: npm run test:coverage
 
+      - name: Update documentation
+        run: npm run docs:ci
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
