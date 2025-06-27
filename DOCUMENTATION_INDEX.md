@@ -65,6 +65,7 @@
 - **[Project Statistics](./docs/PROJECT_STATISTICS.md)** - Real-time project metrics
 - **[Dependency Report](./docs/DEPENDENCY_REPORT.md)** - Dependency analysis and security
 - **[Validation Report](./docs/VALIDATION_REPORT.md)** - Documentation quality checks
+  (auto-generated)
 
 ### Developer Tools
 

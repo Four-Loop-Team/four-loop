@@ -10,19 +10,54 @@ export function useMediaQuery(query: string): boolean {
 
   useEffect(() => {
     if (typeof window === 'undefined') {
-      return;
+      return undefined;
     }
 
-    const mediaQuery = window.matchMedia(query);
-    setMatches(mediaQuery.matches);
+    let mediaQuery: MediaQueryList | undefined;
 
-    const handler = (event: MediaQueryListEvent) => {
-      setMatches(event.matches);
-    };
+    try {
+      mediaQuery = window.matchMedia(query);
 
-    mediaQuery.addEventListener('change', handler);
+      // Check if mediaQuery is valid and has required properties
+      if (!mediaQuery || typeof mediaQuery.matches !== 'boolean') {
+        return undefined;
+      }
 
-    return () => mediaQuery.removeEventListener('change', handler);
+      setMatches(mediaQuery.matches);
+
+      const handler = (event: MediaQueryListEvent) => {
+        setMatches(event.matches);
+      };
+
+      // Check if addEventListener is available (some browsers might not support it)
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', handler);
+        return () => {
+          if (
+            mediaQuery &&
+            typeof mediaQuery.removeEventListener === 'function'
+          ) {
+            mediaQuery.removeEventListener('change', handler);
+          }
+        };
+      } else if (typeof (mediaQuery as any).addListener === 'function') {
+        // Fallback for older browsers
+        (mediaQuery as any).addListener(handler);
+        return () => {
+          if (
+            mediaQuery &&
+            typeof (mediaQuery as any).removeListener === 'function'
+          ) {
+            (mediaQuery as any).removeListener(handler);
+          }
+        };
+      }
+
+      return undefined;
+    } catch (error) {
+      // Invalid media query, return default value
+      return undefined;
+    }
   }, [query]);
 
   return matches;

@@ -1,5 +1,9 @@
 // Jest setup file for global test configuration
 import '@testing-library/jest-dom';
+import { toHaveNoViolations } from 'jest-axe';
+
+// Extend Jest matchers with axe accessibility testing
+expect.extend(toHaveNoViolations);
 
 // Mock IntersectionObserver for components that use it
 const mockIntersectionObserver = jest.fn(() => ({

@@ -6,7 +6,39 @@
  * Validates an email address
  */
 export function isValidEmail(email: string): boolean {
+  if (!email || email.trim() === '') return false;
+
+  // Basic but comprehensive email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Additional checks for common invalid patterns
+  if (
+    email.includes('..') ||
+    email.startsWith('.') ||
+    email.endsWith('.') ||
+    email.includes('@.') ||
+    email.endsWith('@') ||
+    email.split('@').length !== 2
+  ) {
+    return false;
+  }
+
+  const [localPart, domainPart] = email.split('@');
+
+  // Local part checks
+  if (localPart.startsWith('.') || localPart.endsWith('.')) {
+    return false;
+  }
+
+  // Domain part checks
+  if (
+    domainPart.startsWith('.') ||
+    domainPart.endsWith('.') ||
+    !domainPart.includes('.')
+  ) {
+    return false;
+  }
+
   return emailRegex.test(email);
 }
 
@@ -14,17 +46,43 @@ export function isValidEmail(email: string): boolean {
  * Validates a phone number (flexible format)
  */
 export function isValidPhone(phone: string): boolean {
-  const phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
+  if (!phone || phone.trim() === '') return false;
+
   const cleanPhone = phone.replace(/[\s\-().]/g, '');
-  return phoneRegex.test(cleanPhone);
+
+  // Check for invalid patterns
+  if (cleanPhone.length < 4 || cleanPhone.length > 16) return false;
+  if (cleanPhone.includes('++')) return false;
+  if (cleanPhone.startsWith('+0')) return false;
+  if (!/^[+]?[1-9][\d]*$/.test(cleanPhone)) return false;
+
+  return true;
 }
 
 /**
  * Validates a URL
  */
 export function isValidUrl(url: string): boolean {
+  if (!url || url.trim() === '') return false;
+
   try {
-    new URL(url);
+    const parsed = new URL(url);
+
+    // Check for valid protocol
+    if (!['http:', 'https:', 'ftp:', 'ftps:'].includes(parsed.protocol)) {
+      return false;
+    }
+
+    // Check for valid hostname
+    if (
+      !parsed.hostname ||
+      parsed.hostname === '.' ||
+      parsed.hostname === '..' ||
+      parsed.hostname.includes(' ')
+    ) {
+      return false;
+    }
+
     return true;
   } catch {
     return false;
@@ -89,12 +147,12 @@ export function validateField(
     return { isValid: true, errors: [] };
   }
 
-  // Length validation
-  if (rules.minLength && value.length < rules.minLength) {
+  // Length validation - check both even if one fails
+  if (rules.minLength !== undefined && value.length < rules.minLength) {
     errors.push(`Must be at least ${rules.minLength} characters`);
   }
 
-  if (rules.maxLength && value.length > rules.maxLength) {
+  if (rules.maxLength !== undefined && value.length > rules.maxLength) {
     errors.push(`Must be no more than ${rules.maxLength} characters`);
   }
 

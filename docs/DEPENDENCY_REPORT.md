@@ -1,124 +1,89 @@
 # Dependency Report
 
-> 🤖 Auto-generated dependency analysis
+> 🤖 Auto-generated on 2025-06-26T20:25:15.366Z
 
-## Summary
+## 📊 Summary
 
-- **Total Dependencies**: 79
-- **Production**: 3
-- **Development**: 76
+| Type                     | Count  |
+| ------------------------ | ------ |
+| Production Dependencies  | 3      |
+| Development Dependencies | 50     |
+| **Total Dependencies**   | **53** |
 
-## Core Technologies
+## 🏗️ Production Dependencies
 
-| Technology  | Version | Type        |
-| ----------- | ------- | ----------- |
-| Next.js     | ^15.3.4 | Production  |
-| React       | ^19.1.0 | Production  |
-| TypeScript  | ^5.3.3  | Development |
-| Material-UI | ^7.1.2  | Development |
+- **next**: ^15.3.4
+- **react**: ^19.1.0
+- **react-dom**: ^19.1.0
 
-## Security Status
+## 🔧 Development Dependencies
 
-✅ **No security vulnerabilities found**
+- **@axe-core/playwright**: ^4.10.2
+- **@axe-core/react**: ^4.10.2
+- **@babel/preset-env**: ^7.23.9
+- **@babel/preset-react**: ^7.23.3
+- **@emotion/react**: ^11.11.3
+- **@emotion/styled**: ^11.11.0
+- **@mui/icons-material**: ^7.1.2
+- **@mui/material**: ^7.1.2
+- **@playwright/test**: ^1.53.1
+- **@tailwindcss/postcss**: ^4.1.10
+- **@testing-library/dom**: ^10.4.0
+- **@testing-library/jest-dom**: ^6.6.3
+- **@testing-library/react**: ^16.3.0
+- **@testing-library/user-event**: ^14.6.1
+- **@types/jest**: ^30.0.0
+- **@types/node**: ^24.0.4
+- **@types/react**: ^19.1.8
+- **@types/react-dom**: ^19.1.6
+- **@types/react-test-renderer**: ^19.1.0
+- **@typescript-eslint/eslint-plugin**: ^8.35.0
+- **@typescript-eslint/parser**: ^8.35.0
+- **audit-ci**: ^7.1.0
+- **autoprefixer**: ^10.4.17
+- **axe-core**: ^4.10.3
+- **axe-playwright**: ^2.1.0
+- **babel-jest**: ^30.0.2
+- **eslint**: ^8.56.0
+- **eslint-config-next**: ^15.3.4
+- **eslint-config-prettier**: ^9.1.0
+- **eslint-plugin-flowtype**: ^8.0.3
+- **eslint-plugin-jest**: ^29.0.1
+- **eslint-plugin-react**: ^7.33.2
+- **husky**: ^9.0.11
+- **identity-obj-proxy**: ^3.0.0
+- **jest**: ^30.0.3
+- **jest-environment-jsdom**: ^30.0.2
+- **jest-preset-typescript**: ^1.2.0
+- **lighthouse**: ^12.6.1
+- **lint-staged**: ^15.2.2
+- **lodash**: ^4.17.21
+- **postcss**: ^8.4.35
+- **prettier**: ^3.2.5
+- **react-test-renderer**: ^19.1.0
+- **sass**: ^1.71.0
+- **stylelint**: ^16.2.1
+- **stylelint-config-prettier-scss**: ^1.0.0
+- **stylelint-config-standard-scss**: ^13.0.0
+- **tailwindcss**: ^4.1.10
+- **ts-jest**: ^29.1.2
+- **typescript**: ^5.3.3
 
-## Dependency Categories
+## 🔄 Maintenance
 
-### Production Dependencies (3)
+To update dependencies:
 
-These are essential for the application to run in production:
+```bash
+# Check for outdated packages
+npm outdated
 
-- **next**: ^15.3.4 - React framework for production
-- **react**: ^19.1.0 - Core React library
-- **react-dom**: ^19.1.0 - React DOM bindings
+# Update all packages
+npm update
 
-### Development Dependencies (76)
-
-Development tools, testing, and build utilities:
-
-#### Testing & Quality Assurance
-
-- **@testing-library/react**: ^16.3.0 - React testing utilities
-- **@testing-library/jest-dom**: ^6.6.3 - Jest DOM matchers
-- **@testing-library/user-event**: ^14.6.1 - User interaction testing
-- **jest**: ^30.0.3 - JavaScript testing framework
-- **@playwright/test**: ^1.53.1 - End-to-end testing
-- **@axe-core/playwright**: ^4.10.2 - Accessibility testing
-- **eslint**: ^8.56.0 - JavaScript linting
-- **prettier**: ^3.2.5 - Code formatting
-- **stylelint**: ^16.2.1 - CSS linting
-
-#### TypeScript & Build Tools
-
-- **typescript**: ^5.3.3 - TypeScript compiler
-- **@types/node**: ^24.0.4 - Node.js type definitions
-- **@types/react**: ^19.1.8 - React type definitions
-- **@types/react-dom**: ^19.1.6 - React DOM type definitions
-- **ts-jest**: ^29.1.2 - TypeScript Jest preprocessor
-
-#### UI & Styling
-
-- **@mui/material**: ^7.1.2 - Material-UI components
-- **@mui/icons-material**: ^7.1.2 - Material-UI icons
-- **@emotion/react**: ^11.11.3 - CSS-in-JS library
-- **@emotion/styled**: ^11.11.0 - Styled components
-- **tailwindcss**: ^4.1.10 - Utility-first CSS framework
-- **sass**: ^1.71.0 - CSS preprocessor
-
-#### Development Workflow
-
-- **husky**: ^9.0.11 - Git hooks
-- **lint-staged**: ^15.2.2 - Pre-commit linting
-- **audit-ci**: ^7.1.0 - Security auditing in CI
-
-## Dependency Health
-
-### Update Status
-
-All dependencies are up-to-date and actively maintained.
-
-### Security Audit
-
-No known security vulnerabilities detected in the current dependency tree.
-
-### Bundle Impact
-
-The production bundle only includes the 3 production dependencies:
-
-- Next.js handles code splitting and optimization
-- React provides the component framework
-- React DOM provides browser rendering
-
-Development dependencies do not impact production bundle size.
-
-## Recommendations
-
-### Maintenance
-
-- **Regular Updates**: Keep dependencies updated monthly
-- **Security Audits**: Run `npm audit` before each release
-- **Dependency Review**: Review new dependencies before adding
-
-### Optimization
-
-- **Bundle Analysis**: Use Next.js Bundle Analyzer periodically
-- **Tree Shaking**: Ensure unused code is eliminated
-- **Code Splitting**: Leverage Next.js automatic code splitting
-
-## Version Management
-
-### Semantic Versioning
-
-The project follows semantic versioning for dependencies:
-
-- **Caret (^)**: Allows patch and minor updates
-- **Exact**: Used for critical dependencies requiring specific versions
-
-### Update Strategy
-
-1. **Patch Updates**: Automated via Dependabot
-2. **Minor Updates**: Manual review and testing
-3. **Major Updates**: Thorough testing and migration planning
+# Update specific package
+npm install package-name@latest
+```
 
 ---
 
-_Report generated: June 26, 2025_ _Dependencies analyzed: 79 total_ _Security scan: Clean_
+_This report is automatically generated from package.json._

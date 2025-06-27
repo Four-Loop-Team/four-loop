@@ -70,7 +70,7 @@ import Button from '../../../components/ui/Button';
 
 {{UI_COMPONENTS_LIST}}
 
-[📖 View Complete Component Documentation](/docs/API_DOCUMENTATION.md)
+[📖 View Complete Component Documentation](docs/API_DOCUMENTATION.md)
 
 ## 🛠️ Development
 
@@ -120,12 +120,12 @@ All code must pass:
 
 ## 📚 Documentation
 
-- [🏗️ Architecture Guide](/docs/architecture/)
-- [🧩 Component Library](/docs/architecture/UI_COMPONENT_LIBRARY.md)
-- [📊 API Documentation](/docs/API_DOCUMENTATION.md)
-- [📦 Dependency Report](/docs/DEPENDENCY_REPORT.md)
-- [📈 Project Statistics](/docs/PROJECT_STATISTICS.md)
-- [📝 Implementation Report](/docs/reports/NEXT_STEPS_IMPLEMENTATION_COMPLETE.md)
+- [🏗️ Architecture Guide](docs/architecture/)
+- [🧩 Component Library](docs/architecture/UI_COMPONENT_LIBRARY.md)
+- [📊 API Documentation](docs/API_DOCUMENTATION.md)
+- [📦 Dependency Report](docs/DEPENDENCY_REPORT.md)
+- [📈 Project Statistics](docs/PROJECT_STATISTICS.md)
+- [📝 Implementation Report](docs/reports/NEXT_STEPS_IMPLEMENTATION_COMPLETE.md)
 
 ## 🤝 Contributing
 

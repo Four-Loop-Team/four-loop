@@ -17,12 +17,16 @@ export function useLocalStorage<T>(
       const item = window.localStorage.getItem(key);
       if (item) {
         setStoredValue(JSON.parse(item) as T);
+      } else {
+        // No item exists for this key, reset to initial value
+        setStoredValue(initialValue);
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(`Error reading localStorage key "${key}":`, error);
+      setStoredValue(initialValue);
     }
-  }, [key]);
+  }, [key]); // Removed initialValue from dependencies to prevent infinite loops
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {

@@ -290,8 +290,14 @@ class DocumentationValidator {
       const stat = fs.statSync(itemPath);
 
       if (stat.isDirectory()) {
+        // Skip template directories
+        if (item === 'templates') continue;
         files.push(...this.findMarkdownFiles(itemPath));
       } else if (item.endsWith('.md')) {
+        // Skip template files and validation report during validation
+        if (item.includes('.template.') || item === 'VALIDATION_REPORT.md') {
+          continue;
+        }
         files.push(itemPath);
       }
     }
