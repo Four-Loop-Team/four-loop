@@ -5,3 +5,4 @@ dist/
 .husky/
 *.config.js
 public/
+.github/

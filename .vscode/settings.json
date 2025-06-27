@@ -56,6 +56,15 @@
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
 
+  // YAML settings
+  "yaml.validate": true,
+  "yaml.hover": true,
+  "yaml.completion": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml"
+  },
+  "redhat.telemetry.enabled": false,
+
   // TypeScript settings
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,

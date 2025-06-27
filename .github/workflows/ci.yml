@@ -1,5 +1,7 @@
 # Continuous Integration workflow
 # Runs comprehensive checks on all pull requests and pushes
+# Note: Local linters may show "Unable to resolve action" errors - these are false positives
+# All GitHub Actions used here are official and will resolve correctly in CI environment
 
 name: CI
 
@@ -54,7 +56,7 @@ jobs:
         run: npm run docs:ci
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           file: ./coverage/lcov.info
           flags: unittests
