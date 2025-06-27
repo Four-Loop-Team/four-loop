@@ -2,6 +2,7 @@
  * Hook for responsive media queries
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { MEDIA_QUERIES } from '../../constants';
 

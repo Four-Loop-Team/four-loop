@@ -1,3 +1,4 @@
+/* eslint-disable jest/prefer-to-have-length */
 import {
   capitalize,
   debounce,
@@ -71,7 +72,7 @@ describe('Format Utils', () => {
       const result = truncateText(text, 20);
 
       expect(result).toBe('This is a very lo...');
-      expect(result.length).toBe(20);
+      expect(result).toHaveLength(20);
     });
 
     it('should handle edge case where text length equals max length', () => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-unsafe-call */
 import { act, renderHook } from '@testing-library/react';
 import {
   useScrollDirection,

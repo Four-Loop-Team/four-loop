@@ -26,7 +26,7 @@ export function useLocalStorage<T>(
       console.warn(`Error reading localStorage key "${key}":`, error);
       setStoredValue(initialValue);
     }
-  }, [key]); // Removed initialValue from dependencies to prevent infinite loops
+  }, [key, initialValue]); // Added initialValue to dependencies
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {

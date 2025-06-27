@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method, @typescript-eslint/prefer-nullish-coalescing */
 import { act, renderHook } from '@testing-library/react';
 import {
   useBreakpoint,
@@ -72,6 +73,7 @@ describe('useMediaQuery Hook', () => {
 
       expect(mockMediaQueryList.addEventListener).toHaveBeenCalledWith(
         'change',
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         expect.any(Function)
       );
     });

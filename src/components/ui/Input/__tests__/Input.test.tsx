@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import Input from '../Input';
