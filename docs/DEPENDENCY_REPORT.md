@@ -1,14 +1,14 @@
 # Dependency Report
 
-> 🤖 Auto-generated on 2025-06-26T20:25:15.366Z
+> 🤖 Auto-generated on 2025-06-27T01:14:45.307Z
 
 ## 📊 Summary
 
-| Type                     | Count  |
-| ------------------------ | ------ |
-| Production Dependencies  | 3      |
-| Development Dependencies | 50     |
-| **Total Dependencies**   | **53** |
+| Type | Count |
+|------|-------|
+| Production Dependencies | 3 |
+| Development Dependencies | 52 |
+| **Total Dependencies** | **55** |
 
 ## 🏗️ Production Dependencies
 
@@ -33,6 +33,7 @@
 - **@testing-library/react**: ^16.3.0
 - **@testing-library/user-event**: ^14.6.1
 - **@types/jest**: ^30.0.0
+- **@types/jest-axe**: ^3.5.9
 - **@types/node**: ^24.0.4
 - **@types/react**: ^19.1.8
 - **@types/react-dom**: ^19.1.6
@@ -53,6 +54,7 @@
 - **husky**: ^9.0.11
 - **identity-obj-proxy**: ^3.0.0
 - **jest**: ^30.0.3
+- **jest-axe**: ^10.0.0
 - **jest-environment-jsdom**: ^30.0.2
 - **jest-preset-typescript**: ^1.2.0
 - **lighthouse**: ^12.6.1
@@ -86,4 +88,4 @@ npm install package-name@latest
 
 ---
 
-_This report is automatically generated from package.json._
+*This report is automatically generated from package.json.*
