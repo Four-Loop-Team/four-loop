@@ -137,7 +137,7 @@ loops.
 
 ## 🏗️ Project Structure
 
-```
+```text
 Four Loop Digital/
 ├── .github/                    # GitHub workflows and templates
 │   ├── workflows/              # CI/CD automation
@@ -376,7 +376,7 @@ npm run test:coverage
 npm run test:watch
 ```
 
-**Current Coverage: 96.86%**
+### Current Coverage: 96.86%
 
 - 305+ passing tests
 - 100% coverage for all utility libraries

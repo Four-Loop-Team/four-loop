@@ -43,10 +43,10 @@ the component is implemented.
 
 - Container type
 
-* 'default': Standard max-width container
-* 'lg': Large max-width container
-* 'xl': Extra large max-width container
-* 'fluid': Full width container
+- 'default': Standard max-width container
+- 'lg': Large max-width container
+- 'xl': Extra large max-width container
+- 'fluid': Full width container
 
 ---
 
