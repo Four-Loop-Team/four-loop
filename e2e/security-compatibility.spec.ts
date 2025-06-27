@@ -1,5 +1,5 @@
 // Security and compatibility tests for production readiness
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Security & Compatibility Tests', () => {
   test.beforeEach(async ({ page }) => {
