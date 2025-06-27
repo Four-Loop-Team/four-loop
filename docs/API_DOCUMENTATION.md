@@ -8,10 +8,10 @@
 
 **File**: `src/components/Grid/__tests__/Grid.test.tsx`
 
-* Grid Component Tests
+- Grid Component Tests
 
- Note: Component implementation is empty, these are placeholder tests
- to prevent CI failures until the component is implemented.
+Note: Component implementation is empty, these are placeholder tests to prevent CI failures until
+the component is implemented.
 
 ---
 
@@ -19,10 +19,10 @@
 
 **File**: `src/components/MuiThemeProvider/__tests__/MuiThemeProvider.test.tsx`
 
-* MuiThemeProvider Component Tests
+- MuiThemeProvider Component Tests
 
- Note: Component implementation is empty, these are placeholder tests
- to prevent CI failures until the component is implemented.
+Note: Component implementation is empty, these are placeholder tests to prevent CI failures until
+the component is implemented.
 
 ---
 
@@ -30,10 +30,10 @@
 
 **File**: `src/components/Navigation/__tests__/Navigation.test.tsx`
 
-* Navigation Component Tests
+- Navigation Component Tests
 
- Note: Component implementation is empty, these are placeholder tests
- to prevent CI failures until the component is implemented.
+Note: Component implementation is empty, these are placeholder tests to prevent CI failures until
+the component is implemented.
 
 ---
 
@@ -41,11 +41,12 @@
 
 **File**: `src/components/system/Grid/Grid.tsx`
 
-* Container type
- - 'default': Standard max-width container
- - 'lg': Large max-width container
- - 'xl': Extra large max-width container
- - 'fluid': Full width container
+- Container type
+
+* 'default': Standard max-width container
+* 'lg': Large max-width container
+* 'xl': Extra large max-width container
+* 'fluid': Full width container
 
 ---
 
@@ -53,7 +54,7 @@
 
 **File**: `src/components/ui/Button/Button.tsx`
 
-* Button component props interface
+- Button component props interface
 
 ---
 
@@ -61,7 +62,7 @@
 
 **File**: `src/components/ui/Card/Card.tsx`
 
-* Card component props interface
+- Card component props interface
 
 ---
 
@@ -69,10 +70,9 @@
 
 **File**: `src/components/ui/Input/Input.tsx`
 
-* Input component props interface
+- Input component props interface
 
 ---
-
 
 ## Adding Documentation
 
@@ -84,4 +84,4 @@ To add API documentation for your components:
 
 ---
 
-*This documentation is automatically generated from JSDoc comments in your components.*
+_This documentation is automatically generated from JSDoc comments in your components._

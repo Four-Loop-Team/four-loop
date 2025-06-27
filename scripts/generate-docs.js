@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -7,7 +9,6 @@ console.log('🚀 Starting documentation generation...');
 
 // Define directories
 const rootDir = path.resolve(__dirname, '..');
-const srcDir = path.join(rootDir, 'src');
 const docsDir = path.join(rootDir, 'docs');
 const templatesDir = path.join(docsDir, 'templates');
 
@@ -350,7 +351,6 @@ function updateReadme() {
   console.log('📝 Updating README.md...');
 
   const readmePath = path.join(rootDir, 'README.md');
-  const templatePath = path.join(templatesDir, 'README.template.md');
 
   if (!fs.existsSync(readmePath)) {
     console.log('⚠️ README.md not found, skipping update');

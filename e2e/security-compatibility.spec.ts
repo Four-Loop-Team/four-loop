@@ -11,7 +11,7 @@ test.describe('Security & Compatibility Tests', () => {
   }) => {
     // Check for security headers in response
     const response = await page.goto('/');
-    const headers = response?.headers() || {};
+    const headers = response?.headers() ?? {};
 
     // Check for X-Frame-Options (clickjacking protection)
     // Note: Next.js may set this automatically
