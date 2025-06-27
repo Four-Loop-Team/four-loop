@@ -250,25 +250,27 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
       </button>
 
       {/* Content */}
-      <div
-        className={`
-          overflow-hidden transition-all duration-${animationDuration} ease-in-out
-          ${variantClasses.content}
-        `}
-        style={{
-          height: animated ? `${contentHeight}px` : isExpanded ? 'auto' : '0px',
-        }}
-        aria-labelledby={`accordion-trigger-${item.id}`}
-        id={`accordion-content-${item.id}`}
-        role='region'
-      >
+      {isExpanded && (
         <div
-          ref={contentRef}
-          className={`${sizeClasses[size]} border-t border-gray-200`}
+          className={`
+            overflow-hidden transition-all duration-${animationDuration} ease-in-out
+            ${variantClasses.content}
+          `}
+          style={{
+            height: animated ? `${contentHeight}px` : 'auto',
+          }}
+          aria-labelledby={`accordion-trigger-${item.id}`}
+          id={`accordion-content-${item.id}`}
+          role='region'
         >
-          {item.content}
+          <div
+            ref={contentRef}
+            className={`${sizeClasses[size]} border-t border-gray-200`}
+          >
+            {item.content}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
