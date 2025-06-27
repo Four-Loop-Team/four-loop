@@ -1,0 +1,643 @@
+/**
+ * Dropdown/Select Component
+ * A flexible dropdown with search, multi-select, and grouping capabilities
+ */
+
+import React, {
+  createContext,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  DropdownContextValue,
+  DropdownProps,
+  DropdownRef,
+  Option,
+  OptionGroup,
+} from './types';
+
+// Dropdown Context
+const DropdownContext = createContext<DropdownContextValue | null>(null);
+
+// Helper function to check if an item is an OptionGroup
+const isOptionGroup = (item: Option | OptionGroup): item is OptionGroup => {
+  return 'options' in item;
+};
+
+// Helper function to flatten options from groups
+const flattenOptions = (items: Array<Option | OptionGroup>): Option[] => {
+  return items.reduce<Option[]>((acc, item) => {
+    if (isOptionGroup(item)) {
+      return [...acc, ...item.options];
+    }
+    return [...acc, item];
+  }, []);
+};
+
+// Default filter function
+const defaultFilterFunction = (option: Option, searchTerm: string): boolean => {
+  const term = searchTerm.toLowerCase();
+  return (
+    option.label.toLowerCase().includes(term) ||
+    option.value.toString().toLowerCase().includes(term)
+  );
+};
+
+const Dropdown = forwardRef<DropdownRef, DropdownProps>(
+  (
+    {
+      options,
+      value,
+      placeholder = 'Select an option...',
+      multiple = false,
+      searchable = false,
+      disabled = false,
+      loading = false,
+      required = false,
+      error = false,
+      errorMessage,
+      helperText,
+      label,
+      size = 'md',
+      maxHeight = '256px',
+      creatable = false,
+      clearSearchOnSelect = true,
+      filterFunction = defaultFilterFunction,
+      optionRenderer,
+      valueRenderer,
+      noOptionsMessage = 'No options found',
+      loadingMessage = 'Loading...',
+      onChange,
+      onSearch,
+      onOpen,
+      onClose,
+      onCreate,
+      className = '',
+      menuClassName = '',
+      'data-testid': testId = 'dropdown',
+    },
+    ref
+  ) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
+
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const menuRef = useRef<HTMLUListElement>(null);
+
+    // Convert value to array for consistent handling
+    const selectedValues = useMemo(() => {
+      if (value === undefined || value === null) return [];
+      return Array.isArray(value) ? value : [value];
+    }, [value]);
+
+    // Get all available options (flattened)
+    const allOptions = useMemo(() => flattenOptions(options), [options]);
+
+    // Get selected options
+    const selectedOptions = useMemo(() => {
+      return allOptions.filter((option) =>
+        selectedValues.includes(option.value)
+      );
+    }, [allOptions, selectedValues]);
+
+    // Filter and search options
+    const filteredOptions = useMemo(() => {
+      if (!searchTerm) return options;
+
+      return options.reduce<Array<Option | OptionGroup>>((acc, item) => {
+        if (isOptionGroup(item)) {
+          const filteredGroupOptions = item.options.filter((option) =>
+            filterFunction(option, searchTerm)
+          );
+          if (filteredGroupOptions.length > 0) {
+            acc.push({ ...item, options: filteredGroupOptions });
+          }
+        } else {
+          if (filterFunction(item, searchTerm)) {
+            acc.push(item);
+          }
+        }
+        return acc;
+      }, []);
+    }, [options, searchTerm, filterFunction]);
+
+    // Get flattened filtered options for keyboard navigation
+    const flatFilteredOptions = useMemo(
+      () => flattenOptions(filteredOptions),
+      [filteredOptions]
+    );
+
+    // Handle option selection
+    const selectOption = useCallback(
+      (option: Option) => {
+        if (option.disabled) return;
+
+        let newValue: string | number | Array<string | number>;
+        let newSelectedOptions: Option | Option[];
+
+        if (multiple) {
+          const isSelected = selectedValues.includes(option.value);
+          if (isSelected) {
+            newValue = selectedValues.filter((v) => v !== option.value);
+            newSelectedOptions = selectedOptions.filter(
+              (o) => o.value !== option.value
+            );
+          } else {
+            newValue = [...selectedValues, option.value];
+            newSelectedOptions = [...selectedOptions, option];
+          }
+        } else {
+          newValue = option.value;
+          newSelectedOptions = option;
+          setIsOpen(false);
+          onClose?.();
+        }
+
+        if (clearSearchOnSelect && searchable) {
+          setSearchTerm('');
+        }
+
+        setHighlightedIndex(-1);
+        onChange?.(newValue, newSelectedOptions);
+      },
+      [
+        multiple,
+        selectedValues,
+        selectedOptions,
+        clearSearchOnSelect,
+        searchable,
+        onChange,
+        onClose,
+      ]
+    );
+
+    // Handle keyboard navigation
+    const handleKeyDown = useCallback(
+      (event: React.KeyboardEvent) => {
+        if (disabled) return;
+
+        switch (event.key) {
+          case 'ArrowDown':
+            event.preventDefault();
+            if (!isOpen) {
+              setIsOpen(true);
+              onOpen?.();
+            } else {
+              setHighlightedIndex((prev) =>
+                prev < flatFilteredOptions.length - 1 ? prev + 1 : 0
+              );
+            }
+            break;
+          case 'ArrowUp':
+            event.preventDefault();
+            if (isOpen) {
+              setHighlightedIndex((prev) =>
+                prev > 0 ? prev - 1 : flatFilteredOptions.length - 1
+              );
+            }
+            break;
+          case 'Enter':
+            event.preventDefault();
+            if (isOpen && highlightedIndex >= 0) {
+              selectOption(flatFilteredOptions[highlightedIndex]);
+            } else if (!isOpen) {
+              setIsOpen(true);
+              onOpen?.();
+            }
+            break;
+          case 'Escape':
+            event.preventDefault();
+            if (isOpen) {
+              setIsOpen(false);
+              setHighlightedIndex(-1);
+              onClose?.();
+            }
+            break;
+          case 'Tab':
+            if (isOpen) {
+              setIsOpen(false);
+              setHighlightedIndex(-1);
+              onClose?.();
+            }
+            break;
+        }
+      },
+      [
+        disabled,
+        isOpen,
+        highlightedIndex,
+        flatFilteredOptions,
+        onOpen,
+        onClose,
+        selectOption,
+      ]
+    );
+
+    // Handle search input change
+    const handleSearchChange = useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newSearchTerm = event.target.value;
+        setSearchTerm(newSearchTerm);
+        setHighlightedIndex(-1);
+        onSearch?.(newSearchTerm);
+      },
+      [onSearch]
+    );
+
+    // Handle dropdown toggle
+    const toggleDropdown = useCallback(() => {
+      if (disabled) return;
+
+      if (isOpen) {
+        setIsOpen(false);
+        setHighlightedIndex(-1);
+        onClose?.();
+      } else {
+        setIsOpen(true);
+        onOpen?.();
+        if (searchable) {
+          setTimeout(() => inputRef.current?.focus(), 0);
+        }
+      }
+    }, [disabled, isOpen, searchable, onOpen, onClose]);
+
+    // Handle outside click
+    useEffect(() => {
+      const handleOutsideClick = (event: MouseEvent) => {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target as Node)
+        ) {
+          setIsOpen(false);
+          setHighlightedIndex(-1);
+          onClose?.();
+        }
+      };
+
+      if (isOpen) {
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () =>
+          document.removeEventListener('mousedown', handleOutsideClick);
+      }
+
+      return undefined;
+    }, [isOpen, onClose]);
+
+    // Expose ref methods
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus: () => {
+          if (searchable) {
+            inputRef.current?.focus();
+          } else {
+            dropdownRef.current?.focus();
+          }
+        },
+        blur: () => {
+          if (searchable) {
+            inputRef.current?.blur();
+          } else {
+            dropdownRef.current?.blur();
+          }
+        },
+        open: () => {
+          setIsOpen(true);
+          onOpen?.();
+        },
+        close: () => {
+          setIsOpen(false);
+          setHighlightedIndex(-1);
+          onClose?.();
+        },
+        clear: () => {
+          onChange?.(multiple ? [] : '', multiple ? [] : undefined);
+          setSearchTerm('');
+        },
+      }),
+      [searchable, multiple, onChange, onOpen, onClose]
+    );
+
+    const sizeClasses = {
+      sm: 'text-sm px-3 py-1.5',
+      md: 'text-sm px-3 py-2',
+      lg: 'text-base px-4 py-2.5',
+    };
+
+    const menuId = `dropdown-menu-${testId}`;
+
+    const contextValue: DropdownContextValue = {
+      isOpen,
+      searchTerm,
+      highlightedIndex,
+      selectedOptions,
+      filteredOptions,
+      setSearchTerm,
+      setHighlightedIndex,
+      selectOption,
+      removeOption: (option: Option) => {
+        if (multiple) {
+          const newValue = selectedValues.filter((v) => v !== option.value);
+          const newSelectedOptions = selectedOptions.filter(
+            (o) => o.value !== option.value
+          );
+          onChange?.(newValue, newSelectedOptions);
+        }
+      },
+      openDropdown: () => setIsOpen(true),
+      closeDropdown: () => setIsOpen(false),
+    };
+
+    return (
+      <DropdownContext.Provider value={contextValue}>
+        <div
+          className={`relative ${className}`}
+          ref={dropdownRef}
+          data-testid={testId}
+        >
+          {label && (
+            <label
+              className={`block text-sm font-medium mb-1 ${error ? 'text-red-700' : 'text-gray-700'}`}
+            >
+              {label}
+              {required && <span className='text-red-500 ml-1'>*</span>}
+            </label>
+          )}
+
+          <div
+            className={`
+            relative w-full border rounded-md shadow-sm cursor-pointer transition-colors duration-200
+            ${error ? 'border-red-300' : 'border-gray-300 hover:border-gray-400'}
+            ${disabled ? 'bg-gray-50 cursor-not-allowed' : 'bg-white'}
+            ${isOpen ? 'ring-1 ring-blue-500 border-blue-500' : ''}
+            ${sizeClasses[size]}
+          `}
+            onClick={toggleDropdown}
+            onKeyDown={handleKeyDown}
+            tabIndex={searchable ? -1 : 0}
+            role='combobox'
+            aria-expanded={isOpen}
+            aria-haspopup='listbox'
+            aria-controls={menuId}
+            aria-disabled={disabled}
+            aria-label={label ?? placeholder}
+          >
+            <div className='flex items-center justify-between'>
+              <div className='flex-1 min-w-0'>
+                {searchable && isOpen ? (
+                  <input
+                    ref={inputRef}
+                    type='text'
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyDown}
+                    className='w-full border-0 p-0 bg-transparent focus:outline-none'
+                    placeholder={selectedOptions.length > 0 ? '' : placeholder}
+                    disabled={disabled}
+                  />
+                ) : (
+                  <div className='truncate'>
+                    {selectedOptions.length > 0 ? (
+                      valueRenderer ? (
+                        valueRenderer(
+                          multiple ? selectedOptions : selectedOptions[0]
+                        )
+                      ) : multiple ? (
+                        <div className='flex flex-wrap gap-1'>
+                          {selectedOptions.map((option) => (
+                            <span
+                              key={option.value}
+                              className='inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded'
+                            >
+                              {option.label}
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  selectOption(option);
+                                }}
+                                className='hover:text-blue-600'
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        selectedOptions[0].label
+                      )
+                    ) : (
+                      <span className='text-gray-500'>{placeholder}</span>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className='flex items-center ml-2'>
+                {loading && (
+                  <svg
+                    className='animate-spin w-4 h-4 text-gray-400 mr-2'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                  >
+                    <circle
+                      className='opacity-25'
+                      cx='12'
+                      cy='12'
+                      r='10'
+                      stroke='currentColor'
+                      strokeWidth='4'
+                    />
+                    <path
+                      className='opacity-75'
+                      fill='currentColor'
+                      d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                    />
+                  </svg>
+                )}
+                <svg
+                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M19 9l-7 7-7-7'
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Dropdown Menu */}
+          {isOpen && (
+            <ul
+              ref={menuRef}
+              id={menuId}
+              className={`
+              absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg
+              max-h-60 overflow-auto focus:outline-none
+              ${menuClassName}
+            `}
+              style={{ maxHeight }}
+              role='listbox'
+              aria-multiselectable={multiple}
+              aria-label='Options'
+            >
+              {loading ? (
+                <li className='px-3 py-2 text-gray-500'>{loadingMessage}</li>
+              ) : flatFilteredOptions.length === 0 ? (
+                <li className='px-3 py-2 text-gray-500'>
+                  {creatable && searchTerm ? (
+                    <button
+                      className='w-full text-left hover:bg-gray-50'
+                      onClick={() => onCreate?.(searchTerm)}
+                    >
+                      Create &quot;{searchTerm}&quot;
+                    </button>
+                  ) : (
+                    noOptionsMessage
+                  )}
+                </li>
+              ) : (
+                filteredOptions.map((item, groupIndex) => {
+                  if (isOptionGroup(item)) {
+                    return (
+                      <li key={`group-${groupIndex}`}>
+                        <div className='px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50'>
+                          {item.label}
+                        </div>
+                        {item.options.map((option) => {
+                          const flatIndex = flatFilteredOptions.findIndex(
+                            (o) => o.value === option.value
+                          );
+                          return (
+                            <OptionItem
+                              key={option.value}
+                              option={option}
+                              isSelected={selectedValues.includes(option.value)}
+                              isHighlighted={highlightedIndex === flatIndex}
+                              onClick={() => selectOption(option)}
+                              {...(optionRenderer && {
+                                renderer: optionRenderer,
+                              })}
+                            />
+                          );
+                        })}
+                      </li>
+                    );
+                  } else {
+                    const flatIndex = flatFilteredOptions.findIndex(
+                      (o) => o.value === item.value
+                    );
+                    return (
+                      <OptionItem
+                        key={item.value}
+                        option={item}
+                        isSelected={selectedValues.includes(item.value)}
+                        isHighlighted={highlightedIndex === flatIndex}
+                        onClick={() => selectOption(item)}
+                        {...(optionRenderer && { renderer: optionRenderer })}
+                      />
+                    );
+                  }
+                })
+              )}
+            </ul>
+          )}
+
+          {/* Helper text or error message */}
+          {(helperText ?? errorMessage) && (
+            <p
+              className={`mt-1 text-xs ${error ? 'text-red-600' : 'text-gray-500'}`}
+            >
+              {error ? errorMessage : helperText}
+            </p>
+          )}
+        </div>
+      </DropdownContext.Provider>
+    );
+  }
+);
+
+// Option Item Component
+interface OptionItemProps {
+  option: Option;
+  isSelected: boolean;
+  isHighlighted: boolean;
+  onClick: () => void;
+  renderer?: (
+    option: Option,
+    isSelected: boolean,
+    isHighlighted: boolean
+  ) => React.ReactNode;
+}
+
+const OptionItem: React.FC<OptionItemProps> = ({
+  option,
+  isSelected,
+  isHighlighted,
+  onClick,
+  renderer,
+}) => {
+  if (renderer) {
+    return (
+      <li>
+        <div onClick={onClick} className='cursor-pointer'>
+          {renderer(option, isSelected, isHighlighted)}
+        </div>
+      </li>
+    );
+  }
+
+  return (
+    <li
+      className={`
+        px-3 py-2 cursor-pointer flex items-center justify-between
+        ${isHighlighted ? 'bg-blue-50' : 'hover:bg-gray-50'}
+        ${option.disabled ? 'opacity-50 cursor-not-allowed' : ''}
+      `}
+      onClick={option.disabled ? undefined : onClick}
+      role='option'
+      aria-selected={isSelected}
+    >
+      <div className='flex items-center gap-2 flex-1 min-w-0'>
+        {option.icon && <span className='flex-shrink-0'>{option.icon}</span>}
+        <div className='flex-1 min-w-0'>
+          <div className='truncate'>{option.label}</div>
+          {option.description && (
+            <div className='text-xs text-gray-500 truncate'>
+              {option.description}
+            </div>
+          )}
+        </div>
+      </div>
+      {isSelected && (
+        <svg
+          className='w-4 h-4 text-blue-600 flex-shrink-0'
+          fill='currentColor'
+          viewBox='0 0 20 20'
+        >
+          <path
+            fillRule='evenodd'
+            d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+            clipRule='evenodd'
+          />
+        </svg>
+      )}
+    </li>
+  );
+};
+
+Dropdown.displayName = 'Dropdown';
+
+export { Dropdown };

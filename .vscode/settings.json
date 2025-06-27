@@ -113,5 +113,5 @@
   "files.autoSaveDelay": 1000,
 
   // Spell check
-  "cSpell.words": ["blinkmacsystemfont", "Segoe"]
+  "cSpell.words": ["blinkmacsystemfont", "Segoe", "WCAG"]
 }
