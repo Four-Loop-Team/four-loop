@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-06-27T01:13:24.283Z
+> 🤖 Auto-generated on 2025-06-27T01:15:47.203Z
 
 ## Component API Reference
 
