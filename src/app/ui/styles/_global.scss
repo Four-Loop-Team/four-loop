@@ -3,6 +3,9 @@
 @use 'variables';
 @use 'accessibility';
 
+/* Import Design System CSS */
+@import '../../../styles/design-system.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -23,10 +23,4 @@ export {
 } from './breakpoints';
 
 // Colors and theme
-export {
-  COLORS,
-  THEME_MODES,
-  Z_INDEX,
-  type ColorPalette,
-  type ThemeMode,
-} from './colors';
+export { COLORS, THEME_MODES, Z_INDEX, type ThemeMode } from './colors';

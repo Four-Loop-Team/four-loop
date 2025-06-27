@@ -9,6 +9,7 @@ export const ROUTES = {
   CONTACT: '/contact',
   FAQ: '/faq',
   COMPONENTS_DEMO: '/components-demo',
+  DESIGN_SYSTEM_DEMO: '/design-system-demo',
 } as const;
 
 export const EXTERNAL_LINKS = {
@@ -42,6 +43,11 @@ export const NAVIGATION_ITEMS = [
     label: 'FAQ',
     href: ROUTES.FAQ,
     description: 'Frequently asked questions',
+  },
+  {
+    label: 'Design System',
+    href: ROUTES.DESIGN_SYSTEM_DEMO,
+    description: 'Explore our enhanced design system',
   },
 ] as const;
 
