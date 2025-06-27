@@ -38,3 +38,8 @@ packages/react-devtools-inline/dist
 packages/react-devtools-shell/dist
 packages/react-devtools-timeline/dist
 tsconfig.tsbuildinfo
+
+# Test artifacts and reports
+test-results/
+playwright-report/
+*.tsbuildinfo
