@@ -47,3 +47,6 @@ playwright-report/
 # Performance monitoring results (generated files)
 performance-results/
 vitals-results/
+
+# Quality and standards reports (generated files)
+quality-reports/

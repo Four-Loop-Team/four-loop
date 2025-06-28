@@ -4,6 +4,13 @@ npx lint-staged
 # Type check (fast, doesn't require building)
 npm run type-check
 
+# Run standards enforcement (quick check to avoid hanging)
+echo "🔍 Running standards enforcement..."
+npm run standards:quick || {
+  echo "⚠️  Standards checks found issues but continuing with commit..."
+  echo "💡 Run 'npm run standards:enforce' to see detailed report"
+}
+
 # Run tests related to staged files (faster than full test suite)
 # Get staged files and run related tests only if there are JS/TS files
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' || true)

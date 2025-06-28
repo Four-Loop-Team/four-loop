@@ -19,6 +19,12 @@ module.exports = {
   // Shell scripts (no formatting, just make executable)
   '*.sh': ['chmod +x'],
 
-  // Note: Documentation generation removed from lint-staged to prevent infinite loops
-  // Documentation should be updated manually with: npm run docs:generate
+  // Component files - trigger documentation update check
+  'src/components/**/*.{ts,tsx}': ['npm run docs:generate --silent || true'],
+
+  // Package.json changes - trigger dependency report update
+  'package.json': ['npm run docs:generate --silent || true'],
+
+  // Note: Documentation generation runs conditionally to prevent infinite loops
+  // Full standards enforcement runs in pre-commit hook
 };
