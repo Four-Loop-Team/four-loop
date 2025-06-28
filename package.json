@@ -34,7 +34,7 @@
     "deps:report": "npm run docs:generate && cat docs/DEPENDENCY_REPORT.md",
     "security:audit": "npm audit",
     "security:audit:fix": "npm audit fix",
-    "performance:budget": "next build --profile && npx bundlesize",
+    "performance:budget": "next build --profile && npm run performance:check",
     "performance:analyze": "ANALYZE=true npm run build",
     "performance:check": "node scripts/check-performance-budget.js",
     "performance:vitals": "node scripts/measure-core-web-vitals.js",
