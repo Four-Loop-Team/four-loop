@@ -330,6 +330,147 @@ class StandardsEnforcer {
     }
   }
 
+  // Check JSDoc quality and coverage for components
+  async checkJSDocQuality() {
+    console.log('\n📖 Checking JSDoc documentation quality...');
+
+    const componentFiles = this.findFiles(
+      path.join(this.projectRoot, 'src/components'),
+      /\.tsx?$/
+    ).filter(
+      (file) =>
+        !file.includes('__tests__') &&
+        !file.includes('.test.') &&
+        !file.includes('.spec.')
+    );
+
+    let componentsWithJSDoc = 0;
+    let componentsWithGoodJSDoc = 0;
+    const issuesFound = [];
+
+    for (const filePath of componentFiles) {
+      try {
+        const content = fs.readFileSync(filePath, 'utf8');
+        const relativePath = path.relative(this.projectRoot, filePath);
+
+        // Check if file exports a React component
+        const hasComponent =
+          /export\s+(const|function|class)\s+\w+/.test(content) ||
+          /export\s+default\s+(function|class|\w+)/.test(content);
+
+        if (!hasComponent) continue;
+
+        // Check for JSDoc blocks
+        const jsdocBlocks = content.match(/\/\*\*[\s\S]*?\*\//g) || [];
+
+        if (jsdocBlocks.length === 0) {
+          issuesFound.push(`${relativePath}: Missing JSDoc documentation`);
+          continue;
+        }
+
+        componentsWithJSDoc++;
+
+        // Analyze JSDoc quality
+        const hasComponentTag = jsdocBlocks.some((block) =>
+          block.includes('@component')
+        );
+        const hasExample = jsdocBlocks.some((block) =>
+          block.includes('@example')
+        );
+        const hasParams = jsdocBlocks.some((block) => block.includes('@param'));
+        const hasDescription = jsdocBlocks.some((block) => {
+          const lines = block
+            .split('\n')
+            .filter(
+              (line) =>
+                !line.includes('/**') &&
+                !line.includes('*/') &&
+                !line.includes('@') &&
+                line.replace(/\s*\*/g, '').trim().length > 0
+            );
+          return lines.length > 0;
+        });
+
+        let quality = 0;
+        if (hasDescription) quality++;
+        if (hasComponentTag) quality++;
+        if (hasExample) quality++;
+        if (
+          hasParams &&
+          content.includes('interface') &&
+          content.includes('Props')
+        )
+          quality++;
+
+        if (quality >= 3) {
+          componentsWithGoodJSDoc++;
+        } else {
+          const missing = [];
+          if (!hasDescription) missing.push('description');
+          if (!hasComponentTag) missing.push('@component tag');
+          if (!hasExample) missing.push('@example');
+          if (!hasParams && content.includes('Props'))
+            missing.push('@param for props');
+
+          issuesFound.push(
+            `${relativePath}: Incomplete JSDoc (missing: ${missing.join(', ')})`
+          );
+        }
+      } catch (error) {
+        this.logWarning(
+          `Error checking JSDoc in ${filePath}: ${error.message}`
+        );
+      }
+    }
+
+    // Report results
+    const totalComponents = componentFiles.length;
+    const jsdocCoverage =
+      totalComponents > 0
+        ? ((componentsWithJSDoc / totalComponents) * 100).toFixed(1)
+        : 0;
+    const qualityCoverage =
+      totalComponents > 0
+        ? ((componentsWithGoodJSDoc / totalComponents) * 100).toFixed(1)
+        : 0;
+
+    if (componentsWithJSDoc === totalComponents) {
+      this.logSuccess(
+        `All ${totalComponents} components have JSDoc documentation`
+      );
+    } else {
+      this.logWarning(
+        `JSDoc coverage: ${jsdocCoverage}% (${componentsWithJSDoc}/${totalComponents})`
+      );
+    }
+
+    if (componentsWithGoodJSDoc >= totalComponents * 0.8) {
+      this.logSuccess(`Good JSDoc quality coverage: ${qualityCoverage}%`);
+    } else {
+      this.logWarning(
+        `JSDoc quality coverage: ${qualityCoverage}% (target: 80%)`
+      );
+    }
+
+    // Report specific issues
+    if (issuesFound.length > 0) {
+      this.logWarning(`JSDoc issues found in ${issuesFound.length} files:`);
+      issuesFound.slice(0, 10).forEach((issue) => {
+        this.logWarning(issue);
+      });
+      if (issuesFound.length > 10) {
+        this.logWarning(`... and ${issuesFound.length - 10} more files`);
+      }
+    }
+
+    this.stats.documentsValidated += componentsWithJSDoc;
+    return {
+      coverage: jsdocCoverage,
+      quality: qualityCoverage,
+      issues: issuesFound.length,
+    };
+  }
+
   // Helper methods
   getSourceFiles() {
     const srcDir = path.join(this.projectRoot, 'src');
@@ -462,6 +603,7 @@ class StandardsEnforcer {
     console.log('🚀 Starting standards enforcement...\n');
 
     await this.checkDocumentationFreshness();
+    await this.checkJSDocQuality();
     await this.checkTestCoverage();
     await this.checkAccessibility();
     await this.checkDemos();

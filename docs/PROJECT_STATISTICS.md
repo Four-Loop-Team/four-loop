@@ -1,6 +1,6 @@
 # Project Statistics
 
-> 🤖 Auto-generated on 2025-06-28T14:41:52.440Z
+> 🤖 Auto-generated on 2025-06-28T14:53:12.580Z
 
 ## 📊 Overview
 
@@ -17,8 +17,8 @@
 ## 🧩 Components
 
 - **Total Components**: 58
-- **Documented Components**: 27
-- **Documentation Coverage**: 47%
+- **Documented Components**: 28
+- **Documentation Coverage**: 48%
 
 ## 📦 Dependencies
 
@@ -34,7 +34,7 @@
 ## 📝 Documentation
 
 - **Documentation Pages**: 32
-- **Last Updated**: 2025-06-28T14:41:52.441Z
+- **Last Updated**: 2025-06-28T14:53:12.580Z
 
 ---
 
