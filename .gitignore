@@ -43,3 +43,7 @@ tsconfig.tsbuildinfo
 test-results/
 playwright-report/
 *.tsbuildinfo
+
+# Performance monitoring results (generated files)
+performance-results/
+vitals-results/
