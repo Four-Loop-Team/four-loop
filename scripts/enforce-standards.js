@@ -159,10 +159,11 @@ class StandardsEnforcer {
     }
 
     try {
-      // Run accessibility tests
-      execSync('npm run test:accessibility', {
+      // Run accessibility tests using CI mode to prevent browser auto-opening
+      execSync('npm run test:accessibility:ci', {
         stdio: 'pipe',
         timeout: 60000, // 1 minute timeout
+        env: { ...process.env, CI: 'true' },
       });
       this.logSuccess('Accessibility tests passed');
       this.stats.accessibilityChecks++;
@@ -243,9 +244,10 @@ class StandardsEnforcer {
 
     // Run E2E tests to ensure they pass
     try {
-      execSync('npm run test:e2e', {
+      execSync('npm run test:e2e:ci', {
         stdio: 'pipe',
         timeout: 120000, // 2 minute timeout
+        env: { ...process.env, CI: 'true' },
       });
       this.logSuccess('E2E tests passed');
     } catch (error) {
