@@ -55,7 +55,7 @@ test.describe('Visual Regression Tests', () => {
     await page.waitForLoadState('networkidle');
 
     // Open modal
-    await page.click('text=Open Modal', { force: true });
+    await page.click('text=Open Modal');
     await page.waitForSelector('[data-testid="modal"]');
 
     // Disable animations
@@ -100,41 +100,38 @@ test.describe('Visual Regression Tests', () => {
     });
   });
 
-  test.skip('toast notifications visual comparison', async ({ page }) => {
+  test('button interactions visual comparison', async ({ page }) => {
     await page.goto('/components-demo');
     await page.waitForLoadState('networkidle');
 
-    // Trigger toast
-    await page.click('text=Show Success Toast');
-    await page.waitForSelector('[data-testid*="toast"]');
+    // Scroll to buttons section
+    await page.locator('text=Buttons').scrollIntoViewIfNeeded();
 
-    // Disable toast animations
-    await page.addStyleTag({
-      content: `
-        [data-testid*="toast"] {
-          animation: none !important;
-          transition: none !important;
-          transform: none !important;
-        }
-      `,
-    });
-
-    await expect(page).toHaveScreenshot('toast-notification.png', {
+    // Take screenshot of the buttons section
+    const buttonsSection = page
+      .locator('h2:has-text("Basic Components")')
+      .locator('..')
+      .locator('div.grid')
+      .first();
+    await expect(buttonsSection).toHaveScreenshot('buttons-section.png', {
       threshold: 0.2,
     });
   });
 
-  test.skip('data table visual comparison', async ({ page }) => {
+  test('data table visual comparison', async ({ page }) => {
     await page.goto('/components-demo');
     await page.waitForLoadState('networkidle');
 
     // Scroll to data table section
-    await page.locator('text=DataTable Demo').scrollIntoViewIfNeeded();
+    await page.locator('text=Data Table').scrollIntoViewIfNeeded();
 
-    // Take screenshot of just the data table section
-    await expect(
-      page.locator('[data-testid="datatable-demo"]')
-    ).toHaveScreenshot('datatable-component.png', {
+    // Take screenshot of just the data table card
+    const dataTableCard = page
+      .locator('h2:has-text("Data Display")')
+      .locator('..')
+      .locator('.grid')
+      .first();
+    await expect(dataTableCard).toHaveScreenshot('datatable-component.png', {
       threshold: 0.2,
     });
   });
