@@ -113,5 +113,13 @@
   "files.autoSaveDelay": 1000,
 
   // Spell check
-  "cSpell.words": ["blinkmacsystemfont", "rgba", "Segoe", "WCAG"]
+  "cSpell.words": [
+    "blinkmacsystemfont",
+    "bundlesize",
+    "datatable",
+    "networkidle",
+    "rgba",
+    "Segoe",
+    "WCAG"
+  ]
 }
