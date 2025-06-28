@@ -1,23 +1,23 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
-  Toolbar,
   Box,
   Button,
-  IconButton,
+  Container,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
+  Toolbar,
   useMediaQuery,
   useTheme,
-  Container,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
+import { useEffect, useRef, useState } from 'react';
 
 const navigationItems = [
   { label: 'Work', href: '#work' },
@@ -185,6 +185,8 @@ export default function Navigation() {
           onClick={handleDrawerToggle}
           sx={{
             color: 'white',
+            minWidth: '44px',
+            minHeight: '44px',
             p: 1,
             '&:hover': {
               backgroundColor: 'rgba(226, 232, 145, 0.1)',
@@ -366,7 +368,11 @@ export default function Navigation() {
               <IconButton
                 edge='end'
                 onClick={handleDrawerToggle}
-                sx={{ color: 'white' }}
+                sx={{
+                  color: 'white',
+                  minWidth: '44px',
+                  minHeight: '44px',
+                }}
                 aria-label={
                   mobileOpen ? 'Close navigation menu' : 'Open navigation menu'
                 }

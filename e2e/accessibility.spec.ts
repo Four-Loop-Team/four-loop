@@ -1,6 +1,6 @@
 // Accessibility tests using axe-core
-import { test, expect } from '@playwright/test';
-import { injectAxe, checkA11y } from 'axe-playwright';
+import { expect, test } from '@playwright/test';
+import { checkA11y, injectAxe } from 'axe-playwright';
 
 test.describe('Accessibility Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -130,9 +130,12 @@ test.describe('Accessibility Tests', () => {
     });
 
     // Test touch targets are appropriately sized
-    const clickableElements = page.locator('button, a, [role="button"]');
+    // Exclude Next.js dev tools button which is development-only
+    const clickableElements = page.locator(
+      'button:not([data-nextjs-dev-tools-button]), a, [role="button"]'
+    );
     const elementCount = await clickableElements.count();
-    for (let i = 0; i < Math.min(elementCount, 5); i++) {
+    for (let i = 0; i < Math.min(elementCount, 10); i++) {
       const element = clickableElements.nth(i);
       const box = await element.boundingBox();
       if (box) {
