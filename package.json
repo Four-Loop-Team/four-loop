@@ -36,6 +36,8 @@
     "security:audit:fix": "npm audit fix",
     "performance:budget": "next build --profile && npx bundlesize",
     "performance:analyze": "ANALYZE=true npm run build",
+    "performance:check": "node scripts/check-performance-budget.js",
+    "performance:vitals": "node scripts/measure-core-web-vitals.js",
     "quality:check": "npm run lint:check && npm run type-check && npm run test && npm run security:audit && npm run performance:budget",
     "quality:fix": "npm run lint:fix && npm run format",
     "quality:full": "npm run quality:fix && npm run test:coverage",
