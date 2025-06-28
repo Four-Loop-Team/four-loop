@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Button from '../Button';
 
 describe('Button Component', () => {
@@ -25,10 +25,22 @@ describe('Button Component', () => {
 
   it('renders different sizes correctly', () => {
     const { rerender } = render(<Button size='sm'>Small</Button>);
-    expect(screen.getByRole('button')).toHaveClass('px-3', 'py-2', 'text-sm');
+    expect(screen.getByRole('button')).toHaveClass(
+      'px-4',
+      'py-3',
+      'text-sm',
+      'min-w-[44px]',
+      'min-h-[44px]'
+    );
 
     rerender(<Button size='lg'>Large</Button>);
-    expect(screen.getByRole('button')).toHaveClass('px-6', 'py-3', 'text-lg');
+    expect(screen.getByRole('button')).toHaveClass(
+      'px-8',
+      'py-4',
+      'text-lg',
+      'min-w-[44px]',
+      'min-h-[44px]'
+    );
   });
 
   it('shows loading state correctly', () => {

@@ -158,9 +158,9 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   }, [isExpanded, animated]);
 
   const sizeClasses = {
-    sm: 'px-3 py-2 text-sm',
-    md: 'px-4 py-3 text-base',
-    lg: 'px-6 py-4 text-lg',
+    sm: 'px-4 py-3 text-sm min-h-[44px]', // Updated for 44px min touch target
+    md: 'px-6 py-3 text-base min-h-[44px]', // Updated for 44px min touch target
+    lg: 'px-8 py-4 text-lg min-h-[44px]', // Updated for 44px min touch target
   };
 
   const getVariantClasses = () => {
@@ -329,9 +329,9 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   };
 
   const sizeClasses = {
-    sm: 'px-3 py-2 text-sm',
-    md: 'px-4 py-3 text-base',
-    lg: 'px-6 py-4 text-lg',
+    sm: 'px-4 py-3 text-sm min-h-[44px]', // Updated for 44px min touch target
+    md: 'px-6 py-3 text-base min-h-[44px]', // Updated for 44px min touch target
+    lg: 'px-8 py-4 text-lg min-h-[44px]', // Updated for 44px min touch target
   };
 
   const getVariantClasses = () => {

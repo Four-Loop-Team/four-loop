@@ -166,7 +166,7 @@ const Toast: React.FC<ToastProps> = ({
                     key={index}
                     onClick={action.onClick}
                     className={`
-                      text-xs font-medium px-3 py-1.5 rounded transition-colors duration-200
+                      text-xs font-medium px-4 py-3 rounded transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center
                       ${
                         action.variant === 'primary'
                           ? 'bg-blue-600 text-white hover:bg-blue-700'
@@ -186,7 +186,7 @@ const Toast: React.FC<ToastProps> = ({
             <div className='ml-4 flex-shrink-0'>
               <button
                 onClick={handleDismiss}
-                className='text-gray-400 hover:text-gray-600 transition-colors duration-200'
+                className='text-gray-400 hover:text-gray-600 transition-colors duration-200 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center'
                 aria-label='Dismiss notification'
               >
                 <svg
