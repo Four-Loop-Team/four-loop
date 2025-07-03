@@ -107,11 +107,10 @@ export default function ComponentsDemo() {
       <StickyHeader className='bg-white shadow-sm border-b'>
         <div className='max-w-6xl mx-auto px-4 py-4'>
           <h1 className='text-3xl font-bold text-gray-900'>
-            Four Loop Digital UI Components
+            🧩 Component Showcase
           </h1>
           <p className='text-lg text-gray-600 mt-2'>
-            Complete component library with TypeScript, accessibility, and
-            modern design
+            Interactive demonstration of all UI components
           </p>
         </div>
       </StickyHeader>
@@ -120,7 +119,9 @@ export default function ComponentsDemo() {
         <div className='grid gap-8'>
           {/* Basic Components */}
           <section>
-            <h2 className='text-2xl font-semibold mb-6'>Basic Components</h2>
+            <h2 className='text-2xl font-semibold mb-6'>
+              📱 Advanced Components
+            </h2>
             <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
               {/* Buttons */}
               <Card variant='elevated'>
@@ -210,7 +211,7 @@ export default function ComponentsDemo() {
           {/* Interactive Components */}
           <section>
             <h2 className='text-2xl font-semibold mb-6'>
-              Interactive Components
+              🎛️ Interactive Components
             </h2>
             <div className='grid gap-8 md:grid-cols-2'>
               {/* Accordion */}
@@ -306,7 +307,7 @@ export default function ComponentsDemo() {
 
           {/* Data Components */}
           <section>
-            <h2 className='text-2xl font-semibold mb-6'>Data Display</h2>
+            <h2 className='text-2xl font-semibold mb-6'>📊 Data Display</h2>
             <div className='grid gap-8'>
               {/* DataTable */}
               <Card variant='elevated'>
@@ -350,7 +351,7 @@ export default function ComponentsDemo() {
 
           {/* Form Components */}
           <section>
-            <h2 className='text-2xl font-semibold mb-6'>Form Components</h2>
+            <h2 className='text-2xl font-semibold mb-6'>📝 Form Components</h2>
             <div className='grid gap-8 md:grid-cols-2'>
               {/* Calendar */}
               <Card variant='elevated'>
@@ -373,7 +374,7 @@ export default function ComponentsDemo() {
               <Card variant='elevated'>
                 <CardHeader
                   title='File Upload'
-                  subtitle='Drag and drop file upload'
+                  subtitle='File drag-and-drop upload'
                 />
                 <CardContent>
                   <FileUpload
@@ -394,7 +395,7 @@ export default function ComponentsDemo() {
               <Card variant='elevated' className='md:col-span-2'>
                 <CardHeader
                   title='Rich Text Editor'
-                  subtitle='WYSIWYG text editor'
+                  subtitle='Rich text editing capabilities'
                 />
                 <CardContent>
                   <RichTextEditor
@@ -445,9 +446,55 @@ export default function ComponentsDemo() {
             </div>
           </section>
 
+          {/* Navigation Components */}
+          <section>
+            <h2 className='text-2xl font-semibold mb-6'>🧭 Navigation</h2>
+            <div className='grid gap-8'>
+              <Card variant='elevated'>
+                <CardHeader
+                  title='Sticky Header'
+                  subtitle='Navigation that sticks to the top of the page'
+                />
+                <CardContent>
+                  <div className='border rounded-lg overflow-hidden'>
+                    <StickyHeader className='bg-blue-600 text-white'>
+                      <div className='flex items-center justify-between px-4 py-3'>
+                        <div className='flex items-center gap-4'>
+                          <h3 className='font-semibold'>Brand</h3>
+                          <nav className='hidden md:flex gap-4'>
+                            <Button variant='ghost' size='sm'>
+                              Home
+                            </Button>
+                            <Button variant='ghost' size='sm'>
+                              About
+                            </Button>
+                            <Button variant='ghost' size='sm'>
+                              Services
+                            </Button>
+                            <Button variant='ghost' size='sm'>
+                              Contact
+                            </Button>
+                          </nav>
+                        </div>
+                        <Button variant='ghost' size='sm'>
+                          Menu
+                        </Button>
+                      </div>
+                    </StickyHeader>
+                    <div className='p-4 bg-gray-50 text-center'>
+                      <p className='text-gray-600'>Page content goes here...</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           {/* Sticky Demo */}
           <section>
-            <h2 className='text-2xl font-semibold mb-6'>Layout Components</h2>
+            <h2 className='text-2xl font-semibold mb-6'>
+              🎨 Layout & Structure
+            </h2>
             <Card variant='elevated'>
               <CardHeader
                 title='Sticky Component'
@@ -522,7 +569,9 @@ export default function ComponentsDemo() {
                 </h2>
                 <p className='text-gray-600 mb-4'>
                   Built with TypeScript, tested with Jest, and documented
-                  comprehensively.
+                  comprehensively. All components support theming. Built with
+                  accessibility in mind. Responsive design included for all
+                  screen sizes.
                 </p>
                 <div className='flex justify-center gap-4'>
                   <Button

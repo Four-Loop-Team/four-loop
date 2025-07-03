@@ -54,20 +54,40 @@
     "typescriptreact"
   ],
   "eslint.format.enable": true,
-  "eslint.lintTask.enable": true,
-
-  // YAML settings
-  "yaml.validate": true,
-  "yaml.hover": true,
-  "yaml.completion": true,
-  "yaml.schemas": {
-    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml"
-  },
+  "eslint.lintTask.enable": true, // YAML settings - Completely disable all YAML processing
+  "yaml.validate": false,
+  "yaml.schemaStore.enable": false,
+  "yaml.schemas": {},
+  "yaml.hover": false,
+  "yaml.completion": false,
+  "yaml.format.enable": false,
+  "yaml.schemaDownload.enable": false,
+  "yaml.customTags": [],
+  "yaml.disableAdditionalProperties": true,
   "redhat.telemetry.enabled": false,
+
+  // File associations to treat YAML as plain text
+  "files.associations": {
+    "*.yml": "plaintext",
+    "*.yaml": "plaintext"
+  },
+
+  // Disable language detection for YAML files
+  "files.autoGuessEncoding": false,
+
+  // Problem matcher exclusions - disable diagnostics for YAML files
+  "problems.decorations.enabled": true,
+  "yaml.trace.server": "off",
+  "yaml.maxItemsComputed": 0,
+
+  // Override built-in language support
+  "workbench.editorAssociations": {
+    "*.yml": "default",
+    "*.yaml": "default"
+  },
 
   // TypeScript settings
   "typescript.preferences.importModuleSpecifier": "relative",
-  "typescript.suggest.autoImports": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
 
   // Git settings
@@ -81,20 +101,51 @@
   "files.trimFinalNewlines": true,
   "files.exclude": {
     "**/node_modules": true,
+    "**/dist": true,
     "**/.git": true,
     "**/.next": true,
     "**/coverage": true,
     "**/playwright-report": true,
-    "**/test-results": true
+    "**/test-results": true,
+    "**/e2e/visual-regression.spec.ts-snapshots": true,
+    "**/.husky": true,
+    "**/public": true,
+    "**/.github": true,
+    "**/docs": true,
+    "**/*.log": true,
+    "**/.DS_Store": true,
+    "**/package-lock.json": true,
+    "**/yarn.lock": true,
+    "**/.env*": true,
+    "**/debug-design-system.js": true,
+    "**/*.min.js": true,
+    "**/*.min.css": true,
+    "**/.vscode/launch.json": true,
+    "**/.vscode/tasks.json": true
   },
 
   // Search settings
   "search.exclude": {
     "**/node_modules": true,
+    "**/dist": true,
+    "**/.git": true,
     "**/.next": true,
     "**/coverage": true,
     "**/playwright-report": true,
-    "**/test-results": true
+    "**/test-results": true,
+    "**/e2e/visual-regression.spec.ts-snapshots": true,
+    "**/.husky": true,
+    "**/public": true,
+    "**/.github": true,
+    "**/docs": true,
+    "**/*.log": true,
+    "**/.DS_Store": true,
+    "**/package-lock.json": true,
+    "**/yarn.lock": true,
+    "**/.env*": true,
+    "**/debug-design-system.js": true,
+    "**/*.min.js": true,
+    "**/*.min.css": true
   },
 
   // Test settings
@@ -112,11 +163,112 @@
   "files.autoSave": "onFocusChange",
   "files.autoSaveDelay": 1000,
 
+  // Performance settings
+  "search.followSymlinks": false,
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.git/**": true,
+    "**/.next/**": true,
+    "**/coverage/**": true,
+    "**/dist/**": true
+  },
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "extensions.autoUpdate": false,
+
+  // Aggressive performance optimizations
+  "editor.semanticHighlighting.enabled": false,
+  "editor.bracketPairColorization.enabled": false,
+  "editor.guides.bracketPairs": false,
+  "editor.guides.indentation": false,
+  "editor.minimap.enabled": false,
+  "editor.hover.enabled": false,
+  "editor.parameterHints.enabled": false,
+  "editor.suggest.showStatusBar": false,
+  "editor.lightbulb.enabled": "off",
+  "editor.occurrencesHighlight": "off",
+  "editor.selectionHighlight": false,
+  "editor.wordHighlight": false,
+  "editor.linkedEditing": false,
+  "editor.codeLens": false,
+  "editor.foldingHighlight": false,
+  "editor.showFoldingControls": "never",
+  "breadcrumbs.enabled": false,
+  "outline.showVariables": false,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.extensionHost.maxMemory": 4096,
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "workbench.welcomePage.walkthroughs.openOnInstall": false,
+  "workbench.colorCustomizations": {},
+  "workbench.iconTheme": null,
+  "window.menuBarVisibility": "compact",
+  "explorer.decorations.badges": false,
+  "explorer.decorations.colors": false,
+  "git.decorations.enabled": false,
+  "git.autorefresh": false,
+  "scm.diffDecorationsGutterVisibility": "hover",
+  "terminal.integrated.gpuAcceleration": "off",
+  "typescript.surveys.enabled": false,
+  "typescript.suggest.completeFunctionCalls": false,
+  "typescript.suggest.includeAutomaticOptionalChainCompletions": false,
+  "javascript.suggest.completeFunctionCalls": false,
+  "javascript.suggest.includeAutomaticOptionalChainCompletions": false,
+  "telemetry.telemetryLevel": "off",
+
+  // Disable heavy language services
+  "css.hover.enabled": false,
+  "scss.hover.enabled": false,
+  "html.hover.enabled": false,
+  "json.schemaDownload.enable": false,
+  "npm.enabled": false,
+  "references.preferredLocation": "view",
+
+  // Limit file processing
+  "files.maxMemoryForLargeFilesMB": 512,
+  "typescript.preferences.includePackageJsonAutoImports": "off",
+  "typescript.suggest.autoImports": false,
+
+  // Additional Copilot Agent performance optimizations
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "github.copilot.editor.enableCodeActions": false,
+  "github.copilot.chat.enableDebugConsole": false,
+  "github.copilot.advanced": {
+    "lengthThreshold": 1000,
+    "inlineSuggestCount": 1
+  },
+
+  // Disable more heavy features
+  "workbench.editor.decorations.badges": false,
+  "workbench.editor.decorations.colors": false,
+  "editor.inlineSuggest.suppressSuggestions": false,
+  "editor.suggest.filterGraceful": false,
+  "editor.suggest.localityBonus": false,
+  "editor.suggest.showKeywords": false,
+  "editor.suggest.showSnippets": false,
+  "editor.suggest.showUsers": false,
+  "editor.suggest.showWords": false,
+  "editor.suggest.showMethods": false,
+
+  // Disable indexing for large files
+  "typescript.suggest.includeCompletionsForModuleExports": false,
+  "typescript.workspaceSymbols.scope": "currentProject",
+
   // Spell check
   "cSpell.words": [
+    "adminuser",
+    "ampm",
     "blinkmacsystemfont",
     "bundlesize",
     "datatable",
+    "flowconfig",
+    "hoverable",
+    "initialpass",
     "networkidle",
     "rgba",
     "Segoe",
