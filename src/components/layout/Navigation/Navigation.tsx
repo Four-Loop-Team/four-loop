@@ -70,7 +70,7 @@ export default function Navigation() {
   };
 
   const isActive = (href: string) => {
-    // Since /work redirects to homepage, treat both / and /work as active for the Work nav item
+    // Since / redirects to /work, treat both / and /work as active for the Work nav item
     if (href === '/work') {
       return pathname === '/' || pathname === '/work';
     }
