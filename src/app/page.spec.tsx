@@ -29,21 +29,21 @@ describe('HomePage', () => {
     render(<HomePage />);
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
     expect(
-      screen.getByText('Welcome to Four Loop Digital')
+      screen.getByText('Crafted Code. Thoughtful Design.')
     ).toBeInTheDocument();
   });
 
   it('has proper section structure', () => {
     render(<HomePage />);
-    expect(document.querySelector('#home')).toBeInTheDocument();
-    // Work, About, and Contact sections are now separate pages
+    // The new homepage uses modular sections instead of specific IDs
+    expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
   it('has required heading for homepage', () => {
     render(<HomePage />);
     expect(
-      screen.getByText('Welcome to Four Loop Digital')
+      screen.getByText('Crafted Code. Thoughtful Design.')
     ).toBeInTheDocument();
-    expect(screen.getByText('Digital Consulting Services')).toBeInTheDocument();
+    expect(screen.getByText('Real Results.')).toBeInTheDocument();
   });
 });

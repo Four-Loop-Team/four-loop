@@ -1,11 +1,13 @@
-import { Logo } from '@/components/brand';
-import { Box, Container, Typography } from '@mui/material';
+import { ContactSection } from '@/components/sections/ContactSection';
+import { IntroSection } from '@/components/sections/IntroSection';
+import { PartnersSection } from '@/components/sections/PartnersSection';
+import { ServicesSection } from '@/components/sections/ServicesSection';
 
 /**
  * Main application homepage component.
  *
  * This is the root page component that renders the Four Loop Digital
- * homepage with hero section, company logo, and main navigation.
+ * homepage with modular sections for intro, services, partners, and contact.
  * Implements responsive design and accessibility best practices.
  *
  * @component
@@ -15,51 +17,26 @@ import { Box, Container, Typography } from '@mui/material';
  * // No direct usage required - this is the page component for "/"
  * ```
  *
- * @returns {JSX.Element} The homepage layout with hero section
+ * @returns {JSX.Element} The homepage layout with modular sections
  *
  * @accessibility
  * - Semantic HTML structure with proper landmarks
- * - Skip navigation support via id="home"
+ * - Skip navigation support via section IDs
  * - Responsive design for all screen sizes
- * - High contrast logo and text for visibility
+ * - High contrast design for visibility
  *
  * @performance
+ * - Modular section components for efficient rendering
  * - Optimized image loading via Next.js Image component
  * - Minimal JavaScript bundle for fast page loads
- * - CSS-in-JS styling with Material-UI for efficient delivery
  */
 export default function App() {
   return (
     <main>
-      {/* Home Section */}
-      <Box
-        id='home'
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          pt: { xs: 10, md: 12 }, // Account for sticky navigation
-        }}
-      >
-        <Container maxWidth='lg'>
-          <Box textAlign='center'>
-            <Logo
-              sx={{
-                mx: 'auto',
-                mb: 4,
-                display: 'inline-block',
-              }}
-              alt='Four Loop Digital - Professional Digital Consulting Services'
-            />
-            <Typography variant='h1' component='h1' gutterBottom>
-              Welcome to Four Loop Digital
-            </Typography>
-            <Typography variant='h5' component='h2' color='text.secondary'>
-              Digital Consulting Services
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
+      <IntroSection />
+      <ServicesSection />
+      <PartnersSection />
+      <ContactSection />
     </main>
   );
 }

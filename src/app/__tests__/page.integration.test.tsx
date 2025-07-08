@@ -49,24 +49,24 @@ describe('App Page Component', () => {
       renderWithTheme(<App />);
       const heading = screen.getByRole('heading', { level: 1 });
       expect(heading).toBeInTheDocument();
-      expect(heading).toHaveTextContent(/four loop digital/i);
+      expect(heading).toHaveTextContent(/crafted code.*thoughtful design/i);
     });
 
     test('should render the tagline', () => {
       renderWithTheme(<App />);
-      const tagline = screen.getByText(/digital consulting services/i);
+      const tagline = screen.getByText(/real results/i);
       expect(tagline).toBeInTheDocument();
     });
 
     test('should render all main sections', () => {
       renderWithTheme(<App />);
 
-      // Check for main sections by their IDs or content
-      const companyNameElements = screen.getAllByText(/four loop digital/i);
-      expect(companyNameElements.length).toBeGreaterThan(0);
+      // Check for main sections by their content
       expect(
-        screen.getByText(/digital consulting services/i)
+        screen.getByText(/crafted code.*thoughtful design/i)
       ).toBeInTheDocument();
+      expect(screen.getByText(/real results/i)).toBeInTheDocument();
+      expect(screen.getByText(/services/i)).toBeInTheDocument();
     });
   });
 
@@ -136,9 +136,7 @@ describe('App Page Component', () => {
     test('should display correct tagline', () => {
       renderWithTheme(<App />);
 
-      expect(
-        screen.getByText(/digital consulting services/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/real results/i)).toBeInTheDocument();
     });
 
     test('should display logo with correct alt text', () => {
