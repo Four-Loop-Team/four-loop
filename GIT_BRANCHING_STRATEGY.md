@@ -23,7 +23,7 @@ simultaneously while maintaining code quality and enabling automated deployments
 - **Protection**: Heavily protected, only accepts merges from `release/*` branches
 - **Merge Strategy**: Merge commits (to maintain release history)
 
-#### `development` (Integration)
+#### `develop` (Integration)
 
 - **Purpose**: Integration branch for all feature development
 - **Source**: Feature branches merge here
@@ -36,16 +36,16 @@ simultaneously while maintaining code quality and enabling automated deployments
 
 - **Purpose**: Individual feature development
 - **Naming**: `feature/user-authentication`, `feature/payment-integration`
-- **Source**: Created from `development`
-- **Target**: Merges back to `development`
+- **Source**: Created from `develop`
+- **Target**: Merges back to `develop`
 - **Lifetime**: Short-lived (1-2 weeks max)
 
 #### `release/<version>` (Release Preparation)
 
 - **Purpose**: Prepare and stabilize releases
 - **Naming**: `release/v1.2.0`, `release/2024-01-15`
-- **Source**: Created from `development`
-- **Target**: Merges to `main` and back to `development`
+- **Source**: Created from `develop`
+- **Target**: Merges to `main` and back to `develop`
 - **Activities**: Bug fixes, documentation updates, version bumps
 
 #### `hotfix/<issue>` (Emergency Fixes)
@@ -53,7 +53,7 @@ simultaneously while maintaining code quality and enabling automated deployments
 - **Purpose**: Critical production fixes
 - **Naming**: `hotfix/security-vulnerability`, `hotfix/payment-bug`
 - **Source**: Created from `main`
-- **Target**: Merges to both `main` and `development`
+- **Target**: Merges to both `main` and `develop`
 - **Priority**: Immediate deployment path
 
 ## Workflow Process
@@ -62,8 +62,8 @@ simultaneously while maintaining code quality and enabling automated deployments
 
 ```bash
 # 1. Start new feature
-git checkout development
-git pull origin development
+git checkout develop
+git pull origin develop
 git checkout -b feature/new-awesome-feature
 
 # 2. Develop and commit
@@ -71,14 +71,14 @@ git add .
 git commit -m "feat: add awesome new feature"
 git push origin feature/new-awesome-feature
 
-# 3. Create Pull Request to development
+# 3. Create Pull Request to develop
 # - Run all automated checks
 # - Require code review from at least 1 team member
 # - Ensure all tests pass
 
 # 4. After approval, merge and cleanup
-git checkout development
-git pull origin development
+git checkout develop
+git pull origin develop
 git branch -d feature/new-awesome-feature
 git push origin --delete feature/new-awesome-feature
 ```
@@ -86,9 +86,9 @@ git push origin --delete feature/new-awesome-feature
 ### 2. Release Workflow
 
 ```bash
-# 1. Create release branch from development
-git checkout development
-git pull origin development
+# 1. Create release branch from develop
+git checkout develop
+git pull origin develop
 git checkout -b release/v1.2.0
 
 # 2. Prepare release (version bumps, docs, final testing)
@@ -101,10 +101,10 @@ git push origin release/v1.2.0
 # - Final review
 # - Merge to main (triggers deployment)
 
-# 4. Merge release changes back to development
-git checkout development
+# 4. Merge release changes back to develop
+git checkout develop
 git merge release/v1.2.0
-git push origin development
+git push origin develop
 
 # 5. Clean up release branch
 git branch -d release/v1.2.0
@@ -125,10 +125,10 @@ git commit -m "fix: resolve critical production issue"
 git push origin hotfix/critical-bug-fix
 
 # 3. Create PR to main (fast-track review)
-# 4. After merge to main, also merge to development
-git checkout development
+# 4. After merge to main, also merge to develop
+git checkout develop
 git merge hotfix/critical-bug-fix
-git push origin development
+git push origin develop
 
 # 5. Cleanup
 git branch -d hotfix/critical-bug-fix
@@ -147,7 +147,7 @@ git push origin --delete hotfix/critical-bug-fix
 - Allow force pushes: **NO**
 - Allow deletions: **NO**
 
-### `development` Branch
+### `develop` Branch
 
 - Require pull request reviews (1 reviewer)
 - Require status checks to pass before merging
@@ -190,7 +190,7 @@ chore(deps): update dependencies to latest versions
 
 ## Pull Request Guidelines
 
-### Feature PRs (to `development`)
+### Feature PRs (to `develop`)
 
 - **Title**: Clear, descriptive summary
 - **Description**: What, why, and how
@@ -236,7 +236,7 @@ name: CI/CD Pipeline
 
 on:
   pull_request:
-    branches: [development, main]
+    branches: [develop, main]
   push:
     branches: [main]
 
@@ -276,7 +276,7 @@ jobs:
 ### Resolution Strategy
 
 1. **Communicate**: Use team chat when working on related features
-2. **Frequent pulls**: Pull from `development` daily
+2. **Frequent pulls**: Pull from `develop` daily
 3. **Small commits**: Keep changes focused and atomic
 4. **Early integration**: Don't let feature branches live too long
 
@@ -295,10 +295,10 @@ release/2024-q1-launch
 
 ### Daily Workflow
 
-1. **Start of day**: Pull latest `development`
+1. **Start of day**: Pull latest `develop`
 2. **During development**: Commit frequently with clear messages
 3. **End of day**: Push work to feature branch
-4. **Before PR**: Rebase on latest `development` if needed
+4. **Before PR**: Rebase on latest `develop` if needed
 
 ### Code Review Process
 
@@ -335,7 +335,7 @@ When using this repository as a template:
 
 ```bash
 git checkout feature/my-feature
-git rebase development
+git rebase develop
 # Resolve conflicts if any
 git push --force-with-lease origin feature/my-feature
 ```
