@@ -17,7 +17,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const navigationItems = [
@@ -27,11 +28,12 @@ const navigationItems = [
 ];
 
 /**
- * Main navigation component with responsive design and page routing.
+ * Main navigation component with responsive design and optimized client-side routing.
  *
  * This component provides the primary navigation for the Four Loop Digital website,
- * featuring responsive mobile/desktop layouts, page-based routing between sections,
- * and visual active state indicators based on current route.
+ * featuring responsive mobile/desktop layouts, optimized client-side navigation with
+ * Next.js Link components and prefetching, and visual active state indicators based
+ * on current route. The header persists across page transitions for optimal UX.
  *
  * @component
  * @example
@@ -49,16 +51,17 @@ const navigationItems = [
  * - High contrast focus indicators
  *
  * @performance
- * - Client-side routing with Next.js
+ * - Client-side routing with Next.js Link components
+ * - Page prefetching for instant navigation
  * - Conditional rendering for mobile/desktop
  * - Efficient active page detection
+ * - Header persistence across page transitions
  */
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -77,8 +80,7 @@ export default function Navigation() {
     return pathname === href;
   };
 
-  const handleNavClick = (href: string) => {
-    router.push(href);
+  const handleNavClick = () => {
     if (mobileOpen) {
       setMobileOpen(false);
     }
@@ -121,41 +123,47 @@ export default function Navigation() {
           const active = isActive(item.href);
           return (
             <ListItem key={item.label} disablePadding sx={{ mb: 1.5 }}>
-              <ListItemButton
-                onClick={() => handleNavClick(item.href)}
-                sx={{
-                  borderRadius: 3,
-                  color: active
-                    ? 'var(--drawer-active-text)'
-                    : 'var(--drawer-inactive-text)',
-                  backgroundColor: active
-                    ? 'var(--drawer-active-background)'
-                    : 'transparent',
-                  border: active
-                    ? '1px solid var(--drawer-active-border)'
-                    : '1px solid transparent',
-                  py: 'var(--space-lg)',
-                  px: 'var(--space-2xl)',
-                  transition: 'var(--nav-button-transition)',
-                  '&:hover': {
-                    backgroundColor: active
-                      ? 'var(--drawer-hover-background)'
-                      : 'rgba(255, 255, 255, 0.08)',
-                    transform: 'translateX(4px)',
-                  },
-                }}
+              <Link
+                href={item.href}
+                style={{ textDecoration: 'none', width: '100%' }}
+                onClick={handleNavClick}
+                prefetch={true}
               >
-                <ListItemText
-                  primary={item.label}
+                <ListItemButton
                   sx={{
-                    '& .MuiTypography-root': {
-                      fontSize: '1.1rem',
-                      fontWeight: active ? 600 : 500,
-                      letterSpacing: '0.02em',
+                    borderRadius: 3,
+                    color: active
+                      ? 'var(--drawer-active-text)'
+                      : 'var(--drawer-inactive-text)',
+                    backgroundColor: active
+                      ? 'var(--drawer-active-background)'
+                      : 'transparent',
+                    border: active
+                      ? '1px solid var(--drawer-active-border)'
+                      : '1px solid transparent',
+                    py: 'var(--space-lg)',
+                    px: 'var(--space-2xl)',
+                    transition: 'var(--nav-button-transition)',
+                    '&:hover': {
+                      backgroundColor: active
+                        ? 'var(--drawer-hover-background)'
+                        : 'rgba(255, 255, 255, 0.08)',
+                      transform: 'translateX(4px)',
                     },
                   }}
-                />
-              </ListItemButton>
+                >
+                  <ListItemText
+                    primary={item.label}
+                    sx={{
+                      '& .MuiTypography-root': {
+                        fontSize: '1.1rem',
+                        fontWeight: active ? 600 : 500,
+                        letterSpacing: '0.02em',
+                      },
+                    }}
+                  />
+                </ListItemButton>
+              </Link>
             </ListItem>
           );
         })}
@@ -184,33 +192,36 @@ export default function Navigation() {
             }}
           >
             {/* Logo */}
-            <Box
-              onClick={() => handleNavClick('/')}
-              sx={{
-                textDecoration: 'none',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-              }}
+            <Link
+              href='/'
+              style={{ textDecoration: 'none', color: 'white' }}
+              prefetch={true}
             >
               <Box
                 sx={{
-                  fontSize: { xs: '1.25rem', md: '1.5rem' },
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
-                  fontFamily: 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
                 }}
               >
-                FOUR LOOP{' '}
                 <Box
-                  component='span'
-                  sx={{ color: 'var(--nav-container-background)' }}
+                  sx={{
+                    fontSize: { xs: '1.25rem', md: '1.5rem' },
+                    fontWeight: 600,
+                    letterSpacing: '0.1em',
+                    fontFamily: 'inherit',
+                  }}
                 >
-                  DIGITAL
+                  FOUR LOOP{' '}
+                  <Box
+                    component='span'
+                    sx={{ color: 'var(--nav-container-background)' }}
+                  >
+                    DIGITAL
+                  </Box>
                 </Box>
               </Box>
-            </Box>
+            </Link>
 
             {/* Desktop Navigation */}
             {mounted && !isMobile && (
@@ -227,43 +238,48 @@ export default function Navigation() {
                 {navigationItems.map((item, index) => {
                   const active = isActive(item.href);
                   return (
-                    <Button
+                    <Link
                       key={item.label}
-                      onClick={() => handleNavClick(item.href)}
-                      sx={{
-                        color: active
-                          ? 'var(--nav-text-active)'
-                          : 'var(--nav-text-inactive)',
-                        textTransform: 'none',
-                        fontSize: '1rem',
-                        fontWeight: 500,
-                        px: 'var(--nav-button-padding-x)',
-                        py: 'var(--nav-button-padding-y)',
-                        borderRadius: 'var(--nav-container-border-radius)',
-                        minWidth: 'auto',
-                        backgroundColor: active
-                          ? 'var(--nav-slider-background)'
-                          : 'transparent',
-                        border: active
-                          ? '2px solid var(--nav-slider-border)'
-                          : '2px solid transparent',
-                        marginLeft:
-                          index > 0 ? 'var(--nav-button-overlap)' : '0px',
-                        zIndex: 2,
-                        position: 'relative',
-                        transition: 'var(--nav-slider-transition)',
-                        '&:hover': {
+                      href={item.href}
+                      style={{ textDecoration: 'none' }}
+                      prefetch={true}
+                    >
+                      <Button
+                        sx={{
                           color: active
                             ? 'var(--nav-text-active)'
-                            : 'var(--nav-text-hover)',
+                            : 'var(--nav-text-inactive)',
+                          textTransform: 'none',
+                          fontSize: '1rem',
+                          fontWeight: 500,
+                          px: 'var(--nav-button-padding-x)',
+                          py: 'var(--nav-button-padding-y)',
+                          borderRadius: 'var(--nav-container-border-radius)',
+                          minWidth: 'auto',
                           backgroundColor: active
                             ? 'var(--nav-slider-background)'
-                            : 'rgba(226, 232, 145, 0.1)',
-                        },
-                      }}
-                    >
-                      {item.label}
-                    </Button>
+                            : 'transparent',
+                          border: active
+                            ? '2px solid var(--nav-slider-border)'
+                            : '2px solid transparent',
+                          marginLeft:
+                            index > 0 ? 'var(--nav-button-overlap)' : '0px',
+                          zIndex: 2,
+                          position: 'relative',
+                          transition: 'var(--nav-slider-transition)',
+                          '&:hover': {
+                            color: active
+                              ? 'var(--nav-text-active)'
+                              : 'var(--nav-text-hover)',
+                            backgroundColor: active
+                              ? 'var(--nav-slider-background)'
+                              : 'rgba(226, 232, 145, 0.1)',
+                          },
+                        }}
+                      >
+                        {item.label}
+                      </Button>
+                    </Link>
                   );
                 })}
               </Box>
