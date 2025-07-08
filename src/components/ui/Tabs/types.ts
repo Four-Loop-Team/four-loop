@@ -1,5 +1,6 @@
 /**
  * Tabs component types and interfaces
+ * @fileoverview Type definitions for the Tabs component system including tab items, props, and context types
  */
 
 export interface TabItem {

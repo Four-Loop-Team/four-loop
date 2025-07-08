@@ -1,6 +1,76 @@
 /**
- * Toast Context and Provider
- * Global state management for toast notifications
+ * @fileoverview ToastProvider Component - Global toast notification state management
+ * @component ToastProvider
+ *
+ * @description
+ * A context provider component that manages global toast notification state including:
+ * - Toast creation and removal
+ * - Auto-dismiss timers
+ * - Toast queue management
+ * - State updates and notifications
+ * - Maximum toast limits
+ * - Default duration configuration
+ *
+ * @features
+ * - ✅ Global toast state management
+ * - ✅ Auto-dismiss functionality
+ * - ✅ Toast queue management
+ * - ✅ Unique ID generation
+ * - ✅ Timer management
+ * - ✅ Context API integration
+ * - ✅ TypeScript support
+ * - ✅ Performance optimized
+ *
+ * @example
+ * ```tsx
+ * // Basic provider setup
+ * <ToastProvider>
+ *   <App />
+ *   <ToastManager />
+ * </ToastProvider>
+ *
+ * // Provider with custom settings
+ * <ToastProvider
+ *   defaultDuration={5000}
+ *   maxToasts={5}
+ * >
+ *   <App />
+ *   <ToastManager position="top-right" />
+ * </ToastProvider>
+ *
+ * // Using the toast context
+ * function MyComponent() {
+ *   const { addToast, removeToast } = useToastContext();
+ *
+ *   const showSuccess = () => {
+ *     addToast({
+ *       type: 'success',
+ *       title: 'Success!',
+ *       message: 'Operation completed successfully'
+ *     });
+ *   };
+ *
+ *   return <button onClick={showSuccess}>Show Toast</button>;
+ * }
+ * ```
+ *
+ * @context
+ * Provides ToastContextValue with:
+ * - toasts: Array of current toast notifications
+ * - addToast: Function to add new toast
+ * - removeToast: Function to remove toast by ID
+ * - updateToast: Function to update existing toast
+ * - clearToasts: Function to clear all toasts
+ *
+ * @accessibility
+ * - Manages ARIA live regions
+ * - Provides screen reader announcements
+ * - Handles focus management
+ *
+ * @performance
+ * - Efficient state updates
+ * - Optimized timer management
+ * - Minimal re-renders
  */
 
 import React, {
@@ -42,7 +112,11 @@ const toastReducer = (state: Toast[], action: ToastAction): Toast[] => {
 // Toast Context
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-// Custom hook to use toast context
+/**
+ * Custom hook to access toast context
+ * @throws {Error} When used outside of ToastProvider
+ * @returns {ToastContextValue} Toast context value with state and actions
+ */
 export const useToastContext = () => {
   const context = useContext(ToastContext);
   if (!context) {
@@ -56,7 +130,16 @@ const generateId = (): string => {
   return `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
-// Toast Provider component
+/**
+ * ToastProvider component for managing global toast notification state
+ *
+ * @component
+ * @param {ToastProviderProps} props - Provider configuration
+ * @param {ReactNode} props.children - Child components that can access toast context
+ * @param {number} props.defaultDuration - Default auto-dismiss duration in milliseconds
+ * @param {number} props.maxToasts - Maximum number of toasts to display
+ * @returns {JSX.Element} Rendered provider component
+ */
 export const ToastProvider: React.FC<ToastProviderProps> = ({
   children,
   defaultDuration = 4000,

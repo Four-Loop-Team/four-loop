@@ -9,6 +9,10 @@ export interface RichTextEditorProps {
   value?: string;
   /** Content change handler */
   onChange?: (content: string) => void;
+  /** Focus handler */
+  onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
+  /** Blur handler */
+  onBlur?: (event: React.FocusEvent<HTMLDivElement>) => void;
   /** Placeholder text */
   placeholder?: string;
   /** Whether editor is disabled */
@@ -16,7 +20,7 @@ export interface RichTextEditorProps {
   /** Whether editor is read-only */
   readOnly?: boolean;
   /** Toolbar configuration */
-  toolbar?: ToolbarConfig;
+  toolbar?: ToolbarConfig | false;
   /** Editor height */
   height?: number | string;
   /** Custom CSS classes */

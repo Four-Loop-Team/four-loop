@@ -1,6 +1,97 @@
 /**
- * Form Component - Fixed Version
- * A comprehensive form wrapper with validation, field management, and multi-step support
+ * @fileoverview Form Component - Comprehensive form solution with validation and multi-step support
+ * @component Form
+ *
+ * @description
+ * A powerful, flexible form component that provides comprehensive form handling including:
+ * - Field validation (required, pattern, custom)
+ * - Form state management (values, errors, touched)
+ * - Multi-step form support with progress tracking
+ * - Auto-save functionality
+ * - Accessible form controls
+ * - Multiple layout options (vertical, horizontal, inline)
+ * - Built-in field types (text, textarea, select, checkbox, radio, file)
+ *
+ * @features
+ * - ✅ Comprehensive validation system
+ * - ✅ Multi-step form wizards
+ * - ✅ Auto-save with localStorage
+ * - ✅ Accessible by default
+ * - ✅ TypeScript support
+ * - ✅ Flexible layout system
+ * - ✅ Custom field components
+ * - ✅ Form state helpers
+ *
+ * @example
+ * ```tsx
+ * // Basic form with validation
+ * <Form
+ *   fields={[
+ *     {
+ *       name: 'email',
+ *       label: 'Email',
+ *       type: 'email',
+ *       validation: { required: 'Email is required' }
+ *     },
+ *     {
+ *       name: 'password',
+ *       label: 'Password',
+ *       type: 'password',
+ *       validation: { required: true, minLength: 8 }
+ *     }
+ *   ]}
+ *   onSubmit={(values) => console.log(values)}
+ *   layout="vertical"
+ *   size="md"
+ * />
+ *
+ * // Multi-step form
+ * <MultiStepForm
+ *   steps={[
+ *     {
+ *       title: 'Personal Info',
+ *       fields: [
+ *         { name: 'firstName', label: 'First Name', type: 'text' },
+ *         { name: 'lastName', label: 'Last Name', type: 'text' }
+ *       ]
+ *     },
+ *     {
+ *       title: 'Contact',
+ *       fields: [
+ *         { name: 'email', label: 'Email', type: 'email' }
+ *       ]
+ *     }
+ *   ]}
+ *   onSubmit={(values) => console.log(values)}
+ *   showProgress
+ * />
+ *
+ * // Form with render prop
+ * <Form
+ *   fields={fields}
+ *   onSubmit={handleSubmit}
+ * >
+ *   {(formState, helpers) => (
+ *     <div>
+ *       <CustomField {...helpers.getFieldProps('email')} />
+ *       <button onClick={helpers.submitForm}>Submit</button>
+ *     </div>
+ *   )}
+ * </Form>
+ * ```
+ *
+ * @accessibility
+ * - Proper label associations
+ * - ARIA attributes for validation states
+ * - Keyboard navigation support
+ * - Screen reader friendly error messages
+ * - Focus management
+ *
+ * @performance
+ * - Memoized validation functions
+ * - Optimized re-renders
+ * - Lazy field validation
+ * - Efficient state updates
  */
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -152,10 +243,14 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
     multiple,
     accept,
     className = '',
+    size: fieldSize,
   } = field;
 
   const isDisabled = disabled || fieldDisabled;
   const showError = touched && error;
+
+  // Use field-level size if provided, otherwise use form-level size
+  const effectiveSize = fieldSize ?? size;
 
   // Size classes
   const sizeClasses = {
@@ -165,7 +260,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
   };
 
   const inputClasses = `
-    ${sizeClasses[size]}
+    ${sizeClasses[effectiveSize]}
     w-full border rounded-md
     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
     transition-colors
@@ -212,6 +307,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
       case 'textarea':
         return (
           <textarea
+            id={name}
             name={name}
             value={valueAsString}
             placeholder={placeholder}
@@ -228,6 +324,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
       case 'select':
         return (
           <select
+            id={name}
             name={name}
             value={multiple ? undefined : valueAsString}
             required={required}
@@ -256,6 +353,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
         return (
           <div className='flex items-center'>
             <input
+              id={name}
               type='checkbox'
               name={name}
               checked={Boolean(value)}
@@ -281,30 +379,38 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
       case 'radio':
         return (
           <div className='space-y-2'>
-            {options?.map((option) => (
-              <div key={option.value} className='flex items-center'>
-                <input
-                  type='radio'
-                  name={name}
-                  value={option.value}
-                  checked={value === option.value}
-                  required={required}
-                  disabled={isDisabled ?? option.disabled}
-                  className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300'
-                  onChange={handleChange}
-                  onBlur={onBlur}
-                />
-                <label className='ml-2 block text-sm text-gray-900'>
-                  {option.label}
-                </label>
-              </div>
-            ))}
+            {options?.map((option) => {
+              const radioId = `${name}-${option.value}`;
+              return (
+                <div key={option.value} className='flex items-center'>
+                  <input
+                    id={radioId}
+                    type='radio'
+                    name={name}
+                    value={option.value}
+                    checked={value === option.value}
+                    required={required}
+                    disabled={isDisabled ?? option.disabled}
+                    className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300'
+                    onChange={handleChange}
+                    onBlur={onBlur}
+                  />
+                  <label
+                    htmlFor={radioId}
+                    className='ml-2 block text-sm text-gray-900'
+                  >
+                    {option.label}
+                  </label>
+                </div>
+              );
+            })}
           </div>
         );
 
       case 'file':
         return (
           <input
+            id={name}
             type='file'
             name={name}
             required={required}
@@ -320,6 +426,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
       default:
         return (
           <input
+            id={name}
             type={type}
             name={name}
             value={valueAsString}
@@ -366,7 +473,32 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
   );
 };
 
-// Main Form component
+/**
+ * Main Form component with comprehensive validation and field management
+ *
+ * @component
+ * @param {FormProps} props - Form configuration and handlers
+ * @param {FormField[]} props.fields - Array of form field definitions
+ * @param {FormValues} props.initialValues - Initial form values
+ * @param {Function} props.validationSchema - Schema validation function
+ * @param {Function} props.onSubmit - Form submission handler
+ * @param {Function} props.onChange - Value change handler
+ * @param {Function} props.onValidate - Custom validation handler
+ * @param {Function} props.onReset - Form reset handler
+ * @param {'vertical' | 'horizontal' | 'inline'} props.layout - Form layout style
+ * @param {'sm' | 'md' | 'lg'} props.size - Component size
+ * @param {boolean} props.disabled - Whether form is disabled
+ * @param {string} props.className - Additional CSS classes
+ * @param {ReactNode | Function} props.children - Form content (can be render prop)
+ * @param {string} props.submitText - Submit button text
+ * @param {string} props.resetText - Reset button text
+ * @param {boolean} props.showSubmit - Whether to show submit button
+ * @param {boolean} props.showReset - Whether to show reset button
+ * @param {'default' | 'card' | 'inline'} props.variant - Form visual variant
+ * @param {Object} props.autoSave - Auto-save configuration
+ * @param {string} props['data-testid'] - Test identifier
+ * @returns {JSX.Element} Rendered form component
+ */
 export const Form: React.FC<FormProps> = ({
   fields = [],
   initialValues = {},
@@ -654,7 +786,27 @@ export const Form: React.FC<FormProps> = ({
   );
 };
 
-// Multi-step form component with simplified logic
+/**
+ * Multi-step form component with progress tracking and step validation
+ *
+ * @component
+ * @param {MultiStepFormProps} props - Multi-step form configuration
+ * @param {FormStep[]} props.steps - Array of form steps with fields and validation
+ * @param {FormValues} props.initialValues - Initial form values across all steps
+ * @param {Function} props.onSubmit - Final form submission handler
+ * @param {Function} props.onStepChange - Step change handler
+ * @param {Function} props.onComplete - Form completion handler
+ * @param {boolean} props.allowBackward - Whether backward navigation is allowed
+ * @param {boolean} props.showStepNumbers - Whether to show step numbers
+ * @param {boolean} props.showProgress - Whether to show progress indicator
+ * @param {'sm' | 'md' | 'lg'} props.size - Component size
+ * @param {string} props.className - Additional CSS classes
+ * @param {string} props.submitText - Submit button text
+ * @param {string} props.previousText - Previous button text
+ * @param {string} props.nextText - Next button text
+ * @param {string} props['data-testid'] - Test identifier
+ * @returns {JSX.Element} Rendered multi-step form component
+ */
 export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   steps,
   initialValues = {},
@@ -775,6 +927,13 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
       {/* Progress indicator */}
       {showProgress && (
         <div className='mb-8'>
+          {/* Step counter */}
+          <div className='text-center mb-4'>
+            <p className='text-sm text-gray-500'>
+              Step {state.currentStep + 1} of {steps.length}
+            </p>
+          </div>
+
           <div className='flex items-center'>
             {steps.map((step, index) => (
               <React.Fragment key={index}>
@@ -881,19 +1040,23 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
 
         {/* Navigation buttons */}
         <div className='flex justify-between mt-8'>
-          <button
-            type='button'
-            onClick={handlePrevious}
-            disabled={isFirstStep || !allowBackward || state.isSubmitting}
-            className={`
-              px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md
-              hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-              disabled:opacity-50 disabled:cursor-not-allowed
-              ${size === 'sm' ? 'px-3 py-1 text-xs' : size === 'lg' ? 'px-6 py-3 text-base' : ''}
-            `}
-          >
-            {previousText}
-          </button>
+          {allowBackward ? (
+            <button
+              type='button'
+              onClick={handlePrevious}
+              disabled={isFirstStep || state.isSubmitting}
+              className={`
+                px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md
+                hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                disabled:opacity-50 disabled:cursor-not-allowed
+                ${size === 'sm' ? 'px-3 py-1 text-xs' : size === 'lg' ? 'px-6 py-3 text-base' : ''}
+              `}
+            >
+              {previousText}
+            </button>
+          ) : (
+            <div />
+          )}
 
           {isLastStep ? (
             <button

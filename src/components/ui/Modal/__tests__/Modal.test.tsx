@@ -1,6 +1,13 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { Modal } from '../Modal';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import {
+  ConfirmDialog,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from '../Modal';
 
 describe('Modal', () => {
   const defaultProps = {
@@ -87,5 +94,419 @@ describe('Modal', () => {
     );
     const backdrop = screen.getByTestId('test-modal');
     expect(backdrop).toHaveClass('backdrop-blur-sm');
+  });
+
+  it('prevents body scroll when modal is open', () => {
+    const originalOverflow = document.body.style.overflow;
+
+    const { unmount } = render(<Modal {...defaultProps} />);
+    expect(document.body.style.overflow).toBe('hidden');
+
+    unmount();
+    expect(document.body.style.overflow).toBe('');
+
+    // Restore original
+    document.body.style.overflow = originalOverflow;
+  });
+
+  it('manages focus correctly when opening and closing', async () => {
+    const button = document.createElement('button');
+    document.body.appendChild(button);
+    button.focus();
+
+    const { rerender } = render(<Modal {...defaultProps} isOpen={false} />);
+
+    // Open modal
+    rerender(<Modal {...defaultProps} isOpen={true} />);
+    await waitFor(() => {
+      const modal = screen.getByRole('dialog');
+      expect(modal).toHaveFocus();
+    });
+
+    // Close modal
+    rerender(<Modal {...defaultProps} isOpen={false} />);
+    await waitFor(() => {
+      expect(button).toHaveFocus();
+    });
+
+    document.body.removeChild(button);
+  });
+
+  it('stops propagation when clicking modal content', () => {
+    const onClose = jest.fn();
+    render(
+      <Modal {...defaultProps} onClose={onClose} data-testid='test-modal'>
+        <div data-testid='modal-content'>Content</div>
+      </Modal>
+    );
+
+    const content = screen.getByTestId('modal-content');
+    fireEvent.click(content);
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('renders with different sizes correctly', () => {
+    const sizes = [
+      { size: 'sm', expectedClass: 'max-w-md' },
+      { size: 'md', expectedClass: 'max-w-lg' },
+      { size: 'lg', expectedClass: 'max-w-2xl' },
+      { size: 'xl', expectedClass: 'max-w-4xl' },
+      { size: 'full', expectedClass: 'max-w-full' },
+    ] as const;
+
+    sizes.forEach(({ size, expectedClass }) => {
+      const { unmount } = render(
+        <Modal {...defaultProps} size={size} data-testid={`modal-${size}`} />
+      );
+
+      const modal = screen.getByTestId(`modal-${size}`);
+      const modalDialog = modal.querySelector('[role="dialog"]');
+      expect(modalDialog).toHaveClass(expectedClass);
+
+      unmount();
+    });
+  });
+
+  it('renders with different positions correctly', () => {
+    const positions = [
+      { position: 'center', expectedClass: 'items-center justify-center' },
+      { position: 'top', expectedClass: 'items-start justify-center pt-16' },
+      { position: 'bottom', expectedClass: 'items-end justify-center pb-16' },
+    ] as const;
+
+    positions.forEach(({ position, expectedClass }) => {
+      const { unmount } = render(
+        <Modal
+          {...defaultProps}
+          position={position}
+          data-testid={`modal-${position}`}
+        />
+      );
+
+      const modal = screen.getByTestId(`modal-${position}`);
+      expect(modal).toHaveClass(expectedClass);
+
+      unmount();
+    });
+  });
+
+  it('renders with different backdrop styles correctly', () => {
+    const backdrops = [
+      { backdrop: 'default', expectedClass: 'bg-black/50' },
+      { backdrop: 'light', expectedClass: 'bg-black/25' },
+      { backdrop: 'dark', expectedClass: 'bg-black/75' },
+      { backdrop: 'blur', expectedClass: 'bg-black/50 backdrop-blur-sm' },
+    ] as const;
+
+    backdrops.forEach(({ backdrop, expectedClass }) => {
+      const { unmount } = render(
+        <Modal
+          {...defaultProps}
+          backdrop={backdrop}
+          data-testid={`modal-${backdrop}`}
+        />
+      );
+
+      const modal = screen.getByTestId(`modal-${backdrop}`);
+      expect(modal).toHaveClass(expectedClass);
+
+      unmount();
+    });
+  });
+});
+
+describe('ModalHeader', () => {
+  it('renders children and close button', () => {
+    const onClose = jest.fn();
+    render(
+      <ModalHeader onClose={onClose}>
+        <h2>Test Title</h2>
+      </ModalHeader>
+    );
+
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
+    expect(screen.getByTestId('modal-close-button')).toBeInTheDocument();
+    expect(screen.getByLabelText('Close modal')).toBeInTheDocument();
+  });
+
+  it('calls onClose when close button is clicked', async () => {
+    const onClose = jest.fn();
+    render(
+      <ModalHeader onClose={onClose}>
+        <h2>Test Title</h2>
+      </ModalHeader>
+    );
+
+    await userEvent.click(screen.getByTestId('modal-close-button'));
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('renders without close button when onClose is not provided', () => {
+    render(
+      <ModalHeader>
+        <h2>Test Title</h2>
+      </ModalHeader>
+    );
+
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
+    expect(screen.queryByTestId('modal-close-button')).not.toBeInTheDocument();
+  });
+
+  it('applies custom className', () => {
+    render(
+      <ModalHeader className='custom-header'>
+        <h2>Test Title</h2>
+      </ModalHeader>
+    );
+
+    const header = screen.getByTestId('modal-header');
+    expect(header).toHaveClass('custom-header');
+  });
+
+  it('applies custom test id', () => {
+    render(
+      <ModalHeader data-testid='custom-header'>
+        <h2>Test Title</h2>
+      </ModalHeader>
+    );
+
+    expect(screen.getByTestId('custom-header')).toBeInTheDocument();
+  });
+});
+
+describe('ModalBody', () => {
+  it('renders children correctly', () => {
+    render(
+      <ModalBody>
+        <p>Modal body content</p>
+        <button>Action Button</button>
+      </ModalBody>
+    );
+
+    expect(screen.getByText('Modal body content')).toBeInTheDocument();
+    expect(screen.getByText('Action Button')).toBeInTheDocument();
+  });
+
+  it('applies custom className', () => {
+    render(
+      <ModalBody className='custom-body'>
+        <p>Content</p>
+      </ModalBody>
+    );
+
+    const body = screen.getByTestId('modal-body');
+    expect(body).toHaveClass('custom-body');
+  });
+
+  it('applies custom test id', () => {
+    render(
+      <ModalBody data-testid='custom-body'>
+        <p>Content</p>
+      </ModalBody>
+    );
+
+    expect(screen.getByTestId('custom-body')).toBeInTheDocument();
+  });
+});
+
+describe('ModalFooter', () => {
+  it('renders children correctly', () => {
+    render(
+      <ModalFooter>
+        <button>Cancel</button>
+        <button>Save</button>
+      </ModalFooter>
+    );
+
+    expect(screen.getByText('Cancel')).toBeInTheDocument();
+    expect(screen.getByText('Save')).toBeInTheDocument();
+  });
+
+  it('applies custom className', () => {
+    render(
+      <ModalFooter className='custom-footer'>
+        <button>Close</button>
+      </ModalFooter>
+    );
+
+    const footer = screen.getByTestId('modal-footer');
+    expect(footer).toHaveClass('custom-footer');
+  });
+
+  it('applies custom test id', () => {
+    render(
+      <ModalFooter data-testid='custom-footer'>
+        <button>Close</button>
+      </ModalFooter>
+    );
+
+    expect(screen.getByTestId('custom-footer')).toBeInTheDocument();
+  });
+});
+
+describe('ConfirmDialog', () => {
+  const defaultProps = {
+    isOpen: true,
+    onConfirm: jest.fn(),
+    onCancel: jest.fn(),
+    title: 'Confirm Action',
+    message: 'Are you sure you want to proceed?',
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders with title and message', () => {
+    render(<ConfirmDialog {...defaultProps} />);
+
+    expect(screen.getByText('Confirm Action')).toBeInTheDocument();
+    expect(
+      screen.getByText('Are you sure you want to proceed?')
+    ).toBeInTheDocument();
+    expect(screen.getByText('Confirm')).toBeInTheDocument();
+    expect(screen.getByText('Cancel')).toBeInTheDocument();
+  });
+
+  it('renders without title', () => {
+    const { title, ...propsWithoutTitle } = defaultProps;
+    render(<ConfirmDialog {...propsWithoutTitle} />);
+
+    expect(screen.queryByText('Confirm Action')).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Are you sure you want to proceed?')
+    ).toBeInTheDocument();
+  });
+
+  it('calls onConfirm when confirm button is clicked', async () => {
+    render(<ConfirmDialog {...defaultProps} />);
+
+    await userEvent.click(screen.getByText('Confirm'));
+    expect(defaultProps.onConfirm).toHaveBeenCalled();
+  });
+
+  it('calls onCancel when cancel button is clicked', async () => {
+    render(<ConfirmDialog {...defaultProps} />);
+
+    await userEvent.click(screen.getByText('Cancel'));
+    expect(defaultProps.onCancel).toHaveBeenCalled();
+  });
+
+  it('uses custom button text', () => {
+    render(
+      <ConfirmDialog {...defaultProps} confirmText='Delete' cancelText='Keep' />
+    );
+
+    expect(screen.getByText('Delete')).toBeInTheDocument();
+    expect(screen.getByText('Keep')).toBeInTheDocument();
+  });
+
+  it('renders with danger variant', () => {
+    render(<ConfirmDialog {...defaultProps} variant='danger' />);
+
+    const confirmButton = screen.getByText('Confirm');
+    expect(confirmButton).toHaveClass('bg-red-600');
+  });
+
+  it('renders with warning variant', () => {
+    render(<ConfirmDialog {...defaultProps} variant='warning' />);
+
+    const confirmButton = screen.getByText('Confirm');
+    expect(confirmButton).toHaveClass('bg-yellow-600');
+  });
+
+  it('renders with default variant', () => {
+    render(<ConfirmDialog {...defaultProps} variant='default' />);
+
+    const confirmButton = screen.getByText('Confirm');
+    expect(confirmButton).toHaveClass('bg-blue-600');
+  });
+  it('shows loading state', () => {
+    render(<ConfirmDialog {...defaultProps} loading={true} />);
+
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+
+    // Find buttons by their text content
+    const buttons = screen.getAllByRole('button');
+    const confirmButton = buttons.find((button) =>
+      button.textContent?.includes('Loading...')
+    );
+    const cancelButton = buttons.find(
+      (button) => button.textContent === 'Cancel'
+    );
+
+    expect(confirmButton).toBeDisabled();
+    expect(cancelButton).toBeDisabled();
+  });
+
+  it('applies custom className', () => {
+    render(<ConfirmDialog {...defaultProps} className='custom-dialog' />);
+
+    const dialog = screen.getByTestId('confirm-dialog');
+    const modalDialog = dialog.querySelector('[role="dialog"]');
+    expect(modalDialog).toHaveClass('custom-dialog');
+  });
+
+  it('applies custom test id', () => {
+    render(<ConfirmDialog {...defaultProps} data-testid='custom-confirm' />);
+
+    expect(screen.getByTestId('custom-confirm')).toBeInTheDocument();
+  });
+
+  it('renders correct icons for each variant', () => {
+    const variants = ['default', 'danger', 'warning'] as const;
+
+    variants.forEach((variant) => {
+      const { unmount } = render(
+        <ConfirmDialog {...defaultProps} variant={variant} />
+      );
+
+      // Each variant should render an SVG icon
+      const icon = screen.getByTestId('confirm-dialog').querySelector('svg');
+      expect(icon).toBeInTheDocument();
+
+      unmount();
+    });
+  });
+
+  it('does not render when closed', () => {
+    render(<ConfirmDialog {...defaultProps} isOpen={false} />);
+
+    expect(screen.queryByText('Confirm Action')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Are you sure you want to proceed?')
+    ).not.toBeInTheDocument();
+  });
+});
+
+describe('Modal Integration', () => {
+  it('works with all components together', async () => {
+    const onClose = jest.fn();
+
+    render(
+      <Modal isOpen={true} onClose={onClose} size='lg'>
+        <ModalHeader onClose={onClose}>
+          <h2>Complete Modal</h2>
+        </ModalHeader>
+        <ModalBody>
+          <p>This is the modal body content.</p>
+        </ModalBody>
+        <ModalFooter>
+          <button>Cancel</button>
+          <button>Save</button>
+        </ModalFooter>
+      </Modal>
+    );
+
+    expect(screen.getByText('Complete Modal')).toBeInTheDocument();
+    expect(
+      screen.getByText('This is the modal body content.')
+    ).toBeInTheDocument();
+    expect(screen.getByText('Cancel')).toBeInTheDocument();
+    expect(screen.getByText('Save')).toBeInTheDocument();
+
+    // Test closing via header button
+    await userEvent.click(screen.getByTestId('modal-close-button'));
+    expect(onClose).toHaveBeenCalled();
   });
 });

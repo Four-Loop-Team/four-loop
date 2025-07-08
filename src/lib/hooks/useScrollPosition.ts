@@ -1,15 +1,40 @@
 /**
- * Hook for tracking scroll position
+ * React hooks for tracking scroll position and direction
+ * @fileoverview Custom hooks for monitoring page scroll behavior with throttling and performance optimization
  */
 
 import { useEffect, useState } from 'react';
 import { throttle } from '../utils';
 
+/**
+ * Scroll position coordinates interface
+ * @interface ScrollPosition
+ */
 interface ScrollPosition {
+  /** Horizontal scroll position in pixels */
   x: number;
+  /** Vertical scroll position in pixels */
   y: number;
 }
 
+/**
+ * Hook for tracking the current scroll position of the page
+ * Uses throttling to improve performance during rapid scroll events
+ *
+ * @returns {ScrollPosition} Current scroll position with x and y coordinates
+ * @example
+ * ```tsx
+ * function ScrollTracker() {
+ *   const { x, y } = useScrollPosition();
+ *
+ *   return (
+ *     <div>
+ *       Scrolled {x}px horizontally, {y}px vertically
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function useScrollPosition(): ScrollPosition {
   const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({
     x: 0,
@@ -40,7 +65,22 @@ export function useScrollPosition(): ScrollPosition {
 }
 
 /**
- * Hook for detecting scroll direction
+ * Hook for detecting scroll direction (up or down)
+ * Useful for showing/hiding navigation bars or triggering animations
+ *
+ * @returns {'up' | 'down' | null} Current scroll direction or null if no scrolling detected
+ * @example
+ * ```tsx
+ * function NavigationBar() {
+ *   const scrollDirection = useScrollDirection();
+ *
+ *   return (
+ *     <nav className={scrollDirection === 'down' ? 'hidden' : 'visible'}>
+ *       Navigation content
+ *     </nav>
+ *   );
+ * }
+ * ```
  */
 export function useScrollDirection(): 'up' | 'down' | null {
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(
@@ -78,7 +118,26 @@ export function useScrollDirection(): 'up' | 'down' | null {
 }
 
 /**
- * Hook for detecting if user has scrolled past a threshold
+ * Hook for detecting if user has scrolled past a specific threshold
+ * Useful for triggering UI changes based on scroll depth
+ *
+ * @param {number} [threshold=100] - Scroll position threshold in pixels
+ * @returns {boolean} True if scrolled past threshold, false otherwise
+ * @example
+ * ```tsx
+ * function StickyHeader() {
+ *   const hasScrolled = useScrollThreshold(50);
+ *
+ *   return (
+ *     <header className={hasScrolled ? 'sticky-active' : ''}>
+ *       Header content
+ *     </header>
+ *   );
+ * }
+ *
+ * // Custom threshold
+ * const isPastHero = useScrollThreshold(600);
+ * ```
  */
 export function useScrollThreshold(threshold: number = 100): boolean {
   const { y } = useScrollPosition();

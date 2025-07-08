@@ -23,7 +23,9 @@ chrome-user-data
 *.swp
 *.swo
 .next/
-
+**/dist
+**/.git
+e2e/visual-regression.spec.ts-snapshots
 
 packages/react-devtools-core/dist
 packages/react-devtools-extensions/chrome/build

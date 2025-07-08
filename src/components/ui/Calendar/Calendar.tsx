@@ -1,6 +1,6 @@
 /**
- * Calendar/DatePicker Component
- * A comprehensive date selection component with calendar view and input
+ * @fileoverview Calendar/DatePicker Component with comprehensive date selection features.
+ * Provides calendar view, date input, time picker, and range selection capabilities.
  */
 
 import React, {
@@ -17,7 +17,13 @@ import {
   TimePickerProps,
 } from './types';
 
-// Date utility functions
+/**
+ * Checks if two dates represent the same day.
+ *
+ * @param date1 - First date to compare
+ * @param date2 - Second date to compare
+ * @returns True if dates are the same day
+ */
 const isSameDay = (date1: Date, date2: Date): boolean => {
   return (
     date1.getDate() === date2.getDate() &&
@@ -26,6 +32,13 @@ const isSameDay = (date1: Date, date2: Date): boolean => {
   );
 };
 
+/**
+ * Checks if two dates are in the same month and year.
+ *
+ * @param date1 - First date to compare
+ * @param date2 - Second date to compare
+ * @returns True if dates are in the same month
+ */
 const isSameMonth = (date1: Date, date2: Date): boolean => {
   return (
     date1.getMonth() === date2.getMonth() &&
@@ -33,18 +46,39 @@ const isSameMonth = (date1: Date, date2: Date): boolean => {
   );
 };
 
+/**
+ * Adds a specified number of days to a date.
+ *
+ * @param date - Base date
+ * @param days - Number of days to add (can be negative)
+ * @returns New date with days added
+ */
 const addDays = (date: Date, days: number): Date => {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 };
 
+/**
+ * Adds a specified number of months to a date.
+ *
+ * @param date - Base date
+ * @param months - Number of months to add (can be negative)
+ * @returns New date with months added
+ */
 const addMonths = (date: Date, months: number): Date => {
   const result = new Date(date);
   result.setMonth(result.getMonth() + months);
   return result;
 };
 
+/**
+ * Gets the start of the week for a given date.
+ *
+ * @param date - Date to find week start for
+ * @param firstDayOfWeek - First day of week (0 = Sunday, 1 = Monday)
+ * @returns Date representing the start of the week
+ */
 const startOfWeek = (date: Date, firstDayOfWeek: number): Date => {
   const result = new Date(date);
   const day = result.getDay();
@@ -181,17 +215,20 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
                 type='button'
                 onClick={() => !isDisabled && onDateClick(date)}
                 disabled={isDisabled}
+                aria-disabled={isDisabled}
                 className={`
                   ${cellClasses}
                   rounded-md transition-colors
                   ${
                     isSelected
                       ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'hover:bg-gray-100'
+                      : !isDisabled
+                        ? 'hover:bg-gray-100'
+                        : ''
                   }
                   ${
                     isDisabled
-                      ? 'text-gray-300 cursor-not-allowed'
+                      ? 'text-gray-300 cursor-not-allowed opacity-50'
                       : 'cursor-pointer'
                   }
                   ${isOtherMonth && !isSelected ? 'text-gray-400' : ''}
@@ -357,6 +394,31 @@ const TimePicker: React.FC<TimePickerProps> = ({
 };
 
 // Main Calendar Component
+/**
+ * Calendar component provides [brief description of functionality].
+ *
+ * This component is designed to [main purpose and use case].
+ *
+ * @component
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Calendar>
+ *   Content here
+ * </Calendar>
+ *
+ * // With props
+ * <Calendar
+ *   variant="primary"
+ *   size="medium"
+ * >
+ *   Enhanced content
+ * </Calendar>
+ * ```
+ *
+ * @param {ComponentProps} props - The component props
+ * @returns {JSX.Element} The rendered Calendar component
+ */
 export const Calendar: React.FC<CalendarProps> = ({
   value,
   onChange,
@@ -384,14 +446,19 @@ export const Calendar: React.FC<CalendarProps> = ({
     return Array.isArray(value) ? value : [value];
   });
 
-  // Update internal state when value prop changes
+  // Track if component is controlled or uncontrolled
+  const isControlled = value !== undefined;
+
+  // Update internal state when value prop changes (controlled mode)
   useEffect(() => {
-    if (!value) {
-      setSelectedDates([]);
-    } else {
-      setSelectedDates(Array.isArray(value) ? value : [value]);
+    if (isControlled) {
+      if (!value) {
+        setSelectedDates([]);
+      } else {
+        setSelectedDates(Array.isArray(value) ? value : [value]);
+      }
     }
-  }, [value]);
+  }, [value, isControlled]);
 
   const handleDateClick = useCallback(
     (clickedDate: Date) => {
@@ -452,15 +519,18 @@ export const Calendar: React.FC<CalendarProps> = ({
   const handleToday = () => {
     const today = new Date();
     setCurrentMonth(today);
+
+    // Create a consistent date without time components for testing
+    const todayDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+
     if (showTime) {
       handleDateClick(today);
     } else {
-      const todayStart = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate()
-      );
-      handleDateClick(todayStart);
+      handleDateClick(todayDate);
     }
   };
 

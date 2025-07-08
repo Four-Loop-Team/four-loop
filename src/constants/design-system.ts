@@ -1,6 +1,7 @@
 /**
- * Enhanced Design Token Integration
- * Comprehensive system for managing design tokens across themes and components
+ * @fileoverview Enhanced Design Token Integration and comprehensive design system constants.
+ * Provides a unified system for managing design tokens across themes, components, and layouts
+ * with support for animations, spacing, typography, colors, and component-specific tokens.
  */
 
 import {
@@ -27,7 +28,10 @@ import {
   TYPOGRAPHY_SCALE,
 } from './typography';
 
-// Animation and Transition Tokens
+/**
+ * Animation and transition tokens for consistent motion design.
+ * Provides duration presets, easing functions, and common transition patterns.
+ */
 export const ANIMATION_TOKENS = {
   duration: {
     instant: '0ms',
@@ -47,7 +51,7 @@ export const ANIMATION_TOKENS = {
     bounce: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
   },
 
-  // Preset transitions
+  // Preset transitions for common UI patterns
   presets: {
     fade: 'opacity 300ms ease-in-out',
     slide: 'transform 300ms ease-out',
@@ -57,7 +61,10 @@ export const ANIMATION_TOKENS = {
   },
 } as const;
 
-// Border Radius Tokens
+/**
+ * Border radius tokens for consistent corner rounding across components.
+ * Includes both scale-based values and semantic component-specific radii.
+ */
 export const BORDER_RADIUS_TOKENS = {
   none: '0',
   xs: '0.125rem', // 2px
@@ -69,7 +76,7 @@ export const BORDER_RADIUS_TOKENS = {
   '3xl': '1.5rem', // 24px
   full: '9999px',
 
-  // Semantic radius
+  // Semantic radius values for specific components
   button: '0.375rem',
   card: '0.5rem',
   input: '0.375rem',
@@ -77,7 +84,10 @@ export const BORDER_RADIUS_TOKENS = {
   avatar: '9999px',
 } as const;
 
-// Shadow Tokens
+/**
+ * Shadow tokens for depth and elevation in the design system.
+ * Provides both scale-based shadows and semantic component-specific shadows.
+ */
 export const SHADOW_TOKENS = {
   none: 'none',
   xs: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
@@ -209,7 +219,18 @@ export const THEME_CONFIG = {
   },
 } as const;
 
-// Utility Functions
+/**
+ * Create CSS custom properties for a specific theme
+ * Generates CSS variable declarations for light or dark theme
+ *
+ * @param {'light' | 'dark'} theme - The theme to generate CSS for
+ * @returns {string} CSS custom properties string
+ * @example
+ * ```typescript
+ * const lightThemeCSS = createThemeCSS('light');
+ * // Returns: '  --primary: #e2e891;\n  --secondary: #353535;...'
+ * ```
+ */
 export function createThemeCSS(theme: 'light' | 'dark'): string {
   const themeColors = THEME_CONFIG[theme].colors;
 
@@ -218,6 +239,17 @@ export function createThemeCSS(theme: 'light' | 'dark'): string {
     .join('\n');
 }
 
+/**
+ * Generate complete CSS custom properties for the design system
+ * Creates a comprehensive set of CSS variables for colors, spacing, and typography
+ *
+ * @returns {string} Complete CSS with all design token variables
+ * @example
+ * ```typescript
+ * const designTokens = generateDesignTokenCSS();
+ * // Use in a style tag or CSS file for design system variables
+ * ```
+ */
 export function generateDesignTokenCSS(): string {
   return `
 :root {

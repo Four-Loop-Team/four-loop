@@ -1,9 +1,48 @@
 /**
- * Hook for localStorage operations with SSR safety
+ * React hook for localStorage operations with SSR safety and error handling
+ * @fileoverview Custom hook that provides a useState-like interface for localStorage with SSR compatibility
  */
 
 import { useEffect, useRef, useState } from 'react';
 
+/**
+ * Hook for localStorage operations with SSR safety
+ * Provides a useState-like interface for persisting data to localStorage
+ *
+ * @template T - The type of data to store
+ * @param {string} key - The localStorage key to use
+ * @param {T} initialValue - The initial value to use if no stored value exists
+ * @returns {[T, (value: T | ((val: T) => T)) => void]} Tuple containing the current value and setter function
+ *
+ * @example
+ * ```tsx
+ * function UserPreferences() {
+ *   const [theme, setTheme] = useLocalStorage('theme', 'light');
+ *   const [settings, setSettings] = useLocalStorage('userSettings', {
+ *     notifications: true,
+ *     autoSave: false
+ *   });
+ *
+ *   return (
+ *     <div>
+ *       <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+ *         Current theme: {theme}
+ *       </button>
+ *       <button onClick={() => setSettings(prev => ({ ...prev, notifications: !prev.notifications }))}>
+ *         Notifications: {settings.notifications ? 'On' : 'Off'}
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * @features
+ * - ✅ SSR-safe (doesn't break during server-side rendering)
+ * - ✅ Error handling for localStorage access and JSON parsing
+ * - ✅ Supports functional updates like useState
+ * - ✅ TypeScript generic support for type safety
+ * - ✅ Automatic serialization/deserialization
+ */
 export function useLocalStorage<T>(
   key: string,
   initialValue: T

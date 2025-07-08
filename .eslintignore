@@ -6,3 +6,5 @@ dist/
 *.config.js
 public/
 .github/
+.git/
+e2e/visual-regression.spec.ts-snapshots

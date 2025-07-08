@@ -1,6 +1,15 @@
+/**
+ * @fileoverview Metadata utilities for Next.js pages and SEO optimization.
+ * Provides configuration and helper functions for generating consistent metadata
+ * across the application with proper Open Graph and social media support.
+ */
+
 import type { Metadata } from 'next';
 
-// Base metadata configuration
+/**
+ * Base site configuration containing default metadata values.
+ * Used as the foundation for all page-specific metadata generation.
+ */
 export const siteConfig = {
   name: 'Four Loop Digital',
   description:
@@ -26,7 +35,27 @@ export const siteConfig = {
   },
 };
 
-// Generate metadata for pages
+/**
+ * Generates standardized metadata for Next.js pages with SEO optimization.
+ *
+ * @param options - Metadata configuration options
+ * @param options.title - Page title (will be combined with site name)
+ * @param options.description - Page description for meta tags and Open Graph
+ * @param options.keywords - Additional keywords to append to default site keywords
+ * @param options.ogImage - Custom Open Graph image URL (defaults to site OG image)
+ * @param options.noIndex - Whether to prevent search engine indexing
+ * @param options.canonical - Canonical URL for the page
+ * @returns Complete Next.js metadata object with all SEO tags
+ *
+ * @example
+ * ```typescript
+ * const metadata = generateMetadata({
+ *   title: 'About Us',
+ *   description: 'Learn about our company and mission',
+ *   keywords: ['company', 'about', 'mission']
+ * });
+ * ```
+ */
 export function generateMetadata({
   title,
   description,

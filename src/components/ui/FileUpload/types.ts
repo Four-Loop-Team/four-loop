@@ -1,5 +1,6 @@
 /**
  * FileUpload component types and interfaces
+ * @fileoverview Type definitions for FileUpload component including file state, upload configuration, and callbacks
  */
 
 export interface UploadedFile {

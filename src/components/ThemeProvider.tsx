@@ -1,14 +1,20 @@
 /**
- * Theme Provider Component
- * Manages theme switching and provides theme context throughout the app
+ * @fileoverview Theme Provider Component for managing application-wide theme state.
+ * Provides theme switching functionality with local storage persistence and system preference detection.
  */
 
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+/**
+ * Available theme options for the application.
+ */
 type Theme = 'light' | 'dark' | 'auto';
 
+/**
+ * Theme context interface defining available theme operations.
+ */
 interface ThemeContextType {
   theme: Theme;
   resolvedTheme: 'light' | 'dark';
@@ -18,6 +24,26 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+/**
+ * Hook to access theme context and operations.
+ * Must be used within a ThemeProvider component.
+ *
+ * @returns Theme context with current theme state and operations
+ * @throws Error if used outside of ThemeProvider
+ *
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const { theme, setTheme, toggleTheme } = useTheme();
+ *
+ *   return (
+ *     <button onClick={toggleTheme}>
+ *       Current theme: {theme}
+ *     </button>
+ *   );
+ * }
+ * ```
+ */
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
@@ -26,12 +52,36 @@ export function useTheme() {
   return context;
 }
 
+/**
+ * Props for the ThemeProvider component.
+ */
 interface ThemeProviderProps {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
 }
 
+/**
+ * ThemeProvider component that manages theme state and provides context to child components.
+ * Handles theme persistence, system preference detection, and CSS class application.
+ *
+ * @param props - ThemeProvider configuration
+ * @param props.children - Child components that will have access to theme context
+ * @param props.defaultTheme - Default theme to use (defaults to 'auto')
+ * @param props.storageKey - Local storage key for theme persistence (defaults to 'theme')
+ * @returns Theme provider context wrapper
+ *
+ * @example
+ * ```tsx
+ * function App() {
+ *   return (
+ *     <ThemeProvider defaultTheme="light" storageKey="app-theme">
+ *       <YourAppComponents />
+ *     </ThemeProvider>
+ *   );
+ * }
+ * ```
+ */
 export function ThemeProvider({
   children,
   defaultTheme = 'auto',
@@ -103,11 +153,6 @@ export function ThemeProvider({
     }
   };
 
-  // Don't render until mounted to avoid hydration mismatch
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
   const value: ThemeContextType = {
     theme,
     resolvedTheme,
@@ -115,6 +160,7 @@ export function ThemeProvider({
     toggleTheme,
   };
 
+  // Don't update DOM until mounted to avoid hydration mismatch, but still provide context
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );

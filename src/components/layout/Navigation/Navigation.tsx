@@ -25,6 +25,33 @@ const navigationItems = [
   { label: 'Contact', href: '#contact' },
 ];
 
+/**
+ * Main navigation component with responsive design and smooth scroll animations.
+ *
+ * This component provides the primary navigation for the Four Loop Digital website,
+ * featuring responsive mobile/desktop layouts, smooth scrolling between sections,
+ * and visual active state indicators.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Navigation />
+ * ```
+ *
+ * @returns {JSX.Element} The rendered navigation component with responsive behavior
+ *
+ * @accessibility
+ * - Supports keyboard navigation
+ * - ARIA labels for mobile menu toggle
+ * - Semantic navigation structure
+ * - High contrast focus indicators
+ *
+ * @performance
+ * - Optimized scroll listeners with debouncing
+ * - Conditional rendering for mobile/desktop
+ * - Efficient active section detection
+ */
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);

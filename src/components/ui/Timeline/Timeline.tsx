@@ -1,14 +1,61 @@
 /**
- * Timeline Component
- * A flexible timeline component for displaying chronological events
+ * @fileoverview Timeline Component - Flexible timeline for displaying chronological events.
+ * @component Timeline
+ *
+ * @description
+ * Provides versatile timeline visualization with customizable appearance and behavior.
+ * Perfect for displaying chronological events, project milestones, or process steps with:
+ * - Vertical and horizontal orientations
+ * - Custom item styling and content
+ * - Responsive design
+ * - Accessibility support
+ * - Flexible timestamp formatting
+ *
+ * @example
+ * ```tsx
+ * // Basic timeline
+ * <Timeline
+ *   items={[
+ *     {
+ *       timestamp: new Date('2023-01-01'),
+ *       title: 'Project Started',
+ *       description: 'Initial project setup and planning'
+ *     },
+ *     {
+ *       timestamp: new Date('2023-02-15'),
+ *       title: 'First Milestone',
+ *       description: 'Completed core functionality'
+ *     }
+ *   ]}
+ * />
+ *
+ * // Horizontal timeline with custom formatting
+ * <Timeline
+ *   items={timelineItems}
+ *   orientation="horizontal"
+ *   formatTimestamp={(date) => date.toLocaleDateString()}
+ * />
+ * ```
  */
 
 import React, { useMemo } from 'react';
 import { TimelineItemProps, TimelineProps } from './types';
 
-// Default timestamp formatter
+/**
+ * Default timestamp formatter function for timeline items.
+ * Formats dates using Intl.DateTimeFormat with localized formatting.
+ *
+ * @param timestamp - Date object or ISO string to format
+ * @returns Formatted date string
+ */
 const defaultFormatTimestamp = (timestamp: Date | string): string => {
   const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
+
+  // Handle invalid dates gracefully
+  if (isNaN(date.getTime())) {
+    return 'Invalid date';
+  }
+
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',
@@ -18,7 +65,63 @@ const defaultFormatTimestamp = (timestamp: Date | string): string => {
   }).format(date);
 };
 
-// Main Timeline component
+/**
+ * Timeline component for displaying chronological events in a visual timeline format.
+ * Supports vertical and horizontal orientations with customizable styling and behavior.
+ *
+ * @component
+ * @param props - Timeline configuration options
+ * @param props.items - Array of timeline items to display
+ * @param props.orientation - Timeline layout direction ('vertical' | 'horizontal')
+ * @param props.variant - Visual style variant ('default' | 'compact' | 'detailed')
+ * @param props.size - Timeline size ('sm' | 'md' | 'lg')
+ * @param props.showTimestamps - Whether to display timestamps for items
+ * @param props.formatTimestamp - Custom timestamp formatting function
+ * @param props.showConnectors - Whether to show connecting lines between items
+ * @param props.reverse - Whether to reverse the chronological order
+ * @param props.loading - Whether the timeline is in loading state
+ * @param props.loadingMessage - Message to display while loading
+ * @param props.emptyMessage - Message to display when no items exist
+ * @param props.onItemClick - Click handler for timeline items
+ * @param props.itemRenderer - Custom renderer for timeline items
+ * @param props.className - Additional CSS classes for the timeline container
+ * @param props.itemClassName - Additional CSS classes for timeline items
+ * @returns Timeline component with chronological event display
+ *
+ * @example
+ * ```tsx
+ * // Basic timeline with events
+ * <Timeline
+ *   items={[
+ *     {
+ *       id: '1',
+ *       title: 'Project Started',
+ *       description: 'Initial project setup and planning',
+ *       timestamp: new Date('2024-01-01'),
+ *       status: 'completed'
+ *     },
+ *     {
+ *       id: '2',
+ *       title: 'Development Phase',
+ *       description: 'Core feature development',
+ *       timestamp: new Date('2024-02-15'),
+ *       status: 'in-progress'
+ *     }
+ *   ]}
+ *   orientation="vertical"
+ *   showTimestamps={true}
+ * />
+ *
+ * // Horizontal timeline with custom formatting
+ * <Timeline
+ *   items={events}
+ *   orientation="horizontal"
+ *   variant="compact"
+ *   formatTimestamp={(date) => format(date, 'MMM dd')}
+ *   onItemClick={(item) => setSelectedEvent(item)}
+ * />
+ * ```
+ */
 const Timeline: React.FC<TimelineProps> = ({
   items,
   orientation = 'vertical',
@@ -44,7 +147,16 @@ const Timeline: React.FC<TimelineProps> = ({
         typeof a.timestamp === 'string' ? new Date(a.timestamp) : a.timestamp;
       const dateB =
         typeof b.timestamp === 'string' ? new Date(b.timestamp) : b.timestamp;
-      return dateB.getTime() - dateA.getTime(); // Latest first by default
+
+      // Handle invalid dates - put them at the end
+      const timeA = dateA.getTime();
+      const timeB = dateB.getTime();
+
+      if (isNaN(timeA) && isNaN(timeB)) return 0;
+      if (isNaN(timeA)) return 1;
+      if (isNaN(timeB)) return -1;
+
+      return timeB - timeA; // Latest first by default
     });
     return reverse ? sorted.reverse() : sorted;
   }, [items, reverse]);

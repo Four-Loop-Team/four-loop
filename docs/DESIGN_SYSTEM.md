@@ -324,7 +324,7 @@ document.documentElement.setAttribute('data-theme', 'light');
 - High contrast mode support included
 - Color-blind friendly palette
 
-### Typography
+### Typography Accessibility
 
 - Relative units (rem/em) for better scaling
 - Appropriate line heights for readability
@@ -397,6 +397,7 @@ document.documentElement.setAttribute('data-theme', 'light');
    ```
 
 4. **Add CSS utilities** (optional):
+
    ```css
    @import './src/styles/design-system.css';
    ```
@@ -424,6 +425,7 @@ document.documentElement.setAttribute('data-theme', 'light');
    ```
 
 3. **Use responsive utilities** for adaptive design:
+
    ```typescript
    fontSize: DESIGN_SYSTEM.typography.fluid.fluidBody;
    ```

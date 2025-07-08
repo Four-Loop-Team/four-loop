@@ -454,7 +454,17 @@ export const FLUID_TYPOGRAPHY = {
 } as const;
 
 /**
- * Generate responsive typography styles
+ * Generate responsive typography styles with scaling across breakpoints
+ * Creates typography that scales appropriately for mobile, tablet, and desktop
+ *
+ * @param {keyof typeof FONT_SIZES} baseSize - The base font size key
+ * @param {number} [scaleRatio=1.2] - The ratio for scaling between breakpoints
+ * @returns {Object} Responsive typography object with mobile, tablet, and desktop sizes
+ * @example
+ * ```typescript
+ * const responsiveHeading = createResponsiveTypography('xl', 1.25);
+ * // { mobile: '1.25rem', tablet: '1.56rem', desktop: '1.95rem' }
+ * ```
  */
 export function createResponsiveTypography(
   baseSize: keyof typeof FONT_SIZES,
@@ -470,6 +480,15 @@ export function createResponsiveTypography(
 
 /**
  * Calculate optimal line height for a given font size
+ * Implements typography best practices for readability
+ *
+ * @param {string} fontSize - The font size (e.g., '1.5rem', '16px')
+ * @returns {number} The optimal line height ratio
+ * @example
+ * ```typescript
+ * const lineHeight = calculateLineHeight('1.2rem'); // 1.3
+ * const headingLineHeight = calculateLineHeight('3rem'); // 1.1
+ * ```
  */
 export function calculateLineHeight(fontSize: string): number {
   const size = parseFloat(fontSize);
@@ -488,7 +507,16 @@ export type TypographyVariant = keyof typeof TYPOGRAPHY_SCALE;
 export type ResponsiveTypographyVariant =
   keyof typeof RESPONSIVE_TYPOGRAPHY.desktop;
 
-// Utility functions
+/**
+ * Get typography styles for a specific variant and size
+ * @param {string} variant - The typography variant (e.g., 'heading', 'body')
+ * @param {string} size - The size within that variant
+ * @returns {Object|null} Typography styles object or null if not found
+ * @example
+ * ```typescript
+ * const headingStyles = getTypographyStyles('heading', 'lg');
+ * ```
+ */
 export const getTypographyStyles = (variant: string, size: string) => {
   const scale = TYPOGRAPHY_SCALE[variant as TypographyVariant];
   if (!scale) return null;

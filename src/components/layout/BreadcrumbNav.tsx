@@ -14,6 +14,32 @@ interface BreadcrumbNavProps {
   items?: BreadcrumbItem[];
 }
 
+/**
+ * BreadcrumbNav component provides hierarchical navigation showing the user's location.
+ *
+ * This component is designed to help users understand their current page location
+ * and navigate back to parent pages in the site hierarchy.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * // Basic usage with auto-generated breadcrumbs from URL
+ * <BreadcrumbNav />
+ *
+ * // Custom breadcrumb items
+ * <BreadcrumbNav
+ *   items={[
+ *     { label: 'Home', href: '/' },
+ *     { label: 'Products', href: '/products' },
+ *     { label: 'Category' }
+ *   ]}
+ * />
+ * ```
+ *
+ * @param {BreadcrumbNavProps} props - The breadcrumb navigation props
+ * @param {BreadcrumbItem[]} [props.items] - Custom breadcrumb items, auto-generated if not provided
+ * @returns {JSX.Element} The rendered breadcrumb navigation component
+ */
 export default function BreadcrumbNav({ items }: BreadcrumbNavProps) {
   const pathname = usePathname();
 

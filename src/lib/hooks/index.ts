@@ -1,5 +1,6 @@
 /**
- * Custom React hooks export
+ * @fileoverview Custom React hooks centralized export.
+ * Provides a single import point for all custom hooks used throughout the application.
  */
 
 export { useLocalStorage } from './useLocalStorage';

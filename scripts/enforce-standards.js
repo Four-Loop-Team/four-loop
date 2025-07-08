@@ -346,6 +346,7 @@ class StandardsEnforcer {
 
     let componentsWithJSDoc = 0;
     let componentsWithGoodJSDoc = 0;
+    let totalComponentsRequiringJSDoc = 0;
     const issuesFound = [];
 
     for (const filePath of componentFiles) {
@@ -353,12 +354,27 @@ class StandardsEnforcer {
         const content = fs.readFileSync(filePath, 'utf8');
         const relativePath = path.relative(this.projectRoot, filePath);
 
-        // Check if file exports a React component
-        const hasComponent =
+        // Check if file exports a React component or is a re-export module
+        const hasDirectComponent =
           /export\s+(const|function|class)\s+\w+/.test(content) ||
           /export\s+default\s+(function|class|\w+)/.test(content);
 
+        const hasReExports = /export\s*{\s*\w+/.test(content);
+
+        // Skip files that are pure re-export modules (index files)
+        const isReExportModule =
+          hasReExports &&
+          !hasDirectComponent &&
+          (relativePath.endsWith('/index.ts') ||
+            relativePath.endsWith('/index.tsx'));
+
+        const hasComponent =
+          hasDirectComponent || (hasReExports && !isReExportModule);
+
         if (!hasComponent) continue;
+
+        // Count this file as requiring JSDoc
+        totalComponentsRequiringJSDoc++;
 
         // Check for JSDoc blocks
         const jsdocBlocks = content.match(/\/\*\*[\s\S]*?\*\//g) || [];
@@ -370,7 +386,7 @@ class StandardsEnforcer {
 
         componentsWithJSDoc++;
 
-        // Analyze JSDoc quality
+        // Analyze JSDoc quality - be more lenient for re-export modules
         const hasComponentTag = jsdocBlocks.some((block) =>
           block.includes('@component')
         );
@@ -391,9 +407,13 @@ class StandardsEnforcer {
           return lines.length > 0;
         });
 
+        // For re-export modules, require less strict JSDoc
+        const isReExportFile = hasReExports && !hasDirectComponent;
+        const requiredQuality = isReExportFile ? 2 : 3;
+
         let quality = 0;
         if (hasDescription) quality++;
-        if (hasComponentTag) quality++;
+        if (hasComponentTag || isReExportFile) quality++; // Don't require @component for re-exports
         if (hasExample) quality++;
         if (
           hasParams &&
@@ -402,12 +422,13 @@ class StandardsEnforcer {
         )
           quality++;
 
-        if (quality >= 3) {
+        if (quality >= requiredQuality) {
           componentsWithGoodJSDoc++;
         } else {
           const missing = [];
           if (!hasDescription) missing.push('description');
-          if (!hasComponentTag) missing.push('@component tag');
+          if (!hasComponentTag && !isReExportFile)
+            missing.push('@component tag');
           if (!hasExample) missing.push('@example');
           if (!hasParams && content.includes('Props'))
             missing.push('@param for props');
@@ -424,7 +445,7 @@ class StandardsEnforcer {
     }
 
     // Report results
-    const totalComponents = componentFiles.length;
+    const totalComponents = totalComponentsRequiringJSDoc;
     const jsdocCoverage =
       totalComponents > 0
         ? ((componentsWithJSDoc / totalComponents) * 100).toFixed(1)

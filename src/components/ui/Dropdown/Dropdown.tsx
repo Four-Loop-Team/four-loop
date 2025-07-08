@@ -1,6 +1,44 @@
 /**
- * Dropdown/Select Component
- * A flexible dropdown with search, multi-select, and grouping capabilities
+ * @fileoverview Dropdown/Select Component with advanced features.
+ * @component Dropdown
+ *
+ * @description
+ * Flexible dropdown with search, multi-select, grouping, and accessibility support.
+ * Provides a comprehensive dropdown/select component with features like:
+ * - Single and multi-select modes
+ * - Search functionality
+ * - Grouping of options
+ * - Keyboard navigation
+ * - Custom styling and theming
+ * - Accessibility compliance
+ *
+ * @example
+ * ```tsx
+ * // Basic dropdown
+ * <Dropdown
+ *   options={[
+ *     { value: 'option1', label: 'Option 1' },
+ *     { value: 'option2', label: 'Option 2' }
+ *   ]}
+ *   placeholder="Select an option..."
+ *   onChange={(value) => console.log(value)}
+ * />
+ *
+ * // Multi-select dropdown
+ * <Dropdown
+ *   options={options}
+ *   multiple
+ *   placeholder="Select multiple options..."
+ *   onChange={(values) => console.log(values)}
+ * />
+ *
+ * // Dropdown with search
+ * <Dropdown
+ *   options={options}
+ *   searchable
+ *   placeholder="Search and select..."
+ * />
+ * ```
  */
 
 import React, {
@@ -21,15 +59,27 @@ import {
   OptionGroup,
 } from './types';
 
-// Dropdown Context
+/**
+ * Context for sharing dropdown state and methods between components.
+ */
 const DropdownContext = createContext<DropdownContextValue | null>(null);
 
-// Helper function to check if an item is an OptionGroup
+/**
+ * Type guard to check if an item is an OptionGroup.
+ *
+ * @param item - Option or OptionGroup to check
+ * @returns True if the item is an OptionGroup
+ */
 const isOptionGroup = (item: Option | OptionGroup): item is OptionGroup => {
   return 'options' in item;
 };
 
-// Helper function to flatten options from groups
+/**
+ * Flattens nested option groups into a single array of options.
+ *
+ * @param items - Array of options and option groups
+ * @returns Flattened array of options
+ */
 const flattenOptions = (items: Array<Option | OptionGroup>): Option[] => {
   return items.reduce<Option[]>((acc, item) => {
     if (isOptionGroup(item)) {
@@ -39,7 +89,14 @@ const flattenOptions = (items: Array<Option | OptionGroup>): Option[] => {
   }, []);
 };
 
-// Default filter function
+/**
+ * Default filter function for searching dropdown options.
+ * Searches both label and value fields with case-insensitive matching.
+ *
+ * @param option - Option to filter
+ * @param searchTerm - Search term to match against
+ * @returns True if option matches the search term
+ */
 const defaultFilterFunction = (option: Option, searchTerm: string): boolean => {
   const term = searchTerm.toLowerCase();
   return (
@@ -48,6 +105,79 @@ const defaultFilterFunction = (option: Option, searchTerm: string): boolean => {
   );
 };
 
+/**
+ * Advanced dropdown/select component with search, multi-select, and grouping capabilities.
+ * Provides comprehensive form control functionality with accessibility support.
+ *
+ * @component
+ * @param props - Dropdown configuration options
+ * @param props.options - Array of options or option groups to display
+ * @param props.value - Currently selected value(s)
+ * @param props.placeholder - Placeholder text when no option is selected
+ * @param props.multiple - Enable multi-select functionality
+ * @param props.searchable - Enable search/filter functionality
+ * @param props.disabled - Disable the dropdown
+ * @param props.loading - Show loading state
+ * @param props.required - Mark as required field
+ * @param props.error - Show error state
+ * @param props.errorMessage - Error message to display
+ * @param props.helperText - Helper text below the dropdown
+ * @param props.label - Label for the dropdown
+ * @param props.size - Size variant ('sm' | 'md' | 'lg')
+ * @param props.maxHeight - Maximum height of the dropdown menu
+ * @param props.creatable - Allow creating new options
+ * @param props.clearSearchOnSelect - Clear search term after selection
+ * @param props.filterFunction - Custom filtering function for search
+ * @param props.optionRenderer - Custom option rendering function
+ * @returns Advanced dropdown component with ref support
+ *
+ * @example
+ * ```tsx
+ * // Basic dropdown
+ * <Dropdown
+ *   options={[
+ *     { value: 'apple', label: 'Apple' },
+ *     { value: 'banana', label: 'Banana' },
+ *     { value: 'orange', label: 'Orange' }
+ *   ]}
+ *   value={selectedFruit}
+ *   onChange={setSelectedFruit}
+ *   placeholder="Choose a fruit"
+ * />
+ *
+ * // Multi-select with search
+ * <Dropdown
+ *   options={countries}
+ *   value={selectedCountries}
+ *   onChange={setSelectedCountries}
+ *   multiple
+ *   searchable
+ *   placeholder="Select countries"
+ * />
+ *
+ * // Grouped options
+ * <Dropdown
+ *   options={[
+ *     {
+ *       label: 'Fruits',
+ *       options: [
+ *         { value: 'apple', label: 'Apple' },
+ *         { value: 'banana', label: 'Banana' }
+ *       ]
+ *     },
+ *     {
+ *       label: 'Vegetables',
+ *       options: [
+ *         { value: 'carrot', label: 'Carrot' },
+ *         { value: 'lettuce', label: 'Lettuce' }
+ *       ]
+ *     }
+ *   ]}
+ *   value={selection}
+ *   onChange={setSelection}
+ * />
+ * ```
+ */
 const Dropdown = forwardRef<DropdownRef, DropdownProps>(
   (
     {

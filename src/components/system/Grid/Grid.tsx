@@ -1,5 +1,5 @@
-import React from 'react';
 import { Box, BoxProps } from '@mui/material';
+import React from 'react';
 
 // Grid Container Props
 interface GridContainerProps extends BoxProps {
@@ -55,6 +55,7 @@ interface GridItemProps extends BoxProps {
  * Provides a responsive 12-column grid system using CSS Grid or Flexbox.
  * Integrates with the application's design system variables.
  *
+ * @component
  * @example
  * // CSS Grid Layout
  * <GridContainer>
@@ -68,6 +69,13 @@ interface GridItemProps extends BoxProps {
  *   <GridItem xs={6} md={4}>Content</GridItem>
  *   <GridItem xs={6} md={8}>Content</GridItem>
  * </GridContainer>
+ *
+ * @param {GridContainerProps} props - The component props
+ * @param {React.ReactNode} props.children - Child components to render in the grid
+ * @param {'default'|'lg'|'xl'|'fluid'} props.size - Container size variant
+ * @param {'xs'|'sm'|'md'|'lg'|'xl'} props.gap - Gap size between grid items
+ * @param {'css'|'flex'} props.type - Grid implementation type
+ * @param {string} props.className - Additional CSS classes
  */
 export const GridContainer: React.FC<GridContainerProps> = ({
   children,

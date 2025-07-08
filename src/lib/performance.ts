@@ -1,8 +1,15 @@
-// Core Web Vitals optimization utilities
+/**
+ * @fileoverview Core Web Vitals optimization utilities and performance enhancement tools.
+ * Provides comprehensive performance optimization features including CSS optimization,
+ * font loading strategies, image optimization, lazy loading, and resource preloading.
+ */
 
 import { NextFont } from 'next/dist/compiled/@next/font';
 
-// Critical CSS extraction utility
+/**
+ * Critical CSS styles for above-the-fold rendering optimization.
+ * Contains essential styles that should be inlined to prevent render-blocking.
+ */
 export const criticalStyles = {
   // Above-the-fold styles for immediate rendering
   layout: `
@@ -14,13 +21,13 @@ export const criticalStyles = {
       -moz-osx-font-smoothing: grayscale;
       background-color: #ffffff;
     }
-    
+
     .loading-skeleton {
       background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
       background-size: 200% 100%;
       animation: loading 1.5s infinite;
     }
-    
+
     @keyframes loading {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
@@ -28,7 +35,20 @@ export const criticalStyles = {
   `,
 };
 
-// Font optimization
+/**
+ * Optimizes Next.js font loading with performance best practices.
+ * Applies font-display: swap to improve Cumulative Layout Shift (CLS).
+ *
+ * @param font - Next.js font object
+ * @returns Optimized font configuration with performance settings
+ *
+ * @example
+ * ```typescript
+ * import { Inter } from 'next/font/google';
+ * const inter = Inter({ subsets: ['latin'] });
+ * const optimizedFont = optimizeFont(inter);
+ * ```
+ */
 export const optimizeFont = (font: NextFont) => ({
   className: font.className,
   style: {
@@ -36,7 +56,10 @@ export const optimizeFont = (font: NextFont) => ({
   },
 });
 
-// Image optimization helper
+/**
+ * Image optimization configuration for different loading strategies.
+ * Provides presets for critical above-the-fold images and lazy-loaded content.
+ */
 export const imageOptimization = {
   // Critical above-the-fold images
   critical: {
@@ -60,7 +83,10 @@ export const imageOptimization = {
   },
 };
 
-// Resource preloading
+/**
+ * Resource preloading configuration for critical assets.
+ * Defines fonts, images, and other resources that should be preloaded for better performance.
+ */
 export const preloadResources = [
   // Critical fonts
   {
@@ -84,7 +110,20 @@ export const preloadResources = [
   },
 ];
 
-// Intersection Observer for lazy loading
+/**
+ * Creates an Intersection Observer for lazy loading content.
+ * Automatically loads images and components when they enter the viewport.
+ *
+ * @returns IntersectionObserver instance or null if not in browser environment
+ *
+ * @example
+ * ```typescript
+ * const lazyLoader = createLazyLoader();
+ * if (lazyLoader) {
+ *   lazyLoader.observe(imageElement);
+ * }
+ * ```
+ */
 export const createLazyLoader = () => {
   if (typeof window === 'undefined') return null;
 

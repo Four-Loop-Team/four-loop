@@ -1,7 +1,13 @@
 /**
- * Application routes and navigation constants
+ * @fileoverview Application routes and navigation constants.
+ * Centralized route definitions, external links, and navigation configuration
+ * for consistent URL management across the application.
  */
 
+/**
+ * Internal application routes.
+ * All route paths used throughout the application for type-safe navigation.
+ */
 export const ROUTES = {
   HOME: '/',
   ABOUT: '/about',
@@ -12,12 +18,20 @@ export const ROUTES = {
   DESIGN_SYSTEM_DEMO: '/design-system-demo',
 } as const;
 
+/**
+ * External links and social media URLs.
+ * Centralized location for all external link references.
+ */
 export const EXTERNAL_LINKS = {
   GITHUB: 'https://github.com',
   LINKEDIN: 'https://linkedin.com',
   TWITTER: 'https://twitter.com',
 } as const;
 
+/**
+ * Main navigation items configuration.
+ * Defines the primary navigation structure with labels, routes, and descriptions.
+ */
 export const NAVIGATION_ITEMS = [
   {
     label: 'Home',

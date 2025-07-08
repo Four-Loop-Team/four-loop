@@ -1,6 +1,36 @@
 /**
  * Chart Component
  * A flexible data visualization component with support for multiple chart types
+ * including line, bar, area, pie, and scatter charts. Provides responsive design
+ * and customizable styling options.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Chart
+ *   type="line"
+ *   data={{
+ *     labels: ['Jan', 'Feb', 'Mar'],
+ *     datasets: [{
+ *       label: 'Sales',
+ *       data: [100, 200, 150],
+ *       borderColor: '#3B82F6'
+ *     }]
+ *   }}
+ *   width={600}
+ *   height={400}
+ * />
+ * ```
+ *
+ * @param {ChartProps} props - The component props
+ * @param {string} props.type - Type of chart to render
+ * @param {object} props.data - Chart data including labels and datasets
+ * @param {object} props.options - Chart configuration options
+ * @param {number} props.width - Chart width in pixels
+ * @param {number} props.height - Chart height in pixels
+ * @param {string} props.className - Additional CSS classes
+ * @param {boolean} props.loading - Loading state indicator
+ * @param {string} props.error - Error message to display
  */
 
 import React, {

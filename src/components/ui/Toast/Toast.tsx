@@ -1,6 +1,79 @@
 /**
- * Toast Component and useToast Hook
- * Individual toast component and utility hook for displaying toasts
+ * @fileoverview Toast Component and useToast Hook - Individual toast notifications
+ * @component Toast
+ *
+ * @description
+ * Individual toast component and utility hook for displaying toast notifications with:
+ * - Multiple toast types (success, error, warning, info, loading)
+ * - Auto-dismiss functionality with customizable duration
+ * - Manual dismiss with action buttons
+ * - Smooth enter/exit animations
+ * - Portal rendering for proper layering
+ * - Accessibility features and announcements
+ * - Customizable styling and positioning
+ *
+ * @features
+ * - ✅ Multiple toast types and variants
+ * - ✅ Auto-dismiss with custom durations
+ * - ✅ Manual dismiss controls
+ * - ✅ Smooth animations
+ * - ✅ Action button support
+ * - ✅ Portal rendering
+ * - ✅ ARIA live announcements
+ * - ✅ TypeScript support
+ *
+ * @example
+ * ```tsx
+ * // Individual toast component
+ * <Toast
+ *   toast={{
+ *     id: '1',
+ *     type: 'success',
+ *     title: 'Success!',
+ *     message: 'Operation completed successfully',
+ *     duration: 5000
+ *   }}
+ *   onDismiss={handleDismiss}
+ * />
+ *
+ * // Using the useToast hook
+ * function MyComponent() {
+ *   const { addToast, removeToast } = useToast();
+ *
+ *   const showSuccess = () => {
+ *     addToast({
+ *       type: 'success',
+ *       title: 'Success!',
+ *       message: 'Your action was completed'
+ *     });
+ *   };
+ *
+ *   const showWithActions = () => {
+ *     addToast({
+ *       type: 'info',
+ *       message: 'New update available',
+ *       actions: [
+ *         { label: 'Update', onClick: handleUpdate },
+ *         { label: 'Later', onClick: () => {} }
+ *       ]
+ *     });
+ *   };
+ * }
+ *
+ * // Toast container for positioning
+ * <ToastContainer
+ *   toasts={toasts}
+ *   position="top-right"
+ *   onDismiss={handleDismiss}
+ * />
+ * ```
+ *
+ * @accessibility
+ * - ARIA live regions for announcements
+ * - Screen reader compatible messages
+ * - Keyboard dismissible
+ * - High contrast support
+ * - Focus management for actions
  */
 
 import React, { useEffect, useState } from 'react';

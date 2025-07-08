@@ -1,6 +1,71 @@
 /**
- * Modal Component Suite
- * A collection of modal components including basic Modal, ConfirmDialog
+ * @fileoverview Modal Component Suite - Flexible modal dialog system
+ * @component Modal
+ *
+ * @description
+ * A comprehensive modal component suite providing overlay dialogs with:
+ * - Multiple sizes and positioning options
+ * - Backdrop interaction control
+ * - Keyboard navigation and focus management
+ * - Portal rendering for proper layering
+ * - Confirmation dialog variants
+ * - Customizable styling and animations
+ * - Full accessibility support
+ *
+ * @features
+ * - ✅ Multiple size variants (sm, md, lg, xl, full)
+ * - ✅ Flexible positioning options
+ * - ✅ Backdrop click handling
+ * - ✅ Keyboard navigation (Escape to close)
+ * - ✅ Focus management and restoration
+ * - ✅ Portal rendering
+ * - ✅ Confirmation dialog patterns
+ * - ✅ ARIA compliance
+ * - ✅ TypeScript support
+ *
+ * @example
+ * ```tsx
+ * // Basic modal usage
+ * <Modal isOpen={isOpen} onClose={handleClose}>
+ *   <ModalHeader>
+ *     <h2>Modal Title</h2>
+ *   </ModalHeader>
+ *   <ModalBody>
+ *     Modal content goes here
+ *   </ModalBody>
+ *   <ModalFooter>
+ *     <button onClick={handleClose}>Close</button>
+ *   </ModalFooter>
+ * </Modal>
+ *
+ * // Confirmation dialog
+ * <ConfirmDialog
+ *   isOpen={showConfirm}
+ *   title="Confirm Action"
+ *   message="Are you sure you want to proceed?"
+ *   onConfirm={handleConfirm}
+ *   onCancel={handleCancel}
+ *   variant="danger"
+ * />
+ *
+ * // Custom positioned modal
+ * <Modal
+ *   isOpen={isOpen}
+ *   onClose={handleClose}
+ *   size="lg"
+ *   position="top"
+ *   backdrop="blur"
+ * >
+ *   <div>Custom modal content</div>
+ * </Modal>
+ * ```
+ *
+ * @accessibility
+ * - ARIA dialog pattern implementation
+ * - Focus trap and restoration
+ * - Keyboard navigation (Escape, Tab)
+ * - Screen reader announcements
+ * - High contrast support
  */
 
 import React, { useCallback, useEffect, useRef } from 'react';

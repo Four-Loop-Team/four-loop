@@ -8,6 +8,75 @@ import {
   TwoColumnLayout,
 } from './Grid';
 
+/**
+ * @fileoverview GridSystemDemo Component - Comprehensive grid system demonstration
+ * @component GridSystemDemo
+ *
+ * @description
+ * A comprehensive demonstration component showcasing the project's 12-column grid system capabilities.
+ * This component serves as both documentation and testing playground for the grid system, providing
+ * interactive examples of various grid layouts with visual feedback and responsive behavior demonstrations.
+ *
+ * @features
+ * - ✅ Basic grid container and item examples
+ * - ✅ Responsive breakpoint demonstrations (xs, sm, md, lg, xl)
+ * - ✅ Pre-built layout components (TwoColumnLayout, ThreeColumnLayout)
+ * - ✅ CardGrid responsive card layouts
+ * - ✅ Advanced grid positioning and offset examples
+ * - ✅ Auto-sizing column demonstrations
+ * - ✅ Gap size variations (xs, sm, md, lg, xl)
+ * - ✅ Container size examples (default, lg, xl, fluid)
+ * - ✅ CSS Grid and Flexbox implementations
+ * - ✅ Visual spacing and alignment guides
+ * - ✅ Real-world layout patterns
+ *
+ * @example
+ * ```tsx
+ * // Basic usage in a design system documentation page
+ * <GridSystemDemo />
+ *
+ * // Used in layout testing and development
+ * function LayoutDevelopmentPage() {
+ *   return (
+ *     <div>
+ *       <h1>Grid System Examples</h1>
+ *       <GridSystemDemo />
+ *     </div>
+ *   );
+ * }
+ *
+ * // In a design system showcase
+ * import { GridSystemDemo } from '@/components/system';
+ *
+ * function DesignSystemPage() {
+ *   return (
+ *     <section>
+ *       <h2>Grid System</h2>
+ *       <GridSystemDemo />
+ *     </section>
+ *   );
+ * }
+ * ```
+ *
+ * @see {@link GridContainer} - Main grid container component
+ * @see {@link GridItem} - Individual grid item component
+ * @see {@link TwoColumnLayout} - Pre-built two-column layout
+ * @see {@link ThreeColumnLayout} - Pre-built three-column layout
+ * @see {@link CardGrid} - Responsive card grid component
+ *
+ * @accessibility
+ * - Semantic HTML structure with proper headings
+ * - Color contrast compliant design tokens
+ * - Responsive design for all screen sizes
+ * - Keyboard navigable interface
+ * - Screen reader compatible content structure
+ *
+ * @performance
+ * - Lightweight implementation with minimal re-renders
+ * - CSS-based grid system for optimal performance
+ * - Efficient responsive breakpoint handling
+ * - Optimized Material-UI component usage
+ */
 const GridSystemDemo: React.FC = () => {
   // Sample items for card grid
   const sampleCards = Array.from({ length: 8 }, (_, index) => (

@@ -1,11 +1,18 @@
 /**
  * Enhanced design system colors with theme support
- * Includes brand colors, semantic states, and comprehensive neutral scales
+ * Comprehensive color palette including brand colors, semantic states, and neutral scales
+ * @fileoverview Color constants and theme definitions for consistent design implementation
  */
 
-// Brand Color Palette (based on your existing brand)
+/**
+ * Brand color palette based on Four Loop Digital's visual identity
+ * Each color includes a full scale from 50 (lightest) to 950 (darkest)
+ * @constant
+ */
 export const BRAND_COLORS = {
-  // Primary brand colors (using your existing palette)
+  /**
+   * Primary brand colors using the signature green-yellow palette
+   */
   primary: {
     50: '#f8fce4',
     100: '#f0f7c7',
@@ -20,7 +27,9 @@ export const BRAND_COLORS = {
     950: '#2f3309',
   },
 
-  // Secondary/Neutral colors (using your existing dark grays)
+  /**
+   * Secondary/Neutral colors for backgrounds and subtle elements
+   */
   neutral: {
     50: '#f8f8f8',
     100: '#f0f0f0',
@@ -35,7 +44,9 @@ export const BRAND_COLORS = {
     950: '#353535', // Your current secondary
   },
 
-  // Accent color (using your logo green)
+  /**
+   * Accent color derived from logo green elements
+   */
   accent: {
     50: '#f7f7f6',
     100: '#eeeeed',
@@ -51,9 +62,14 @@ export const BRAND_COLORS = {
   },
 } as const;
 
-// Semantic Color System
+/**
+ * Semantic color system for UI states and feedback
+ * @constant
+ */
 export const SEMANTIC_COLORS = {
-  // Success states
+  /**
+   * Success state colors for positive feedback
+   */
   success: {
     50: '#f0fdf4',
     100: '#dcfce7',
@@ -68,7 +84,9 @@ export const SEMANTIC_COLORS = {
     950: '#052e16',
   },
 
-  // Warning states
+  /**
+   * Warning state colors for caution and alerts
+   */
   warning: {
     50: '#fffbeb',
     100: '#fef3c7',
@@ -83,7 +101,9 @@ export const SEMANTIC_COLORS = {
     950: '#451a03',
   },
 
-  // Error states
+  /**
+   * Error state colors for critical issues and validation
+   */
   error: {
     50: '#fef2f2',
     100: '#fee2e2',
@@ -183,7 +203,15 @@ export const COLOR_CONTRAST_RATIOS = {
 
 /**
  * Get the appropriate text color for a given background color
- * Based on WCAG contrast guidelines
+ * Determines the best contrast text color based on WCAG accessibility guidelines
+ *
+ * @param {string} backgroundColor - The background color to check against
+ * @returns {string} The appropriate text color (primary or inverse)
+ * @example
+ * ```typescript
+ * const textColor = getContrastTextColor('#ffffff'); // Returns dark text
+ * const textColor2 = getContrastTextColor('#333333'); // Returns light text
+ * ```
  */
 export function getContrastTextColor(backgroundColor: string): string {
   // This would be implemented with a proper contrast calculation
@@ -196,7 +224,17 @@ export function getContrastTextColor(backgroundColor: string): string {
 }
 
 /**
- * Generate color variations with opacity
+ * Generate color variations with opacity by appending alpha hex values
+ * Converts opacity percentage to hex and appends to color
+ *
+ * @param {string} color - The base color in hex format
+ * @param {number} opacity - Opacity value between 0 and 1
+ * @returns {string} Color with opacity in hex format (e.g., #ffffff80)
+ * @example
+ * ```typescript
+ * const semiTransparent = withOpacity('#ffffff', 0.5); // '#ffffff80'
+ * const almostOpaque = withOpacity('#333333', 0.9); // '#333333e6'
+ * ```
  */
 export function withOpacity(color: string, opacity: number): string {
   return `${color}${Math.round(opacity * 255)
@@ -381,11 +419,33 @@ export type SemanticColor = keyof typeof SEMANTIC_COLORS;
 export type ThemeMode = (typeof THEME_MODES)[keyof typeof THEME_MODES];
 export type ElevationLevel = keyof typeof ELEVATION;
 
-// Theme utilities
+/**
+ * Get theme colors based on mode (light or dark)
+ * @param {ThemeMode} mode - The theme mode ('light' or 'dark')
+ * @returns {Object} Theme object with colors for the specified mode
+ * @example
+ * ```typescript
+ * const lightTheme = getTheme('light');
+ * const darkTheme = getTheme('dark');
+ * ```
+ */
 export const getTheme = (mode: ThemeMode) => {
   return mode === 'dark' ? DARK_THEME : LIGHT_THEME;
 };
 
+/**
+ * Create a programmatic color scale from a base color
+ * Generates a range of color variations for consistent theming
+ *
+ * @param {string} baseColor - The base color to create variations from
+ * @param {number} [steps=11] - Number of color steps to generate
+ * @returns {Array} Array of color objects with step and color values
+ * @example
+ * ```typescript
+ * const brandScale = createColorScale('#e2e891', 11);
+ * // Returns: [{ step: 50, color: '#...' }, { step: 100, color: '#...' }, ...]
+ * ```
+ */
 export const createColorScale = (baseColor: string, steps = 11) => {
   // Utility function to create color scales programmatically
   // This can be used for custom brand colors

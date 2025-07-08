@@ -1,12 +1,14 @@
 /**
- * Design System Component Examples
- * Demonstrates how to use the enhanced design tokens in React components
+ * @fileoverview Design System Component Examples and demonstrations.
+ * Showcases how to use enhanced design tokens in React components with comprehensive examples.
  */
 
 import React from 'react';
 import { DESIGN_SYSTEM } from '../constants/design-system';
 
-// Button Component using design tokens
+/**
+ * Props for the Button component.
+ */
 interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'tertiary';
   size?: 'sm' | 'md' | 'lg';
@@ -15,6 +17,36 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
+/**
+ * Button component implementing design system tokens for consistent styling.
+ * Provides multiple variants and sizes following the established design system.
+ *
+ * @param props - Button configuration
+ * @param props.variant - Visual style variant (defaults to 'primary')
+ * @param props.size - Size variant (defaults to 'md')
+ * @param props.children - Button content
+ * @param props.onClick - Click event handler
+ * @param props.disabled - Whether the button is disabled
+ * @returns Styled button component with design system tokens
+ *
+ * @example
+ * ```tsx
+ * // Primary button (default)
+ * <Button onClick={() => alert('Clicked!')}>
+ *   Primary Action
+ * </Button>
+ *
+ * // Secondary button with different size
+ * <Button variant="secondary" size="lg">
+ *   Secondary Action
+ * </Button>
+ *
+ * // Disabled tertiary button
+ * <Button variant="tertiary" disabled>
+ *   Disabled Action
+ * </Button>
+ * ```
+ */
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
@@ -76,13 +108,45 @@ export const Button: React.FC<ButtonProps> = ({
   );
 };
 
-// Card Component using design tokens
+/**
+ * Props for the Card component.
+ */
 interface CardProps {
   children: React.ReactNode;
   elevation?: 'sm' | 'md' | 'lg';
   padding?: 'sm' | 'md' | 'lg';
 }
 
+/**
+ * Card component using design system tokens for consistent container styling.
+ * Provides elevation levels and padding options following the design system specifications.
+ *
+ * @param props - Card configuration
+ * @param props.children - Content to be displayed within the card
+ * @param props.elevation - Shadow depth level (defaults to 'md')
+ * @param props.padding - Internal spacing level (defaults to 'md')
+ * @returns Styled card container with design system styling
+ *
+ * @example
+ * ```tsx
+ * // Basic card with default styling
+ * <Card>
+ *   <h3>Card Title</h3>
+ *   <p>Card content goes here.</p>
+ * </Card>
+ *
+ * // Card with high elevation and large padding
+ * <Card elevation="lg" padding="lg">
+ *   <h2>Important Content</h2>
+ *   <p>This card stands out more.</p>
+ * </Card>
+ *
+ * // Subtle card with minimal styling
+ * <Card elevation="sm" padding="sm">
+ *   <span>Compact content</span>
+ * </Card>
+ * ```
+ */
 export const Card: React.FC<CardProps> = ({
   children,
   elevation = 'md',
@@ -115,7 +179,9 @@ export const Card: React.FC<CardProps> = ({
   );
 };
 
-// Input Component using design tokens
+/**
+ * Props for the Input component.
+ */
 interface InputProps {
   type?: 'text' | 'email' | 'password';
   placeholder?: string;
@@ -126,6 +192,44 @@ interface InputProps {
   disabled?: boolean;
 }
 
+/**
+ * Input component using design system tokens for consistent form field styling.
+ * Provides multiple sizes and states following the design system specifications.
+ *
+ * @param props - Input configuration
+ * @param props.type - Input type (defaults to 'text')
+ * @param props.placeholder - Placeholder text
+ * @param props.value - Current input value
+ * @param props.onChange - Change event handler
+ * @param props.size - Size variant (defaults to 'md')
+ * @param props.error - Whether the input is in error state
+ * @param props.disabled - Whether the input is disabled
+ * @returns Styled input field with design system tokens
+ *
+ * @example
+ * ```tsx
+ * // Basic text input
+ * <Input
+ *   placeholder="Enter your name"
+ *   onChange={(e) => setValue(e.target.value)}
+ * />
+ *
+ * // Email input with error state
+ * <Input
+ *   type="email"
+ *   placeholder="email@example.com"
+ *   error={hasError}
+ *   size="lg"
+ * />
+ *
+ * // Disabled password input
+ * <Input
+ *   type="password"
+ *   disabled
+ *   placeholder="Password"
+ * />
+ * ```
+ */
 export const Input: React.FC<InputProps> = ({
   type = 'text',
   placeholder,

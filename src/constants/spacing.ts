@@ -317,7 +317,20 @@ export const SPACING_PRESETS = {
   },
 } as const;
 
-// Responsive Spacing Functions
+/**
+ * Create responsive spacing configuration for different breakpoints
+ * Generates spacing values for mobile, tablet, and desktop with smart fallbacks
+ *
+ * @param {keyof typeof SPACING_SCALE} mobileSpacing - Spacing for mobile devices
+ * @param {keyof typeof SPACING_SCALE} [tabletSpacing] - Spacing for tablet (defaults to mobile)
+ * @param {keyof typeof SPACING_SCALE} [desktopSpacing] - Spacing for desktop (defaults to tablet/mobile)
+ * @returns {Object} Responsive spacing object with mobile, tablet, and desktop values
+ * @example
+ * ```typescript
+ * const responsiveMargin = createResponsiveSpacing('xs', 'sm', 'md');
+ * // { mobile: '0.5rem', tablet: '1rem', desktop: '1.5rem' }
+ * ```
+ */
 export function createResponsiveSpacing(
   mobileSpacing: keyof typeof SPACING_SCALE,
   tabletSpacing?: keyof typeof SPACING_SCALE,
@@ -331,7 +344,17 @@ export function createResponsiveSpacing(
 }
 
 /**
- * Get spacing value with fallback
+ * Get spacing value with fallback support
+ * Retrieves spacing from either the base scale or semantic spacing with fallback
+ *
+ * @param {string} key - The spacing key to look up
+ * @param {string} [fallback='1rem'] - Fallback value if key not found
+ * @returns {string} The spacing value or fallback
+ * @example
+ * ```typescript
+ * const spacing = getSpacing('md'); // '1.5rem'
+ * const customSpacing = getSpacing('custom', '2rem'); // '2rem' (fallback)
+ * ```
  */
 export function getSpacing(
   key:
@@ -351,7 +374,17 @@ export function getSpacing(
 }
 
 /**
- * Create consistent spacing between elements
+ * Create consistent spacing between elements using CSS stack pattern
+ * Generates CSS rules for consistent spacing between adjacent elements
+ *
+ * @param {string} spacing - The spacing value to apply between elements
+ * @param {'vertical' | 'horizontal'} [direction='vertical'] - Direction of spacing
+ * @returns {Object} CSS-in-JS object with spacing rules
+ * @example
+ * ```typescript
+ * const verticalStack = createSpacingStack('1rem'); // margin-top between elements
+ * const horizontalStack = createSpacingStack('0.5rem', 'horizontal'); // margin-left
+ * ```
  */
 export function createSpacingStack(
   spacing: string,
@@ -371,12 +404,32 @@ export type SemanticSpacing = keyof typeof SEMANTIC_SPACING;
 export type ComponentSpacing = keyof typeof COMPONENT_SPACING;
 export type GridSpacing = keyof typeof GRID_SPACING;
 
-// Utility functions
+/**
+ * Get semantic spacing value for a specific category and size
+ * @param {SemanticSpacing} category - The semantic spacing category
+ * @param {string} size - The size within that category
+ * @returns {string} The spacing value
+ * @example
+ * ```typescript
+ * const componentSpacing = getSemanticSpacing('component', 'md');
+ * ```
+ */
 export const getSemanticSpacing = (category: SemanticSpacing, size: string) => {
   const spacingCategory = SEMANTIC_SPACING[category];
   return spacingCategory[size as keyof typeof spacingCategory];
 };
 
+/**
+ * Get responsive spacing for different layout types and breakpoints
+ * @param {'container' | 'section' | 'component'} type - The layout type
+ * @param {'mobile' | 'tablet' | 'desktop'} [breakpoint='desktop'] - The breakpoint
+ * @returns {string} The responsive spacing value
+ * @example
+ * ```typescript
+ * const mobileContainer = getResponsiveSpacing('container', 'mobile');
+ * const desktopSection = getResponsiveSpacing('section', 'desktop');
+ * ```
+ */
 export const getResponsiveSpacing = (
   type: 'container' | 'section' | 'component',
   breakpoint: 'mobile' | 'tablet' | 'desktop' = 'desktop'

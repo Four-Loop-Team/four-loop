@@ -1,6 +1,69 @@
 /**
- * Accordion and Collapsible Components
- * Flexible components for expandable content sections
+ * @fileoverview Accordion and Collapsible Components - Expandable content sections
+ * @component Accordion
+ *
+ * @description
+ * Flexible accordion and collapsible components for organizing expandable content with:
+ * - Single and multiple expansion modes
+ * - Controlled and uncontrolled states
+ * - Multiple visual variants
+ * - Smooth animations and transitions
+ * - Keyboard navigation support
+ * - Accessibility features built-in
+ * - Customizable styling options
+ *
+ * @features
+ * - ✅ Single/multiple expansion modes
+ * - ✅ Controlled/uncontrolled behavior
+ * - ✅ Multiple visual variants
+ * - ✅ Smooth animations
+ * - ✅ Keyboard navigation
+ * - ✅ Icon customization
+ * - ✅ ARIA compliance
+ * - ✅ TypeScript support
+ *
+ * @example
+ * ```tsx
+ * // Basic accordion usage
+ * <Accordion
+ *   items={[
+ *     {
+ *       id: '1',
+ *       title: 'Section 1',
+ *       content: <div>Content for section 1</div>
+ *     },
+ *     {
+ *       id: '2',
+ *       title: 'Section 2',
+ *       content: <div>Content for section 2</div>
+ *     }
+ *   ]}
+ * />
+ *
+ * // Multiple expansion allowed
+ * <Accordion
+ *   items={accordionItems}
+ *   multiple={true}
+ *   defaultExpandedItems={['1', '3']}
+ *   variant="bordered"
+ * />
+ *
+ * // Individual collapsible component
+ * <Collapsible
+ *   title="Expandable Section"
+ *   isExpanded={isExpanded}
+ *   onToggle={setIsExpanded}
+ * >
+ *   <p>This content can be expanded or collapsed</p>
+ * </Collapsible>
+ * ```
+ *
+ * @accessibility
+ * - ARIA expanded/collapsed states
+ * - Keyboard navigation (Enter, Space, Arrow keys)
+ * - Focus management
+ * - Screen reader compatible
+ * - High contrast support
  */
 
 import React, {

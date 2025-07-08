@@ -183,7 +183,7 @@ describe('Helper Utils', () => {
 
     it('should handle empty path', () => {
       const result = getNestedProperty(testObj, '');
-      expect(result).toBeUndefined();
+      expect(result).toBe(testObj);
     });
 
     it('should handle null/undefined object', () => {

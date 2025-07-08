@@ -1,6 +1,60 @@
 /**
- * Tabs Component
- * A flexible tabs component with multiple variants and orientations
+ * @fileoverview Tabs Component - Flexible tabbed interface navigation
+ * @component Tabs
+ *
+ * @description
+ * A flexible tabs component providing navigation between content panels with:
+ * - Multiple visual variants (default, buttons, cards)
+ * - Horizontal and vertical orientations
+ * - Controlled and uncontrolled modes
+ * - Keyboard navigation support
+ * - Customizable styling and animations
+ * - Accessibility features built-in
+ *
+ * @features
+ * - ✅ Multiple orientation support
+ * - ✅ Customizable variants
+ * - ✅ Keyboard navigation
+ * - ✅ Controlled/uncontrolled modes
+ * - ✅ Custom styling support
+ * - ✅ Animation support
+ * - ✅ ARIA compliance
+ * - ✅ TypeScript support
+ *
+ * @example
+ * ```tsx
+ * // Basic tabs usage
+ * <Tabs
+ *   items={[
+ *     { id: 'tab1', label: 'Tab 1', content: <div>Content 1</div> },
+ *     { id: 'tab2', label: 'Tab 2', content: <div>Content 2</div> }
+ *   ]}
+ * />
+ *
+ * // Controlled tabs with custom variant
+ * <Tabs
+ *   items={tabItems}
+ *   activeTab={activeTab}
+ *   onTabChange={setActiveTab}
+ *   variant="buttons"
+ *   orientation="vertical"
+ * />
+ *
+ * // Card variant with custom styling
+ * <Tabs
+ *   items={tabItems}
+ *   variant="cards"
+ *   className="custom-tabs"
+ *   defaultActiveTab="tab2"
+ * />
+ * ```
+ *
+ * @accessibility
+ * - ARIA tablist pattern implementation
+ * - Keyboard navigation (Arrow keys, Home/End)
+ * - Focus management and visual indicators
+ * - Screen reader compatible
+ * - High contrast support
  */
 
 import React, {

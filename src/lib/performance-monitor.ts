@@ -1,6 +1,22 @@
+/**
+ * @fileoverview Performance monitoring utilities for web vitals tracking and bundle analysis.
+ * Provides tools to monitor Core Web Vitals and enforce performance budgets during builds.
+ */
+
 import budgetConfig from '../../performance-budget.json';
 
-// Performance monitoring helper
+/**
+ * Monitors and collects Core Web Vitals performance metrics in the browser.
+ * Tracks First Contentful Paint (FCP) and Largest Contentful Paint (LCP).
+ *
+ * @returns Object containing collected performance metrics or empty object if not in browser
+ *
+ * @example
+ * ```typescript
+ * const vitals = performanceMonitor();
+ * console.log('FCP:', vitals.fcp, 'LCP:', vitals.lcp);
+ * ```
+ */
 export function performanceMonitor() {
   if (typeof window !== 'undefined' && 'performance' in window) {
     // Web Vitals monitoring
@@ -31,7 +47,10 @@ export function performanceMonitor() {
   return {};
 }
 
-// Bundle analyzer configuration
+/**
+ * Bundle analyzer configuration for webpack analysis tools.
+ * Enables bundle analysis when ANALYZE environment variable is set to 'true'.
+ */
 export const bundleAnalyzerConfig = {
   enabled: process.env.ANALYZE === 'true',
   bundleAnalyzerConfig: {
@@ -46,17 +65,37 @@ export const bundleAnalyzerConfig = {
   },
 };
 
+/**
+ * Represents a bundle asset with its name and size information.
+ */
 interface BundleAsset {
   name: string;
   size: number;
 }
 
+/**
+ * Webpack statistics object containing bundle information.
+ */
 interface WebpackStats {
   assetsByChunkName?: Record<string, string | string[]>;
   assets?: BundleAsset[];
 }
 
-// Performance budget enforcement
+/**
+ * Checks webpack bundle statistics against defined performance budgets.
+ * Generates warnings and errors when bundles exceed configured size limits.
+ *
+ * @param stats - Webpack statistics object containing bundle information
+ * @returns Object with warnings and errors arrays for budget violations
+ *
+ * @example
+ * ```typescript
+ * const result = checkPerformanceBudget(webpackStats);
+ * if (result.errors.length > 0) {
+ *   console.error('Performance budget exceeded:', result.errors);
+ * }
+ * ```
+ */
 export function checkPerformanceBudget(stats: WebpackStats) {
   const budget = budgetConfig;
   const warnings: string[] = [];

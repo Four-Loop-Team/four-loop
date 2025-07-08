@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import React from 'react';
 
 const theme = createTheme({
   palette: {
@@ -102,6 +102,37 @@ interface MuiThemeProviderProps {
   children: React.ReactNode;
 }
 
+/**
+ * Material-UI theme provider that configures the design system for the entire application.
+ *
+ * This component provides consistent theming across all Material-UI components,
+ * implementing the Four Loop Digital brand colors, typography, and design tokens.
+ * Includes dark mode support and accessibility-compliant color contrasts.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * // Wrap your app with the theme provider
+ * <MuiThemeProvider>
+ *   <App />
+ * </MuiThemeProvider>
+ * ```
+ *
+ * @param {MuiThemeProviderProps} props - The theme provider props
+ * @param {React.ReactNode} props.children - Child components to receive theme context
+ * @returns {JSX.Element} The themed application wrapper
+ *
+ * @accessibility
+ * - WCAG AA compliant color contrasts (4.5:1 minimum)
+ * - Dark mode optimized for reduced eye strain
+ * - High contrast text and background combinations
+ *
+ * @design
+ * - Primary: #e2e891 (brand yellow-green)
+ * - Secondary: #353535 (dark gray)
+ * - Background: #232323 (deep dark)
+ * - Typography: Poppins font family
+ */
 export default function MuiThemeProvider({ children }: MuiThemeProviderProps) {
   return (
     <ThemeProvider theme={theme}>

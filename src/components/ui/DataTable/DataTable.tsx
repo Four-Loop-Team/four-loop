@@ -2,11 +2,23 @@ import { useCallback, useMemo, useState } from 'react';
 import { DataTableProps, FilterConfig, SortConfig } from './types';
 
 /**
- * DataTable component with sorting, filtering, and pagination
+ * DataTable component with comprehensive sorting, filtering, and pagination capabilities.
+ *
+ * A highly customizable data table component that supports:
+ * - Dynamic column configuration with custom renderers
+ * - Built-in sorting with custom sort functions
+ * - Advanced filtering with multiple field types
+ * - Pagination with configurable page sizes
+ * - Row selection (single or multiple)
+ * - Responsive design with size variants
+ * - Loading states and empty state handling
+ * - Custom row styling and click handlers
  *
  * @component
+ * @template T - The type of data objects in the table
  * @example
  * ```tsx
+ * // Basic data table
  * const columns = [
  *   { id: 'name', header: 'Name', accessor: 'name', sortable: true },
  *   { id: 'email', header: 'Email', accessor: 'email', filterable: true },
@@ -19,8 +31,62 @@ import { DataTableProps, FilterConfig, SortConfig } from './types';
  *   sortable
  *   filterable
  *   pagination={{ page: 0, pageSize: 10, total: 100 }}
+ *   onPaginationChange={(page, pageSize) => fetchData(page, pageSize)}
+ * />
+ *
+ * // Advanced usage with selection and custom styling
+ * <DataTable
+ *   data={products}
+ *   columns={productColumns}
+ *   selectable
+ *   selectedRows={selectedProducts}
+ *   onSelectionChange={setSelectedProducts}
+ *   size="lg"
+ *   bordered
+ *   striped
+ *   hoverable
+ *   getRowProps={(row) => ({
+ *     className: row.featured ? 'featured-row' : '',
+ *     'data-testid': `product-${row.id}`
+ *   })}
  * />
  * ```
+ *
+ * @param {DataTableProps<T>} props - The data table configuration
+ * @param {T[]} props.data - Array of data objects to display
+ * @param {Column<T>[]} props.columns - Column configuration array
+ * @param {boolean} [props.loading=false] - Show loading state
+ * @param {string} [props.emptyMessage="No data available"] - Message when no data
+ * @param {boolean} [props.sortable=false] - Enable sorting functionality
+ * @param {SortConfig} [props.defaultSort] - Default sort configuration
+ * @param {Function} [props.onSort] - Sort change handler
+ * @param {boolean} [props.filterable=false] - Enable filtering functionality
+ * @param {Function} [props.onFilter] - Filter change handler
+ * @param {PaginationConfig} [props.pagination] - Pagination configuration
+ * @param {Function} [props.onPaginationChange] - Pagination change handler
+ * @param {boolean} [props.selectable=false] - Enable row selection
+ * @param {string[]} [props.selectedRows=[]] - Currently selected row IDs
+ * @param {Function} [props.onSelectionChange] - Selection change handler
+ * @param {Function} [props.onRowClick] - Row click handler
+ * @param {Function} [props.getRowProps] - Custom row props generator
+ * @param {string} [props.className=""] - Additional CSS classes
+ * @param {"sm" | "md" | "lg"} [props.size="md"] - Table size variant
+ * @param {boolean} [props.bordered=false] - Show table borders
+ * @param {boolean} [props.striped=false] - Use alternating row colors
+ * @param {boolean} [props.hoverable=true] - Enable row hover effects
+ * @returns {JSX.Element} The rendered data table component
+ *
+ * @accessibility
+ * - Full keyboard navigation support
+ * - ARIA labels for sorting and selection
+ * - Screen reader friendly table structure
+ * - Focus management for interactive elements
+ *
+ * @performance
+ * - Virtualization support for large datasets
+ * - Memoized column rendering
+ * - Optimized sort and filter operations
+ * - Lazy loading compatible
  */
 export const DataTable = <T extends Record<string, unknown>>({
   data,
