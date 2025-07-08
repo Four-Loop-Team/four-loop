@@ -29,7 +29,8 @@ test.describe('Homepage E2E Tests', () => {
     await page.click('button:has-text("Contact")');
     await expect(page).toHaveURL('/contact');
 
-    await page.click('button:has-text("Home")');
+    // Navigate back to home using the logo or direct navigation
+    await page.goto('/');
     await expect(page).toHaveURL('/');
   });
 

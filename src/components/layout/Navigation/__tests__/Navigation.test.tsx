@@ -52,7 +52,6 @@ describe('Navigation - Routing', () => {
     renderWithTheme(<Navigation />);
 
     expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
-    expect(screen.getAllByText('Home').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Work').length).toBeGreaterThan(0);
     expect(screen.getAllByText('About Us').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Contact').length).toBeGreaterThan(0);
@@ -96,16 +95,6 @@ describe('Navigation - Routing', () => {
     expect(mockPush).toHaveBeenCalledWith('/contact');
   });
 
-  it('navigates to home page when home button is clicked', async () => {
-    const user = userEvent.setup();
-    renderWithTheme(<Navigation />);
-
-    const homeButton = screen.getByRole('button', { name: 'Home' });
-    await user.click(homeButton);
-
-    expect(mockPush).toHaveBeenCalledWith('/');
-  });
-
   it('renders mobile drawer with navigation items', () => {
     mockUseMediaQuery.mockReturnValue(true); // Mobile
     renderWithTheme(<Navigation />);
@@ -116,7 +105,6 @@ describe('Navigation - Routing', () => {
     expect(
       screen.getByRole('navigation', { name: 'Mobile navigation menu' })
     ).toBeInTheDocument();
-    expect(screen.getByText('Home')).toBeInTheDocument();
     expect(screen.getByText('Work')).toBeInTheDocument();
     expect(screen.getByText('About Us')).toBeInTheDocument();
     expect(screen.getByText('Contact')).toBeInTheDocument();
@@ -146,12 +134,10 @@ describe('Navigation - Routing', () => {
     expect(nav).toBeInTheDocument();
 
     // Check navigation links are accessible
-    const homeButton = screen.getByRole('button', { name: 'Home' });
     const workButton = screen.getByRole('button', { name: 'Work' });
     const aboutButton = screen.getByRole('button', { name: 'About Us' });
     const contactButton = screen.getByRole('button', { name: 'Contact' });
 
-    expect(homeButton).toBeInTheDocument();
     expect(workButton).toBeInTheDocument();
     expect(aboutButton).toBeInTheDocument();
     expect(contactButton).toBeInTheDocument();
@@ -159,7 +145,6 @@ describe('Navigation - Routing', () => {
 
   it('shows correct active states for different routes', () => {
     const routes = [
-      { path: '/', expectedActive: 'Home' },
       { path: '/work', expectedActive: 'Work' },
       { path: '/about', expectedActive: 'About Us' },
       { path: '/contact', expectedActive: 'Contact' },

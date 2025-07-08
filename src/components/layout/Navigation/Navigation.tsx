@@ -21,7 +21,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const navigationItems = [
-  { label: 'Home', href: '/' },
   { label: 'Work', href: '/work' },
   { label: 'About Us', href: '/about' },
   { label: 'Contact', href: '/contact' },
