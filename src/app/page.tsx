@@ -32,7 +32,13 @@ import { ServicesSection } from '@/components/sections/ServicesSection';
  */
 export default function App() {
   return (
-    <main>
+    <main
+      style={{
+        background:
+          'linear-gradient(to bottom, transparent 0%, #1a2332 40%, #1a2332 100%)',
+        minHeight: '100vh',
+      }}
+    >
       <IntroSection />
       <ServicesSection />
       <PartnersSection />

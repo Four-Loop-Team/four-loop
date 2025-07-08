@@ -5,7 +5,7 @@ import { Box, Container, Typography } from '@mui/material';
 
 /**
  * Contact section component
- * Features contact information and call-to-action
+ * Features contact information and call-to-action in a rounded box that overlaps the Partners section
  */
 export const ContactSection = () => {
   const handleLetsTalk = () => {
@@ -18,18 +18,26 @@ export const ContactSection = () => {
       id='contact'
       component='section'
       sx={{
-        py: { xs: 8, md: 12 },
-        background: 'linear-gradient(135deg, #A8E6A3 0%, #68D391 100%)',
-        color: 'black',
         position: 'relative',
+        pt: { xs: 0, md: 0 },
+        pb: { xs: 8, md: 12 },
+        mt: { xs: -4, md: -8 }, // Negative margin to overlap Partners section
+        zIndex: 10,
       }}
     >
       <Container maxWidth='lg'>
         <Box
           sx={{
+            background: 'linear-gradient(135deg, #A8E6A3 0%, #68D391 100%)',
+            borderRadius: { xs: '24px', md: '32px' },
+            py: { xs: 6, md: 8 },
+            px: { xs: 4, md: 6 },
             textAlign: 'center',
-            maxWidth: '600px',
+            maxWidth: '800px',
             mx: 'auto',
+            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
+            position: 'relative',
+            color: 'black',
           }}
         >
           <Typography
@@ -39,6 +47,7 @@ export const ContactSection = () => {
               fontSize: { xs: '2rem', md: '2.5rem' },
               fontWeight: 600,
               mb: 2,
+              color: 'black',
             }}
           >
             Get In Touch
@@ -50,6 +59,7 @@ export const ContactSection = () => {
               fontSize: { xs: '1rem', md: '1.125rem' },
               mb: 6,
               opacity: 0.8,
+              color: 'black',
             }}
           >
             Tell us about your project
@@ -62,6 +72,7 @@ export const ContactSection = () => {
                 fontSize: { xs: '1rem', md: '1.125rem' },
                 lineHeight: 1.6,
                 mb: 3,
+                color: 'black',
               }}
             >
               Where can we reach you?
@@ -73,6 +84,7 @@ export const ContactSection = () => {
                 fontSize: { xs: '1rem', md: '1.125rem' },
                 lineHeight: 1.6,
                 mb: 4,
+                color: 'black',
               }}
             >
               What can we help you build?
@@ -85,6 +97,7 @@ export const ContactSection = () => {
             style={{
               backgroundColor: 'rgba(0, 0, 0, 0.1)',
               color: 'black',
+              border: '2px solid rgba(0, 0, 0, 0.2)',
             }}
           >
             Let&apos;s Talk
@@ -96,7 +109,6 @@ export const ContactSection = () => {
           sx={{
             mt: 8,
             pt: 4,
-            borderTop: '1px solid rgba(0, 0, 0, 0.1)',
             textAlign: 'center',
           }}
         >
@@ -105,6 +117,7 @@ export const ContactSection = () => {
             sx={{
               fontSize: '0.875rem',
               opacity: 0.7,
+              color: 'white',
             }}
           >
             © 2024 Four Loop Digital

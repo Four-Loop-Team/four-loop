@@ -49,12 +49,16 @@ describe('App Page Component', () => {
       renderWithTheme(<App />);
       const heading = screen.getByRole('heading', { level: 1 });
       expect(heading).toBeInTheDocument();
-      expect(heading).toHaveTextContent(/crafted code.*thoughtful design/i);
+      expect(heading).toHaveTextContent(
+        /crafted code.*thoughtful design.*real results/i
+      );
     });
 
     test('should render the tagline', () => {
       renderWithTheme(<App />);
-      const tagline = screen.getByText(/real results/i);
+      const tagline = screen.getByText(
+        /crafted code.*thoughtful design.*real results/i
+      );
       expect(tagline).toBeInTheDocument();
     });
 
@@ -63,9 +67,8 @@ describe('App Page Component', () => {
 
       // Check for main sections by their content
       expect(
-        screen.getByText(/crafted code.*thoughtful design/i)
+        screen.getByText(/crafted code.*thoughtful design.*real results/i)
       ).toBeInTheDocument();
-      expect(screen.getByText(/real results/i)).toBeInTheDocument();
       expect(screen.getByText(/services/i)).toBeInTheDocument();
     });
   });
@@ -136,7 +139,9 @@ describe('App Page Component', () => {
     test('should display correct tagline', () => {
       renderWithTheme(<App />);
 
-      expect(screen.getByText(/real results/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/crafted code.*thoughtful design.*real results/i)
+      ).toBeInTheDocument();
     });
 
     test('should display logo with correct alt text', () => {

@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-07-08T15:44:29.621Z
+> 🤖 Auto-generated on 2025-07-08T16:04:14.041Z
 
 ## Component API Reference
 
@@ -171,7 +171,7 @@
 **File**: `src/components/sections/ContactSection.tsx`
 
 * Contact section component
- Features contact information and call-to-action
+ Features contact information and call-to-action in a rounded box that overlaps the Partners section
 
 ---
 
@@ -180,7 +180,7 @@
 **File**: `src/components/sections/IntroSection.tsx`
 
 * Intro section component for the homepage/work page
- Features the Four Loop Digital logo and company description
+ Features the Four Loop Digital logo and company description in a styled container
 
 ---
 

@@ -12,12 +12,25 @@ export const PartnersSection = () => {
       component='section'
       sx={{
         py: { xs: 8, md: 12 },
-        background:
-          'linear-gradient(45deg, rgba(168, 230, 163, 0.1) 0%, rgba(226, 232, 240, 0.1) 100%)',
+        background: '#1a2332',
+        color: 'white',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
+      {/* Top horizontal line */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '1px',
+          background:
+            'linear-gradient(90deg, transparent 0%, #A8E6A3 50%, transparent 100%)',
+        }}
+      />
+
       {/* Background pattern overlay */}
       <Box
         sx={{
@@ -30,46 +43,56 @@ export const PartnersSection = () => {
             45deg,
             transparent,
             transparent 1px,
-            rgba(255, 255, 255, 0.03) 1px,
-            rgba(255, 255, 255, 0.03) 20px
+            rgba(168, 230, 163, 0.05) 1px,
+            rgba(168, 230, 163, 0.05) 40px
           )`,
           pointerEvents: 'none',
         }}
       />
 
       <Container maxWidth='lg' sx={{ position: 'relative', zIndex: 1 }}>
-        <Typography
-          variant='h2'
-          component='h2'
+        <Box sx={{ textAlign: 'center', mb: 8 }}>
+          <Typography
+            variant='h2'
+            component='h2'
+            sx={{
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              fontWeight: 700,
+              mb: 3,
+              color: 'white',
+            }}
+          >
+            Partners
+          </Typography>
+
+          <Typography
+            variant='subtitle1'
+            sx={{
+              fontSize: { xs: '1.125rem', md: '1.25rem' },
+              color: '#A8E6A3',
+              mb: 2,
+              fontWeight: 500,
+            }}
+          >
+            Companies we love
+          </Typography>
+        </Box>
+
+        <Box
           sx={{
-            fontSize: { xs: '2rem', md: '2.5rem' },
-            fontWeight: 600,
-            mb: 2,
-            color: 'text.primary',
+            maxWidth: '900px',
+            mx: 'auto',
+            textAlign: 'center',
           }}
         >
-          Partners
-        </Typography>
-
-        <Typography
-          variant='subtitle1'
-          sx={{
-            fontSize: { xs: '1rem', md: '1.125rem' },
-            color: 'text.secondary',
-            mb: 6,
-          }}
-        >
-          Companies we love
-        </Typography>
-
-        <Box sx={{ maxWidth: '800px' }}>
           <Typography
             variant='h3'
             sx={{
-              fontSize: { xs: '1.25rem', md: '1.5rem' },
+              fontSize: { xs: '1.5rem', md: '2rem' },
               fontWeight: 600,
-              color: '#A8E6A3', // Green accent
-              mb: 3,
+              color: '#A8E6A3',
+              mb: 4,
+              lineHeight: 1.3,
             }}
           >
             Partnerships That Shaped Our Journey.
@@ -78,9 +101,11 @@ export const PartnersSection = () => {
           <Typography
             variant='body1'
             sx={{
-              fontSize: { xs: '1rem', md: '1.125rem' },
+              fontSize: { xs: '1.125rem', md: '1.25rem' },
               lineHeight: 1.7,
-              color: 'text.primary',
+              color: '#E2E8F0',
+              maxWidth: '800px',
+              mx: 'auto',
             }}
           >
             Over the past 25 years, we&apos;ve collaborated with teams across
@@ -92,6 +117,19 @@ export const PartnersSection = () => {
           </Typography>
         </Box>
       </Container>
+
+      {/* Bottom horizontal line */}
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '1px',
+          background:
+            'linear-gradient(90deg, transparent 0%, #A8E6A3 50%, transparent 100%)',
+        }}
+      />
     </Box>
   );
 };

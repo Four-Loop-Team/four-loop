@@ -70,6 +70,10 @@ export default function Navigation() {
   };
 
   const isActive = (href: string) => {
+    // Since /work redirects to homepage, treat both / and /work as active for the Work nav item
+    if (href === '/work') {
+      return pathname === '/' || pathname === '/work';
+    }
     return pathname === href;
   };
 
@@ -181,7 +185,7 @@ export default function Navigation() {
           >
             {/* Logo */}
             <Box
-              onClick={() => handleNavClick('#home')}
+              onClick={() => handleNavClick('/')}
               sx={{
                 textDecoration: 'none',
                 color: 'white',

@@ -29,7 +29,7 @@ describe('HomePage', () => {
     render(<HomePage />);
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
     expect(
-      screen.getByText('Crafted Code. Thoughtful Design.')
+      screen.getByText('Crafted Code. Thoughtful Design. Real Results.')
     ).toBeInTheDocument();
   });
 
@@ -42,8 +42,7 @@ describe('HomePage', () => {
   it('has required heading for homepage', () => {
     render(<HomePage />);
     expect(
-      screen.getByText('Crafted Code. Thoughtful Design.')
+      screen.getByText('Crafted Code. Thoughtful Design. Real Results.')
     ).toBeInTheDocument();
-    expect(screen.getByText('Real Results.')).toBeInTheDocument();
   });
 });
