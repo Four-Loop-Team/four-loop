@@ -7,6 +7,12 @@ import { Box, Container, Typography } from '@mui/material';
 /**
  * Services section component
  * Features service areas with expandable details and collaboration CTA
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <ServicesSection />
+ * ```
  */
 export const ServicesSection = () => {
   const services = [

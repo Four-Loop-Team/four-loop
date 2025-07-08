@@ -5,6 +5,12 @@ import { Box, Container, Typography } from '@mui/material';
 /**
  * Partners section component
  * Features information about company partnerships and collaborations
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <PartnersSection />
+ * ```
  */
 export const PartnersSection = () => {
   return (

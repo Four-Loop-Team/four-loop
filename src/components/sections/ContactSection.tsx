@@ -6,6 +6,12 @@ import { Box, Container, Typography } from '@mui/material';
 /**
  * Contact section component
  * Features contact information and call-to-action in a rounded box that overlaps the Partners section
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <ContactSection />
+ * ```
  */
 export const ContactSection = () => {
   const handleLetsTalk = () => {

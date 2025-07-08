@@ -6,6 +6,12 @@ import { Box, Container, Typography } from '@mui/material';
 /**
  * Intro section component for the homepage/work page
  * Features the Four Loop Digital logo and company description in a styled container
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <IntroSection />
+ * ```
  */
 export const IntroSection = () => {
   return (
