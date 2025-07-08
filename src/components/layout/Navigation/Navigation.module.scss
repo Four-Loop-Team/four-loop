@@ -1,29 +1,4 @@
-@use '../../app/ui/styles/variables';
-
-// CSS Custom Properties for Navigation using semantic SCSS variables
-:root {
-  --nav-background: #{variables.$nav-background};
-  --nav-container-background: #{variables.$nav-container-background};
-  --nav-slider-background: #{variables.$nav-slider-background};
-  --nav-slider-border: #{variables.$nav-slider-border};
-  --nav-text-active: #{variables.$nav-text-active};
-  --nav-text-inactive: #{variables.$nav-text-inactive};
-  --nav-text-hover: #{variables.$nav-text-hover};
-  --drawer-background: #{variables.$drawer-background};
-  --drawer-active-background: #{variables.$drawer-active-background};
-  --drawer-active-border: #{variables.$drawer-active-border};
-  --drawer-active-text: #{variables.$drawer-active-text};
-  --drawer-inactive-text: #{variables.$drawer-inactive-text};
-  --drawer-hover-background: #{variables.$drawer-hover-background};
-  --drawer-border-accent: #{variables.$drawer-border-accent};
-
-  // Animation variables for smooth transitions
-  --nav-slider-transition: #{variables.$nav-slider-transition};
-  --nav-button-transition: #{variables.$nav-button-transition};
-  --drawer-transition: #{variables.$drawer-transition};
-}
-
-// Navigation-specific utility classes
+// Navigation-specific utility classes for CSS modules
 .navigation {
   // These classes can be used for any additional custom styling
   &__container {

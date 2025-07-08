@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-07-08T22:05:09.495Z
+> 🤖 Auto-generated on 2025-07-08T22:36:11.021Z
 
 ## Component API Reference
 
@@ -94,11 +94,12 @@
 
 **File**: `src/components/layout/Navigation/Navigation.tsx`
 
-* Main navigation component with responsive design and page routing.
+* Main navigation component with responsive design and optimized client-side routing.
 
  This component provides the primary navigation for the Four Loop Digital website,
- featuring responsive mobile/desktop layouts, page-based routing between sections,
- and visual active state indicators based on current route.
+ featuring responsive mobile/desktop layouts, optimized client-side navigation with
+ Next.js Link components and prefetching, and visual active state indicators based
+ on current route. The header persists across page transitions for optimal UX.
 
  @component
  @example
@@ -116,9 +117,11 @@
  - High contrast focus indicators
 
  @performance
- - Client-side routing with Next.js
+ - Client-side routing with Next.js Link components
+ - Page prefetching for instant navigation
  - Conditional rendering for mobile/desktop
  - Efficient active page detection
+ - Header persistence across page transitions
 
 ---
 
