@@ -20,7 +20,6 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import styles from './Navigation.module.scss';
 
 const navigationItems = [
   { label: 'Work', href: '/work' },
@@ -61,19 +60,19 @@ const navigationItems = [
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
-  const navContainerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const pathname = usePathname();
+  const navContainerRef = useRef<HTMLDivElement>(null);
+  const [sliderStyle, setSliderStyle] = useState<{
+    left: number;
+    width: number;
+    opacity: number;
+  }>({ left: 0, width: 0, opacity: 0 });
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   const isActive = useCallback(
     (href: string) => {
@@ -86,49 +85,49 @@ export default function Navigation() {
     [pathname]
   );
 
-  // Update slider position when pathname changes or component mounts
   const updateSliderPosition = useCallback(() => {
-    if (!navContainerRef.current) return;
+    if (!navContainerRef.current || isMobile) return;
 
     const activeIndex = navigationItems.findIndex((item) =>
       isActive(item.href)
     );
+
     if (activeIndex === -1) {
-      setSliderStyle({ left: 0, width: 0 });
+      setSliderStyle((prev) => ({ ...prev, opacity: 0 }));
       return;
     }
 
-    const buttons = navContainerRef.current.querySelectorAll('a');
-    const activeButton = buttons[activeIndex];
+    const links = navContainerRef.current.querySelectorAll('a');
+    const activeLink = links[activeIndex];
 
-    if (activeButton) {
+    if (activeLink) {
       const containerRect = navContainerRef.current.getBoundingClientRect();
-      const buttonRect = activeButton.getBoundingClientRect();
+      const linkRect = activeLink.getBoundingClientRect();
 
       setSliderStyle({
-        left: buttonRect.left - containerRect.left,
-        width: buttonRect.width,
+        left: linkRect.left - containerRect.left,
+        width: linkRect.width,
+        opacity: 1,
       });
     }
-  }, [isActive]);
+  }, [isMobile, isActive]);
 
   useEffect(() => {
-    if (mounted && !isMobile && navContainerRef.current) {
-      updateSliderPosition();
-    }
-  }, [pathname, mounted, isMobile, updateSliderPosition]);
+    updateSliderPosition();
+  }, [updateSliderPosition, mounted]);
 
-  // Add resize listener to update slider position on window resize
   useEffect(() => {
     const handleResize = () => {
-      if (mounted && !isMobile && navContainerRef.current) {
-        updateSliderPosition();
-      }
+      updateSliderPosition();
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [mounted, isMobile, updateSliderPosition]);
+  }, [updateSliderPosition]);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   const handleNavClick = () => {
     if (mobileOpen) {
@@ -277,7 +276,6 @@ export default function Navigation() {
             {mounted && !isMobile && (
               <Box
                 ref={navContainerRef}
-                className={styles.navigation__container}
                 sx={{
                   backgroundColor: 'var(--nav-container-background)',
                   borderRadius: 'var(--nav-container-border-radius)',
@@ -289,7 +287,6 @@ export default function Navigation() {
               >
                 {/* Sliding Background */}
                 <Box
-                  className={styles.navigation__slider}
                   sx={{
                     position: 'absolute',
                     top: 0,
@@ -298,12 +295,13 @@ export default function Navigation() {
                     border: '2px solid var(--nav-slider-border)',
                     borderRadius: 'var(--nav-container-border-radius)',
                     transition: 'var(--nav-slider-transition)',
-                    transform: `translateX(${sliderStyle.left}px)`,
-                    width: `${sliderStyle.width}px`,
                     zIndex: 1,
+                    left: `${sliderStyle.left}px`,
+                    width: `${sliderStyle.width}px`,
+                    opacity: sliderStyle.opacity,
                   }}
                 />
-                {navigationItems.map((item, index) => {
+                {navigationItems.map((item) => {
                   const active = isActive(item.href);
                   return (
                     <Link
@@ -313,11 +311,6 @@ export default function Navigation() {
                       prefetch={true}
                     >
                       <Button
-                        className={`${styles.navigation__button} ${
-                          active
-                            ? styles['navigation__button--active']
-                            : styles['navigation__button--inactive']
-                        }`}
                         sx={{
                           color: active
                             ? 'var(--nav-text-active)'
@@ -329,18 +322,17 @@ export default function Navigation() {
                           py: 'var(--nav-button-padding-y)',
                           borderRadius: 'var(--nav-container-border-radius)',
                           minWidth: 'auto',
-                          backgroundColor: 'transparent', // Remove individual button background
+                          backgroundColor: 'transparent',
                           border: '2px solid transparent',
-                          marginLeft:
-                            index > 0 ? 'var(--nav-button-overlap)' : '0px',
+                          margin: '0px',
                           zIndex: 2,
                           position: 'relative',
-                          transition: 'var(--nav-button-transition)',
+                          transition: 'color 0.3s ease',
                           '&:hover': {
                             color: active
                               ? 'var(--nav-text-active)'
                               : 'var(--nav-text-hover)',
-                            backgroundColor: 'transparent', // Keep background transparent on hover
+                            backgroundColor: 'transparent',
                           },
                         }}
                       >
