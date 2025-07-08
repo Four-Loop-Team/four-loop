@@ -1,0 +1,51 @@
+@use '../../../app/ui/styles/variables';
+
+.wrapper {
+  border: 1px solid variables.$color-text-primary;
+  border-radius: 30px;
+  cursor: pointer;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  transition: all variables.$transition-normal variables.$transition-easing;
+
+  &:focus {
+    outline: 2px solid variables.$color-primary;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.cta {
+  display: inline-block;
+  padding: 0.2em 1.8em;
+  font-family: variables.$font-family-primary;
+  color: variables.$color-text-primary;
+  font-weight: variables.$font-weight-medium;
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  margin-right: -1.5px;
+  border-radius: 100%;
+  color: variables.$color-background;
+  background-color: variables.$color-primary;
+  transition: all variables.$transition-normal variables.$transition-easing;
+}
+
+.wrapper:hover .arrow {
+  color: variables.$color-primary;
+  background-color: variables.$color-background;
+}
+
+.wrapper:disabled:hover .arrow {
+  color: variables.$color-background;
+  background-color: variables.$color-primary;
+}

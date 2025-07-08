@@ -5,6 +5,7 @@ import {
   Accordion,
   // Basic UI Components
   Button,
+  ButtonPrimary,
   Calendar,
   Card,
   CardContent,
@@ -145,6 +146,12 @@ export default function ComponentsDemo() {
                     <div className='flex flex-wrap gap-2'>
                       <Button loading>Loading...</Button>
                       <Button disabled>Disabled</Button>
+                    </div>
+                    <div className='flex flex-wrap gap-2'>
+                      <ButtonPrimary>Let&apos;s Collaborate</ButtonPrimary>
+                      <ButtonPrimary onClick={() => alert('CTA clicked!')}>
+                        Get Started
+                      </ButtonPrimary>
                     </div>
                   </div>
                 </CardContent>
