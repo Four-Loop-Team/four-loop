@@ -281,7 +281,7 @@ export default function Navigation() {
                   borderRadius: 'var(--nav-container-border-radius)',
                   padding: '0px',
                   display: 'flex',
-                  gap: '0px',
+                  gap: '4px', // Small gap between buttons for better visual separation
                   position: 'relative',
                 }}
               >
@@ -327,7 +327,7 @@ export default function Navigation() {
                           margin: '0px',
                           zIndex: 2,
                           position: 'relative',
-                          transition: 'color 0.3s ease',
+                          transition: 'color 0.15s ease',
                           '&:hover': {
                             color: active
                               ? 'var(--nav-text-active)'

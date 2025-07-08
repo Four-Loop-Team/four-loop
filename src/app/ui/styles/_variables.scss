@@ -46,7 +46,7 @@ $space-3xl: 4rem; // 64px
 
 // Navigation-specific spacing
 $nav-padding: $space-md;
-$nav-button-padding-x: $space-lg;
+$nav-button-padding-x: $space-sm; // Reduced from $space-lg to $space-sm (8px instead of 24px)
 $nav-button-padding-y: 0.25rem;
 $nav-button-overlap: -20px;
 $nav-container-border-radius: 50px;
@@ -114,9 +114,9 @@ $transition-easing-ease-out: ease-out;
 
 // Component-specific animations
 $nav-slider-transition:
-  left $transition-normal cubic-bezier(0.25, 0.46, 0.45, 0.94),
-  width $transition-normal cubic-bezier(0.25, 0.46, 0.45, 0.94),
-  opacity $transition-fast $transition-easing;
+  left 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  width 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  opacity 0.1s $transition-easing;
 $nav-button-transition:
   color $transition-fast $transition-easing,
   background-color $transition-fast $transition-easing,
