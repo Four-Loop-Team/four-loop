@@ -178,12 +178,12 @@ test.describe('Security & Compatibility Tests', () => {
     await expect(page.locator('h1')).toBeVisible();
     await expect(page.locator('#home')).toBeVisible();
 
-    // Basic navigation should work (anchor links)
-    const workLink = page.locator('a[href*="#work"]');
+    // Basic navigation should work with routing
+    const workLink = page.locator('a[href="/work"], button:has-text("Work")');
     if ((await workLink.count()) > 0) {
       await workLink.first().click();
-      // Should navigate to section even without smooth scrolling JS
-      await expect(page.locator('#work')).toBeInViewport();
+      // Should navigate to work page
+      await expect(page).toHaveURL('/work');
     }
   });
 

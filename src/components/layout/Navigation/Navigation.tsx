@@ -17,20 +17,22 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const navigationItems = [
-  { label: 'Work', href: '#work' },
-  { label: 'About Us', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Work', href: '/work' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 /**
- * Main navigation component with responsive design and smooth scroll animations.
+ * Main navigation component with responsive design and page routing.
  *
  * This component provides the primary navigation for the Four Loop Digital website,
- * featuring responsive mobile/desktop layouts, smooth scrolling between sections,
- * and visual active state indicators.
+ * featuring responsive mobile/desktop layouts, page-based routing between sections,
+ * and visual active state indicators based on current route.
  *
  * @component
  * @example
@@ -48,144 +50,32 @@ const navigationItems = [
  * - High contrast focus indicators
  *
  * @performance
- * - Optimized scroll listeners with debouncing
+ * - Client-side routing with Next.js
  * - Conditional rendering for mobile/desktop
- * - Efficient active section detection
+ * - Efficient active page detection
  */
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [sliderPosition, setSliderPosition] = useState({ left: 0, width: 0 });
-  const [activeSection, setActiveSection] = useState('home');
-  const [isNavigating, setIsNavigating] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const buttonRefs = useRef<(HTMLElement | null)[]>([]);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Scroll-based active section detection with debouncing
-  useEffect(() => {
-    if (!mounted) return;
-
-    const handleScroll = () => {
-      // Skip scroll updates if user is actively navigating
-      if (isNavigating) return;
-
-      // Clear existing timeout
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-
-      // Debounce scroll updates to prevent rapid state changes
-      scrollTimeoutRef.current = setTimeout(() => {
-        const sections = ['home', 'work', 'about', 'contact'];
-        const scrollPosition = window.scrollY + 200; // Offset for navigation height
-
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = document.getElementById(sections[i]);
-          if (section && section.offsetTop <= scrollPosition) {
-            setActiveSection(sections[i]);
-            break;
-          }
-        }
-      }, 100); // 100ms debounce
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial position
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [mounted, isNavigating]);
-
-  // Update slider position based on active section
-  useEffect(() => {
-    if (!mounted || isMobile) return;
-
-    const updateSliderPosition = () => {
-      const activeIndex = navigationItems.findIndex(
-        (item) => activeSection === item.href.substring(1) // Remove # from href
-      );
-      if (
-        activeIndex === -1 ||
-        !buttonRefs.current[activeIndex] ||
-        !containerRef.current
-      ) {
-        setSliderPosition({ left: 0, width: 0 });
-        return;
-      }
-
-      const activeButton = buttonRefs.current[activeIndex];
-      const container = containerRef.current;
-
-      const containerRect = container.getBoundingClientRect();
-      const buttonRect = activeButton.getBoundingClientRect();
-
-      const left = buttonRect.left - containerRect.left;
-      const width = buttonRect.width;
-
-      setSliderPosition({ left, width });
-    };
-
-    // Use requestAnimationFrame for smooth updates
-    const rafId = requestAnimationFrame(updateSliderPosition);
-
-    // Only add resize listener, not during every effect run
-    const handleResize = () => {
-      requestAnimationFrame(updateSliderPosition);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [mounted, isMobile, activeSection]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const isActive = (href: string) => {
-    const sectionId = href.substring(1); // Remove # from href
-    return activeSection === sectionId;
+    return pathname === href;
   };
 
   const handleNavClick = (href: string) => {
-    const sectionId = href.substring(1);
-
-    // Immediately update active section for instant slider movement
-    setActiveSection(sectionId);
-
-    // Set navigation flag to prevent scroll interference
-    setIsNavigating(true);
-
-    const section = document.getElementById(sectionId);
-    if (section) {
-      const offsetTop = section.offsetTop - 100; // Account for sticky navigation
-      window.scrollTo({
-        top: offsetTop,
-        behavior: 'smooth',
-      });
-
-      // Clear navigation flag after scroll is likely complete
-      setTimeout(() => {
-        setIsNavigating(false);
-      }, 1000); // Give enough time for smooth scroll to complete
-    } else {
-      // If section not found, clear navigation flag immediately
-      setIsNavigating(false);
-    }
-
+    router.push(href);
     if (mobileOpen) {
       setMobileOpen(false);
     }
@@ -322,7 +212,6 @@ export default function Navigation() {
             {/* Desktop Navigation */}
             {mounted && !isMobile && (
               <Box
-                ref={containerRef}
                 sx={{
                   backgroundColor: 'var(--nav-container-background)',
                   borderRadius: 'var(--nav-container-border-radius)',
@@ -332,32 +221,12 @@ export default function Navigation() {
                   position: 'relative',
                 }}
               >
-                {/* Animated Background Slider */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    height: '100%',
-                    backgroundColor: 'var(--nav-slider-background)',
-                    borderRadius: 'var(--nav-container-border-radius)',
-                    border: '2px solid var(--nav-slider-border)',
-                    transition: 'var(--nav-slider-transition)',
-                    willChange: 'left, width, opacity',
-                    zIndex: 1,
-                    left: `${sliderPosition.left}px`,
-                    width: `${sliderPosition.width}px`,
-                    opacity: sliderPosition.width > 0 ? 1 : 0,
-                  }}
-                />
                 {navigationItems.map((item, index) => {
                   const active = isActive(item.href);
                   return (
                     <Button
                       key={item.label}
                       onClick={() => handleNavClick(item.href)}
-                      ref={(el) => {
-                        buttonRefs.current[index] = el;
-                      }}
                       sx={{
                         color: active
                           ? 'var(--nav-text-active)'
@@ -369,17 +238,24 @@ export default function Navigation() {
                         py: 'var(--nav-button-padding-y)',
                         borderRadius: 'var(--nav-container-border-radius)',
                         minWidth: 'auto',
-                        backgroundColor: 'transparent',
-                        border: 'none',
+                        backgroundColor: active
+                          ? 'var(--nav-slider-background)'
+                          : 'transparent',
+                        border: active
+                          ? '2px solid var(--nav-slider-border)'
+                          : '2px solid transparent',
                         marginLeft:
                           index > 0 ? 'var(--nav-button-overlap)' : '0px',
                         zIndex: 2,
                         position: 'relative',
+                        transition: 'var(--nav-slider-transition)',
                         '&:hover': {
                           color: active
                             ? 'var(--nav-text-active)'
                             : 'var(--nav-text-hover)',
-                          zIndex: 3,
+                          backgroundColor: active
+                            ? 'var(--nav-slider-background)'
+                            : 'rgba(226, 232, 145, 0.1)',
                         },
                       }}
                     >

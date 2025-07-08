@@ -36,18 +36,14 @@ describe('HomePage', () => {
   it('has proper section structure', () => {
     render(<HomePage />);
     expect(document.querySelector('#home')).toBeInTheDocument();
-    expect(document.querySelector('#work')).toBeInTheDocument();
-    expect(document.querySelector('#about')).toBeInTheDocument();
-    expect(document.querySelector('#contact')).toBeInTheDocument();
+    // Work, About, and Contact sections are now separate pages
   });
 
-  it('has all required headings for SEO', () => {
+  it('has required heading for homepage', () => {
     render(<HomePage />);
     expect(
       screen.getByText('Welcome to Four Loop Digital')
     ).toBeInTheDocument();
-    expect(screen.getByText('Our Work')).toBeInTheDocument();
-    expect(screen.getByText('About Us')).toBeInTheDocument();
-    expect(screen.getByText('Contact Us')).toBeInTheDocument();
+    expect(screen.getByText('Digital Consulting Services')).toBeInTheDocument();
   });
 });

@@ -30,21 +30,21 @@ test.describe('Accessibility Tests', () => {
       },
     });
 
-    // Test individual sections
-    await page.click('text=Our Work');
-    await checkA11y(page, '#work', {
+    // Test individual page accessibility
+    await page.click('text=Work');
+    await checkA11y(page, 'main', {
       detailedReport: true,
       detailedReportOptions: { html: true },
     });
 
-    await page.click('text=About Us');
-    await checkA11y(page, '#about', {
+    await page.goto('/about');
+    await checkA11y(page, 'main', {
       detailedReport: true,
       detailedReportOptions: { html: true },
     });
 
-    await page.click('text=Contact Us');
-    await checkA11y(page, '#contact', {
+    await page.goto('/contact');
+    await checkA11y(page, 'main', {
       detailedReport: true,
       detailedReportOptions: { html: true },
     });

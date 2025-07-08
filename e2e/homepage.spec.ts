@@ -1,5 +1,5 @@
 // E2E tests for homepage functionality
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Homepage E2E Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -19,15 +19,18 @@ test.describe('Homepage E2E Tests', () => {
   });
 
   test('navigation works correctly', async ({ page }) => {
-    // Test navigation scroll functionality
-    await page.click('text=Our Work');
-    await expect(page.locator('#work')).toBeInViewport();
+    // Test navigation routing functionality
+    await page.click('button:has-text("Work")');
+    await expect(page).toHaveURL('/work');
 
-    await page.click('text=About Us');
-    await expect(page.locator('#about')).toBeInViewport();
+    await page.click('button:has-text("About Us")');
+    await expect(page).toHaveURL('/about');
 
-    await page.click('text=Contact Us');
-    await expect(page.locator('#contact')).toBeInViewport();
+    await page.click('button:has-text("Contact")');
+    await expect(page).toHaveURL('/contact');
+
+    await page.click('button:has-text("Home")');
+    await expect(page).toHaveURL('/');
   });
 
   test('logo is visible and accessible', async ({ page }) => {
@@ -39,12 +42,9 @@ test.describe('Homepage E2E Tests', () => {
     );
   });
 
-  test('all sections are present', async ({ page }) => {
-    // Check all main sections exist
+  test('home section is present', async ({ page }) => {
+    // Check main home section exists
     await expect(page.locator('#home')).toBeVisible();
-    await expect(page.locator('#work')).toBeVisible();
-    await expect(page.locator('#about')).toBeVisible();
-    await expect(page.locator('#contact')).toBeVisible();
   });
 
   test('headings hierarchy is correct', async ({ page }) => {
@@ -53,9 +53,9 @@ test.describe('Homepage E2E Tests', () => {
     await expect(h1Elements).toHaveCount(1);
     await expect(h1Elements.first()).toHaveText('Welcome to Four Loop Digital');
 
-    // Check H2 elements exist (allow for flexible count)
+    // Check H2 elements exist (only one on homepage now since sections are separate pages)
     const h2Elements = page.locator('h2');
-    expect(await h2Elements.count()).toBeGreaterThanOrEqual(3); // At least Our Work, About Us, Contact Us
+    expect(await h2Elements.count()).toBeGreaterThanOrEqual(1); // At least the subtitle
   });
 
   test('responsive design works on mobile', async ({ page }) => {
@@ -66,9 +66,23 @@ test.describe('Homepage E2E Tests', () => {
     await expect(page.locator('h1')).toBeVisible();
     await expect(page.locator('#home')).toBeVisible();
 
-    // Test navigation on mobile
-    await page.click('text=Our Work');
-    await expect(page.locator('#work')).toBeInViewport();
+    // Test navigation on mobile - need to open mobile menu first
+    const menuButton = page.locator('[aria-label="Open navigation menu"]');
+    if (await menuButton.isVisible()) {
+      await menuButton.click();
+      // Wait for drawer to open and then click Work
+      await page.waitForSelector(
+        '[role="navigation"][aria-label="Mobile navigation menu"]'
+      );
+      await page.click(
+        '[role="navigation"][aria-label="Mobile navigation menu"] >> text=Work'
+      );
+      await expect(page).toHaveURL('/work');
+    } else {
+      // Fallback for desktop-style navigation on mobile
+      await page.click('button:has-text("Work")');
+      await expect(page).toHaveURL('/work');
+    }
   });
 
   test('performance metrics are acceptable', async ({ page }) => {
