@@ -23,6 +23,23 @@ jest.mock('@/components/ui', () => ({
       {children}
     </button>
   ),
+  ButtonPrimary: ({
+    children,
+    onClick,
+    ...props
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    [key: string]: unknown;
+  }) => (
+    <button
+      onClick={onClick}
+      data-testid='button-primary'
+      {...(props as Record<string, unknown>)}
+    >
+      {children}
+    </button>
+  ),
   Calendar: () => <div data-testid='calendar'>Calendar Component</div>,
   Card: ({ children, ...props }: any) => (
     <div data-testid='card' {...props}>
