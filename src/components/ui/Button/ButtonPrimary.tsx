@@ -1,7 +1,7 @@
 'use client';
 
 import EastIcon from '@mui/icons-material/East';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ButtonPrimary.module.scss';
 
 /**
@@ -18,6 +18,7 @@ export interface ButtonPrimaryProps
 /**
  * A specialized primary button component with an arrow icon for call-to-action purposes.
  * Features a rounded design with a hover effect that inverts the arrow colors.
+ * Uses client-side mounting to prevent hydration mismatches with MUI icons.
  *
  * @component
  * @example
@@ -41,11 +42,17 @@ const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({
   className = '',
   ...props
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <button className={`${styles.wrapper} ${className}`} {...props}>
       <span className={styles.cta}>{children}</span>
       <span className={styles.arrow}>
-        <EastIcon />
+        {isMounted ? <EastIcon /> : <span>→</span>}
       </span>
     </button>
   );
