@@ -68,12 +68,26 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${poppins.variable} antialiased`}>
+      <body
+        className={`${poppins.variable} antialiased`}
+        style={{
+          backgroundColor: 'var(--color-background)',
+          minHeight: '100vh',
+        }}
+      >
         <ThemeProvider defaultTheme='auto'>
           <SkipNavigationLink />
           <MuiThemeProvider>
             <Navigation />
-            <main id='main-content'>{children}</main>
+            <main
+              id='main-content'
+              style={{
+                backgroundColor: 'var(--color-background)',
+                minHeight: '100vh',
+              }}
+            >
+              {children}
+            </main>
           </MuiThemeProvider>
         </ThemeProvider>
       </body>

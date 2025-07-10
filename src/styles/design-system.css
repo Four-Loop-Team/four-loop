@@ -635,3 +635,19 @@
     color: black !important;
   }
 }
+
+/* Application Background Utilities */
+.app-background {
+  background-color: var(--color-background-primary);
+  min-height: 100vh;
+}
+
+.app-surface {
+  background-color: var(--color-surface-primary);
+}
+
+/* Ensure primary brand background throughout application */
+.brand-background {
+  background-color: #353535;
+  min-height: 100vh;
+}

@@ -290,16 +290,16 @@ export const LIGHT_THEME = {
 export const DARK_THEME = {
   // Backgrounds (using your existing dark theme)
   background: {
-    primary: '#232323', // Your current background
-    secondary: '#2a2a2a',
-    tertiary: '#333333',
+    primary: '#353535', // Your current background
+    secondary: '#232323',
+    tertiary: '#2a2a2a',
     elevated: '#3a3a3a',
     overlay: 'rgba(0, 0, 0, 0.8)',
   },
 
   // Surfaces
   surface: {
-    primary: '#353535', // Your current surface
+    primary: '#232323', // Your current surface
     secondary: '#404040',
     tertiary: '#4a4a4a',
     elevated: '#454545',
