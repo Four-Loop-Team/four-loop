@@ -61,7 +61,14 @@ export const ServicesSection = () => {
         position: 'relative',
       }}
     >
-      <Container maxWidth='lg'>
+      <Container
+        maxWidth={false}
+        sx={{
+          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+          margin: '0 auto', // Center the container
+          px: { xs: 2, md: '82px' }, // Add 82px padding on desktop
+        }}
+      >
         <Box
           sx={{
             mb: { xs: 6, md: 8 },
@@ -71,32 +78,51 @@ export const ServicesSection = () => {
             sx={{
               display: 'flex',
               alignItems: 'baseline',
+              justifyContent: 'space-between',
               gap: { xs: 2, md: 3 },
               mb: { xs: 4, md: 6 },
             }}
           >
-            <Typography
-              variant='h2'
-              component='h2'
+            <Box
               sx={{
-                fontSize: { xs: '2.5rem', md: '4rem' },
-                fontWeight: 400,
-                color: 'white',
-                lineHeight: 1,
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: { xs: 2, md: 3 },
               }}
             >
-              Services
-            </Typography>
+              <Typography
+                variant='h2'
+                component='h2'
+                sx={{
+                  fontSize: { xs: '2.5rem', md: '4rem' },
+                  fontWeight: 400,
+                  color: 'white',
+                  lineHeight: 1,
+                }}
+              >
+                Services
+              </Typography>
 
-            <Typography
+              <Typography
+                sx={{
+                  fontSize: { xs: '1rem', md: '1.25rem' },
+                  color: 'white',
+                  fontWeight: 300,
+                }}
+              >
+                /&nbsp;&nbsp;&nbsp;&nbsp;Our areas of expertise
+              </Typography>
+            </Box>
+
+            <Box
               sx={{
-                fontSize: { xs: '1rem', md: '1.25rem' },
-                color: 'rgba(255, 255, 255, 0.7)',
-                fontWeight: 300,
+                display: { xs: 'none', lg: 'block' },
               }}
             >
-              / Our areas of expertise
-            </Typography>
+              <ButtonPrimary onClick={handleCollaborationClick}>
+                Let&apos;s Collaborate
+              </ButtonPrimary>
+            </Box>
           </Box>
         </Box>
 
@@ -111,9 +137,9 @@ export const ServicesSection = () => {
           {/* Services Accordion */}
           <Box
             sx={{
-              flex: '1 1 65%',
+              flex: '1 1 70%',
               width: '100%',
-              maxWidth: { xs: '100%', lg: '65%' },
+              maxWidth: { xs: '100%', lg: '70%' },
             }}
           >
             <Accordion
@@ -124,54 +150,29 @@ export const ServicesSection = () => {
             />
           </Box>
 
-          {/* CTA Section */}
+          {/* Right Section - 30% width */}
           <Box
             sx={{
-              flex: '1 1 35%',
+              flex: '1 1 30%',
               width: '100%',
-              maxWidth: { xs: '100%', lg: '35%' },
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: { xs: 'center', lg: 'flex-end' },
-              justifyContent: 'flex-start',
-              textAlign: { xs: 'center', lg: 'right' },
-              pt: { xs: 0, lg: 2 },
+              maxWidth: { xs: '100%', lg: '30%' },
+              display: { xs: 'none', lg: 'block' },
             }}
           >
-            <Box
-              sx={{
-                maxWidth: { xs: '100%', lg: '300px' },
-              }}
-            >
-              <Typography
-                variant='h3'
-                sx={{
-                  fontSize: { xs: '1.25rem', md: '1.5rem' },
-                  fontWeight: 600,
-                  mb: 3,
-                  color: 'white',
-                }}
-              >
-                Ready to get started?
-              </Typography>
+            {/* Empty space for layout */}
+          </Box>
 
-              <Typography
-                variant='body1'
-                sx={{
-                  fontSize: { xs: '1rem', md: '1.125rem' },
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  mb: 4,
-                  lineHeight: 1.6,
-                }}
-              >
-                Let&apos;s collaborate to bring your vision to life with our
-                expert team.
-              </Typography>
-
-              <ButtonPrimary onClick={handleCollaborationClick}>
-                Let&apos;s Collaborate
-              </ButtonPrimary>
-            </Box>
+          {/* Mobile CTA Section - only show on mobile */}
+          <Box
+            sx={{
+              display: { xs: 'flex', lg: 'none' },
+              justifyContent: 'center',
+              mt: 4,
+            }}
+          >
+            <ButtonPrimary onClick={handleCollaborationClick}>
+              Let&apos;s Collaborate
+            </ButtonPrimary>
           </Box>
         </Box>
       </Container>

@@ -1,10 +1,10 @@
-import { Container, Typography, Box } from '@mui/material';
-import type { Metadata } from 'next';
 import { aboutMetadata } from '@/lib/metadata';
 import {
   generateWebPageSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+import { Box, Container, Typography } from '@mui/material';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = aboutMetadata;
 
@@ -24,7 +24,15 @@ export default function AboutPage() {
           __html: renderStructuredData(webPageSchema),
         }}
       />
-      <Container maxWidth='lg' sx={{ py: 8 }}>
+      <Container
+        maxWidth={false}
+        sx={{
+          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+          margin: '0 auto', // Center the container
+          px: { xs: 2, md: 3 }, // Add some padding
+          py: 8,
+        }}
+      >
         <Box textAlign='center'>
           <Typography variant='h1' component='h1' gutterBottom>
             About Us

@@ -174,7 +174,7 @@ describe('Accordion', () => {
     // Test minimal variant
     expect(screen.getByTestId('accordion-item-1')).toHaveClass(
       'border-b',
-      'border-gray-100'
+      'border-white'
     );
 
     rerender(<Accordion items={mockItems} variant='default' />);

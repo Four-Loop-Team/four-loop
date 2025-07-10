@@ -51,20 +51,12 @@ describe('ServicesSection', () => {
     expect(screen.getByTestId('accordion')).toBeInTheDocument();
   });
 
-  it('renders collaboration section', () => {
+  it('renders collaborate buttons (desktop and mobile)', () => {
     render(<ServicesSection />);
-    expect(
-      screen.getByRole('heading', { name: /ready to get started/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/let's collaborate to bring your vision to life/i)
-    ).toBeInTheDocument();
-  });
-
-  it('renders collaborate button', () => {
-    render(<ServicesSection />);
-    const button = screen.getByRole('button', { name: /let's collaborate/i });
-    expect(button).toBeInTheDocument();
+    const buttons = screen.getAllByRole('button', {
+      name: /let's collaborate/i,
+    });
+    expect(buttons).toHaveLength(2); // One for desktop header, one for mobile
   });
 
   it('handles collaborate button click with scroll', () => {
@@ -72,9 +64,11 @@ describe('ServicesSection', () => {
     mockGetElementById.mockReturnValue(mockElement);
 
     render(<ServicesSection />);
-    const button = screen.getByRole('button', { name: /let's collaborate/i });
+    const buttons = screen.getAllByRole('button', {
+      name: /let's collaborate/i,
+    });
 
-    fireEvent.click(button);
+    fireEvent.click(buttons[0]); // Click first button
 
     expect(mockGetElementById).toHaveBeenCalledWith('contact');
     expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
@@ -84,10 +78,12 @@ describe('ServicesSection', () => {
     mockGetElementById.mockReturnValue(null);
 
     render(<ServicesSection />);
-    const button = screen.getByRole('button', { name: /let's collaborate/i });
+    const buttons = screen.getAllByRole('button', {
+      name: /let's collaborate/i,
+    });
 
     // Should not throw error when contact section is not found
-    expect(() => fireEvent.click(button)).not.toThrow();
+    expect(() => fireEvent.click(buttons[0])).not.toThrow();
     expect(mockGetElementById).toHaveBeenCalledWith('contact');
   });
 

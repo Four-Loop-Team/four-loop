@@ -31,7 +31,14 @@ export const ContactSection = () => {
         zIndex: 10,
       }}
     >
-      <Container maxWidth='lg'>
+      <Container
+        maxWidth={false}
+        sx={{
+          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+          margin: '0 auto', // Center the container
+          px: { xs: 2, md: 3 }, // Add some padding
+        }}
+      >
         <Box
           sx={{
             background: 'linear-gradient(135deg, #A8E6A3 0%, #68D391 100%)',

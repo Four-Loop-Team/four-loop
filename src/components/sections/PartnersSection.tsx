@@ -56,7 +56,16 @@ export const PartnersSection = () => {
         }}
       />
 
-      <Container maxWidth='lg' sx={{ position: 'relative', zIndex: 1 }}>
+      <Container
+        maxWidth={false}
+        sx={{
+          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+          margin: '0 auto', // Center the container
+          px: { xs: 2, md: 3 }, // Add some padding
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <Typography
             variant='h2'

@@ -34,8 +34,7 @@ export default function WorkPage() {
   return (
     <main
       style={{
-        background:
-          'linear-gradient(to bottom, transparent 0%, #1a2332 40%, #1a2332 100%)',
+        backgroundColor: '#353535',
         minHeight: '100vh',
       }}
     >

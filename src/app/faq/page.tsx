@@ -1,18 +1,18 @@
-import {
-  Container,
-  Typography,
-  Box,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from '@mui/material';
-import { ExpandMore } from '@mui/icons-material';
-import type { Metadata } from 'next';
 import { generateMetadata } from '@/lib/metadata';
 import {
   generateWebPageSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+import { ExpandMore } from '@mui/icons-material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Container,
+  Typography,
+} from '@mui/material';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = generateMetadata({
   title: 'Frequently Asked Questions',
@@ -158,7 +158,15 @@ export default function FAQPage() {
         }}
       />
 
-      <Container maxWidth='lg' sx={{ py: 8 }}>
+      <Container
+        maxWidth={false}
+        sx={{
+          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+          margin: '0 auto', // Center the container
+          px: { xs: 2, md: 3 }, // Add some padding
+          py: 8,
+        }}
+      >
         <Box textAlign='center' sx={{ mb: 8 }}>
           <Typography variant='h1' component='h1' gutterBottom>
             Frequently Asked Questions
