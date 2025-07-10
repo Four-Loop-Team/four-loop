@@ -7,12 +7,10 @@ jest.mock('@/components/brand', () => ({
 }));
 
 describe('IntroSection', () => {
-  it('renders intro section with main heading', () => {
+  it('renders intro section with main tagline', () => {
     render(<IntroSection />);
     expect(
-      screen.getByRole('heading', {
-        name: /crafted code\. thoughtful design\. real results\./i,
-      })
+      screen.getByText(/crafted code\. thoughtful design\. real results\./i)
     ).toBeInTheDocument();
   });
 

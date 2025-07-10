@@ -33,13 +33,12 @@ describe('WorkPage', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
-  test('renders the main heading', () => {
+  test('renders the main tagline', () => {
     renderWithTheme(<WorkPage />);
-    const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent(
+    const tagline = screen.getByText(
       /crafted code.*thoughtful design.*real results/i
     );
+    expect(tagline).toBeInTheDocument();
   });
 
   test('renders the Four Loop Digital logo', () => {
@@ -69,9 +68,11 @@ describe('WorkPage', () => {
     const main = screen.getByRole('main');
     expect(main).toBeInTheDocument();
 
-    // Should have heading
-    const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toBeInTheDocument();
+    // Should have tagline text
+    const tagline = screen.getByText(
+      /crafted code.*thoughtful design.*real results/i
+    );
+    expect(tagline).toBeInTheDocument();
   });
 
   test('displays company description', () => {

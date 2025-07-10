@@ -22,7 +22,7 @@ export const IntroSection = () => {
         alignItems: 'center',
         pt: 0, // Remove top padding to sit against header
         pb: { xs: 8, md: 12 }, // Keep bottom padding
-        backgroundColor: '#353535', // Match navigation background
+        backgroundColor: 'transparent', // Remove background to show app background
         color: 'white',
         position: 'relative',
       }}
@@ -43,7 +43,6 @@ export const IntroSection = () => {
             paddingBottom: '64px',
             paddingLeft: '58px',
             paddingRight: '58px',
-            backdropFilter: 'blur(10px)',
           }}
         >
           <Box
