@@ -105,16 +105,27 @@ export default function Navigation() {
       const linkRect = activeLink.getBoundingClientRect();
 
       setSliderStyle({
-        left: linkRect.left - containerRect.left,
-        width: linkRect.width,
+        left: linkRect.left - containerRect.left - 7.5, // Offset left by 7.5px to center the extra width
+        width: linkRect.width + 15, // Make background 15px wider (was 10px, now adding 5px more)
         opacity: 1,
       });
     }
   }, [isMobile, isActive]);
 
+  // Immediate position update on mount
   useEffect(() => {
-    updateSliderPosition();
-  }, [updateSliderPosition, mounted]);
+    if (mounted && !isMobile) {
+      // Use setTimeout to ensure DOM is ready, but make it immediate
+      setTimeout(updateSliderPosition, 0);
+    }
+  }, [updateSliderPosition, mounted, isMobile]);
+
+  useEffect(() => {
+    // Immediate update on route change
+    if (mounted && !isMobile) {
+      updateSliderPosition();
+    }
+  }, [updateSliderPosition, mounted, isMobile]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -281,7 +292,7 @@ export default function Navigation() {
                   borderRadius: 'var(--nav-container-border-radius)',
                   padding: '0px',
                   display: 'flex',
-                  gap: '4px', // Small gap between buttons for better visual separation
+                  gap: '0px',
                   position: 'relative',
                 }}
               >
@@ -292,7 +303,7 @@ export default function Navigation() {
                     top: 0,
                     height: '100%',
                     backgroundColor: 'var(--nav-slider-background)',
-                    border: '2px solid var(--nav-slider-border)',
+                    border: '1px solid var(--nav-slider-border)',
                     borderRadius: 'var(--nav-container-border-radius)',
                     transition: 'var(--nav-slider-transition)',
                     zIndex: 1,
@@ -303,6 +314,19 @@ export default function Navigation() {
                 />
                 {navigationItems.map((item) => {
                   const active = isActive(item.href);
+
+                  // Define specific padding for each navigation item
+                  let buttonPadding;
+                  if (item.label === 'Work') {
+                    buttonPadding = '0 15px 0 20px';
+                  } else if (item.label === 'About Us') {
+                    buttonPadding = '0 15px';
+                  } else if (item.label === 'Contact') {
+                    buttonPadding = '0 20px 0 15px';
+                  } else {
+                    buttonPadding = '0 15px'; // fallback updated to match About Us
+                  }
+
                   return (
                     <Link
                       key={item.label}
@@ -317,14 +341,13 @@ export default function Navigation() {
                             : 'var(--nav-text-inactive)',
                           textTransform: 'none',
                           fontSize: '1rem',
-                          fontWeight: 500,
-                          px: 'var(--nav-button-padding-x)',
-                          py: 'var(--nav-button-padding-y)',
+                          fontWeight: 400, // Normal weight, not bold
+                          padding: buttonPadding, // Custom padding for each button
                           borderRadius: 'var(--nav-container-border-radius)',
                           minWidth: 'auto',
                           backgroundColor: 'transparent',
-                          border: '2px solid transparent',
-                          margin: '0px',
+                          border: '1px solid transparent',
+                          margin: 0, // All buttons have 0 margin
                           zIndex: 2,
                           position: 'relative',
                           transition: 'color 0.15s ease',
