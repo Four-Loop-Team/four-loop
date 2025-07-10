@@ -240,15 +240,38 @@ export default function Navigation() {
         aria-label='Main navigation'
         sx={{
           backgroundColor: 'var(--nav-background)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          borderBottom: 'none',
+          boxShadow: 'none', // Remove any shadow
+          '&::after': {
+            display: 'none', // Remove any pseudo-element borders
+          },
+          '&::before': {
+            display: 'none', // Remove any pseudo-element borders
+          },
+          '& .MuiToolbar-root': {
+            borderBottom: 'none !important',
+          },
         }}
       >
-        <Container maxWidth='xl'>
+        <Container
+          maxWidth={false}
+          sx={{
+            '& .MuiToolbar-root': { borderBottom: 'none' },
+            maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+            margin: '0 auto', // Center the container
+            padding: 0, // Remove container padding
+          }}
+        >
           <Toolbar
             sx={{
               justifyContent: 'space-between',
-              minHeight: { xs: 64, md: 80 },
-              px: { xs: 'var(--space-md)', md: 'var(--space-lg)' },
+              minHeight: { xs: '100px', md: '146px' }, // Updated header height: 146px
+              px: { xs: '1.5rem', md: 0 }, // Remove default padding, will add specific spacing
+              paddingLeft: { xs: '1.5rem', md: '54px' }, // Updated left spacing: 54px from edge
+              paddingRight: { xs: '1.5rem', md: '54px' }, // Updated right spacing: 54px from edge
+              alignItems: 'center', // Center items vertically by default
+              borderBottom: 'none', // Ensure no border
+              position: 'relative', // For absolute positioning of logo
             }}
           >
             {/* Logo */}
@@ -262,13 +285,16 @@ export default function Navigation() {
                   display: 'flex',
                   alignItems: 'center',
                   cursor: 'pointer',
+                  position: { xs: 'static', md: 'absolute' }, // Absolute on desktop
+                  top: { xs: 'auto', md: '74px' }, // Updated top positioning: 74px on desktop
+                  left: { xs: 'auto', md: '54px' }, // Updated left positioning: 54px on desktop
                 }}
               >
                 <Box
                   sx={{
-                    fontSize: { xs: '1.25rem', md: '1.5rem' },
+                    fontSize: { xs: '1.5rem', md: '1.75rem' }, // Adjust font size
                     fontWeight: 600,
-                    letterSpacing: '0.1em',
+                    letterSpacing: '0.1em', // Reduce letter spacing to match design
                     fontFamily: 'inherit',
                   }}
                 >
@@ -376,6 +402,7 @@ export default function Navigation() {
                   color: 'white',
                   minWidth: '44px',
                   minHeight: '44px',
+                  alignSelf: 'flex-start', // Align to top to match toolbar positioning
                 }}
                 aria-label={
                   mobileOpen ? 'Close navigation menu' : 'Open navigation menu'

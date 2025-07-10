@@ -18,29 +18,23 @@ export const IntroSection = () => {
     <Box
       component='section'
       sx={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        py: { xs: 8, md: 12 },
-        background: 'linear-gradient(135deg, #1a2332 0%, #2d3748 100%)',
+        pt: 0, // Remove top padding to sit against header
+        pb: { xs: 8, md: 12 }, // Keep bottom padding
+        backgroundColor: '#353535', // Match navigation background
         color: 'white',
         position: 'relative',
       }}
     >
-      {/* Top horizontal line */}
-      <Box
+      <Container
+        maxWidth={false}
         sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          background:
-            'linear-gradient(90deg, transparent 0%, #A8E6A3 50%, transparent 100%)',
+          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+          margin: '0 auto', // Center the container
+          px: { xs: 2, md: 3 }, // Add some padding
         }}
-      />
-
-      <Container maxWidth='lg'>
+      >
         <Box
           sx={{
             backgroundColor: 'rgba(255, 255, 255, 0.05)',
