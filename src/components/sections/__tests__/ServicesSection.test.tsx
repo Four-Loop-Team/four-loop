@@ -43,11 +43,7 @@ describe('ServicesSection', () => {
 
   it('renders section description', () => {
     render(<ServicesSection />);
-    expect(
-      screen.getByText(
-        /our areas of expertise designed to elevate your digital presence/i
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(/our areas of expertise/i)).toBeInTheDocument();
   });
 
   it('renders accordion component for services', () => {

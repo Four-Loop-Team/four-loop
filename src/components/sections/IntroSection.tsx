@@ -130,19 +130,6 @@ export const IntroSection = () => {
           </Box>
         </Box>
       </Container>
-
-      {/* Bottom horizontal line */}
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          background:
-            'linear-gradient(90deg, transparent 0%, #A8E6A3 50%, transparent 100%)',
-        }}
-      />
     </Box>
   );
 };

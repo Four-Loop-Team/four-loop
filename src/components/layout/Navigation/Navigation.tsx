@@ -239,7 +239,7 @@ export default function Navigation() {
         component='nav'
         aria-label='Main navigation'
         sx={{
-          backgroundColor: 'transparent',
+          backgroundColor: '#353535',
           borderBottom: 'none',
           boxShadow: 'none', // Remove any shadow
           '&::after': {
