@@ -37,10 +37,12 @@ export const IntroSection = () => {
       >
         <Box
           sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(168, 230, 163, 0.2)',
-            borderRadius: '16px',
-            padding: { xs: 4, md: 6 },
+            backgroundColor: '#232323',
+            borderRadius: '86px',
+            paddingTop: '64px',
+            paddingBottom: '64px',
+            paddingLeft: '58px',
+            paddingRight: '58px',
             backdropFilter: 'blur(10px)',
           }}
         >
@@ -51,14 +53,28 @@ export const IntroSection = () => {
               alignItems: 'center',
               gap: 4,
               position: 'relative',
+              borderTop: '1px solid white',
+              borderBottom: '1px solid white',
+              paddingTop: '32px',
+              paddingBottom: '32px',
             }}
           >
             {/* Left column - Text content */}
-            <Box sx={{ flex: 1, order: { xs: 2, md: 1 } }}>
+            <Box
+              sx={{
+                flex: '0 0 60%',
+                order: { xs: 2, md: 1 },
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                paddingY: '32px',
+                paddingLeft: '28px',
+                paddingRight: '100px',
+              }}
+            >
               <Typography
                 variant='body1'
                 sx={{
-                  mb: 4,
                   fontSize: { xs: '1rem', md: '1.125rem' },
                   lineHeight: 1.6,
                   color: '#E2E8F0',
@@ -69,36 +85,31 @@ export const IntroSection = () => {
                 identities, and exceed expectations, because our clients&apos;
                 success is our success. We lead with expertise, grow through
                 reputation, and stay grounded in partnership, inside and out.
-              </Typography>
-
-              <Typography
-                variant='h2'
-                component='h1'
-                sx={{
-                  fontSize: { xs: '1.5rem', md: '2rem' },
-                  fontWeight: 600,
-                  color: '#A8E6A3',
-                  lineHeight: 1.2,
-                }}
-              >
-                Crafted Code. Thoughtful Design. Real Results.
+                <br />
+                <Box
+                  component='span'
+                  sx={{
+                    fontSize: { xs: '1rem', md: '1.125rem' },
+                    lineHeight: 1.6,
+                    color: '#A8E6A3',
+                  }}
+                >
+                  Crafted Code. Thoughtful Design. Real Results.
+                </Box>
               </Typography>
             </Box>
 
-            {/* Vertical divider line */}
+            {/* Right column - Logo */}
             <Box
               sx={{
-                width: '1px',
-                height: { xs: '1px', md: '200px' },
-                background:
-                  'linear-gradient(180deg, transparent 0%, #A8E6A3 50%, transparent 100%)',
-                order: { xs: 1, md: 2 },
-                display: { xs: 'none', md: 'block' },
+                flex: '0 0 40%',
+                order: { xs: 1, md: 3 },
+                borderLeft: { xs: 'none', md: '1px solid white' },
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-            />
-
-            {/* Right column - Logo */}
-            <Box sx={{ flex: 1, order: { xs: 1, md: 3 } }}>
+            >
               <Box
                 sx={{
                   display: 'flex',
