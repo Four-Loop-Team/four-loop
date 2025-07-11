@@ -22,9 +22,19 @@ describe('ContactSection', () => {
     expect(button).toBeInTheDocument();
   });
 
-  it('renders footer with copyright', () => {
+  it('renders email input field', () => {
     render(<ContactSection />);
-    expect(screen.getByText(/© 2024 Four Loop Digital/i)).toBeInTheDocument();
+    const emailInput = screen.getByLabelText(/where can we reach you/i);
+    expect(emailInput).toBeInTheDocument();
+    expect(emailInput).toHaveAttribute('type', 'email');
+    expect(emailInput).toHaveAttribute('required');
+  });
+
+  it('renders project textarea field', () => {
+    render(<ContactSection />);
+    const projectInput = screen.getByLabelText(/what can we help you build/i);
+    expect(projectInput).toBeInTheDocument();
+    expect(projectInput).toHaveAttribute('required');
   });
 
   it('has proper semantic structure', () => {
@@ -34,9 +44,11 @@ describe('ContactSection', () => {
     expect(section).toHaveAttribute('id', 'contact');
   });
 
-  it('has correct button styling classes', () => {
-    render(<ContactSection />);
+  it('has form with submit functionality', () => {
+    const { container } = render(<ContactSection />);
+    const form = container.querySelector('form');
+    expect(form).toBeInTheDocument();
     const button = screen.getByRole('button', { name: /let's talk/i });
-    expect(button).toHaveClass('contact-button');
+    expect(button).toHaveAttribute('type', 'submit');
   });
 });

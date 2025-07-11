@@ -58,7 +58,7 @@ export const ContactSection = () => {
           {/* Header Section */}
           <Box
             sx={{
-              mb: { xs: 6, md: 8 },
+              borderBottom: '1px solid #353535',
             }}
           >
             <Box
@@ -108,92 +108,112 @@ export const ContactSection = () => {
             component='form'
             onSubmit={handleSubmit}
             sx={{
-              borderTop: '1px solid #353535',
-              borderBottom: '1px solid #353535',
-              paddingTop: '32px',
+              paddingTop: '48px', // Increased for floating label space
               paddingBottom: '32px',
             }}
           >
             {/* Email Input */}
-            <Box sx={{ mb: 4 }}>
-              <Typography
-                variant='body1'
-                sx={{
-                  fontSize: { xs: '1rem', md: '1.125rem' },
-                  color: '#353535',
-                  mb: 2,
-                  fontWeight: 400,
-                }}
-              >
-                Where can we reach you?
-              </Typography>
+            <Box sx={{ mb: 4, mt: 3 }}>
               <TextField
                 type='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 fullWidth
-                variant='standard'
+                variant='filled'
+                label='Where can we reach you?'
                 placeholder='your.email@example.com'
+                InputLabelProps={{
+                  required: false,
+                }}
                 sx={{
-                  '& .MuiInput-root': {
+                  '& .MuiInputLabel-root': {
                     color: '#353535',
-                    fontSize: { xs: '1rem', md: '1.125rem' },
-                    '&:before': {
-                      borderBottomColor: '#353535',
+                  },
+                  '& .MuiInputLabel-root.Mui-focused': {
+                    color: '#666666',
+                  },
+                  '& .MuiInputLabel-root.MuiInputLabel-shrink': {
+                    color: '#666666',
+                  },
+                  '& .MuiInputBase-input': {
+                    color: '#353535',
+                  },
+                  '& .MuiInputBase-input::placeholder': {
+                    color: '#353535',
+                    opacity: 0.7,
+                  },
+                  '& .MuiFilledInput-root': {
+                    backgroundColor: 'rgba(53, 53, 53, 0.1)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(53, 53, 53, 0.15)',
                     },
-                    '&:hover:not(.Mui-disabled):before': {
-                      borderBottomColor: '#353535',
-                    },
-                    '&.Mui-focused:after': {
-                      borderBottomColor: '#353535',
+                    '&.Mui-focused': {
+                      backgroundColor: 'rgba(53, 53, 53, 0.1)',
                     },
                   },
-                  '& .MuiInput-input::placeholder': {
-                    color: 'rgba(53, 53, 53, 0.6)',
+                  '& .MuiFilledInput-underline:before': {
+                    borderBottomColor: '#353535',
+                  },
+                  '& .MuiFilledInput-underline:hover:before': {
+                    borderBottomColor: '#353535',
+                  },
+                  '& .MuiFilledInput-underline:after': {
+                    borderBottomColor: '#353535',
                   },
                 }}
               />
             </Box>
 
             {/* Textarea */}
-            <Box sx={{ mb: 6 }}>
-              <Typography
-                variant='body1'
-                sx={{
-                  fontSize: { xs: '1rem', md: '1.125rem' },
-                  color: '#353535',
-                  mb: 2,
-                  fontWeight: 400,
-                }}
-              >
-                What can we help you build?
-              </Typography>
+            <Box sx={{ mb: 6, mt: 3 }}>
               <TextField
+                id='filled-textarea'
+                label='What can we help you build?'
+                placeholder='Tell us about your project...'
                 multiline
-                rows={4}
+                variant='filled'
                 value={project}
                 onChange={(e) => setProject(e.target.value)}
                 required
                 fullWidth
-                variant='standard'
-                placeholder='Tell us about your project...'
+                InputLabelProps={{
+                  required: false,
+                }}
                 sx={{
-                  '& .MuiInput-root': {
+                  '& .MuiInputLabel-root': {
                     color: '#353535',
-                    fontSize: { xs: '1rem', md: '1.125rem' },
-                    '&:before': {
-                      borderBottomColor: '#353535',
+                  },
+                  '& .MuiInputLabel-root.Mui-focused': {
+                    color: '#666666',
+                  },
+                  '& .MuiInputLabel-root.MuiInputLabel-shrink': {
+                    color: '#666666',
+                  },
+                  '& .MuiInputBase-input': {
+                    color: '#353535',
+                  },
+                  '& .MuiInputBase-input::placeholder': {
+                    color: '#353535',
+                    opacity: 0.7,
+                  },
+                  '& .MuiFilledInput-root': {
+                    backgroundColor: 'rgba(53, 53, 53, 0.1)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(53, 53, 53, 0.15)',
                     },
-                    '&:hover:not(.Mui-disabled):before': {
-                      borderBottomColor: '#353535',
-                    },
-                    '&.Mui-focused:after': {
-                      borderBottomColor: '#353535',
+                    '&.Mui-focused': {
+                      backgroundColor: 'rgba(53, 53, 53, 0.1)',
                     },
                   },
-                  '& .MuiInput-input::placeholder': {
-                    color: 'rgba(53, 53, 53, 0.6)',
+                  '& .MuiFilledInput-underline:before': {
+                    borderBottomColor: '#353535',
+                  },
+                  '& .MuiFilledInput-underline:hover:before': {
+                    borderBottomColor: '#353535',
+                  },
+                  '& .MuiFilledInput-underline:after': {
+                    borderBottomColor: '#353535',
                   },
                 }}
               />

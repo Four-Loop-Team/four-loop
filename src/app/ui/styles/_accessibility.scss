@@ -1,20 +1,17 @@
 /* Accessibility-focused styles */
 
-/* Ensure minimum touch target sizes (44px minimum) */
+/* Ensure minimum touch target sizes (44px minimum) for accessibility, excluding input elements */
 button,
 a,
-input,
-textarea,
 select {
   min-height: 44px;
   min-width: 44px;
 }
 
-/* High contrast focus indicators for better visibility */
-:focus-visible {
-  outline: 3px solid var(--color-primary) !important;
-  outline-offset: 2px !important;
-  border-radius: 4px;
+/* Apply min-height only to non-Material-UI input and textarea elements */
+input:not([class*='Mui']),
+textarea:not([class*='Mui']) {
+  min-height: 44px;
 }
 
 /* Skip link styles */
@@ -112,9 +109,7 @@ a:focus-visible {
 /* Enhanced keyboard navigation */
 .keyboard-nav button:focus,
 .keyboard-nav a:focus,
-.keyboard-nav input:focus,
-.keyboard-nav textarea:focus,
-.keyboard-nav select:focus {
+.keyboard-nav select:not([class*='Mui']):focus {
   outline: 3px solid var(--color-primary) !important;
   outline-offset: 2px !important;
   box-shadow: 0 0 0 1px rgb(226 232 145 / 50%) !important;
