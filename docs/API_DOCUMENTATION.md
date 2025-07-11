@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-07-10T22:16:41.900Z
+> 🤖 Auto-generated on 2025-07-11T01:19:00.748Z
 
 ## Component API Reference
 
@@ -174,7 +174,7 @@
 **File**: `src/components/sections/ContactSection.tsx`
 
 * Contact section component
- Features contact information and call-to-action in a rounded box that overlaps the Partners section
+ Features contact form in a rounded box matching the intro section design
 
  @component
  @example

@@ -96,7 +96,7 @@ export const PartnersSection = () => {
               color: 'white',
             }}
           >
-            <span style={{ color: '#A8E6A3' }}>
+            <span style={{ color: '#e2e891' }}>
               Partnerships That Shaped Our Journey.
             </span>{' '}
             Over the past 25 years, we&apos;ve collaborated with teams across

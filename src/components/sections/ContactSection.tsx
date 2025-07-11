@@ -1,11 +1,11 @@
 'use client';
 
-import { ButtonPrimary } from '@/components/ui/Button';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
 
 /**
  * Contact section component
- * Features contact information and call-to-action in a rounded box that overlaps the Partners section
+ * Features contact form in a rounded box matching the intro section design
  *
  * @component
  * @example
@@ -14,9 +14,13 @@ import { Box, Container, Typography } from '@mui/material';
  * ```
  */
 export const ContactSection = () => {
-  const handleLetsTalk = () => {
-    // Handle contact form or navigation
-    window.location.href = '/contact';
+  const [email, setEmail] = useState('');
+  const [project, setProject] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+    // TODO: Implement form submission logic
   };
 
   return (
@@ -24,11 +28,13 @@ export const ContactSection = () => {
       id='contact'
       component='section'
       sx={{
-        position: 'relative',
-        pt: { xs: 0, md: 0 },
+        display: 'flex',
+        alignItems: 'center',
+        pt: { xs: 8, md: 12 },
         pb: { xs: 8, md: 12 },
-        mt: { xs: -4, md: -8 }, // Negative margin to overlap Partners section
-        zIndex: 10,
+        backgroundColor: 'transparent',
+        color: 'white',
+        position: 'relative',
       }}
     >
       <Container
@@ -41,100 +47,219 @@ export const ContactSection = () => {
       >
         <Box
           sx={{
-            background: 'linear-gradient(135deg, #A8E6A3 0%, #68D391 100%)',
-            borderRadius: { xs: '24px', md: '32px' },
-            py: { xs: 6, md: 8 },
-            px: { xs: 4, md: 6 },
-            textAlign: 'center',
-            maxWidth: '800px',
-            mx: 'auto',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
-            position: 'relative',
-            color: 'black',
+            backgroundColor: '#e2e891', // Primary brand color background
+            borderRadius: '86px', // Same as intro section
+            paddingTop: '64px',
+            paddingBottom: '64px',
+            paddingLeft: '58px',
+            paddingRight: '58px',
           }}
         >
-          <Typography
-            variant='h2'
-            component='h2'
+          {/* Header Section */}
+          <Box
             sx={{
-              fontSize: { xs: '2rem', md: '2.5rem' },
-              fontWeight: 600,
-              mb: 2,
-              color: 'black',
+              mb: { xs: 6, md: 8 },
             }}
           >
-            Get In Touch
-          </Typography>
-
-          <Typography
-            variant='subtitle1'
-            sx={{
-              fontSize: { xs: '1rem', md: '1.125rem' },
-              mb: 6,
-              opacity: 0.8,
-              color: 'black',
-            }}
-          >
-            Tell us about your project
-          </Typography>
-
-          <Box sx={{ mb: 6 }}>
-            <Typography
-              variant='body1'
+            <Box
               sx={{
-                fontSize: { xs: '1rem', md: '1.125rem' },
-                lineHeight: 1.6,
-                mb: 3,
-                color: 'black',
+                display: 'flex',
+                alignItems: 'baseline',
+                justifyContent: 'flex-start',
+                gap: { xs: 2, md: 3 },
+                mb: { xs: 4, md: 6 },
               }}
             >
-              Where can we reach you?
-            </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: { xs: 2, md: 3 },
+                }}
+              >
+                <Typography
+                  variant='h2'
+                  component='h2'
+                  sx={{
+                    fontSize: { xs: '2.5rem', md: '4rem' },
+                    fontWeight: 400,
+                    color: '#353535', // Secondary text color
+                    lineHeight: 1,
+                  }}
+                >
+                  Get in Touch
+                </Typography>
 
-            <Typography
-              variant='body1'
-              sx={{
-                fontSize: { xs: '1rem', md: '1.125rem' },
-                lineHeight: 1.6,
-                mb: 4,
-                color: 'black',
-              }}
-            >
-              What can we help you build?
-            </Typography>
+                <Typography
+                  sx={{
+                    fontSize: { xs: '1rem', md: '1.25rem' },
+                    color: '#353535', // Secondary text color
+                    fontWeight: 300,
+                  }}
+                >
+                  /&nbsp;&nbsp;&nbsp;&nbsp;Tell us about your project
+                </Typography>
+              </Box>
+            </Box>
           </Box>
 
-          <ButtonPrimary
-            onClick={handleLetsTalk}
-            className='contact-button'
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              color: 'black',
-              border: '2px solid rgba(0, 0, 0, 0.2)',
-            }}
-          >
-            Let&apos;s Talk
-          </ButtonPrimary>
-        </Box>
-
-        {/* Footer */}
-        <Box
-          sx={{
-            mt: 8,
-            pt: 4,
-            textAlign: 'center',
-          }}
-        >
-          <Typography
-            variant='body2'
+          {/* Form Section */}
+          <Box
+            component='form'
+            onSubmit={handleSubmit}
             sx={{
-              fontSize: '0.875rem',
-              opacity: 0.7,
-              color: 'white',
+              borderTop: '1px solid #353535',
+              borderBottom: '1px solid #353535',
+              paddingTop: '32px',
+              paddingBottom: '32px',
             }}
           >
-            © 2024 Four Loop Digital
-          </Typography>
+            {/* Email Input */}
+            <Box sx={{ mb: 4 }}>
+              <Typography
+                variant='body1'
+                sx={{
+                  fontSize: { xs: '1rem', md: '1.125rem' },
+                  color: '#353535',
+                  mb: 2,
+                  fontWeight: 400,
+                }}
+              >
+                Where can we reach you?
+              </Typography>
+              <TextField
+                type='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                fullWidth
+                variant='standard'
+                placeholder='your.email@example.com'
+                sx={{
+                  '& .MuiInput-root': {
+                    color: '#353535',
+                    fontSize: { xs: '1rem', md: '1.125rem' },
+                    '&:before': {
+                      borderBottomColor: '#353535',
+                    },
+                    '&:hover:not(.Mui-disabled):before': {
+                      borderBottomColor: '#353535',
+                    },
+                    '&.Mui-focused:after': {
+                      borderBottomColor: '#353535',
+                    },
+                  },
+                  '& .MuiInput-input::placeholder': {
+                    color: 'rgba(53, 53, 53, 0.6)',
+                  },
+                }}
+              />
+            </Box>
+
+            {/* Textarea */}
+            <Box sx={{ mb: 6 }}>
+              <Typography
+                variant='body1'
+                sx={{
+                  fontSize: { xs: '1rem', md: '1.125rem' },
+                  color: '#353535',
+                  mb: 2,
+                  fontWeight: 400,
+                }}
+              >
+                What can we help you build?
+              </Typography>
+              <TextField
+                multiline
+                rows={4}
+                value={project}
+                onChange={(e) => setProject(e.target.value)}
+                required
+                fullWidth
+                variant='standard'
+                placeholder='Tell us about your project...'
+                sx={{
+                  '& .MuiInput-root': {
+                    color: '#353535',
+                    fontSize: { xs: '1rem', md: '1.125rem' },
+                    '&:before': {
+                      borderBottomColor: '#353535',
+                    },
+                    '&:hover:not(.Mui-disabled):before': {
+                      borderBottomColor: '#353535',
+                    },
+                    '&.Mui-focused:after': {
+                      borderBottomColor: '#353535',
+                    },
+                  },
+                  '& .MuiInput-input::placeholder': {
+                    color: 'rgba(53, 53, 53, 0.6)',
+                  },
+                }}
+              />
+            </Box>
+
+            {/* Submit Button */}
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box
+                component='button'
+                type='submit'
+                sx={{
+                  backgroundColor: 'transparent',
+                  color: '#353535',
+                  border: 'none',
+                  borderRadius: '24px',
+                  fontSize: '1.125rem',
+                  fontWeight: 500,
+                  padding: '12px 24px',
+                  minWidth: '44px',
+                  minHeight: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 1,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  outline: 'none',
+                  fontFamily: 'inherit',
+                  textDecoration: 'none',
+                  lineHeight: 1,
+                  '&:hover': {
+                    opacity: 0.8,
+                    transform: 'translateY(-1px)',
+                  },
+                  '&:active': {
+                    transform: 'translateY(0)',
+                  },
+                  // Force visibility with secondary color
+                  '& *': {
+                    color: '#353535',
+                  },
+                }}
+              >
+                <Box
+                  component='span'
+                  sx={{
+                    color: '#353535',
+                    fontSize: '1.125rem',
+                    fontWeight: 500,
+                  }}
+                >
+                  Let&apos;s Talk
+                </Box>
+                <Box
+                  component='span'
+                  sx={{
+                    fontSize: '1.2em',
+                    color: '#353535',
+                    marginLeft: '8px',
+                  }}
+                >
+                  →
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Container>
     </Box>
