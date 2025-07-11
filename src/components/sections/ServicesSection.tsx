@@ -54,7 +54,7 @@ export const ServicesSection = () => {
     <Box
       component='section'
       sx={{
-        pt: 0,
+        pt: { xs: 8, md: 12 }, // Add padding moved from intro section
         pb: { xs: 8, md: 12 },
         backgroundColor: 'transparent',
         color: 'white',

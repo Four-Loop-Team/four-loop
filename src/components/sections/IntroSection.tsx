@@ -21,7 +21,7 @@ export const IntroSection = () => {
         display: 'flex',
         alignItems: 'center',
         pt: 0, // Remove top padding to sit against header
-        pb: { xs: 8, md: 12 }, // Keep bottom padding
+        pb: 0, // Remove bottom padding - moved to services section
         backgroundColor: 'transparent', // Remove background to show app background
         color: 'white',
         position: 'relative',

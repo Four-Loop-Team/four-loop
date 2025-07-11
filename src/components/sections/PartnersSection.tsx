@@ -18,111 +18,87 @@ export const PartnersSection = () => {
       component='section'
       sx={{
         py: { xs: 8, md: 12 },
-        background: '#1a2332',
+        backgroundColor: 'transparent',
         color: 'white',
         position: 'relative',
-        overflow: 'hidden',
       }}
     >
-      {/* Top horizontal line */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          background:
-            'linear-gradient(90deg, transparent 0%, #A8E6A3 50%, transparent 100%)',
-        }}
-      />
-
-      {/* Background pattern overlay */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 1px,
-            rgba(168, 230, 163, 0.05) 1px,
-            rgba(168, 230, 163, 0.05) 40px
-          )`,
-          pointerEvents: 'none',
-        }}
-      />
-
       <Container
         maxWidth={false}
         sx={{
           maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
           margin: '0 auto', // Center the container
-          px: { xs: 2, md: 3 }, // Add some padding
+          px: { xs: 2, md: '82px' }, // Add 82px padding on desktop
           position: 'relative',
           zIndex: 1,
         }}
       >
-        <Box sx={{ textAlign: 'center', mb: 8 }}>
-          <Typography
-            variant='h2'
-            component='h2'
+        <Box
+          sx={{
+            mb: { xs: 6, md: 8 },
+          }}
+        >
+          <Box
             sx={{
-              fontSize: { xs: '2.5rem', md: '3.5rem' },
-              fontWeight: 700,
-              mb: 3,
-              color: 'white',
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'flex-start',
+              gap: { xs: 2, md: 3 },
+              mb: { xs: 4, md: 6 },
             }}
           >
-            Partners
-          </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: { xs: 2, md: 3 },
+              }}
+            >
+              <Typography
+                variant='h2'
+                component='h2'
+                sx={{
+                  fontSize: { xs: '2.5rem', md: '4rem' },
+                  fontWeight: 400,
+                  color: 'white',
+                  lineHeight: 1,
+                }}
+              >
+                Partners
+              </Typography>
 
-          <Typography
-            variant='subtitle1'
-            sx={{
-              fontSize: { xs: '1.125rem', md: '1.25rem' },
-              color: '#A8E6A3',
-              mb: 2,
-              fontWeight: 500,
-            }}
-          >
-            Companies we love
-          </Typography>
+              <Typography
+                sx={{
+                  fontSize: { xs: '1rem', md: '1.25rem' },
+                  color: 'white',
+                  fontWeight: 300,
+                }}
+              >
+                /&nbsp;&nbsp;&nbsp;&nbsp;Companies we love
+              </Typography>
+            </Box>
+          </Box>
         </Box>
 
         <Box
           sx={{
-            maxWidth: '900px',
-            mx: 'auto',
-            textAlign: 'center',
+            textAlign: 'left',
+            borderTop: '1px solid white',
+            borderBottom: '1px solid white',
+            py: 4,
           }}
         >
-          <Typography
-            variant='h3'
-            sx={{
-              fontSize: { xs: '1.5rem', md: '2rem' },
-              fontWeight: 600,
-              color: '#A8E6A3',
-              mb: 4,
-              lineHeight: 1.3,
-            }}
-          >
-            Partnerships That Shaped Our Journey.
-          </Typography>
-
           <Typography
             variant='body1'
             sx={{
               fontSize: { xs: '1.125rem', md: '1.25rem' },
               lineHeight: 1.7,
-              color: '#E2E8F0',
-              maxWidth: '800px',
-              mx: 'auto',
+              color: 'white',
             }}
           >
+            <span style={{ color: '#A8E6A3' }}>
+              Partnerships That Shaped Our Journey.
+            </span>{' '}
             Over the past 25 years, we&apos;ve collaborated with teams across
             industries to bring ideas to life, through thoughtful design,
             reliable code, and a lot of listening. The logos behind us represent
@@ -132,19 +108,6 @@ export const PartnersSection = () => {
           </Typography>
         </Box>
       </Container>
-
-      {/* Bottom horizontal line */}
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          background:
-            'linear-gradient(90deg, transparent 0%, #A8E6A3 50%, transparent 100%)',
-        }}
-      />
     </Box>
   );
 };
