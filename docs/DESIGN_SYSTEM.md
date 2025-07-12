@@ -121,17 +121,33 @@ FLUID_TYPOGRAPHY.fluidBody; // clamp(0.875rem, 1vw + 0.5rem, 1.125rem)
 
 ### Spacing
 
+The Four Loop project uses an **8px Grid Spacing System** that ensures visual consistency and
+harmony across all components and layouts.
+
+#### 8px Grid System Principles
+
+The 8px grid system is a fundamental design principle where **all spacing values are multiples of 8
+pixels**. This creates:
+
+- **Visual Consistency**: Predictable spacing relationships
+- **Design-Development Alignment**: Shared spacing language between designers and developers
+- **Scalability**: Easy to scale while maintaining proportions
+- **Accessibility**: Clear visual hierarchy for better UX
+
 #### Spacing Scale
 
 ```typescript
 import { SPACING_SCALE } from '@/constants/spacing';
 
-// 8px-based scale
-SPACING_SCALE[1]; // 0.25rem (4px)
-SPACING_SCALE[2]; // 0.5rem (8px)
-SPACING_SCALE[4]; // 1rem (16px)
-SPACING_SCALE[8]; // 2rem (32px)
-SPACING_SCALE[16]; // 4rem (64px)
+// 8px-based scale (all values are multiples of 8px or 4px)
+SPACING_SCALE[0.5]; // 0.125rem (2px)  - 8px ÷ 4
+SPACING_SCALE[1]; // 0.25rem (4px)   - 8px ÷ 2
+SPACING_SCALE[2]; // 0.5rem (8px)    - 8px × 1 ⭐ Base unit
+SPACING_SCALE[4]; // 1rem (16px)     - 8px × 2
+SPACING_SCALE[6]; // 1.5rem (24px)   - 8px × 3
+SPACING_SCALE[8]; // 2rem (32px)     - 8px × 4
+SPACING_SCALE[12]; // 3rem (48px)     - 8px × 6
+SPACING_SCALE[16]; // 4rem (64px)     - 8px × 8
 ```
 
 #### Semantic Spacing
@@ -139,15 +155,15 @@ SPACING_SCALE[16]; // 4rem (64px)
 ```typescript
 import { SEMANTIC_SPACING } from '@/constants/spacing';
 
-// Component spacing
-SEMANTIC_SPACING.component.xs; // 0.25rem
-SEMANTIC_SPACING.component.sm; // 0.5rem
-SEMANTIC_SPACING.component.md; // 1rem
-SEMANTIC_SPACING.component.lg; // 1.5rem
-SEMANTIC_SPACING.component.xl; // 2rem
+// Component spacing (8px multiples for consistency)
+SEMANTIC_SPACING.component.xs; // 4px  (8px ÷ 2)
+SEMANTIC_SPACING.component.sm; // 8px  (8px × 1)
+SEMANTIC_SPACING.component.md; // 16px (8px × 2)
+SEMANTIC_SPACING.component.lg; // 24px (8px × 3)
+SEMANTIC_SPACING.component.xl; // 32px (8px × 4)
 
-// Layout spacing
-SEMANTIC_SPACING.layout.xs; // 1rem
+// Layout spacing (larger 8px multiples for structural elements)
+SEMANTIC_SPACING.layout.xs; // 32px (8px × 4)
 SEMANTIC_SPACING.layout.sm; // 1.5rem
 SEMANTIC_SPACING.layout.md; // 2rem
 SEMANTIC_SPACING.layout.lg; // 3rem

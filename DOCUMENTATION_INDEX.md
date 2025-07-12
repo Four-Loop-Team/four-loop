@@ -133,7 +133,7 @@ npm run docs:validate
 [repo]: https://github.com/Four-Loop-Team/four-loop
 [app-overview]: ./docs/architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md
 [styling-docs]: ./docs/architecture/STYLING_SYSTEM_DOCUMENTATION.md
-[grid-docs]: ./docs/architecture/GRID_SYSTEM_DOCUMENTATION.md
+[grid-docs]: ./docs/GRID_SYSTEM_DOCUMENTATION.md
 [nav-docs]: ./docs/architecture/NAVIGATION_IMPLEMENTATION.md
 [ui-docs]: ./docs/architecture/UI_COMPONENT_LIBRARY.md
 [quality-docs]: ./docs/quality/CODE_QUALITY_AUTOMATION.md

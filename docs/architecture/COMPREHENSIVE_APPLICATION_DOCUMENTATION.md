@@ -280,10 +280,50 @@ sx={{
 
 ## 📐 Grid System
 
-A comprehensive 12-column grid system providing both CSS Grid and Flexbox implementations with full
-responsive support.
+A comprehensive layout system combining **12-column responsive grid** with **8px spacing grid** for
+both structural layout and visual harmony.
 
-### Features
+### Two Complementary Systems
+
+Four Loop uses **two different but complementary grid systems** working together:
+
+1. **12-Column Grid System** (Layout Structure)
+   - Controls layout structure and column spans
+   - Defines _how much width_ elements take up
+   - Responsive breakpoints: xs, sm, md, lg, xl
+
+2. **8px Spacing Grid System** (Visual Spacing)
+   - Controls spacing, padding, margins, and gaps
+   - Defines _distance between_ elements
+   - All spacing values are multiples of 8px
+
+#### How They Work Together
+
+```tsx
+// Real example showing both systems
+<GridContainer size='lg' gap='md'>
+  {' '}
+  {/* 12-col system + 8px spacing */}
+  <GridItem xs={12} sm={6} md={4}>
+    {' '}
+    {/* 12-column layout */}
+    <Paper sx={{ p: 2 }}>
+      {' '}
+      {/* 8px spacing (p: 2 = 16px) */}
+      Content
+    </Paper>
+  </GridItem>
+</GridContainer>
+```
+
+**Breakdown:**
+
+- `GridContainer` with `gap='md'` = **24px gap** (8px × 3) between items
+- `GridItem xs={12} sm={6} md={4}` = **Full width** on mobile, **half width** on small, **1/3** on
+  medium+
+- `p: 2` = **16px padding** (8px × 2) inside each card
+
+### 12-Column Grid Features
 
 - **12-Column Layout**: Standard grid with flexible column spanning
 - **Responsive Gutters**: Adaptive spacing across all breakpoints
