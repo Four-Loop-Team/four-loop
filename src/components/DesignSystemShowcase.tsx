@@ -278,7 +278,7 @@ export const Input: React.FC<InputProps> = ({
       onChange={onChange}
       disabled={disabled}
       style={styles}
-      className='input'
+      className='design-system-input'
     />
   );
 };

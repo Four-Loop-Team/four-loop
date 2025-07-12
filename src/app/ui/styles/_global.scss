@@ -108,6 +108,8 @@ html {
   font-size: 16px;
   line-height: 1.6;
   scroll-behavior: smooth;
+  background-color: var(--color-background);
+  min-height: 100vh;
 }
 
 body {
@@ -115,7 +117,29 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: variables.$color-text-primary;
-  background-color: variables.$color-background;
+  background-color: var(--color-background);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure the root div and main containers inherit the background */
+/* stylelint-disable-next-line selector-id-pattern */
+#__next,
+#main-content,
+.MuiCssBaseline-root {
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+/* Override any potential overrides to maintain consistent background */
+* {
+  box-sizing: border-box;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 /* Four Loop Typography System - Mobile First */

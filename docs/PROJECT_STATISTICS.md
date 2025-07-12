@@ -1,13 +1,13 @@
 # Project Statistics
 
-> 🤖 Auto-generated on 2025-07-08T14:52:02.008Z
+> 🤖 Auto-generated on 2025-07-11T19:51:11.568Z
 
 ## 📊 Overview
 
 | Metric              | Count |
 | ------------------- | ----- |
-| Components          | 77    |
-| Test Files          | 122   |
+| Components          | 85    |
+| Test Files          | 126   |
 | Documentation Pages | 32    |
 | Dependencies        | 55    |
 | Hooks               | 0     |
@@ -16,9 +16,9 @@
 
 ## 🧩 Components
 
-- **Total Components**: 77
-- **Documented Components**: 35
-- **Documentation Coverage**: 45%
+- **Total Components**: 85
+- **Documented Components**: 39
+- **Documentation Coverage**: 46%
 
 ## 📦 Dependencies
 
@@ -28,13 +28,13 @@
 
 ## 🧪 Testing
 
-- **Test Files**: 122
+- **Test Files**: 126
 - **Coverage**: Run npm run test:coverage for detailed coverage
 
 ## 📝 Documentation
 
 - **Documentation Pages**: 32
-- **Last Updated**: 2025-07-08T14:52:02.009Z
+- **Last Updated**: 2025-07-11T19:51:11.568Z
 
 ---
 

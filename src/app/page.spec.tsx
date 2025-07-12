@@ -1,49 +1,39 @@
-import { render, screen } from '@testing-library/react';
+import { redirect } from 'next/navigation';
 import HomePage from './page';
 
-// Mock the MuiThemeProvider to avoid Material-UI issues in tests
-jest.mock('@/components/system/MuiThemeProvider', () => {
-  return {
-    __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
-    ),
-  };
-});
+// Mock the redirect function
+jest.mock('next/navigation', () => ({
+  redirect: jest.fn(),
+}));
 
-// Mock the Logo component to avoid image loading issues
-jest.mock('@/components/brand/Logo', () => {
-  return {
-    __esModule: true,
-    default: () => <div data-testid='logo'>Logo</div>,
-  };
-});
+const mockedRedirect = redirect as jest.MockedFunction<typeof redirect>;
 
 describe('HomePage', () => {
-  it('renders without crashing', () => {
-    render(<HomePage />);
-    expect(screen.getByTestId('logo')).toBeInTheDocument();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('contains the main heading', () => {
-    render(<HomePage />);
-    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
-    expect(
-      screen.getByText('Welcome to Four Loop Digital')
-    ).toBeInTheDocument();
+  it('redirects to work page', () => {
+    // Create the component but don't render it since it redirects
+    const component = HomePage();
+
+    // Verify redirect was called with correct path
+    expect(mockedRedirect).toHaveBeenCalledWith('/work');
+
+    // Component should return null
+    expect(component).toBeNull();
   });
 
-  it('has proper section structure', () => {
-    render(<HomePage />);
-    expect(document.querySelector('#home')).toBeInTheDocument();
-    // Work, About, and Contact sections are now separate pages
+  it('calls redirect on component instantiation', () => {
+    HomePage();
+
+    expect(mockedRedirect).toHaveBeenCalledTimes(1);
+    expect(mockedRedirect).toHaveBeenCalledWith('/work');
   });
 
-  it('has required heading for homepage', () => {
-    render(<HomePage />);
-    expect(
-      screen.getByText('Welcome to Four Loop Digital')
-    ).toBeInTheDocument();
-    expect(screen.getByText('Digital Consulting Services')).toBeInTheDocument();
+  it('renders without crashing (before redirect)', () => {
+    const component = HomePage();
+    // The component function should execute without throwing
+    expect(component).toBeNull();
   });
 });

@@ -81,6 +81,9 @@ const config: Config = {
           tertiary: 'var(--color-background-tertiary)',
           elevated: 'var(--color-background-elevated)',
           overlay: 'var(--color-background-overlay)',
+          // Brand-specific background
+          brand: '#353535',
+          dark: '#353535',
         },
         surface: {
           primary: 'var(--color-surface-primary)',
@@ -108,11 +111,11 @@ const config: Config = {
 
         // Legacy colors for backward compatibility
         fld: {
-          dark: '#232323',
+          dark: '#353535',
           'light-green': '#e2e891',
           'logo-green': '#69685a',
           white: '#fff',
-          'dark-gray': '#353535',
+          'dark-gray': '#232323',
         },
       },
 

@@ -1,65 +1,26 @@
-import { Logo } from '@/components/brand';
-import { Box, Container, Typography } from '@mui/material';
+import { redirect } from 'next/navigation';
 
 /**
- * Main application homepage component.
+ * Homepage component that redirects to the work page.
  *
- * This is the root page component that renders the Four Loop Digital
- * homepage with hero section, company logo, and main navigation.
- * Implements responsive design and accessibility best practices.
+ * This serves as the root page that immediately redirects users to the
+ * main work showcase page where all the content and portfolio is displayed.
+ * This approach keeps the navigation structure clean and logical.
  *
  * @component
  * @example
  * ```tsx
- * // Rendered automatically by Next.js at the root route
- * // No direct usage required - this is the page component for "/"
+ * // Rendered automatically by Next.js at the root route "/"
+ * // Automatically redirects to "/work"
  * ```
  *
- * @returns {JSX.Element} The homepage layout with hero section
- *
- * @accessibility
- * - Semantic HTML structure with proper landmarks
- * - Skip navigation support via id="home"
- * - Responsive design for all screen sizes
- * - High contrast logo and text for visibility
+ * @returns {null} No JSX is returned as this component redirects
  *
  * @performance
- * - Optimized image loading via Next.js Image component
- * - Minimal JavaScript bundle for fast page loads
- * - CSS-in-JS styling with Material-UI for efficient delivery
+ * - Server-side redirect for immediate navigation
+ * - No unnecessary content loading on root route
  */
-export default function App() {
-  return (
-    <main>
-      {/* Home Section */}
-      <Box
-        id='home'
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          pt: { xs: 10, md: 12 }, // Account for sticky navigation
-        }}
-      >
-        <Container maxWidth='lg'>
-          <Box textAlign='center'>
-            <Logo
-              sx={{
-                mx: 'auto',
-                mb: 4,
-                display: 'inline-block',
-              }}
-              alt='Four Loop Digital - Professional Digital Consulting Services'
-            />
-            <Typography variant='h1' component='h1' gutterBottom>
-              Welcome to Four Loop Digital
-            </Typography>
-            <Typography variant='h5' component='h2' color='text.secondary'>
-              Digital Consulting Services
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
-    </main>
-  );
+export default function HomePage() {
+  redirect('/work');
+  return null; // This won't be reached, but helps with TypeScript
 }

@@ -20,8 +20,8 @@ const theme = createTheme({
       contrastText: '#ffffff',
     },
     background: {
-      default: '#232323', // Dark background - matches SCSS
-      paper: '#353535',
+      default: '#353535', // Dark background - matches SCSS
+      paper: '#232323',
     },
     text: {
       primary: '#ffffff', // High contrast white text
@@ -92,6 +92,25 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: 'none',
+        },
+      },
+    },
+    // Ensure CssBaseline applies our background consistently
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#353535',
+          minHeight: '100vh',
+          margin: 0,
+          padding: 0,
+        },
+        html: {
+          backgroundColor: '#353535',
+          minHeight: '100vh',
+        },
+        '#root, #__next': {
+          backgroundColor: '#353535',
+          minHeight: '100vh',
         },
       },
     },

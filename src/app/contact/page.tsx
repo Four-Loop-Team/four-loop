@@ -1,20 +1,20 @@
-import {
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  TextField,
-  Button,
-} from '@mui/material';
-import { Email, LocationOn, Schedule } from '@mui/icons-material';
-import type { Metadata } from 'next';
 import { contactMetadata } from '@/lib/metadata';
 import {
   generateWebPageSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+import { Email, LocationOn, Schedule } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from '@mui/material';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = contactMetadata;
 
@@ -52,7 +52,15 @@ export default function ContactPage() {
         }}
       />
 
-      <Container maxWidth='lg' sx={{ py: 8 }}>
+      <Container
+        maxWidth={false}
+        sx={{
+          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+          margin: '0 auto', // Center the container
+          px: { xs: 2, md: 3 }, // Add some padding
+          py: 8,
+        }}
+      >
         {/* Hero Section */}
         <Box textAlign='center' sx={{ mb: 8 }}>
           <Typography variant='h1' component='h1' gutterBottom>

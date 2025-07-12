@@ -1,6 +1,5 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { useTheme } from '@mui/material/styles';
+import { render, screen } from '@testing-library/react';
 import MuiThemeProvider from '../MuiThemeProvider';
 
 // Test component to access and display theme values
@@ -78,7 +77,7 @@ describe('MuiThemeProvider', () => {
       </MuiThemeProvider>
     );
 
-    expect(screen.getByTestId('background-color')).toHaveTextContent('#232323');
+    expect(screen.getByTestId('background-color')).toHaveTextContent('#353535');
   });
 
   it('provides correct text color configuration', () => {
@@ -155,7 +154,7 @@ describe('MuiThemeProvider', () => {
     const backgroundColor = screen.getByTestId('background-color');
 
     expect(primaryText).toHaveTextContent('#ffffff'); // White text
-    expect(backgroundColor).toHaveTextContent('#232323'); // Dark background
+    expect(backgroundColor).toHaveTextContent('#353535'); // Dark background
   });
 
   it('provides comprehensive color palette', () => {

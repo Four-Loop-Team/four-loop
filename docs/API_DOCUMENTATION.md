@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-07-08T14:52:02.012Z
+> 🤖 Auto-generated on 2025-07-11T19:51:11.572Z
 
 ## Component API Reference
 
@@ -92,11 +92,12 @@ rendered breadcrumb navigation component
 
 **File**: `src/components/layout/Navigation/Navigation.tsx`
 
-- Main navigation component with responsive design and page routing.
+- Main navigation component with responsive design and optimized client-side routing.
 
 This component provides the primary navigation for the Four Loop Digital website, featuring
-responsive mobile/desktop layouts, page-based routing between sections, and visual active state
-indicators based on current route.
+responsive mobile/desktop layouts, optimized client-side navigation with Next.js Link components and
+prefetching, and visual active state indicators based on current route. The header persists across
+page transitions for optimal UX.
 
 @component @example
 
@@ -116,9 +117,11 @@ indicators based on current route.
 
 @performance
 
-- Client-side routing with Next.js
+- Client-side routing with Next.js Link components
+- Page prefetching for instant navigation
 - Conditional rendering for mobile/desktop
 - Efficient active page detection
+- Header persistence across page transitions
 
 ---
 
@@ -164,6 +167,63 @@ the component is implemented.
 
 Note: Component implementation is empty, these are placeholder tests to prevent CI failures until
 the component is implemented.
+
+---
+
+### ContactSection
+
+**File**: `src/components/sections/ContactSection.tsx`
+
+- Contact section component Features contact form in a rounded box matching the intro section design
+
+@component @example
+
+```tsx
+<ContactSection />
+```
+
+---
+
+### IntroSection
+
+**File**: `src/components/sections/IntroSection.tsx`
+
+- Intro section component for the homepage/work page Features the Four Loop Digital logo and company
+  description in a styled container
+
+@component @example
+
+```tsx
+<IntroSection />
+```
+
+---
+
+### PartnersSection
+
+**File**: `src/components/sections/PartnersSection.tsx`
+
+- Partners section component Features information about company partnerships and collaborations
+
+@component @example
+
+```tsx
+<PartnersSection />
+```
+
+---
+
+### ServicesSection
+
+**File**: `src/components/sections/ServicesSection.tsx`
+
+- Services section component Features service areas with expandable details and collaboration CTA
+
+@component @example
+
+```tsx
+<ServicesSection />
+```
 
 ---
 
