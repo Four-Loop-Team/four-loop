@@ -37,7 +37,7 @@ test.describe('Visual Regression Tests', () => {
   });
 
   test('components demo visual comparison', async ({ page }) => {
-    await page.goto('/components-demo');
+    await page.goto('/demo/components');
     await page.waitForLoadState('networkidle');
 
     // Wait for layout to stabilize
@@ -75,7 +75,7 @@ test.describe('Visual Regression Tests', () => {
   });
 
   test('modal visual comparison', async ({ page }) => {
-    await page.goto('/components-demo');
+    await page.goto('/demo/components');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
 
@@ -135,7 +135,7 @@ test.describe('Visual Regression Tests', () => {
   });
 
   test('button interactions visual comparison', async ({ page }) => {
-    await page.goto('/components-demo');
+    await page.goto('/demo/components');
     await page.waitForLoadState('networkidle');
 
     // Scroll to buttons section
@@ -154,7 +154,7 @@ test.describe('Visual Regression Tests', () => {
   });
 
   test('data table visual comparison', async ({ page }) => {
-    await page.goto('/components-demo');
+    await page.goto('/demo/components');
     await page.waitForLoadState('networkidle');
 
     // Scroll to data table section

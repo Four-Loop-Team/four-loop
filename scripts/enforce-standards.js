@@ -189,13 +189,20 @@ class StandardsEnforcer {
   async checkDemos() {
     console.log('\n🎨 Checking demo components and examples...');
 
-    // Check if components-demo page exists and is accessible
-    const demoPath = path.join(this.projectRoot, 'src/app/components-demo');
+    // Check if modern demo structure exists and is accessible
+    const demoPath = path.join(this.projectRoot, 'src/app/demo');
     if (fs.existsSync(demoPath)) {
-      this.logSuccess('Demo page exists');
+      this.logSuccess('Modern demo structure exists');
 
-      // Check if demo includes all components
-      this.logSuccess('Demo page exists and includes components');
+      // Check if demo includes components and style guide
+      const componentsPath = path.join(demoPath, 'components');
+      const styleGuidePath = path.join(demoPath, 'style-guide');
+
+      if (fs.existsSync(componentsPath) && fs.existsSync(styleGuidePath)) {
+        this.logSuccess(
+          'Demo includes both components showcase and style guide'
+        );
+      }
 
       // Try to build demo to ensure it works
       try {
@@ -206,7 +213,7 @@ class StandardsEnforcer {
       }
     } else {
       this.logWarning(
-        'Demo page missing - consider creating /components-demo route'
+        'Demo structure missing - consider creating /demo route with components and style-guide'
       );
       await this.createDemoSuggestion();
     }
@@ -565,7 +572,7 @@ class StandardsEnforcer {
 
   async createDemoSuggestion() {
     this.logInfo(
-      'Consider creating a demo page at src/app/components-demo/page.tsx'
+      'Consider creating demo structure at src/app/demo/ with components and style-guide subdirectories'
     );
     // Could auto-generate basic demo structure if needed
   }
