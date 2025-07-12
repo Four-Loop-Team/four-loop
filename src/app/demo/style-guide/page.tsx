@@ -1,5 +1,6 @@
 'use client';
 
+import { GridContainer, GridItem } from '@/components/system/Grid';
 import { Button } from '@/components/ui';
 import {
   Box,
@@ -73,46 +74,53 @@ export default function StyleGuide() {
 
   const spacing = [
     {
-      name: 'xs',
+      name: 'xs (0.5)',
       value: '0.25rem',
       pixels: '4px',
-      description: 'Minimal spacing for tight layouts',
+      description: 'Minimal spacing for tight layouts (8px ÷ 2)',
+      eightPxMultiple: '8px ÷ 2',
     },
     {
-      name: 'sm',
+      name: 'sm (2)',
       value: '0.5rem',
       pixels: '8px',
-      description: 'Small spacing for compact elements',
+      description: 'Base unit of the 8px grid system (8px × 1)',
+      eightPxMultiple: '8px × 1',
     },
     {
-      name: 'md',
+      name: 'md (4)',
       value: '1rem',
       pixels: '16px',
-      description: 'Medium spacing for general layouts',
+      description: 'Medium spacing for general layouts (8px × 2)',
+      eightPxMultiple: '8px × 2',
     },
     {
-      name: 'lg',
+      name: 'lg (6)',
       value: '1.5rem',
       pixels: '24px',
-      description: 'Large spacing for section separation',
+      description: 'Large spacing for section separation (8px × 3)',
+      eightPxMultiple: '8px × 3',
     },
     {
-      name: 'xl',
+      name: 'xl (8)',
       value: '2rem',
       pixels: '32px',
-      description: 'Extra large spacing for major sections',
+      description: 'Extra large spacing for major sections (8px × 4)',
+      eightPxMultiple: '8px × 4',
     },
     {
-      name: '2xl',
+      name: '2xl (12)',
       value: '3rem',
       pixels: '48px',
-      description: 'Double extra large for page sections',
+      description: 'Double extra large for page sections (8px × 6)',
+      eightPxMultiple: '8px × 6',
     },
     {
-      name: '3xl',
+      name: '3xl (16)',
       value: '4rem',
       pixels: '64px',
-      description: 'Maximum spacing for major page divisions',
+      description: 'Maximum spacing for major page divisions (8px × 8)',
+      eightPxMultiple: '8px × 8',
     },
   ];
 
@@ -343,7 +351,7 @@ export default function StyleGuide() {
             </Box>
           </Stack>
         </Paper>
-        {/* Spacing System */}
+        {/* Dual Grid System */}
         <Paper
           elevation={1}
           sx={{
@@ -359,60 +367,380 @@ export default function StyleGuide() {
             gutterBottom
             sx={{ color: '#e2e891' }}
           >
-            Spacing System
+            Dual Grid System
           </Typography>
           <Typography
             variant='body1'
             sx={{ color: '#ffffff', opacity: 0.8, mb: 3 }}
           >
-            Consistent spacing creates rhythm and visual balance using an 8px
-            base grid.
+            Four Loop Digital uses a dual grid approach that combines
+            **12-column responsive layout** with **8px spacing system** to
+            create layouts that are both structurally flexible and visually
+            harmonious.
           </Typography>
 
-          <Stack spacing={2}>
-            {spacing.map((space) => (
-              <Box
-                key={space.name}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  p: 2,
-                  backgroundColor: '#353535',
-                  border: '1px solid #69685a',
-                  borderRadius: 1,
-                }}
-              >
+          {/* 8px Spacing System */}
+          <Box sx={{ mb: 4 }}>
+            <Typography
+              variant='h5'
+              component='h3'
+              gutterBottom
+              sx={{ color: '#e2e891' }}
+            >
+              8px Spacing System
+            </Typography>
+            <Typography
+              variant='body1'
+              sx={{ color: '#ffffff', opacity: 0.8, mb: 3 }}
+            >
+              Controls spacing, padding, margins, and gaps between elements.
+            </Typography>
+
+            <Stack spacing={2}>
+              {spacing.map((space) => (
                 <Box
+                  key={space.name}
                   sx={{
-                    width: space.value,
-                    height: '20px',
-                    backgroundColor: '#e2e891',
+                    display: 'flex',
+                    alignItems: 'center',
+                    p: 2,
+                    backgroundColor: '#353535',
+                    border: '1px solid #69685a',
                     borderRadius: 1,
-                    mr: 2,
-                    minWidth: '8px',
-                    minHeight: '8px',
                   }}
-                />
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant='h6' sx={{ color: '#ffffff' }}>
-                    {space.name}
-                  </Typography>
-                  <Typography
-                    variant='body2'
-                    sx={{ color: '#ffffff', opacity: 0.8 }}
-                  >
-                    {space.value} ({space.pixels})
-                  </Typography>
-                  <Typography
-                    variant='caption'
-                    sx={{ color: '#ffffff', opacity: 0.6 }}
-                  >
-                    {space.description}
-                  </Typography>
+                >
+                  <Box
+                    sx={{
+                      width: space.value,
+                      height: '20px',
+                      backgroundColor: '#e2e891',
+                      borderRadius: 1,
+                      mr: 2,
+                      minWidth: '8px',
+                      minHeight: '8px',
+                    }}
+                  />
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant='h6' sx={{ color: '#ffffff' }}>
+                      {space.name}
+                    </Typography>
+                    <Typography
+                      variant='body2'
+                      sx={{ color: '#ffffff', opacity: 0.8 }}
+                    >
+                      {space.value} ({space.pixels}) - {space.eightPxMultiple}
+                    </Typography>
+                    <Typography
+                      variant='caption'
+                      sx={{ color: '#ffffff', opacity: 0.6 }}
+                    >
+                      {space.description}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            ))}
-          </Stack>
+              ))}
+            </Stack>
+          </Box>
+
+          {/* 12-Column Grid System */}
+          <Box sx={{ mb: 4 }}>
+            <Typography
+              variant='h5'
+              component='h3'
+              gutterBottom
+              sx={{ color: '#e2e891' }}
+            >
+              12-Column Layout Grid
+            </Typography>
+            <Typography
+              variant='body1'
+              sx={{ color: '#ffffff', opacity: 0.8, mb: 3 }}
+            >
+              Controls layout structure and responsive column spans.
+            </Typography>
+
+            {/* Grid Demonstration */}
+            <GridContainer gap='md' sx={{ mb: 3 }}>
+              {/* Full Width */}
+              <GridItem xs={12}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    textAlign: 'center',
+                    bgcolor: '#e2e891',
+                    color: '#353535',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant='body2' fontWeight='bold'>
+                    xs={'{12}'} - Full Width (12 columns)
+                  </Typography>
+                </Paper>
+              </GridItem>
+
+              {/* Half Width */}
+              <GridItem xs={12} sm={6}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    textAlign: 'center',
+                    bgcolor: '#69685a',
+                    color: '#ffffff',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant='body2' fontWeight='bold'>
+                    xs={'{12}'} sm={'{6}'} - Half Width
+                  </Typography>
+                </Paper>
+              </GridItem>
+              <GridItem xs={12} sm={6}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    textAlign: 'center',
+                    bgcolor: '#69685a',
+                    color: '#ffffff',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant='body2' fontWeight='bold'>
+                    xs={'{12}'} sm={'{6}'} - Half Width
+                  </Typography>
+                </Paper>
+              </GridItem>
+
+              {/* Thirds */}
+              <GridItem xs={12} sm={6} md={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    textAlign: 'center',
+                    bgcolor: '#e2e891',
+                    color: '#353535',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant='body2' fontWeight='bold'>
+                    xs={'{12}'} sm={'{6}'} md={'{4}'} - Third
+                  </Typography>
+                </Paper>
+              </GridItem>
+              <GridItem xs={12} sm={6} md={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    textAlign: 'center',
+                    bgcolor: '#e2e891',
+                    color: '#353535',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant='body2' fontWeight='bold'>
+                    xs={'{12}'} sm={'{6}'} md={'{4}'} - Third
+                  </Typography>
+                </Paper>
+              </GridItem>
+              <GridItem xs={12} sm={12} md={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    textAlign: 'center',
+                    bgcolor: '#e2e891',
+                    color: '#353535',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant='body2' fontWeight='bold'>
+                    xs={'{12}'} sm={'{12}'} md={'{4}'} - Third
+                  </Typography>
+                </Paper>
+              </GridItem>
+
+              {/* Asymmetric Layout */}
+              <GridItem xs={12} md={8}>
+                <Paper
+                  sx={{
+                    p: 3,
+                    bgcolor: '#353535',
+                    color: '#ffffff',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant='h6' gutterBottom>
+                    Main Content Area (8/12 cols)
+                  </Typography>
+                  <Typography variant='body2' sx={{ opacity: 0.8 }}>
+                    This content area demonstrates the 12-column grid with 8px
+                    spacing system. The gap between items uses our md spacing
+                    (24px = 8px × 3).
+                  </Typography>
+                </Paper>
+              </GridItem>
+              <GridItem xs={12} md={4}>
+                <Paper
+                  sx={{
+                    p: 3,
+                    bgcolor: '#69685a',
+                    color: '#ffffff',
+                    mb: 1,
+                  }}
+                >
+                  <Typography variant='h6' gutterBottom>
+                    Sidebar (4/12 cols)
+                  </Typography>
+                  <Typography variant='body2' sx={{ opacity: 0.8 }}>
+                    Responsive sidebar with consistent 8px-based padding.
+                  </Typography>
+                </Paper>
+              </GridItem>
+            </GridContainer>
+
+            {/* Gap Demonstration */}
+            <Typography
+              variant='h6'
+              component='h4'
+              gutterBottom
+              sx={{ color: '#e2e891', mt: 3 }}
+            >
+              Grid Gap Sizes (8px Multiples)
+            </Typography>
+
+            {['xs', 'sm', 'md', 'lg', 'xl'].map((gapSize) => {
+              const gapValues = {
+                xs: '8px',
+                sm: '16px',
+                md: '24px',
+                lg: '32px',
+                xl: '48px',
+              };
+
+              return (
+                <Box key={gapSize} sx={{ mb: 2 }}>
+                  <Typography variant='body2' sx={{ color: '#ffffff', mb: 1 }}>
+                    Gap: {gapSize} (
+                    {gapValues[gapSize as keyof typeof gapValues]})
+                  </Typography>
+                  <GridContainer
+                    gap={gapSize as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}
+                  >
+                    <GridItem xs={4}>
+                      <Paper
+                        sx={{
+                          p: 1,
+                          textAlign: 'center',
+                          bgcolor: '#e2e891',
+                          color: '#353535',
+                        }}
+                      >
+                        <Typography variant='caption'>Col 1</Typography>
+                      </Paper>
+                    </GridItem>
+                    <GridItem xs={4}>
+                      <Paper
+                        sx={{
+                          p: 1,
+                          textAlign: 'center',
+                          bgcolor: '#e2e891',
+                          color: '#353535',
+                        }}
+                      >
+                        <Typography variant='caption'>Col 2</Typography>
+                      </Paper>
+                    </GridItem>
+                    <GridItem xs={4}>
+                      <Paper
+                        sx={{
+                          p: 1,
+                          textAlign: 'center',
+                          bgcolor: '#e2e891',
+                          color: '#353535',
+                        }}
+                      >
+                        <Typography variant='caption'>Col 3</Typography>
+                      </Paper>
+                    </GridItem>
+                  </GridContainer>
+                </Box>
+              );
+            })}
+          </Box>
+
+          {/* Integration Example */}
+          <Box>
+            <Typography
+              variant='h5'
+              component='h3'
+              gutterBottom
+              sx={{ color: '#e2e891' }}
+            >
+              Integration Example
+            </Typography>
+            <Typography
+              variant='body1'
+              sx={{ color: '#ffffff', opacity: 0.8, mb: 3 }}
+            >
+              How both systems work together in real layouts:
+            </Typography>
+
+            <GridContainer
+              gap='lg'
+              sx={{
+                p: 3,
+                backgroundColor: '#232323',
+                border: '2px dashed #69685a',
+                borderRadius: 2,
+              }}
+            >
+              <GridItem xs={12}>
+                <Typography variant='body2' sx={{ color: '#e2e891', mb: 2 }}>
+                  {'<GridContainer gap="lg">'} {/* 32px gap = 8px × 4 */}
+                </Typography>
+              </GridItem>
+              <GridItem xs={12} md={6}>
+                <Paper
+                  sx={{
+                    p: 3, // 24px padding = 8px × 3
+                    bgcolor: '#353535',
+                    color: '#ffffff',
+                  }}
+                >
+                  <Typography variant='h6' sx={{ mb: 2 }}>
+                    {' '}
+                    {/* 16px margin = 8px × 2 */}
+                    Card Title
+                  </Typography>
+                  <Typography variant='body2'>
+                    This card uses:
+                    <br />• 12-column grid: xs={'{12}'} md={'{6}'}
+                    <br />• 8px spacing: p={'{3}'} (24px padding)
+                    <br />• Grid gap: lg (32px between cards)
+                  </Typography>
+                </Paper>
+              </GridItem>
+              <GridItem xs={12} md={6}>
+                <Paper
+                  sx={{
+                    p: 3, // 24px padding = 8px × 3
+                    bgcolor: '#353535',
+                    color: '#ffffff',
+                  }}
+                >
+                  <Typography variant='h6' sx={{ mb: 2 }}>
+                    {' '}
+                    {/* 16px margin = 8px × 2 */}
+                    Card Title
+                  </Typography>
+                  <Typography variant='body2'>
+                    Both cards maintain:
+                    <br />• Structural consistency (12-col grid)
+                    <br />• Visual harmony (8px spacing)
+                    <br />• Responsive behavior (xs/md breakpoints)
+                  </Typography>
+                </Paper>
+              </GridItem>
+            </GridContainer>
+          </Box>
         </Paper>
         {/* Component Examples */}
         <Paper

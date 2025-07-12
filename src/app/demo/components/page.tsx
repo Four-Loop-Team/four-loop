@@ -1,5 +1,6 @@
 'use client';
 
+import { GridSystemDemo } from '@/components/system';
 import {
   Accordion,
   Button,
@@ -176,6 +177,7 @@ export default function ComponentsShowcase() {
           <MuiTab label='Basic Components' />
           <MuiTab label='Form Components' />
           <MuiTab label='Data Display' />
+          <MuiTab label='Grid System' />
           <MuiTab label='Feedback' />
         </MuiTabs>
       </Box>
@@ -334,8 +336,19 @@ export default function ComponentsShowcase() {
         </ComponentSection>
       </CustomTabPanel>
 
-      {/* Feedback */}
+      {/* Grid System */}
       <CustomTabPanel value={activeTab} index={3}>
+        <ComponentSection
+          title='Dual Grid System'
+          description='12-column responsive layout combined with 8px spacing system'
+          status='stable'
+        >
+          <GridSystemDemo />
+        </ComponentSection>
+      </CustomTabPanel>
+
+      {/* Feedback */}
+      <CustomTabPanel value={activeTab} index={4}>
         <ComponentSection
           title='Toast Notifications'
           description='Global notification system with context provider'
