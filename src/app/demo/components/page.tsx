@@ -189,21 +189,47 @@ export default function ComponentsShowcase() {
           description='Primary and secondary button components with multiple variants and states'
           status='stable'
         >
-          <Stack spacing={2} direction='row' flexWrap='wrap'>
-            <Button variant='primary'>Primary Button</Button>
-            <Button variant='secondary'>Secondary Button</Button>
-            <Button variant='outline'>Outline Button</Button>
-            <Button variant='ghost'>Ghost Button</Button>
-            <ButtonPrimary>Primary Button Component</ButtonPrimary>
-            <Button variant='primary' size='sm'>
-              Small
-            </Button>
-            <Button variant='primary' size='lg'>
-              Large
-            </Button>
-            <Button variant='primary' disabled>
-              Disabled
-            </Button>
+          <Stack spacing={2} direction='column'>
+            <Typography variant='h6' component='h3'>
+              Standard Button Variants
+            </Typography>
+            <Stack spacing={2} direction='row' flexWrap='wrap'>
+              <Button variant='primary'>Primary Button</Button>
+              <Button variant='secondary'>Secondary Button</Button>
+              <Button variant='outline'>Outline Button</Button>
+              <Button variant='ghost'>Ghost Button</Button>
+            </Stack>
+
+            <Typography variant='h6' component='h3' sx={{ mt: 3 }}>
+              Specialized Primary Button (CTA)
+            </Typography>
+            <Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>
+              The ButtonPrimary component is a specialized call-to-action button
+              with built-in arrow icon. Note: Button variant=&quot;primary&quot;
+              now uses ButtonPrimary internally.
+            </Typography>
+            <Stack spacing={2} direction='row' flexWrap='wrap'>
+              <ButtonPrimary>Let&apos;s Collaborate</ButtonPrimary>
+              <ButtonPrimary size='sm'>Small CTA</ButtonPrimary>
+              <ButtonPrimary size='lg'>Large CTA</ButtonPrimary>
+              <ButtonPrimary disabled>Disabled CTA</ButtonPrimary>
+              <ButtonPrimary loading>Loading CTA</ButtonPrimary>
+            </Stack>
+
+            <Typography variant='h6' component='h3' sx={{ mt: 3 }}>
+              Button Sizes
+            </Typography>
+            <Stack spacing={2} direction='row' flexWrap='wrap'>
+              <Button variant='secondary' size='sm'>
+                Small
+              </Button>
+              <Button variant='secondary' size='md'>
+                Medium
+              </Button>
+              <Button variant='secondary' size='lg'>
+                Large
+              </Button>
+            </Stack>
           </Stack>
         </ComponentSection>
 

@@ -6,7 +6,8 @@ describe('Button Component', () => {
     render(<Button>Click me</Button>);
     const button = screen.getByRole('button', { name: /click me/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('bg-blue-600', 'text-white');
+    // Primary variant now uses ButtonPrimary component
+    expect(button).toHaveClass('border', 'border-gray-900', 'rounded-full');
   });
 
   it('renders different variants correctly', () => {
@@ -24,7 +25,12 @@ describe('Button Component', () => {
   });
 
   it('renders different sizes correctly', () => {
-    const { rerender } = render(<Button size='sm'>Small</Button>);
+    // Test with secondary variant since primary uses ButtonPrimary
+    const { rerender } = render(
+      <Button variant='secondary' size='sm'>
+        Small
+      </Button>
+    );
     expect(screen.getByRole('button')).toHaveClass(
       'px-4',
       'py-3',
@@ -33,7 +39,11 @@ describe('Button Component', () => {
       'min-h-[44px]'
     );
 
-    rerender(<Button size='lg'>Large</Button>);
+    rerender(
+      <Button variant='secondary' size='lg'>
+        Large
+      </Button>
+    );
     expect(screen.getByRole('button')).toHaveClass(
       'px-8',
       'py-4',
@@ -41,13 +51,29 @@ describe('Button Component', () => {
       'min-w-[44px]',
       'min-h-[44px]'
     );
+
+    // Test primary variant (ButtonPrimary) sizes
+    rerender(
+      <Button variant='primary' size='sm'>
+        Primary Small
+      </Button>
+    );
+    expect(screen.getByRole('button')).toHaveClass('text-sm');
+
+    rerender(
+      <Button variant='primary' size='lg'>
+        Primary Large
+      </Button>
+    );
+    expect(screen.getByRole('button')).toHaveClass('text-lg');
   });
 
   it('shows loading state correctly', () => {
     render(<Button loading>Loading</Button>);
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
-    expect(button).toHaveClass('opacity-50', 'cursor-not-allowed');
+    // Primary variant uses ButtonPrimary which has opacity-60
+    expect(button).toHaveClass('opacity-60', 'cursor-not-allowed');
     expect(screen.getByText('Loading')).toBeInTheDocument();
   });
 
@@ -55,14 +81,22 @@ describe('Button Component', () => {
     const leftIcon = <span data-testid='left-icon'>←</span>;
     const rightIcon = <span data-testid='right-icon'>→</span>;
 
+    // Test with secondary variant since primary (ButtonPrimary) has built-in arrow
     render(
-      <Button leftIcon={leftIcon} rightIcon={rightIcon}>
+      <Button variant='secondary' leftIcon={leftIcon} rightIcon={rightIcon}>
         With Icons
       </Button>
     );
 
     expect(screen.getByTestId('left-icon')).toBeInTheDocument();
     expect(screen.getByTestId('right-icon')).toBeInTheDocument();
+
+    // Test primary variant has built-in arrow icon
+    render(<Button variant='primary'>Primary with Arrow</Button>);
+    const primaryButton = screen.getByRole('button', {
+      name: /primary with arrow/i,
+    });
+    expect(primaryButton.querySelector('svg')).toBeInTheDocument(); // MUI East icon
   });
 
   it('handles click events correctly', () => {
@@ -82,6 +116,7 @@ describe('Button Component', () => {
     render(<Button disabled>Disabled</Button>);
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
-    expect(button).toHaveClass('opacity-50', 'cursor-not-allowed');
+    // Primary variant uses ButtonPrimary which has opacity-60
+    expect(button).toHaveClass('opacity-60', 'cursor-not-allowed');
   });
 });

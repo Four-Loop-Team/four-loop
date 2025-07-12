@@ -1,4 +1,5 @@
 import React, { ButtonHTMLAttributes, forwardRef } from 'react';
+import ButtonPrimary from './ButtonPrimary';
 
 /**
  * Button component props interface
@@ -50,11 +51,27 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
+    // Use ButtonPrimary for primary variant to maintain CTA styling
+    if (variant === 'primary') {
+      return (
+        <ButtonPrimary
+          ref={ref}
+          size={size}
+          loading={loading}
+          fullWidth={fullWidth}
+          disabled={disabled}
+          className={className}
+          {...props}
+        >
+          {children}
+        </ButtonPrimary>
+      );
+    }
+
     const baseClasses =
       'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
 
     const variantClasses = {
-      primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
       secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
       outline:
         'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-blue-500',
@@ -69,7 +86,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const classes = [
       baseClasses,
-      variantClasses[variant],
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      variantClasses[variant as keyof typeof variantClasses] || '',
       sizeClasses[size],
       fullWidth && 'w-full',
       (disabled ?? loading) && 'opacity-50 cursor-not-allowed',

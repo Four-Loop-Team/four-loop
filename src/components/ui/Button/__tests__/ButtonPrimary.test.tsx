@@ -14,14 +14,19 @@ describe('ButtonPrimary Component', () => {
 
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('wrapper');
+    expect(button).toHaveClass('border', 'border-gray-900', 'rounded-full');
 
     const ctaText = screen.getByText('Test Button');
-    expect(ctaText).toHaveClass('cta');
+    expect(ctaText).toHaveClass('inline-block', 'font-medium', 'text-gray-900');
 
     // Check for arrow span (MUI icon container)
-    const arrowSpan = button.querySelector('.arrow');
+    const arrowSpan = button.querySelector('span:last-child');
     expect(arrowSpan).toBeInTheDocument();
+    expect(arrowSpan).toHaveClass(
+      'inline-flex',
+      'items-center',
+      'justify-center'
+    );
   });
 
   it('handles click events', () => {
@@ -38,7 +43,7 @@ describe('ButtonPrimary Component', () => {
     render(<ButtonPrimary className='custom-class'>Test</ButtonPrimary>);
 
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('wrapper');
+    expect(button).toHaveClass('border', 'border-gray-900', 'rounded-full');
     expect(button).toHaveClass('custom-class');
   });
 
@@ -75,11 +80,41 @@ describe('ButtonPrimary Component', () => {
 
       const button = screen.getByRole('button');
       const ctaSpan = screen.getByText('Style Test');
-      const arrowSpan = button.querySelector('.arrow');
+      const arrowSpan = button.querySelector('span:last-child');
 
-      expect(button).toHaveClass('wrapper');
-      expect(ctaSpan).toHaveClass('cta');
-      expect(arrowSpan).toHaveClass('arrow');
+      expect(button).toHaveClass('border', 'border-gray-900', 'rounded-full');
+      expect(ctaSpan).toHaveClass(
+        'inline-block',
+        'font-medium',
+        'text-gray-900'
+      );
+      expect(arrowSpan).toHaveClass(
+        'inline-flex',
+        'items-center',
+        'justify-center'
+      );
+    });
+
+    it('applies correct size classes', () => {
+      const { rerender } = render(
+        <ButtonPrimary size='sm'>Small</ButtonPrimary>
+      );
+      expect(screen.getByRole('button')).toHaveClass('text-sm');
+
+      rerender(<ButtonPrimary size='lg'>Large</ButtonPrimary>);
+      expect(screen.getByRole('button')).toHaveClass('text-lg');
+    });
+
+    it('applies full width when specified', () => {
+      render(<ButtonPrimary fullWidth>Full Width</ButtonPrimary>);
+      expect(screen.getByRole('button')).toHaveClass('w-full');
+    });
+
+    it('shows loading state', () => {
+      render(<ButtonPrimary loading>Loading</ButtonPrimary>);
+      const button = screen.getByRole('button');
+      expect(button).toBeDisabled();
+      expect(button.querySelector('svg')).toBeInTheDocument(); // Loading spinner
     });
   });
 
