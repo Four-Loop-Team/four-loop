@@ -608,11 +608,13 @@
     transition: none;
   }
 
+  /* stylelint-disable declaration-no-important -- Required for accessibility: must override all animations */
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  /* stylelint-enable declaration-no-important */
 }
 
 /* Print Styles */
@@ -623,6 +625,7 @@
     box-shadow: none;
   }
 
+  /* stylelint-disable declaration-no-important -- Required for print: must override screen styles */
   .bg-surface,
   .bg-surface-secondary,
   .bg-surface-tertiary {
@@ -634,6 +637,7 @@
   .text-tertiary {
     color: black !important;
   }
+  /* stylelint-enable declaration-no-important */
 }
 
 /* Application Background Utilities */

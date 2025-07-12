@@ -4,6 +4,12 @@
     "stylelint-config-prettier-scss"
   ],
   "rules": {
+    "declaration-no-important": [
+      true,
+      {
+        "ignore": ["keyframes"]
+      }
+    ],
     "selector-class-pattern": null,
     "selector-pseudo-class-no-unknown": [
       true,

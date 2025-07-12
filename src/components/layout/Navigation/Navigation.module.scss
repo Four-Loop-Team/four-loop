@@ -16,15 +16,15 @@
     transition: var(--nav-button-transition);
 
     &--active {
-      color: var(--nav-text-active) !important;
+      color: var(--nav-text-active);
     }
 
     &--inactive {
-      color: var(--nav-text-inactive) !important;
+      color: var(--nav-text-inactive);
     }
 
     &:hover {
-      color: var(--nav-text-hover) !important;
+      color: var(--nav-text-hover);
     }
   }
 }

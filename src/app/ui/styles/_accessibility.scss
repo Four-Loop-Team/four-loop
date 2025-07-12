@@ -29,10 +29,14 @@ textarea:not([class*='Mui']) {
   transition: all 0.2s ease-in-out;
 }
 
+/* stylelint-disable declaration-no-important -- Required for accessibility: skip links must override all positioning */
 .skip-link:focus {
   left: 8px !important;
   top: 8px !important;
 }
+/* stylelint-enable declaration-no-important */
+
+/* stylelint-disable declaration-no-important -- Required for accessibility: focus styles must override all other styles */
 
 /* Improve button accessibility */
 button:focus-visible,
@@ -47,6 +51,7 @@ a:focus-visible {
   outline-offset: 2px !important;
   text-decoration: underline;
 }
+/* stylelint-enable declaration-no-important */
 
 /* Screen reader only content */
 .sr-only {
@@ -70,6 +75,8 @@ a:focus-visible {
     --color-surface: #1a1a1a;
   }
 
+  /* stylelint-disable declaration-no-important -- Required for accessibility: high contrast must override all text colors */
+
   /* Ensure all text meets AAA contrast standards */
   body,
   p,
@@ -81,24 +88,30 @@ a:focus-visible {
   .MuiTypography-root {
     color: #fff !important;
   }
+  /* stylelint-enable declaration-no-important */
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+  /* stylelint-disable declaration-no-important -- Required for accessibility: reduced motion must override all animations */
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  /* stylelint-enable declaration-no-important */
 }
 
 /* Large text preferences */
 @media (prefers-reduced-data: reduce) {
+  /* stylelint-disable declaration-no-important -- Required for accessibility: reduced data must override background images */
+
   /* Minimize background images and non-essential visual elements */
   .background-image {
     background-image: none !important;
   }
+  /* stylelint-enable declaration-no-important */
 }
 
 /* Focus trap for modal/drawer */
@@ -110,14 +123,19 @@ a:focus-visible {
 .keyboard-nav button:focus,
 .keyboard-nav a:focus,
 .keyboard-nav select:not([class*='Mui']):focus {
+  /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: focus styles must override all other styles */
   outline: 3px solid var(--color-primary) !important;
+  /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: focus styles must override all other styles */
   outline-offset: 2px !important;
+  /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: focus styles must override all other styles */
   box-shadow: 0 0 0 1px rgb(226 232 145 / 50%) !important;
 }
 
 /* Icon buttons should have adequate size */
 .MuiIconButton-root {
+  /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: minimum touch target size must override Material-UI defaults */
   min-height: 44px !important;
+  /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: minimum touch target size must override Material-UI defaults */
   min-width: 44px !important;
 }
 
@@ -168,6 +186,7 @@ th {
 
 /* Enhanced error states */
 .error {
+  /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: error state colors must override all other styles */
   color: #f44 !important;
   background-color: rgb(255 68 68 / 10%);
   border: 2px solid #f44;
@@ -177,6 +196,7 @@ th {
 
 /* Success states */
 .success {
+  /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: success state colors must override all other styles */
   color: #0a0 !important;
   background-color: rgb(0 170 0 / 10%);
   border: 2px solid #0a0;
@@ -186,6 +206,7 @@ th {
 
 /* Warning states */
 .warning {
+  /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: warning state colors must override all other styles */
   color: #f80 !important;
   background-color: rgb(255 136 0 / 10%);
   border: 2px solid #f80;
