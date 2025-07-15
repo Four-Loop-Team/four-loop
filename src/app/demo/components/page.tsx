@@ -297,6 +297,18 @@ export default function ComponentsShowcase() {
               error='Password must be at least 8 characters'
             />
             <Input
+              label='Project Description'
+              multiline
+              rows={4}
+              placeholder='Tell us about your project...'
+              helperText='Supports multiline text input'
+            />
+            <Input
+              label='Filled Variant'
+              variant='filled'
+              placeholder='Filled style input'
+            />
+            <Input
               label='Disabled Input'
               value='Cannot edit this field'
               disabled
