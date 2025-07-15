@@ -4,7 +4,6 @@ import { GridSystemDemo } from '@/components/system';
 import {
   Accordion,
   Button,
-  ButtonPrimary,
   Calendar,
   Card,
   CardContent,
@@ -204,13 +203,15 @@ export default function ComponentsShowcase() {
               Specialized Primary Button (CTA)
             </Typography>
             <Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>
-              The ButtonPrimary component is a specialized call-to-action button
-              with built-in arrow icon. Note: Button variant=&quot;primary&quot;
-              now uses ButtonPrimary internally.
+              The primary button variant is a specialized call-to-action button
+              with built-in arrow icon. The primary button functionality has
+              been integrated into the main Button component.
             </Typography>
             <Stack spacing={2} direction='row' flexWrap='wrap'>
-              <ButtonPrimary>Let&apos;s Collaborate</ButtonPrimary>
-              <ButtonPrimary disabled>Disabled CTA</ButtonPrimary>
+              <Button variant='primary'>Let&apos;s Collaborate</Button>
+              <Button variant='primary' disabled>
+                Disabled CTA
+              </Button>
             </Stack>
 
             <Typography variant='h6' component='h3' sx={{ mt: 3 }}>

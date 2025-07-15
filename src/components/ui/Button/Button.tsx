@@ -1,12 +1,17 @@
 'use client';
 
-import React, { ButtonHTMLAttributes, forwardRef } from 'react';
+import EastIcon from '@mui/icons-material/East';
+import React, {
+  ButtonHTMLAttributes,
+  forwardRef,
+  useEffect,
+  useState,
+} from 'react';
 import {
   colors,
   spacing,
   typography,
 } from '../../system/BrandThemeProvider/BrandThemeProvider';
-import ButtonPrimary from './ButtonPrimary';
 
 /**
  * Button component props interface
@@ -58,17 +63,40 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    // Use ButtonPrimary for primary variant to maintain CTA styling
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+      setIsMounted(true);
+    }, []);
+
+    // Handle primary variant with integrated ButtonPrimary functionality
     if (variant === 'primary') {
+      // Use SCSS utility classes - no Tailwind
+      const wrapperClasses = [
+        'btn-primary',
+        disabled && 'opacity-60 cursor-not-allowed',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ');
+
+      // CTA and arrow classes using SCSS utilities only
+      const ctaClasses = 'inline-block py-em-02 px-em-18 font-medium';
+      const arrowClasses =
+        'inline-flex items-center justify-center rounded-full p-6px mr-neg-15px';
+
       return (
-        <ButtonPrimary
+        <button
           ref={ref}
+          className={wrapperClasses}
           disabled={disabled}
-          className={className}
           {...props}
         >
-          {children}
-        </ButtonPrimary>
+          <span className={ctaClasses}>{children}</span>
+          <span className={arrowClasses}>
+            {isMounted ? <EastIcon fontSize='small' /> : <span>→</span>}
+          </span>
+        </button>
       );
     }
 

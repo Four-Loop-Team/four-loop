@@ -12,12 +12,13 @@ jest.mock('@/components/ui/Accordion', () => ({
 }));
 
 jest.mock('@/components/ui/Button', () => ({
-  ButtonPrimary: ({
+  Button: ({
     children,
     onClick,
+    variant,
     ...props
-  }: React.ComponentProps<'button'>) => (
-    <button onClick={onClick} {...props}>
+  }: React.ComponentProps<'button'> & { variant?: string }) => (
+    <button onClick={onClick} data-variant={variant} {...props}>
       {children}
     </button>
   ),

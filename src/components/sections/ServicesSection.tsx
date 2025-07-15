@@ -5,7 +5,7 @@ import {
   typography,
 } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
 import { Accordion } from '@/components/ui/Accordion';
-import { ButtonPrimary } from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { Box, Container, Typography } from '@mui/material';
 
 /**
@@ -129,9 +129,9 @@ export const ServicesSection = () => {
                 display: { xs: 'none', lg: 'block' },
               }}
             >
-              <ButtonPrimary onClick={handleCollaborationClick}>
+              <Button variant='primary' onClick={handleCollaborationClick}>
                 Let&apos;s Collaborate
-              </ButtonPrimary>
+              </Button>
             </Box>
           </Box>
         </Box>
@@ -180,9 +180,9 @@ export const ServicesSection = () => {
               mt: spacing.layout.xs, // Using layout spacing
             }}
           >
-            <ButtonPrimary onClick={handleCollaborationClick}>
+            <Button variant='primary' onClick={handleCollaborationClick}>
               Let&apos;s Collaborate
-            </ButtonPrimary>
+            </Button>
           </Box>
         </Box>
       </Container>

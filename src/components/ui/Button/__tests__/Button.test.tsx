@@ -6,7 +6,7 @@ describe('Button Component', () => {
     render(<Button>Click me</Button>);
     const button = screen.getByRole('button', { name: /click me/i });
     expect(button).toBeInTheDocument();
-    // Primary variant now uses ButtonPrimary component with SCSS styling
+    // Primary variant now uses integrated primary functionality with SCSS styling
     expect(button).toHaveClass('btn-primary');
   });
 
@@ -25,7 +25,7 @@ describe('Button Component', () => {
   });
 
   it('renders different sizes correctly', () => {
-    // Test with secondary variant since primary uses ButtonPrimary
+    // Test with secondary variant since primary has integrated arrow functionality
     const { rerender } = render(
       <Button variant='secondary' size='sm'>
         Small
@@ -51,7 +51,7 @@ describe('Button Component', () => {
   });
 
   it('shows loading state correctly', () => {
-    // Test loading with non-primary variant since ButtonPrimary doesn't support loading
+    // Test loading with non-primary variant since primary doesn't support loading
     render(
       <Button variant='secondary' loading>
         Loading
@@ -67,7 +67,7 @@ describe('Button Component', () => {
     const leftIcon = <span data-testid='left-icon'>←</span>;
     const rightIcon = <span data-testid='right-icon'>→</span>;
 
-    // Test with secondary variant since primary (ButtonPrimary) has built-in arrow
+    // Test with secondary variant since primary has built-in arrow
     render(
       <Button variant='secondary' leftIcon={leftIcon} rightIcon={rightIcon}>
         With Icons
@@ -94,7 +94,7 @@ describe('Button Component', () => {
   });
 
   it('renders as full width when specified', () => {
-    // Test fullWidth with non-primary variant since ButtonPrimary doesn't support fullWidth
+    // Test fullWidth with non-primary variant since primary doesn't support fullWidth
     render(
       <Button variant='secondary' fullWidth>
         Full Width
@@ -107,7 +107,7 @@ describe('Button Component', () => {
     render(<Button disabled>Disabled</Button>);
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
-    // Primary variant uses ButtonPrimary which has opacity-60 when disabled
+    // Primary variant has opacity-60 when disabled
     expect(button).toHaveClass('opacity-60', 'cursor-not-allowed');
   });
 });
