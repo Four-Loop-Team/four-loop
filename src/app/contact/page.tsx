@@ -1,3 +1,4 @@
+import { SEMANTIC_SPACING } from '@/constants/spacing';
 import { contactMetadata } from '@/lib/metadata';
 import {
   generateWebPageSchema,
@@ -62,11 +63,15 @@ export default function ContactPage() {
         }}
       >
         {/* Hero Section */}
-        <Box textAlign='center' sx={{ mb: 8 }}>
+        <Box textAlign='center' sx={{ mb: SEMANTIC_SPACING.section.lg }}>
           <Typography variant='h1' component='h1' gutterBottom>
             Contact Us
           </Typography>
-          <Typography variant='h5' color='text.secondary' sx={{ mb: 4 }}>
+          <Typography
+            variant='h5'
+            color='text.secondary'
+            sx={{ mb: SEMANTIC_SPACING.layout.sm }}
+          >
             Get in touch with our team to discuss your next digital project.
           </Typography>
           <Typography
@@ -84,14 +89,14 @@ export default function ContactPage() {
           {/* Contact Form */}
           <Grid size={{ xs: 12, md: 8 }}>
             <Card>
-              <CardContent sx={{ p: 4 }}>
+              <CardContent sx={{ p: SEMANTIC_SPACING.layout.sm }}>
                 <Typography variant='h4' component='h2' gutterBottom>
                   Start Your Project
                 </Typography>
                 <Typography
                   variant='body1'
                   color='text.secondary'
-                  sx={{ mb: 4 }}
+                  sx={{ mb: SEMANTIC_SPACING.layout.sm }}
                 >
                   Fill out the form below and we&apos;ll get back to you within
                   24 hours.
@@ -99,7 +104,11 @@ export default function ContactPage() {
 
                 <Box
                   component='form'
-                  sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: SEMANTIC_SPACING.component.xl,
+                  }}
                 >
                   <Grid container spacing={2}>
                     <Grid size={{ xs: 12, sm: 6 }}>
@@ -145,7 +154,10 @@ export default function ContactPage() {
                     type='submit'
                     variant='contained'
                     size='large'
-                    sx={{ alignSelf: 'flex-start', mt: 2 }}
+                    sx={{
+                      alignSelf: 'flex-start',
+                      mt: SEMANTIC_SPACING.component.md,
+                    }}
                   >
                     Send Message
                   </Button>
@@ -161,10 +173,21 @@ export default function ContactPage() {
                 Get in Touch
               </Typography>
 
-              <Card sx={{ mb: 3 }}>
+              <Card sx={{ mb: SEMANTIC_SPACING.component.xl }}>
                 <CardContent>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Email sx={{ mr: 2, color: 'primary.main' }} />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      mb: SEMANTIC_SPACING.component.md,
+                    }}
+                  >
+                    <Email
+                      sx={{
+                        mr: SEMANTIC_SPACING.component.md,
+                        color: 'primary.main',
+                      }}
+                    />
                     <Box>
                       <Typography variant='h6'>Email Us</Typography>
                       <Typography variant='body2' color='text.secondary'>
@@ -175,10 +198,21 @@ export default function ContactPage() {
                 </CardContent>
               </Card>
 
-              <Card sx={{ mb: 3 }}>
+              <Card sx={{ mb: SEMANTIC_SPACING.component.xl }}>
                 <CardContent>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Schedule sx={{ mr: 2, color: 'primary.main' }} />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      mb: SEMANTIC_SPACING.component.md,
+                    }}
+                  >
+                    <Schedule
+                      sx={{
+                        mr: SEMANTIC_SPACING.component.md,
+                        color: 'primary.main',
+                      }}
+                    />
                     <Box>
                       <Typography variant='h6'>Business Hours</Typography>
                       <Typography variant='body2' color='text.secondary'>
@@ -191,8 +225,19 @@ export default function ContactPage() {
 
               <Card>
                 <CardContent>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <LocationOn sx={{ mr: 2, color: 'primary.main' }} />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      mb: SEMANTIC_SPACING.component.md,
+                    }}
+                  >
+                    <LocationOn
+                      sx={{
+                        mr: SEMANTIC_SPACING.component.md,
+                        color: 'primary.main',
+                      }}
+                    />
                     <Box>
                       <Typography variant='h6'>Location</Typography>
                       <Typography variant='body2' color='text.secondary'>

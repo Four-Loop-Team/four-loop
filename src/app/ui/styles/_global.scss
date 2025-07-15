@@ -2,6 +2,7 @@
 
 @use 'variables';
 @use 'accessibility';
+@use 'utilities';
 
 /* Import Design System CSS */
 @import '../../../styles/design-system.css';
@@ -12,8 +13,6 @@
 
 /* CSS Custom Properties for Navigation using semantic SCSS variables */
 :root {
-  /* Color Variables */
-  --nav-background: #{variables.$nav-background};
   --nav-container-background: #{variables.$nav-container-background};
   --nav-slider-background: #{variables.$nav-slider-background};
   --nav-slider-border: #{variables.$nav-slider-border};
@@ -28,13 +27,17 @@
   --drawer-hover-background: #{variables.$drawer-hover-background};
   --drawer-border-accent: #{variables.$drawer-border-accent};
 
-  /* Accessibility Color Variables */
-  --color-primary: #{variables.$color-primary};
-  --color-secondary: #{variables.$color-secondary};
-  --color-text-primary: #{variables.$color-text-primary};
-  --color-text-secondary: #{variables.$color-text-secondary};
-  --color-background: #{variables.$color-background};
-  --color-surface: #{variables.$color-surface};
+  /* Brand Color Variables - Source of Truth */
+  --color-highlight: #{variables.$color-highlight};
+  --color-background-primary: #{variables.$color-background-primary};
+  --color-background-secondary: #{variables.$color-background-secondary};
+  --color-text-light: #{variables.$color-text-light};
+
+  /* Legacy Color Variables (for compatibility) */
+  --color-primary: #{variables.$color-highlight};
+  --color-secondary: #{variables.$color-background-secondary};
+  --color-background: #{variables.$color-background-primary};
+  --color-text-primary: #{variables.$color-text-light};
 
   /* Spacing Variables */
   --space-xs: #{variables.$space-xs};

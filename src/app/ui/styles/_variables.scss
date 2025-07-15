@@ -1,35 +1,38 @@
 $logo-img-url: url('/logo.png');
 
 // =============================================================================
-// SEMANTIC COLOR SYSTEM - Theme-aware and reusable
+// BRAND COLOR SYSTEM - Source of truth for all colors
 // =============================================================================
 
-// Base Palette
-$color-primary: #e2e891; // Light green - primary brand color
-$color-secondary: #232323; // Dark gray - secondary/neutral
-$color-background: #353535; // Dark background
-$color-surface: #232323; // Component surfaces
-$color-text-primary: #fff; // Primary text on dark backgrounds
-$color-text-secondary: #353535; // Secondary text on light backgrounds
-$color-accent: #69685a; // Logo accent color
+// Brand Colors (ONLY these 4 colors should be used)
+$color-highlight: #e2e891; // Yellow-green highlight/attention color (Logo, text, background)
+$color-background-primary: #353535; // Main website background, text and borders on light
+$color-background-secondary: #232323; // Darker background for content that needs to stand out
+$color-text-light: #fff; // Text and borders on dark backgrounds
+
+// Semantic aliases for clarity
+$color-primary: $color-highlight; // For compatibility - but prefer $color-highlight
+$color-secondary: $color-background-secondary; // For compatibility
+$color-background: $color-background-primary; // For compatibility
+$color-text-primary: $color-text-light; // For compatibility
 
 // Navigation-specific semantic variables
-$nav-background: $color-background;
-$nav-container-background: $color-primary;
-$nav-slider-background: $color-surface;
-$nav-slider-border: $color-primary;
-$nav-text-active: $color-text-primary;
-$nav-text-inactive: $color-text-secondary;
-$nav-text-hover: $color-text-primary;
+$nav-background: $color-background-primary;
+$nav-container-background: $color-highlight;
+$nav-slider-background: $color-background-secondary;
+$nav-slider-border: $color-highlight;
+$nav-text-active: $color-text-light;
+$nav-text-inactive: $color-background-primary;
+$nav-text-hover: $color-text-light;
 
 // Mobile drawer semantic variables
-$drawer-background: $color-background;
-$drawer-active-background: rgba($color-primary, 0.15);
-$drawer-active-border: rgba($color-primary, 0.3);
-$drawer-active-text: $color-primary;
-$drawer-inactive-text: $color-text-primary;
-$drawer-hover-background: rgba($color-primary, 0.25);
-$drawer-border-accent: rgba($color-primary, 0.2);
+$drawer-background: $color-background-primary;
+$drawer-active-background: rgba($color-highlight, 0.15);
+$drawer-active-border: rgba($color-highlight, 0.3);
+$drawer-active-text: $color-highlight;
+$drawer-inactive-text: $color-text-light;
+$drawer-hover-background: rgba($color-highlight, 0.25);
+$drawer-border-accent: rgba($color-highlight, 0.2);
 
 // =============================================================================
 // SPACING SYSTEM - Consistent spacing scale

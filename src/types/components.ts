@@ -53,7 +53,7 @@ export interface GridSystemDemoProps {
 }
 
 // Theme provider props
-export interface MuiThemeProviderProps {
+export interface BrandThemeProviderProps {
   children: ReactNode;
   theme?: 'light' | 'dark' | 'auto';
 }

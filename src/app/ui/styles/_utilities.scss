@@ -1,0 +1,329 @@
+/**
+ * Brand Utility Classes
+ * SCSS utilities that use only approved brand colors
+ * Use these instead of inline styles or broken Tailwind custom classes
+ */
+
+// =============================================================================
+// BACKGROUND UTILITIES
+// =============================================================================
+
+.bg-highlight {
+  background-color: var(--color-highlight);
+}
+
+.bg-primary-dark {
+  background-color: var(--color-background-primary);
+}
+
+.bg-secondary-dark {
+  background-color: var(--color-background-secondary);
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+// =============================================================================
+// TEXT COLOR UTILITIES
+// =============================================================================
+
+.text-light {
+  color: var(--color-text-light);
+}
+
+.text-highlight {
+  color: var(--color-highlight);
+}
+
+.text-primary-dark {
+  color: var(--color-background-primary);
+}
+
+// =============================================================================
+// BORDER UTILITIES
+// =============================================================================
+
+.border-light {
+  border-color: var(--color-text-light);
+}
+
+.border-highlight {
+  border-color: var(--color-highlight);
+}
+
+.border-primary-dark {
+  border-color: var(--color-background-primary);
+}
+
+.border-secondary-dark {
+  border-color: var(--color-background-secondary);
+}
+
+// =============================================================================
+// COMMON COMPONENT STYLES
+// =============================================================================
+
+.btn-primary {
+  background-color: transparent;
+  border: 1px solid var(--color-text-light);
+  border-radius: 30px;
+  color: var(--color-text-light);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-highlight);
+    color: var(--color-background-primary);
+  }
+
+  // Arrow styling for spans with specific layout classes
+  span.inline-flex.items-center.justify-center.rounded-full {
+    background-color: var(--color-highlight);
+    color: var(--color-background-primary);
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.btn-secondary {
+  background-color: var(--color-background-secondary);
+  border: 1px solid var(--color-text-light);
+  border-radius: 8px;
+  color: var(--color-text-light);
+  cursor: pointer;
+  padding: 12px 24px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-highlight);
+    color: var(--color-background-primary);
+  }
+}
+
+// =============================================================================
+// LAYOUT UTILITIES (to replace Tailwind where needed)
+// =============================================================================
+
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.rounded {
+  border-radius: 0.375rem;
+}
+
+.rounded-full {
+  border-radius: 50%;
+}
+
+.rounded-button {
+  border-radius: 30px;
+}
+
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+// =============================================================================
+// DISPLAY AND POSITIONING UTILITIES
+// =============================================================================
+
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+// =============================================================================
+// TEXT AND FONT UTILITIES
+// =============================================================================
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+// =============================================================================
+// SPACING UTILITIES (Specific measurements)
+// =============================================================================
+
+.py-em-02 {
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+.px-em-18 {
+  padding-left: 1.8em;
+  padding-right: 1.8em;
+}
+
+.p-6px {
+  padding: 6px;
+}
+
+.mr-neg-15px {
+  margin-right: -1.5px;
+}
+
+.ml-8px {
+  margin-left: 8px;
+}
+
+// =============================================================================
+// OPACITY AND CURSOR UTILITIES
+// =============================================================================
+
+.opacity-60 {
+  opacity: 0.6;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// =============================================================================
+// SIZE UTILITIES
+// =============================================================================
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+// =============================================================================
+// LAYOUT COMPONENT UTILITIES
+// =============================================================================
+
+.layout-body {
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+.layout-main {
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+// =============================================================================
+// ACCESSIBILITY UTILITIES
+// =============================================================================
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 9999;
+  padding: 8px 16px;
+  background-color: var(--color-highlight);
+  color: var(--color-background-secondary);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.skip-link-focused {
+  left: 8px;
+  top: 8px;
+}
+
+// =============================================================================
+// TEXT DECORATION UTILITIES
+// =============================================================================
+
+.no-underline {
+  text-decoration: none;
+}
+
+.w-full {
+  width: 100%;
+}
+
+// =============================================================================
+// INLINE TEXT UTILITIES
+// =============================================================================
+
+.highlight-text {
+  color: var(--color-highlight);
+}
+
+// =============================================================================
+// IMAGE UTILITIES
+// =============================================================================
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+}
+
+// =============================================================================
+// FOCUS AND ACCESSIBILITY STATES
+// =============================================================================
+
+.focus-outline {
+  &:focus {
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 2px;
+  }
+}
+
+.focus-ring {
+  &:focus {
+    box-shadow: 0 0 0 2px var(--color-highlight);
+  }
+}

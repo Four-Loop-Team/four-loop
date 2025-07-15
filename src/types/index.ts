@@ -17,11 +17,11 @@ export type {
 
 // Component types
 export type {
+  BrandThemeProviderProps,
   BreadcrumbProps,
   GridComponentProps,
   GridSystemDemoProps,
   LogoProps,
-  MuiThemeProviderProps,
   NavigationProps,
   SkipNavigationLinkProps,
 } from './components';

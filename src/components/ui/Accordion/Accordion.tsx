@@ -66,6 +66,8 @@
  * - High contrast support
  */
 
+'use client';
+
 import React, {
   createContext,
   useCallback,
@@ -73,6 +75,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { colors } from '../../system/BrandThemeProvider/BrandThemeProvider';
 import {
   AccordionContextValue,
   AccordionItemProps,
@@ -319,7 +322,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
             }}
             fill='none'
             viewBox='0 0 24 24'
-            stroke='#e2e891'
+            stroke={colors.highlight}
             strokeWidth={2}
           >
             <path

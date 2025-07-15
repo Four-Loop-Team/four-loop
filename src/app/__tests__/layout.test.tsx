@@ -9,8 +9,8 @@ jest.mock('@/components/layout', () => ({
 }));
 
 jest.mock('@/components/system', () => ({
-  MuiThemeProvider: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid='mui-theme-provider'>{children}</div>
+  BrandThemeProvider: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid='brand-theme-provider'>{children}</div>
   ),
 }));
 
@@ -48,7 +48,6 @@ describe('RootLayout', () => {
     expect(screen.getByTestId('test-content')).toBeInTheDocument();
     expect(screen.getByTestId('navigation')).toBeInTheDocument();
     expect(screen.getByTestId('skip-link')).toBeInTheDocument();
-    expect(screen.getByTestId('mui-theme-provider')).toBeInTheDocument();
     expect(screen.getByTestId('theme-provider')).toBeInTheDocument();
   });
 

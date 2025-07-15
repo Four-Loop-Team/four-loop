@@ -1,5 +1,9 @@
 'use client';
 
+import {
+  spacing,
+  typography,
+} from '@/components/system/BrandThemeProvider/BrandThemeProvider';
 import { Accordion } from '@/components/ui/Accordion';
 import { ButtonPrimary } from '@/components/ui/Button';
 import { Box, Container, Typography } from '@mui/material';
@@ -54,8 +58,8 @@ export const ServicesSection = () => {
     <Box
       component='section'
       sx={{
-        pt: { xs: 8, md: 12 }, // Add padding moved from intro section
-        pb: { xs: 8, md: 12 },
+        pt: { xs: spacing.section.xs, md: spacing.section.md }, // Using section spacing
+        pb: { xs: spacing.section.xs, md: spacing.section.md }, // Using section spacing
         backgroundColor: 'transparent',
         color: 'white',
         position: 'relative',
@@ -66,12 +70,12 @@ export const ServicesSection = () => {
         sx={{
           maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
           margin: '0 auto', // Center the container
-          px: { xs: 2, md: '82px' }, // Add 82px padding on desktop
+          px: { xs: spacing.component.sm, md: spacing.section.sm }, // Using spacing tokens (82px ~ section.sm)
         }}
       >
         <Box
           sx={{
-            mb: { xs: 6, md: 8 },
+            mb: { xs: spacing.layout.sm, md: spacing.layout.lg }, // Using layout spacing
           }}
         >
           <Box
@@ -79,25 +83,28 @@ export const ServicesSection = () => {
               display: 'flex',
               alignItems: 'baseline',
               justifyContent: 'space-between',
-              gap: { xs: 2, md: 3 },
-              mb: { xs: 4, md: 6 },
+              gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
+              mb: { xs: spacing.layout.xs, md: spacing.layout.sm }, // Using layout spacing
             }}
           >
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'baseline',
-                gap: { xs: 2, md: 3 },
+                gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
               }}
             >
               <Typography
                 variant='h2'
                 component='h2'
                 sx={{
-                  fontSize: { xs: '2.5rem', md: '4rem' },
-                  fontWeight: 400,
+                  fontSize: {
+                    xs: typography.fontSize['4xl'],
+                    md: typography.fontSize['6xl'],
+                  }, // Using typography tokens
+                  fontWeight: typography.fontWeight.regular, // Using typography tokens
                   color: 'white',
-                  lineHeight: 1,
+                  lineHeight: typography.lineHeight.tight, // Using typography tokens
                 }}
               >
                 Services
@@ -105,9 +112,12 @@ export const ServicesSection = () => {
 
               <Typography
                 sx={{
-                  fontSize: { xs: '1rem', md: '1.25rem' },
+                  fontSize: {
+                    xs: typography.fontSize.base,
+                    md: typography.fontSize.xl,
+                  }, // Using typography tokens
                   color: 'white',
-                  fontWeight: 300,
+                  fontWeight: typography.fontWeight.light, // Using typography tokens
                 }}
               >
                 /&nbsp;&nbsp;&nbsp;&nbsp;Our areas of expertise
@@ -131,7 +141,7 @@ export const ServicesSection = () => {
             display: 'flex',
             flexDirection: { xs: 'column', lg: 'row' },
             alignItems: { xs: 'stretch', lg: 'flex-start' },
-            gap: { xs: 8, lg: 12 },
+            gap: { xs: spacing.section.xs, lg: spacing.section.md }, // Using section spacing
           }}
         >
           {/* Services Accordion */}
@@ -167,7 +177,7 @@ export const ServicesSection = () => {
             sx={{
               display: { xs: 'flex', lg: 'none' },
               justifyContent: 'center',
-              mt: 4,
+              mt: spacing.layout.xs, // Using layout spacing
             }}
           >
             <ButtonPrimary onClick={handleCollaborationClick}>

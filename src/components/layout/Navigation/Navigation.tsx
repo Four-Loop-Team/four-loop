@@ -1,5 +1,9 @@
 'use client';
 
+import {
+  colors,
+  spacing,
+} from '@/components/system/BrandThemeProvider/BrandThemeProvider';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -159,7 +163,7 @@ export default function Navigation() {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-          p: 3,
+          p: spacing.component.lg, // Using component spacing
           borderBottom: '1px solid rgba(226, 232, 145, 0.2)',
         }}
       >
@@ -169,7 +173,7 @@ export default function Navigation() {
             color: 'white',
             minWidth: '44px',
             minHeight: '44px',
-            p: 1,
+            p: spacing.component.xs, // Using component spacing
             '&:hover': {
               backgroundColor: 'rgba(226, 232, 145, 0.1)',
             },
@@ -185,13 +189,13 @@ export default function Navigation() {
             <ListItem key={item.label} disablePadding sx={{ mb: 1.5 }}>
               <Link
                 href={item.href}
-                style={{ textDecoration: 'none', width: '100%' }}
+                className='no-underline w-full'
                 onClick={handleNavClick}
                 prefetch={true}
               >
                 <ListItemButton
                   sx={{
-                    borderRadius: 3,
+                    borderRadius: spacing.component.lg, // Using component spacing
                     color: active
                       ? 'var(--drawer-active-text)'
                       : 'var(--drawer-inactive-text)',
@@ -239,7 +243,7 @@ export default function Navigation() {
         component='nav'
         aria-label='Main navigation'
         sx={{
-          backgroundColor: '#353535',
+          backgroundColor: colors.backgroundPrimary,
           borderBottom: 'none',
           boxShadow: 'none', // Remove any shadow
           '&::after': {
@@ -275,11 +279,7 @@ export default function Navigation() {
             }}
           >
             {/* Logo */}
-            <Link
-              href='/'
-              style={{ textDecoration: 'none', color: 'white' }}
-              prefetch={true}
-            >
+            <Link href='/' className='no-underline text-light' prefetch={true}>
               <Box
                 sx={{
                   display: 'flex',
@@ -357,7 +357,7 @@ export default function Navigation() {
                     <Link
                       key={item.label}
                       href={item.href}
-                      style={{ textDecoration: 'none' }}
+                      className='no-underline'
                       prefetch={true}
                     >
                       <Button
@@ -438,8 +438,7 @@ export default function Navigation() {
               boxSizing: 'border-box',
               width: 'var(--nav-mobile-width)',
               backgroundColor: 'var(--drawer-background)',
-              backgroundImage:
-                'linear-gradient(135deg, var(--drawer-background) 0%, #2d4747 100%)',
+              backgroundImage: `linear-gradient(135deg, var(--drawer-background) 0%, ${colors.accent} 100%)`,
             },
           }}
         >

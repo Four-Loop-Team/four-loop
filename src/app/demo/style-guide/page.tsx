@@ -21,35 +21,27 @@ interface ColorSwatch {
 export default function StyleGuide() {
   const colors: ColorSwatch[] = [
     {
-      name: 'Primary',
+      name: 'Highlight',
       value: '#e2e891',
-      description: 'Primary brand color - signature green-yellow',
+      description:
+        'Yellow-green highlight/attention color (Logo, text, background)',
     },
     {
-      name: 'Secondary',
+      name: 'Background Primary',
       value: '#353535',
-      description: 'Secondary brand color - dark background',
+      description: 'Main website background, text and borders on light',
     },
     {
-      name: 'Surface',
+      name: 'Background Secondary',
       value: '#232323',
-      description: 'Component surfaces and containers',
+      description: 'Darker background for content that needs to stand out',
     },
     {
-      name: 'Accent',
-      value: '#69685a',
-      description: 'Logo accent color for subtle highlights',
-    },
-    {
-      name: 'Text Primary',
+      name: 'Text Light',
       value: '#ffffff',
-      description: 'Primary text on dark backgrounds',
+      description: 'Text and borders on dark backgrounds',
     },
-    {
-      name: 'Text Secondary',
-      value: '#353535',
-      description: 'Secondary text on light backgrounds',
-    },
+    // MUI State Colors (keep for components)
     {
       name: 'Success',
       value: '#22c55e',
@@ -127,8 +119,8 @@ export default function StyleGuide() {
   return (
     <Box
       sx={{
-        backgroundColor: '#353535',
-        color: '#ffffff',
+        backgroundColor: 'var(--color-background-primary)',
+        color: 'var(--color-text-light)',
         minHeight: '100vh',
         padding: 0,
       }}
@@ -140,18 +132,20 @@ export default function StyleGuide() {
             variant='h1'
             component='h1'
             gutterBottom
-            sx={{ color: '#e2e891' }}
+            sx={{ color: 'var(--color-highlight)' }}
           >
             Four Loop Digital Design System
           </Typography>
           <Typography
             variant='h6'
-            sx={{ color: '#ffffff', opacity: 0.8 }}
-            gutterBottom
+            sx={{ color: 'var(--color-text-light)', opacity: 0.8 }}
           >
             Comprehensive reference for developers and designers
           </Typography>
-          <Typography variant='body1' sx={{ color: '#ffffff', opacity: 0.7 }}>
+          <Typography
+            variant='body1'
+            sx={{ color: 'var(--color-text-light)', opacity: 0.7 }}
+          >
             This style guide documents the design tokens, components, and
             patterns used throughout the Four Loop Digital design system.
           </Typography>

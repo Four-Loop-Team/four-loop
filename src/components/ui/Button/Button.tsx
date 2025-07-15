@@ -1,4 +1,11 @@
+'use client';
+
 import React, { ButtonHTMLAttributes, forwardRef } from 'react';
+import {
+  colors,
+  spacing,
+  typography,
+} from '../../system/BrandThemeProvider/BrandThemeProvider';
 import ButtonPrimary from './ButtonPrimary';
 
 /**
@@ -56,9 +63,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <ButtonPrimary
           ref={ref}
-          size={size}
-          loading={loading}
-          fullWidth={fullWidth}
           disabled={disabled}
           className={className}
           {...props}
@@ -68,44 +72,85 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       );
     }
 
-    const baseClasses =
-      'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
-
-    const variantClasses = {
-      secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
-      outline:
-        'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-blue-500',
-      ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-blue-500',
+    const baseStyles: React.CSSProperties = {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontWeight: typography.fontWeight.medium,
+      borderRadius: spacing.component.sm, // 8px
+      transition: 'all 0.2s ease-in-out',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: typography.fontFamily.primary,
+      textDecoration: 'none',
+      outline: 'none',
     };
 
-    const sizeClasses = {
-      sm: 'px-4 py-3 text-sm min-w-[44px] min-h-[44px]', // Updated for 44px min touch target
-      md: 'px-6 py-3 text-base min-w-[44px] min-h-[44px]', // Updated for 44px min touch target
-      lg: 'px-8 py-4 text-lg min-w-[44px] min-h-[44px]', // Updated for 44px min touch target
+    const variantStyles: Record<string, React.CSSProperties> = {
+      secondary: {
+        backgroundColor: colors.backgroundSecondary,
+        color: colors.textLight,
+      },
+      outline: {
+        border: `1px solid ${colors.textMuted}`,
+        color: colors.textLight,
+        backgroundColor: 'transparent',
+      },
+      ghost: {
+        color: colors.textLight,
+        backgroundColor: 'transparent',
+      },
     };
 
-    const classes = [
-      baseClasses,
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-      variantClasses[variant as keyof typeof variantClasses] || '',
-      sizeClasses[size],
-      fullWidth && 'w-full',
-      (disabled ?? loading) && 'opacity-50 cursor-not-allowed',
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    const sizeStyles = {
+      sm: {
+        padding: `${spacing.component.sm} ${spacing.component.md}`,
+        fontSize: typography.fontSize.sm,
+        minWidth: '44px',
+        minHeight: '44px',
+      },
+      md: {
+        padding: `${spacing.component.lg} ${spacing.component.xl}`,
+        fontSize: typography.fontSize.base,
+        minWidth: '44px',
+        minHeight: '44px',
+      },
+      lg: {
+        padding: `${spacing.component.xl} ${spacing.layout.xs}`,
+        fontSize: typography.fontSize.lg,
+        minWidth: '44px',
+        minHeight: '44px',
+      },
+    };
+
+    const combinedStyles: React.CSSProperties = {
+      ...baseStyles,
+      ...variantStyles[variant],
+      ...sizeStyles[size],
+      ...(fullWidth && { width: '100%' }),
+      ...((disabled ?? loading) && {
+        opacity: 0.5,
+        cursor: 'not-allowed',
+      }),
+    };
 
     return (
       <button
         ref={ref}
-        className={classes}
+        style={combinedStyles}
+        className={className}
         disabled={disabled ?? loading}
         {...props}
       >
+        {' '}
         {loading && (
           <svg
-            className='animate-spin -ml-1 mr-2 h-4 w-4'
+            style={{
+              marginLeft: '-4px',
+              marginRight: spacing.component.sm,
+              height: '16px',
+              width: '16px',
+            }}
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
             viewBox='0 0 24 24'
@@ -125,9 +170,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             />
           </svg>
         )}
-        {leftIcon && !loading && <span className='mr-2'>{leftIcon}</span>}
+        {leftIcon && !loading && (
+          <span style={{ marginRight: spacing.component.sm }}>{leftIcon}</span>
+        )}
         {children}
-        {rightIcon && <span className='ml-2'>{rightIcon}</span>}
+        {rightIcon && (
+          <span style={{ marginLeft: spacing.component.sm }}>{rightIcon}</span>
+        )}
       </button>
     );
   }

@@ -33,6 +33,9 @@
  * @param {string} props.error - Error message to display
  */
 
+/* eslint-disable no-restricted-syntax */
+// This file contains legitimate hardcoded colors for canvas drawing operations
+
 import React, {
   useCallback,
   useEffect,

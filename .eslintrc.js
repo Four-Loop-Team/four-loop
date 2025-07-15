@@ -26,11 +26,46 @@ module.exports = {
     'no-debugger': 'error',
     'prefer-const': 'error',
     'no-var': 'error',
+
+    // Color system enforcement - prevent hardcoded colors
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: 'Literal[value=/^#[0-9A-Fa-f]{6}$/]',
+        message:
+          '❌ Hardcoded hex colors are not allowed. Use CSS custom properties (var(--color-*)) or theme colors from @/lib/theme instead.',
+      },
+      {
+        selector: 'Literal[value=/^#[0-9A-Fa-f]{3}$/]',
+        message:
+          '❌ Hardcoded hex colors are not allowed. Use CSS custom properties (var(--color-*)) or theme colors from @/lib/theme instead.',
+      },
+    ],
   },
   env: {
     'jest/globals': true,
   },
   overrides: [
+    {
+      files: [
+        '**/layout.tsx',
+        '**/metadata.ts',
+        '**/constants/**',
+        '**/design-system/**',
+        '**/lib/theme/**',
+        '**/__tests__/**',
+        '**/test/**',
+      ],
+      rules: {
+        'no-restricted-syntax': 'off', // Allow hardcoded colors in design system, theme, and test files
+      },
+    },
+    {
+      files: ['**/demo/**', '**/style-guide/**'],
+      rules: {
+        'no-restricted-syntax': 'off', // Allow hardcoded colors in demo/style guide pages for documentation
+      },
+    },
     {
       files: ['*.ts', '*.tsx'],
       parserOptions: {

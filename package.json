@@ -43,6 +43,7 @@
     "deps:report": "npm run docs:generate && cat docs/DEPENDENCY_REPORT.md",
     "security:audit": "npm audit",
     "security:audit:fix": "npm audit fix",
+    "audit:colors": "./scripts/audit-colors.sh",
     "standards:enforce": "node scripts/enforce-standards.js",
     "standards:check": "node scripts/enforce-standards.js --check-only --skip-e2e",
     "standards:fix": "node scripts/enforce-standards.js --auto-fix",

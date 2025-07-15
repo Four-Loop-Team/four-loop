@@ -5,35 +5,24 @@
 
 /* Import design tokens as CSS variables */
 :root {
-  /* Colors */
-  --color-surface-primary: #fff;
-  --color-surface-secondary: #f8f8f8;
-  --color-surface-tertiary: #f0f0f0;
-  --color-surface-inverse: #4a4a4a;
-  --color-surface-overlay: rgb(0 0 0 / 50%);
-  --color-border-default: #e4e4e4;
-  --color-border-muted: #f0f0f0;
-  --color-border-emphasis: #d1d1d1;
-  --color-border-interactive: #d6de5f;
-  --color-text-primary: #4a4a4a;
-  --color-text-secondary: #818181;
-  --color-text-tertiary: #9a9a9a;
-  --color-text-inverse: #fff;
-  --color-text-brand: #a8b229;
+  /* BRAND COLORS - Only these 4 colors should be used */
+  --color-highlight: #e2e891; /* Yellow-green highlight/attention color */
+  --color-background-primary: #353535; /* Main website background */
+  --color-background-secondary: #232323; /* Darker background for standout content */
+  --color-text-light: #fff; /* Text and borders on dark backgrounds */
 
-  /* Brand Colors */
-  --color-primary-50: #f8fce4;
-  --color-primary-100: #f0f7c7;
-  --color-primary-200: #e7f194;
-  --color-primary-300: #e2e891;
-  --color-primary-400: #d6de5f;
-  --color-primary-500: #c5ce3a;
-  --color-primary-600: #a8b229;
-  --color-primary-700: #8a941f;
-  --color-primary-800: #6d7519;
-  --color-primary-900: #565d15;
+  /* Legacy/Compatibility Colors (mapped to brand colors) */
+  --color-primary: #e2e891; /* Same as highlight */
+  --color-primary-300: #e2e891; /* Same as highlight */
+  --color-secondary: #232323; /* Same as background-secondary */
+  --color-background: #353535; /* Same as background-primary */
+  --color-text-primary: #fff; /* Same as text-light */
+  --color-border-light: #fff; /* Same as text-light */
+  --color-border-dark: #353535; /* Same as background-primary */
+  --color-surface-inverse: #353535; /* Same as background-primary */
+  --color-border-inverse: #fff; /* Same as text-light */
 
-  /* Semantic Colors */
+  /* MUI State Colors (keep these for MUI components) */
   --color-success-500: #22c55e;
   --color-warning-500: #f59e0b;
   --color-error-500: #ef4444;
@@ -92,7 +81,7 @@
 
 /* Dark theme */
 [data-theme='dark'] {
-  --color-surface-primary: #4a4a4a;
+  --color-surface-primary: #353535;
   --color-surface-secondary: #5a5a5a;
   --color-surface-tertiary: #6a6a6a;
   --color-surface-inverse: #fff;
@@ -101,16 +90,17 @@
   --color-border-muted: #5a5a5a;
   --color-border-emphasis: #818181;
   --color-border-interactive: #d6de5f;
+  --color-border-inverse: #fff;
   --color-text-primary: #fff;
-  --color-text-secondary: #d1d1d1;
-  --color-text-tertiary: #b4b4b4;
-  --color-text-inverse: #4a4a4a;
+  --color-text-secondary: #353535;
+  --color-text-tertiary: #9a9a9a;
+  --color-text-inverse: #353535;
   --color-text-brand: #d6de5f;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --color-surface-primary: #4a4a4a;
+    --color-surface-primary: #353535;
     --color-surface-secondary: #5a5a5a;
     --color-surface-tertiary: #6a6a6a;
     --color-surface-inverse: #fff;
@@ -119,10 +109,11 @@
     --color-border-muted: #5a5a5a;
     --color-border-emphasis: #818181;
     --color-border-interactive: #d6de5f;
+    --color-border-inverse: #fff;
     --color-text-primary: #fff;
-    --color-text-secondary: #d1d1d1;
-    --color-text-tertiary: #b4b4b4;
-    --color-text-inverse: #4a4a4a;
+    --color-text-secondary: #353535;
+    --color-text-tertiary: #9a9a9a;
+    --color-text-inverse: #353535;
     --color-text-brand: #d6de5f;
   }
 }

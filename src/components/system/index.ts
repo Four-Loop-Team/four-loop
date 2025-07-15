@@ -8,18 +8,18 @@
  *
  * @example
  * ```tsx
- * import { GridContainer, GridItem, MuiThemeProvider, GridSystemDemo } from '@/components/system';
+ * import { GridContainer, GridItem, BrandThemeProvider, GridSystemDemo } from '@/components/system';
  *
- * <MuiThemeProvider>
+ * <BrandThemeProvider>
  *   <GridContainer>
  *     <GridItem xs={12}>
  *       <GridSystemDemo />
  *     </GridItem>
  *   </GridContainer>
- * </MuiThemeProvider>
+ * </BrandThemeProvider>
  * ```
  */
 
+export { default as BrandThemeProvider } from './BrandThemeProvider';
 export * from './Grid';
 export { default as GridSystemDemo } from './GridSystemDemo';
-export { default as MuiThemeProvider } from './MuiThemeProvider';

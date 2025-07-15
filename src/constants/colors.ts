@@ -301,7 +301,7 @@ export const DARK_THEME = {
   surface: {
     primary: '#232323', // Your current surface
     secondary: '#404040',
-    tertiary: '#4a4a4a',
+    tertiary: '#353535',
     elevated: '#454545',
     inverse: '#ffffff',
   },

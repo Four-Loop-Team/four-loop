@@ -1,3 +1,4 @@
+import { SEMANTIC_SPACING } from '@/constants/spacing';
 import { generateMetadata } from '@/lib/metadata';
 import {
   generateWebPageSchema,
@@ -167,11 +168,15 @@ export default function FAQPage() {
           py: 8,
         }}
       >
-        <Box textAlign='center' sx={{ mb: 8 }}>
+        <Box textAlign='center' sx={{ mb: SEMANTIC_SPACING.section.lg }}>
           <Typography variant='h1' component='h1' gutterBottom>
             Frequently Asked Questions
           </Typography>
-          <Typography variant='h5' color='text.secondary' sx={{ mb: 4 }}>
+          <Typography
+            variant='h5'
+            color='text.secondary'
+            sx={{ mb: SEMANTIC_SPACING.layout.sm }}
+          >
             Find answers to common questions about our services and process
           </Typography>
           <Typography
@@ -188,7 +193,7 @@ export default function FAQPage() {
 
         <Box sx={{ maxWidth: '900px', mx: 'auto' }}>
           {faqs.map((faq, index) => (
-            <Accordion key={index} sx={{ mb: 2 }}>
+            <Accordion key={index} sx={{ mb: SEMANTIC_SPACING.component.md }}>
               <AccordionSummary
                 expandIcon={<ExpandMore />}
                 aria-controls={`faq-content-${index}`}
@@ -209,7 +214,12 @@ export default function FAQPage() {
 
         <Box
           textAlign='center'
-          sx={{ mt: 8, py: 6, bgcolor: 'grey.50', borderRadius: 2 }}
+          sx={{
+            mt: SEMANTIC_SPACING.section.lg,
+            py: SEMANTIC_SPACING.layout.md,
+            bgcolor: 'grey.50',
+            borderRadius: SEMANTIC_SPACING.component.md,
+          }}
         >
           <Typography variant='h3' component='h2' gutterBottom>
             Still Have Questions?
@@ -217,7 +227,11 @@ export default function FAQPage() {
           <Typography
             variant='body1'
             color='text.secondary'
-            sx={{ mb: 4, maxWidth: '600px', mx: 'auto' }}
+            sx={{
+              mb: SEMANTIC_SPACING.layout.sm,
+              maxWidth: '600px',
+              mx: 'auto',
+            }}
           >
             Can&apos;t find the answer you&apos;re looking for? We&apos;d love
             to hear from you and discuss how Four Loop Digital can help with

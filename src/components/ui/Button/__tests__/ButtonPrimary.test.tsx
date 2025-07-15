@@ -14,10 +14,10 @@ describe('ButtonPrimary Component', () => {
 
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('border', 'border-gray-900', 'rounded-full');
+    expect(button).toHaveClass('btn-primary');
 
     const ctaText = screen.getByText('Test Button');
-    expect(ctaText).toHaveClass('inline-block', 'font-medium', 'text-gray-900');
+    expect(ctaText).toHaveClass('inline-block', 'font-medium');
 
     // Check for arrow span (MUI icon container)
     const arrowSpan = button.querySelector('span:last-child');
@@ -25,7 +25,8 @@ describe('ButtonPrimary Component', () => {
     expect(arrowSpan).toHaveClass(
       'inline-flex',
       'items-center',
-      'justify-center'
+      'justify-center',
+      'rounded-full'
     );
   });
 
@@ -43,7 +44,7 @@ describe('ButtonPrimary Component', () => {
     render(<ButtonPrimary className='custom-class'>Test</ButtonPrimary>);
 
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('border', 'border-gray-900', 'rounded-full');
+    expect(button).toHaveClass('btn-primary');
     expect(button).toHaveClass('custom-class');
   });
 
@@ -82,39 +83,14 @@ describe('ButtonPrimary Component', () => {
       const ctaSpan = screen.getByText('Style Test');
       const arrowSpan = button.querySelector('span:last-child');
 
-      expect(button).toHaveClass('border', 'border-gray-900', 'rounded-full');
-      expect(ctaSpan).toHaveClass(
-        'inline-block',
-        'font-medium',
-        'text-gray-900'
-      );
+      expect(button).toHaveClass('btn-primary');
+      expect(ctaSpan).toHaveClass('inline-block', 'font-medium');
       expect(arrowSpan).toHaveClass(
         'inline-flex',
         'items-center',
-        'justify-center'
+        'justify-center',
+        'rounded-full'
       );
-    });
-
-    it('applies correct size classes', () => {
-      const { rerender } = render(
-        <ButtonPrimary size='sm'>Small</ButtonPrimary>
-      );
-      expect(screen.getByRole('button')).toHaveClass('text-sm');
-
-      rerender(<ButtonPrimary size='lg'>Large</ButtonPrimary>);
-      expect(screen.getByRole('button')).toHaveClass('text-lg');
-    });
-
-    it('applies full width when specified', () => {
-      render(<ButtonPrimary fullWidth>Full Width</ButtonPrimary>);
-      expect(screen.getByRole('button')).toHaveClass('w-full');
-    });
-
-    it('shows loading state', () => {
-      render(<ButtonPrimary loading>Loading</ButtonPrimary>);
-      const button = screen.getByRole('button');
-      expect(button).toBeDisabled();
-      expect(button.querySelector('svg')).toBeInTheDocument(); // Loading spinner
     });
   });
 

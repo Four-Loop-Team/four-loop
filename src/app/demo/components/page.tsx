@@ -210,10 +210,7 @@ export default function ComponentsShowcase() {
             </Typography>
             <Stack spacing={2} direction='row' flexWrap='wrap'>
               <ButtonPrimary>Let&apos;s Collaborate</ButtonPrimary>
-              <ButtonPrimary size='sm'>Small CTA</ButtonPrimary>
-              <ButtonPrimary size='lg'>Large CTA</ButtonPrimary>
               <ButtonPrimary disabled>Disabled CTA</ButtonPrimary>
-              <ButtonPrimary loading>Loading CTA</ButtonPrimary>
             </Stack>
 
             <Typography variant='h6' component='h3' sx={{ mt: 3 }}>

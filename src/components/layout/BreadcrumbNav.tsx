@@ -1,5 +1,6 @@
 'use client';
 
+import { spacing } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
 import { Home } from '@mui/icons-material';
 import { Box, Breadcrumbs, Link, Typography } from '@mui/material';
 import NextLink from 'next/link';
@@ -67,7 +68,7 @@ export default function BreadcrumbNav({ items }: BreadcrumbNavProps) {
   }
 
   return (
-    <Box sx={{ py: 2, px: 2 }}>
+    <Box sx={{ py: spacing.component.md, px: spacing.component.md }}>
       <Breadcrumbs aria-label='breadcrumb navigation'>
         {breadcrumbItems.map((item, index) => {
           const isLast = index === breadcrumbItems.length - 1;

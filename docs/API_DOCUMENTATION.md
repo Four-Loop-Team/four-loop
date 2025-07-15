@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-07-12T14:39:24.035Z
+> 🤖 Auto-generated on 2025-07-15T02:11:55.682Z
 
 ## Component API Reference
 
@@ -36,15 +36,6 @@
  @param {number} [props.height=80] - Logo height in pixels
  @param {boolean} [props.priority=true] - Next.js Image priority loading
  @returns {JSX.Element} The rendered logo component
-
----
-
-### DesignSystemShowcase
-
-**File**: `src/components/DesignSystemShowcase.tsx`
-
-* @fileoverview Design System Component Examples and demonstrations.
- Showcases how to use enhanced design tokens in React components with comprehensive examples.
 
 ---
 
@@ -147,17 +138,6 @@
 
 ---
 
-### MuiThemeProvider.test
-
-**File**: `src/components/MuiThemeProvider/__tests__/MuiThemeProvider.test.tsx`
-
-* MuiThemeProvider Component Tests
-
- Note: Component implementation is empty, these are placeholder tests
- to prevent CI failures until the component is implemented.
-
----
-
 ### Navigation.test
 
 **File**: `src/components/Navigation/__tests__/Navigation.test.tsx`
@@ -226,6 +206,15 @@
  ```tsx
  <ServicesSection />
  ```
+
+---
+
+### BrandThemeProvider
+
+**File**: `src/components/system/BrandThemeProvider/BrandThemeProvider.tsx`
+
+* Brand colors object for use in sx props and components
+ These match our theme palette and SCSS variables
 
 ---
 
@@ -315,39 +304,12 @@
 
 ---
 
-### MuiThemeProvider
+### TailwindClassTest
 
-**File**: `src/components/system/MuiThemeProvider/MuiThemeProvider.tsx`
+**File**: `src/components/TailwindClassTest.tsx`
 
-* Material-UI theme provider that configures the design system for the entire application.
-
- This component provides consistent theming across all Material-UI components,
- implementing the Four Loop Digital brand colors, typography, and design tokens.
- Includes dark mode support and accessibility-compliant color contrasts.
-
- @component
- @example
- ```tsx
- // Wrap your app with the theme provider
- <MuiThemeProvider>
-   <App />
- </MuiThemeProvider>
- ```
-
- @param {MuiThemeProviderProps} props - The theme provider props
- @param {React.ReactNode} props.children - Child components to receive theme context
- @returns {JSX.Element} The themed application wrapper
-
- @accessibility
- - WCAG AA compliant color contrasts (4.5:1 minimum)
- - Dark mode optimized for reduced eye strain
- - High contrast text and background combinations
-
- @design
- - Primary: #e2e891 (brand yellow-green)
- - Secondary: #353535 (dark gray)
- - Background: #232323 (deep dark)
- - Typography: Poppins font family
+* This component forces Tailwind to generate our custom classes
+ DO NOT DELETE - This ensures Tailwind sees and generates our custom utility classes
 
 ---
 

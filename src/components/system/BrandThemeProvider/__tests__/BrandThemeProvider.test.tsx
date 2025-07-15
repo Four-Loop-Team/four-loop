@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { render, screen } from '@testing-library/react';
-import MuiThemeProvider from '../MuiThemeProvider';
+import BrandThemeProvider from '../BrandThemeProvider';
 
 // Test component to access and display theme values
 const ThemeConsumer = () => {
@@ -28,12 +28,12 @@ const ThemeConsumer = () => {
   );
 };
 
-describe('MuiThemeProvider', () => {
+describe('BrandThemeProvider', () => {
   it('renders children correctly', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <div data-testid='child'>Test Child</div>
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('child')).toBeInTheDocument();
@@ -42,9 +42,9 @@ describe('MuiThemeProvider', () => {
 
   it('provides dark mode theme configuration', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('theme-mode')).toHaveTextContent('dark');
@@ -52,9 +52,9 @@ describe('MuiThemeProvider', () => {
 
   it('provides correct primary color configuration', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('primary-color')).toHaveTextContent('#e2e891');
@@ -62,9 +62,9 @@ describe('MuiThemeProvider', () => {
 
   it('provides correct secondary color configuration', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('secondary-color')).toHaveTextContent('#353535');
@@ -72,9 +72,9 @@ describe('MuiThemeProvider', () => {
 
   it('provides correct background configuration', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('background-color')).toHaveTextContent('#353535');
@@ -82,9 +82,9 @@ describe('MuiThemeProvider', () => {
 
   it('provides correct text color configuration', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('text-primary')).toHaveTextContent('#ffffff');
@@ -92,9 +92,9 @@ describe('MuiThemeProvider', () => {
 
   it('provides correct font family configuration', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('font-family')).toHaveTextContent(
@@ -104,9 +104,9 @@ describe('MuiThemeProvider', () => {
 
   it('provides correct typography configurations', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('h1-color')).toHaveTextContent('#ffffff');
@@ -118,9 +118,9 @@ describe('MuiThemeProvider', () => {
 
   it('provides correct breakpoint configurations', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('xs-breakpoint')).toHaveTextContent('0');
@@ -132,9 +132,9 @@ describe('MuiThemeProvider', () => {
 
   it('includes CssBaseline component', () => {
     const { container } = render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <div>Test</div>
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     // CssBaseline adds styles to body and html elements
@@ -144,9 +144,9 @@ describe('MuiThemeProvider', () => {
 
   it('maintains accessibility with high contrast colors', () => {
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <ThemeConsumer />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     // Verify high contrast text colors for accessibility
@@ -176,9 +176,9 @@ describe('MuiThemeProvider', () => {
     };
 
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <TestColorPalette />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('error-color')).toHaveTextContent('#f44336');
@@ -211,9 +211,9 @@ describe('MuiThemeProvider', () => {
     };
 
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <TestTypography />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     // Test h2 styling
@@ -265,9 +265,9 @@ describe('MuiThemeProvider', () => {
     };
 
     render(
-      <MuiThemeProvider>
+      <BrandThemeProvider>
         <TestComponentOverrides />
-      </MuiThemeProvider>
+      </BrandThemeProvider>
     );
 
     expect(screen.getByTestId('appbar-boxshadow')).toHaveTextContent('none');
@@ -275,11 +275,11 @@ describe('MuiThemeProvider', () => {
 
   it('supports nested providers without conflicts', () => {
     render(
-      <MuiThemeProvider>
-        <MuiThemeProvider>
+      <BrandThemeProvider>
+        <BrandThemeProvider>
           <ThemeConsumer />
-        </MuiThemeProvider>
-      </MuiThemeProvider>
+        </BrandThemeProvider>
+      </BrandThemeProvider>
     );
 
     // Inner provider should still provide the same theme
