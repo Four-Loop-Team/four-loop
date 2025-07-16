@@ -1,62 +1,100 @@
-import React, {
-  InputHTMLAttributes,
-  TextareaHTMLAttributes,
-  forwardRef,
-} from 'react';
+import { colors } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
+import {
+  InputAdornment,
+  TextField,
+  TextFieldProps,
+  styled,
+} from '@mui/material';
+import { forwardRef } from 'react';
 
 /**
- * Input component props interface
+ * Input component props interface extending Material-UI TextField
  */
 export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  /** Input label text */
-  label?: string;
-  /** Error message to display */
-  error?: string;
-  /** Helper text to display */
-  helperText?: string;
-  /** Input variant style */
-  variant?: 'default' | 'filled' | 'outlined';
+  extends Omit<TextFieldProps, 'size' | 'error' | 'variant'> {
   /** Input size */
   inputSize?: 'sm' | 'md' | 'lg';
+  /** Error message to display (will set error state to true) */
+  error?: string | boolean;
+  /** Input variant style */
+  variant?: 'default' | 'filled' | 'outlined' | 'standard';
   /** Icon to display on the left side */
   leftIcon?: React.ReactNode;
   /** Icon to display on the right side */
   rightIcon?: React.ReactNode;
-  /** Enable multiline textarea mode */
-  multiline?: boolean;
-  /** Number of rows for textarea (when multiline is true) */
-  rows?: number;
+  /** HTML input pattern attribute for validation */
+  pattern?: string;
+  /** Input mode for mobile keyboards */
+  inputMode?:
+    | 'none'
+    | 'text'
+    | 'decimal'
+    | 'numeric'
+    | 'tel'
+    | 'search'
+    | 'email'
+    | 'url';
 }
 
 /**
- * Textarea component props interface
+ * Styled TextField with our brand styling
  */
-export interface TextareaProps
-  extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
-  /** Input label text */
-  label?: string;
-  /** Error message to display */
-  error?: string;
-  /** Helper text to display */
-  helperText?: string;
-  /** Input variant style */
-  variant?: 'default' | 'filled' | 'outlined';
-  /** Input size */
-  inputSize?: 'sm' | 'md' | 'lg';
-  /** Icon to display on the left side */
-  leftIcon?: React.ReactNode;
-  /** Icon to display on the right side */
-  rightIcon?: React.ReactNode;
-  /** Enable multiline textarea mode */
-  multiline: true;
-  /** Number of rows for textarea */
-  rows?: number;
-}
+const StyledTextField = styled(TextField)<TextFieldProps>(
+  ({ variant: _variant }) => ({
+    '& .MuiInputLabel-root': {
+      color: colors.textDark,
+      '&.Mui-focused': {
+        color: colors.textDark,
+      },
+      '& .MuiInputLabel-asterisk': {
+        display: 'none',
+      },
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: colors.textMuted,
+      },
+      '&:hover fieldset': {
+        borderColor: colors.textDark,
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: colors.textDark,
+        borderWidth: '2px',
+      },
+    },
+    '& .MuiFilledInput-root': {
+      backgroundColor: 'rgba(53, 53, 53, 0.08)',
+      '&:hover': {
+        backgroundColor: 'rgba(53, 53, 53, 0.12)',
+      },
+      '&.Mui-focused': {
+        backgroundColor: 'rgba(53, 53, 53, 0.08)',
+      },
+      '&:before': {
+        borderBottomColor: colors.textDark,
+      },
+      '&:hover:before': {
+        borderBottomColor: colors.textDark,
+      },
+      '&:after': {
+        borderBottomColor: colors.textDark,
+      },
+    },
+    '& .MuiInputBase-input': {
+      color: colors.textDark,
+    },
+    '& .MuiFormHelperText-root': {
+      color: colors.textMuted,
+      '&.Mui-error': {
+        color: 'var(--color-error, #d32f2f)',
+      },
+    },
+  })
+);
 
 /**
  * A comprehensive input component with validation and accessibility features.
- * Supports both single-line inputs and multiline textareas with consistent styling.
+ * Built on top of Material-UI's TextField with our brand styling.
  *
  * @component
  * @example
@@ -68,7 +106,8 @@ export interface TextareaProps
  * <Input
  *   label="Password"
  *   type="password"
- *   error="Password is required"
+ *   error
+ *   helperText="Password is required"
  * />
  *
  * // Multiline textarea
@@ -87,152 +126,86 @@ export interface TextareaProps
  * />
  * ```
  */
-const Input = forwardRef<
-  HTMLInputElement | HTMLTextAreaElement,
-  InputProps | TextareaProps
->(
+const Input = forwardRef<HTMLDivElement, InputProps>(
   (
     {
-      label,
-      error,
-      helperText,
-      variant = 'default',
       inputSize = 'md',
+      variant = 'filled',
+      error,
       leftIcon,
       rightIcon,
-      multiline = false,
-      rows = 4,
-      className = '',
-      id,
+      pattern,
+      inputMode,
       ...props
     },
     ref
   ) => {
-    const inputId = id ?? `input-${Math.random().toString(36).substr(2, 9)}`;
-    const isTextarea = multiline;
+    // Map our inputSize to Material-UI size
+    const muiSize =
+      inputSize === 'sm' ? 'small' : inputSize === 'lg' ? 'medium' : 'medium';
 
-    const baseClasses =
-      'w-full rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500';
+    // Convert variant 'default' to 'outlined' for Material-UI
+    const muiVariant = variant === 'default' ? 'outlined' : variant;
 
-    const variantClasses = {
-      default: 'border border-gray-300 bg-white',
-      filled: 'border-0 bg-gray-100 focus:bg-gray-50',
-      outlined: 'border-2 border-gray-300 bg-white',
-    };
+    // Handle error prop - if it's a string, use it as helperText and set error to true
+    const hasError = Boolean(error);
+    const errorText = typeof error === 'string' ? error : undefined;
+    const helperText = errorText ?? props.helperText;
 
-    const sizeClasses = {
-      sm: isTextarea ? 'px-3 py-2 text-sm' : 'px-3 py-2 text-sm',
-      md: isTextarea ? 'px-4 py-3 text-base' : 'px-4 py-2 text-base',
-      lg: isTextarea ? 'px-5 py-4 text-lg' : 'px-5 py-3 text-lg',
-    };
+    // Prepare InputProps for icons
+    const inputPropsForIcons: {
+      startAdornment?: React.ReactNode;
+      endAdornment?: React.ReactNode;
+    } = {};
 
-    const stateClasses = error
-      ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-      : 'focus:border-blue-500';
+    // Prepare inputProps for HTML attributes
+    const htmlInputProps: {
+      pattern?: string;
+      inputMode?:
+        | 'none'
+        | 'text'
+        | 'decimal'
+        | 'numeric'
+        | 'tel'
+        | 'search'
+        | 'email'
+        | 'url';
+    } = {};
 
-    // Icon padding only applies to input (not textarea)
-    const iconPadding = {
-      left:
-        !isTextarea && leftIcon
-          ? inputSize === 'sm'
-            ? 'pl-10'
-            : inputSize === 'lg'
-              ? 'pl-12'
-              : 'pl-11'
-          : '',
-      right:
-        !isTextarea && rightIcon
-          ? inputSize === 'sm'
-            ? 'pr-10'
-            : inputSize === 'lg'
-              ? 'pr-12'
-              : 'pr-11'
-          : '',
-    };
+    if (leftIcon) {
+      inputPropsForIcons.startAdornment = (
+        <InputAdornment position='start'>{leftIcon}</InputAdornment>
+      );
+    }
+    if (rightIcon) {
+      inputPropsForIcons.endAdornment = (
+        <InputAdornment position='end'>{rightIcon}</InputAdornment>
+      );
+    }
 
-    const inputClasses = [
-      baseClasses,
-      variantClasses[variant],
-      sizeClasses[inputSize],
-      stateClasses,
-      iconPadding.left,
-      iconPadding.right,
-      isTextarea ? 'resize-vertical' : '',
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    if (pattern) {
+      htmlInputProps.pattern = pattern;
+    }
+    if (inputMode) {
+      htmlInputProps.inputMode = inputMode;
+    }
 
     return (
-      <div className='w-full'>
-        {label && (
-          <label
-            htmlFor={inputId}
-            className='block text-sm font-medium text-gray-700 mb-1'
-          >
-            {label}
-          </label>
-        )}
-
-        <div className='relative'>
-          {!isTextarea && leftIcon && (
-            <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-              <span className='text-gray-400'>{leftIcon}</span>
-            </div>
-          )}
-
-          {isTextarea ? (
-            <textarea
-              ref={ref as React.ForwardedRef<HTMLTextAreaElement>}
-              id={inputId}
-              rows={rows}
-              className={inputClasses}
-              aria-invalid={error ? 'true' : 'false'}
-              aria-describedby={
-                error
-                  ? `${inputId}-error`
-                  : helperText
-                    ? `${inputId}-helper`
-                    : undefined
-              }
-              {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
-            />
-          ) : (
-            <input
-              ref={ref as React.ForwardedRef<HTMLInputElement>}
-              id={inputId}
-              className={inputClasses}
-              aria-invalid={error ? 'true' : 'false'}
-              aria-describedby={
-                error
-                  ? `${inputId}-error`
-                  : helperText
-                    ? `${inputId}-helper`
-                    : undefined
-              }
-              {...(props as InputHTMLAttributes<HTMLInputElement>)}
-            />
-          )}
-
-          {!isTextarea && rightIcon && (
-            <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>
-              <span className='text-gray-400'>{rightIcon}</span>
-            </div>
-          )}
-        </div>
-
-        {error && (
-          <p id={`${inputId}-error`} className='mt-1 text-sm text-red-600'>
-            {error}
-          </p>
-        )}
-
-        {helperText && !error && (
-          <p id={`${inputId}-helper`} className='mt-1 text-sm text-gray-500'>
-            {helperText}
-          </p>
-        )}
-      </div>
+      <StyledTextField
+        ref={ref}
+        variant={muiVariant}
+        size={muiSize}
+        fullWidth
+        error={hasError}
+        helperText={helperText}
+        InputProps={
+          Object.keys(inputPropsForIcons).length > 0 ? inputPropsForIcons : {}
+        }
+        inputProps={
+          Object.keys(htmlInputProps).length > 0 ? htmlInputProps : {}
+        }
+        {...props}
+      />
     );
   }
 );

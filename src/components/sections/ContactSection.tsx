@@ -5,7 +5,8 @@ import {
   spacing,
   typography,
 } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
-import { Box, Container, TextField, Typography } from '@mui/material';
+import Input from '@/components/ui/Input/Input';
+import { Box, Container, Typography } from '@mui/material';
 import { useState } from 'react';
 
 /**
@@ -125,112 +126,32 @@ export const ContactSection = () => {
           >
             {/* Email Input */}
             <Box sx={{ mb: spacing.layout.xs, mt: spacing.component.lg }}>
-              <TextField
+              <Input
                 type='email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
                 required
-                fullWidth
-                variant='filled'
                 label='Where can we reach you?'
-                InputProps={{
-                  placeholder: 'your.email@example.com',
-                }}
-                InputLabelProps={{
-                  required: false,
-                }}
-                sx={{
-                  '& .MuiInputLabel-root': {
-                    color: colors.textDark,
-                  },
-                  '& .MuiInputLabel-root.Mui-focused': {
-                    color: colors.textDark,
-                  },
-                  '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                    color: colors.textDark,
-                  },
-                  '& .MuiInputBase-input': {
-                    color: colors.textDark,
-                  },
-                  '& .MuiInputBase-input::placeholder': {
-                    color: colors.textMuted,
-                    opacity: 0.6,
-                  },
-                  '& .MuiFilledInput-root': {
-                    backgroundColor: `rgba(53, 53, 53, 0.08)`,
-                    '&:hover': {
-                      backgroundColor: `rgba(53, 53, 53, 0.12)`,
-                    },
-                    '&.Mui-focused': {
-                      backgroundColor: `rgba(53, 53, 53, 0.08)`,
-                    },
-                  },
-                  '& .MuiFilledInput-underline:before': {
-                    borderBottomColor: colors.textDark,
-                  },
-                  '& .MuiFilledInput-underline:hover:before': {
-                    borderBottomColor: colors.textDark,
-                  },
-                  '& .MuiFilledInput-underline:after': {
-                    borderBottomColor: colors.textDark,
-                  },
-                }}
+                placeholder='your.email@example.com'
+                variant='filled'
               />
             </Box>
 
             {/* Textarea */}
             <Box sx={{ mb: spacing.layout.sm, mt: spacing.component.lg }}>
-              <TextField
-                id='filled-textarea'
+              <Input
                 label='What can we help you build?'
                 multiline
                 variant='filled'
                 value={project}
-                onChange={(e) => setProject(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setProject(e.target.value)
+                }
                 required
-                fullWidth
-                InputProps={{
-                  placeholder: 'Tell us about your project...',
-                }}
-                InputLabelProps={{
-                  required: false,
-                }}
-                sx={{
-                  '& .MuiInputLabel-root': {
-                    color: colors.textDark,
-                  },
-                  '& .MuiInputLabel-root.Mui-focused': {
-                    color: colors.textMuted,
-                  },
-                  '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                    color: colors.textMuted,
-                  },
-                  '& .MuiInputBase-input': {
-                    color: colors.textDark,
-                  },
-                  '& .MuiInputBase-input::placeholder': {
-                    color: colors.textMuted,
-                    opacity: 0.6,
-                  },
-                  '& .MuiFilledInput-root': {
-                    backgroundColor: `rgba(53, 53, 53, 0.08)`,
-                    '&:hover': {
-                      backgroundColor: `rgba(53, 53, 53, 0.12)`,
-                    },
-                    '&.Mui-focused': {
-                      backgroundColor: `rgba(53, 53, 53, 0.08)`,
-                    },
-                  },
-                  '& .MuiFilledInput-underline:before': {
-                    borderBottomColor: colors.textDark,
-                  },
-                  '& .MuiFilledInput-underline:hover:before': {
-                    borderBottomColor: colors.textDark,
-                  },
-                  '& .MuiFilledInput-underline:after': {
-                    borderBottomColor: colors.textDark,
-                  },
-                }}
+                placeholder='Tell us about your project...'
+                rows={1}
               />
             </Box>
 
