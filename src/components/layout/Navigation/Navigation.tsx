@@ -114,9 +114,27 @@ export default function Navigation() {
       const containerRect = navContainerRef.current.getBoundingClientRect();
       const linkRect = activeLink.getBoundingClientRect();
 
+      // Apply conditional logic for slider positioning
+      let adjustedLeft = linkRect.left - containerRect.left;
+      let adjustedWidth = linkRect.width;
+
+      if (linkRect.left === containerRect.left) {
+        // First item: extend width to the right
+        adjustedLeft = 0;
+        adjustedWidth = linkRect.width + 5;
+      } else if (linkRect.right === containerRect.right) {
+        // Last item: extend width to the left
+        adjustedLeft = linkRect.left - containerRect.left - 5;
+        adjustedWidth = linkRect.width + 5;
+      } else {
+        // Middle item: extend width on both sides
+        adjustedLeft = linkRect.left - containerRect.left - 5;
+        adjustedWidth = linkRect.width + 10;
+      }
+
       setSliderStyle({
-        left: linkRect.left - containerRect.left - 7.5, // Offset left by 7.5px to center the extra width
-        width: linkRect.width + 15, // Make background 15px wider (was 10px, now adding 5px more)
+        left: adjustedLeft,
+        width: adjustedWidth,
         opacity: 1,
       });
     }
