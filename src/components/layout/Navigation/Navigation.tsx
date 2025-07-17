@@ -76,10 +76,10 @@ export default function Navigation() {
   }>({ left: 0, width: 0, opacity: 0 });
 
   useEffect(() => {
-    // Extended delay (2000ms = 2 seconds) before showing real navigation
+    // Brief delay to show skeleton loading state
     const timer = setTimeout(() => {
       setMounted(true);
-    }, 2000);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, []);
