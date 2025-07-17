@@ -32,7 +32,7 @@ import { ServicesSection } from '@/components/sections/ServicesSection';
  */
 export default function WorkPage() {
   return (
-    <main className='bg-primary-dark min-h-screen'>
+    <main className='work-page'>
       <IntroSection />
       <ServicesSection />
       <PartnersSection />

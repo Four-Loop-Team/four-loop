@@ -156,7 +156,7 @@ const GridSystemDemo: React.FC = () => {
           </Typography>
         </GridItem>
         <GridItem xs={12} sm={8} md={9}>
-          <Paper sx={{ p: 3, bgcolor: 'var(--nav-container-background)' }}>
+          <Paper sx={{ p: 3, bgcolor: 'var(--background-accent)' }}>
             <Typography variant='h6'>Main Content Area</Typography>
             <Typography>
               This content area adapts to different screen sizes. On extra small
@@ -167,14 +167,11 @@ const GridSystemDemo: React.FC = () => {
           </Paper>
         </GridItem>
         <GridItem xs={12} sm={4} md={3}>
-          <Paper sx={{ p: 3, bgcolor: 'var(--drawer-background)' }}>
-            <Typography
-              variant='h6'
-              sx={{ color: 'var(--drawer-inactive-text)' }}
-            >
+          <Paper sx={{ p: 3, bgcolor: 'var(--background-primary)' }}>
+            <Typography variant='h6' sx={{ color: 'var(--text-inverse)' }}>
               Sidebar
             </Typography>
-            <Typography sx={{ color: 'var(--drawer-inactive-text)' }}>
+            <Typography sx={{ color: 'var(--text-inverse)' }}>
               Responsive sidebar that stacks on mobile.
             </Typography>
           </Paper>
@@ -312,7 +309,7 @@ const GridSystemDemo: React.FC = () => {
               <Paper
                 sx={{
                   p: 4, // 32px padding = 8px × 4
-                  bgcolor: 'var(--nav-container-background)',
+                  bgcolor: 'var(--background-accent)',
                   color: 'var(--nav-text-primary)',
                   mb: 2, // 16px margin = 8px × 2
                 }}
@@ -335,7 +332,7 @@ const GridSystemDemo: React.FC = () => {
                 sx={{
                   p: 3, // 24px padding = 8px × 3
                   bgcolor: 'var(--drawer-background)',
-                  color: 'var(--drawer-inactive-text)',
+                  color: 'var(--text-inverse)',
                   mb: 2, // 16px margin = 8px × 2
                 }}
               >
@@ -371,7 +368,7 @@ const GridSystemDemo: React.FC = () => {
           </Typography>
           <TwoColumnLayout
             left={
-              <Paper sx={{ p: 3, bgcolor: 'var(--nav-container-background)' }}>
+              <Paper sx={{ p: 3, bgcolor: 'var(--background-accent)' }}>
                 <Typography variant='h6'>Left Column</Typography>
                 <Typography>
                   Content for the left side of the layout.
@@ -380,13 +377,10 @@ const GridSystemDemo: React.FC = () => {
             }
             right={
               <Paper sx={{ p: 3, bgcolor: 'var(--drawer-background)' }}>
-                <Typography
-                  variant='h6'
-                  sx={{ color: 'var(--drawer-inactive-text)' }}
-                >
+                <Typography variant='h6' sx={{ color: 'var(--text-inverse)' }}>
                   Right Column
                 </Typography>
-                <Typography sx={{ color: 'var(--drawer-inactive-text)' }}>
+                <Typography sx={{ color: 'var(--text-inverse)' }}>
                   Content for the right side of the layout.
                 </Typography>
               </Paper>
@@ -410,7 +404,7 @@ const GridSystemDemo: React.FC = () => {
               </Paper>
             }
             center={
-              <Paper sx={{ p: 2, bgcolor: 'var(--nav-container-background)' }}>
+              <Paper sx={{ p: 2, bgcolor: 'var(--background-accent)' }}>
                 <Typography variant='subtitle1'>Center</Typography>
                 <Typography variant='body2'>Main content area</Typography>
               </Paper>
@@ -465,7 +459,7 @@ const GridSystemDemo: React.FC = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              bgcolor: 'var(--nav-container-background)',
+              bgcolor: 'var(--background-accent)',
             }}
           >
             <Typography>
@@ -505,7 +499,7 @@ const GridSystemDemo: React.FC = () => {
               bgcolor: 'var(--drawer-background)',
             }}
           >
-            <Typography sx={{ color: 'var(--drawer-inactive-text)' }}>
+            <Typography sx={{ color: 'var(--text-inverse)' }}>
               Auto-sizing (fills remaining space)
             </Typography>
           </Paper>

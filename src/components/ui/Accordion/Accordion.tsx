@@ -301,10 +301,12 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
             : {}
         }
       >
-        <div className='flex items-center gap-3 flex-1 min-w-0'>
-          {item.icon && <span className='flex-shrink-0'>{item.icon}</span>}
+        <div className='accordion-trigger-content'>
+          {item.icon && (
+            <span className='accordion-trigger-icon'>{item.icon}</span>
+          )}
           <span
-            className={`${variant === 'minimal' ? 'text-white text-xl font-normal' : 'font-medium'}`}
+            className={`accordion-trigger-text ${variant === 'minimal' ? 'accordion-trigger-text-minimal' : ''}`}
             style={variant === 'minimal' ? { color: 'white' } : {}}
           >
             {item.trigger}
@@ -500,12 +502,9 @@ const Collapsible: React.FC<CollapsibleProps> = ({
         aria-controls='collapsible-content'
         id='collapsible-trigger'
       >
-        <span className='flex-1 min-w-0'>{trigger}</span>
+        <span className='collapsible-trigger-text'>{trigger}</span>
         <svg
-          className={`
-            w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-2
-            ${isExpanded ? 'rotate-180' : ''}
-          `}
+          className={`collapsible-arrow ${isExpanded ? 'collapsible-arrow-expanded' : ''}`}
           fill='none'
           viewBox='0 0 24 24'
           stroke='currentColor'

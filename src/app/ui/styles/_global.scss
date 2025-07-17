@@ -27,17 +27,33 @@
   --drawer-hover-background: #{variables.$drawer-hover-background};
   --drawer-border-accent: #{variables.$drawer-border-accent};
 
-  /* Brand Color Variables - Source of Truth */
-  --color-highlight: #{variables.$color-highlight};
-  --color-background-primary: #{variables.$color-background-primary};
-  --color-background-secondary: #{variables.$color-background-secondary};
-  --color-text-light: #{variables.$color-text-light};
+  /* New Semantic Brand Color Variables */
+  --brand-primary: #{variables.$brand-primary};
+  --brand-secondary: #{variables.$brand-secondary};
+  --brand-tertiary: #{variables.$brand-tertiary};
+  --brand-neutral: #{variables.$brand-neutral};
+  --text-primary: #{variables.$text-primary};
+  --text-inverse: #{variables.$text-inverse};
+  --text-accent: #{variables.$text-accent};
+  --background-primary: #{variables.$background-primary};
+  --background-secondary: #{variables.$background-secondary};
+  --background-accent: #{variables.$background-accent};
+  --background-inverse: #{variables.$background-inverse};
+  --border-primary: #{variables.$border-primary};
+  --border-accent: #{variables.$border-accent};
+  --border-inverse: #{variables.$border-inverse};
+
+  /* Legacy Brand Color Variables - Source of Truth (maintain compatibility) */
+  --color-highlight: #{variables.$brand-primary};
+  --color-background-primary: #{variables.$brand-secondary};
+  --color-background-secondary: #{variables.$brand-tertiary};
+  --color-text-light: #{variables.$brand-neutral};
 
   /* Legacy Color Variables (for compatibility) */
-  --color-primary: #{variables.$color-highlight};
-  --color-secondary: #{variables.$color-background-secondary};
-  --color-background: #{variables.$color-background-primary};
-  --color-text-primary: #{variables.$color-text-light};
+  --color-primary: #{variables.$brand-primary};
+  --color-secondary: #{variables.$brand-tertiary};
+  --color-background: #{variables.$brand-secondary};
+  --color-text-primary: #{variables.$brand-neutral};
 
   /* Spacing Variables */
   --space-xs: #{variables.$space-xs};
@@ -111,7 +127,7 @@ html {
   font-size: 16px;
   line-height: 1.6;
   scroll-behavior: smooth;
-  background-color: var(--color-background);
+  background-color: var(--background-primary);
   min-height: 100vh;
 }
 
@@ -120,7 +136,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: variables.$color-text-primary;
-  background-color: var(--color-background);
+  background-color: var(--background-primary);
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -131,7 +147,7 @@ body {
 #__next,
 #main-content,
 .MuiCssBaseline-root {
-  background-color: var(--color-background);
+  background-color: var(--background-primary);
   min-height: 100vh;
 }
 

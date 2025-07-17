@@ -150,7 +150,7 @@ const Sticky: React.FC<StickyProps> = ({
   return (
     <div
       ref={elementRef}
-      className={`${getBreakpointClass()}${fixed ? 'fixed' : 'sticky'} ${className}`}
+      className={`sticky-component ${getBreakpointClass()}${fixed ? 'sticky-fixed' : 'sticky-default'} ${className}`}
       style={getPositionStyles()}
       data-stuck={isStuck}
       data-testid={testId}

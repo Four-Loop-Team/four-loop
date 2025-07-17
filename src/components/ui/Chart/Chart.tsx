@@ -429,13 +429,13 @@ const Chart: React.FC<ChartProps> = ({
   if (error) {
     return (
       <div
-        className={`flex items-center justify-center bg-red-50 border border-red-200 rounded-lg p-4 ${className}`}
+        className={`chart-error-wrapper ${className}`}
         style={{ width, height }}
         data-testid={`${testId}-error`}
       >
-        <div className='text-red-600 text-center'>
+        <div className='chart-error'>
           <svg
-            className='w-8 h-8 mx-auto mb-2'
+            className='chart-error-icon'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -445,8 +445,8 @@ const Chart: React.FC<ChartProps> = ({
               clipRule='evenodd'
             />
           </svg>
-          <p className='text-sm font-medium'>Chart Error</p>
-          <p className='text-xs text-red-500 mt-1'>{error}</p>
+          <p className='chart-error-title'>Chart Error</p>
+          <p className='chart-error-message'>{error}</p>
         </div>
       </div>
     );
@@ -455,26 +455,26 @@ const Chart: React.FC<ChartProps> = ({
   if (loading) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-50 border border-gray-200 rounded-lg ${className}`}
+        className={`chart-loading ${className}`}
         style={{ width, height }}
         data-testid={`${testId}-loading`}
       >
-        <div className='text-center'>
-          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2'></div>
-          <p className='text-sm text-gray-600'>Loading chart...</p>
+        <div className='chart-loading-content'>
+          <div className='chart-spinner'></div>
+          <p className='chart-loading-text'>Loading chart...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`relative ${className}`} style={{ width, height }}>
+    <div className={`chart-container ${className}`} style={{ width, height }}>
       <canvas
         ref={canvasRef}
         onClick={handleCanvasClick}
         onMouseEnter={() => _setIsHovered(true)}
         onMouseLeave={() => _setIsHovered(false)}
-        className='cursor-pointer'
+        className='chart-canvas'
         role='img'
         aria-label={
           ariaLabel ??
@@ -486,7 +486,7 @@ const Chart: React.FC<ChartProps> = ({
       {/* Tooltip */}
       {_hoveredPoint && (
         <div
-          className='absolute bg-gray-900 text-white text-xs rounded px-2 py-1 pointer-events-none z-10'
+          className='chart-tooltip'
           style={{
             left: _hoveredPoint.x - 30,
             top: _hoveredPoint.y - 30,

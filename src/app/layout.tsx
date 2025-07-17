@@ -1,7 +1,6 @@
 import { poppins } from '@/app/ui/fonts';
 import { Navigation, SkipNavigationLink } from '@/components/layout';
 import BrandThemeProvider from '@/components/system/BrandThemeProvider/BrandThemeProvider';
-import { TailwindClassTest } from '@/components/TailwindClassTest';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { homeMetadata } from '@/lib/metadata';
 import {
@@ -71,7 +70,6 @@ export default function RootLayout({
       </head>
       <body className={`${poppins.variable} antialiased layout-body`}>
         <ThemeProvider defaultTheme='auto'>
-          <TailwindClassTest />
           <SkipNavigationLink />
           <BrandThemeProvider>
             <Navigation />

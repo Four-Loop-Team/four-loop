@@ -168,28 +168,28 @@ export const EXTENDED_SEMANTIC_COLORS = {
 export const CONTEXTUAL_COLORS = {
   // Surface colors (backgrounds)
   surface: {
-    primary: 'var(--color-surface-primary)',
-    secondary: 'var(--color-surface-secondary)',
-    tertiary: 'var(--color-surface-tertiary)',
-    inverse: 'var(--color-surface-inverse)',
+    primary: 'var(--background-primary)',
+    secondary: 'var(--background-secondary)',
+    tertiary: 'var(--background-accent)',
+    inverse: 'var(--background-inverse)',
     overlay: 'var(--color-surface-overlay)',
   },
 
   // Border colors
   border: {
-    default: 'var(--color-border-default)',
+    default: 'var(--border-primary)',
     muted: 'var(--color-border-muted)',
-    emphasis: 'var(--color-border-emphasis)',
-    interactive: 'var(--color-border-interactive)',
+    emphasis: 'var(--border-accent)',
+    interactive: 'var(--border-accent)',
   },
 
   // Text colors
   text: {
-    primary: 'var(--color-text-primary)',
+    primary: 'var(--text-primary)',
     secondary: 'var(--color-text-secondary)',
     tertiary: 'var(--color-text-tertiary)',
-    inverse: 'var(--color-text-inverse)',
-    brand: 'var(--color-text-brand)',
+    inverse: 'var(--text-inverse)',
+    brand: 'var(--text-accent)',
   },
 } as const;
 

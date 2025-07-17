@@ -175,13 +175,13 @@ const Timeline: React.FC<TimelineProps> = ({
   if (loading) {
     return (
       <div
-        className={`flex items-center justify-center py-8 ${className}`}
+        className={`timeline-loading-wrapper ${className}`}
         data-testid={`${testId}-loading`}
       >
-        <div className='flex items-center gap-2 text-gray-500'>
-          <svg className='animate-spin w-5 h-5' fill='none' viewBox='0 0 24 24'>
+        <div className='timeline-loading'>
+          <svg className='timeline-spinner' fill='none' viewBox='0 0 24 24'>
             <circle
-              className='opacity-25'
+              className='timeline-spinner-circle'
               cx='12'
               cy='12'
               r='10'
@@ -189,7 +189,7 @@ const Timeline: React.FC<TimelineProps> = ({
               strokeWidth='4'
             />
             <path
-              className='opacity-75'
+              className='timeline-spinner-path'
               fill='currentColor'
               d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
             />
@@ -203,7 +203,7 @@ const Timeline: React.FC<TimelineProps> = ({
   if (sortedItems.length === 0) {
     return (
       <div
-        className={`flex items-center justify-center py-8 text-gray-500 ${className}`}
+        className={`timeline-empty-wrapper ${className}`}
         data-testid={`${testId}-empty`}
       >
         {emptyMessage}
@@ -292,7 +292,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       case 'success':
         return (
           <svg
-            className='w-full h-full text-green-600'
+            className='timeline-icon-svg'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -306,7 +306,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       case 'error':
         return (
           <svg
-            className='w-full h-full text-red-600'
+            className='timeline-icon-svg'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -320,7 +320,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       case 'warning':
         return (
           <svg
-            className='w-full h-full text-yellow-600'
+            className='timeline-icon-svg'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -334,7 +334,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       case 'info':
         return (
           <svg
-            className='w-full h-full text-blue-600'
+            className='timeline-icon-svg'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -346,7 +346,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
           </svg>
         );
       default:
-        return <div className='w-full h-full bg-gray-400 rounded-full'></div>;
+        return <div className='timeline-icon-default'></div>;
     }
   };
 
@@ -397,27 +397,31 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
         </div>
 
         {/* Connector */}
-        {showConnector && <div className='w-px h-4 bg-gray-300 my-2'></div>}
+        {showConnector && <div className='timeline-connector-compact'></div>}
 
         {/* Content */}
-        <div className={`text-center max-w-xs ${sizeClasses[size].padding}`}>
+        <div
+          className={`timeline-item-content-compact ${sizeClasses[size].padding}`}
+        >
           {showTimestamp && (
             <time
-              className={`block text-gray-500 mb-1 ${sizeClasses[size].timestamp}`}
+              className={`timeline-item-timestamp ${sizeClasses[size].timestamp}`}
             >
               {formatTimestamp(item.timestamp)}
             </time>
           )}
-          <h3 className={`${sizeClasses[size].title} text-gray-900 mb-1`}>
+          <h3 className={`timeline-item-title ${sizeClasses[size].title}`}>
             {item.title}
           </h3>
           {(item.content ?? item.description) && (
-            <div className={`text-gray-600 ${sizeClasses[size].content}`}>
+            <div
+              className={`timeline-item-content ${sizeClasses[size].content}`}
+            >
               {item.content ?? item.description}
             </div>
           )}
           {item.actions && item.actions.length > 0 && (
-            <div className='flex gap-1 mt-2 justify-center'>
+            <div className='timeline-actions'>
               {item.actions.map((action, actionIndex) => (
                 <button
                   key={actionIndex}
@@ -459,39 +463,36 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       data-testid={`${testId}-${item.id}`}
     >
       {/* Icon and connector */}
-      <div className='flex flex-col items-center'>
+      <div className='timeline-icon-container'>
         <div
-          className={`
-          relative flex items-center justify-center rounded-full border-2 border-white shadow-sm
-          ${sizeClasses[size].icon} ${getIconBackgroundColor()}
-        `}
+          className={`timeline-icon ${sizeClasses[size].icon} ${getIconBackgroundColor()}`}
         >
           {getIcon()}
         </div>
-        {showConnector && <div className='w-px flex-1 bg-gray-300 mt-2'></div>}
+        {showConnector && <div className='timeline-connector'></div>}
       </div>
 
       {/* Content */}
       <div
-        className={`flex-1 pb-8 ${sizeClasses[size].padding} ${variant === 'detailed' ? 'bg-white border border-gray-200 rounded-lg shadow-sm' : ''}`}
+        className={`timeline-content ${sizeClasses[size].padding} ${variant === 'detailed' ? 'timeline-content-detailed' : ''}`}
       >
         {showTimestamp && (
           <time
-            className={`block text-gray-500 mb-1 ${sizeClasses[size].timestamp}`}
+            className={`timeline-item-timestamp ${sizeClasses[size].timestamp}`}
           >
             {formatTimestamp(item.timestamp)}
           </time>
         )}
-        <h3 className={`${sizeClasses[size].title} text-gray-900 mb-2`}>
+        <h3 className={`timeline-item-title ${sizeClasses[size].title}`}>
           {item.title}
         </h3>
         {(item.content ?? item.description) && (
-          <div className={`text-gray-600 mb-3 ${sizeClasses[size].content}`}>
+          <div className={`timeline-item-content ${sizeClasses[size].content}`}>
             {item.content ?? item.description}
           </div>
         )}
         {item.actions && item.actions.length > 0 && (
-          <div className='flex gap-2'>
+          <div className='timeline-actions-detailed'>
             {item.actions.map((action, actionIndex) => (
               <button
                 key={actionIndex}

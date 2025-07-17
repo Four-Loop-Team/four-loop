@@ -107,10 +107,8 @@ export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
 
     return (
       <div ref={ref} className={classes} {...props}>
-        {title && (
-          <h3 className='text-lg font-semibold text-gray-900'>{title}</h3>
-        )}
-        {subtitle && <p className='mt-1 text-sm text-gray-600'>{subtitle}</p>}
+        {title && <h3 className='card-title'>{title}</h3>}
+        {subtitle && <p className='card-subtitle'>{subtitle}</p>}
         {children}
       </div>
     );

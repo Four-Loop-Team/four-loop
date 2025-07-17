@@ -119,8 +119,8 @@ export default function StyleGuide() {
   return (
     <Box
       sx={{
-        backgroundColor: 'var(--color-background-primary)',
-        color: 'var(--color-text-light)',
+        backgroundColor: 'var(--background-primary)',
+        color: 'var(--text-primary)',
         minHeight: '100vh',
         padding: 0,
       }}
@@ -132,19 +132,19 @@ export default function StyleGuide() {
             variant='h1'
             component='h1'
             gutterBottom
-            sx={{ color: 'var(--color-highlight)' }}
+            sx={{ color: 'var(--text-accent)' }}
           >
             Four Loop Digital Design System
           </Typography>
           <Typography
             variant='h6'
-            sx={{ color: 'var(--color-text-light)', opacity: 0.8 }}
+            sx={{ color: 'var(--text-primary)', opacity: 0.8 }}
           >
             Comprehensive reference for developers and designers
           </Typography>
           <Typography
             variant='body1'
-            sx={{ color: 'var(--color-text-light)', opacity: 0.7 }}
+            sx={{ color: 'var(--text-primary)', opacity: 0.7 }}
           >
             This style guide documents the design tokens, components, and
             patterns used throughout the Four Loop Digital design system.

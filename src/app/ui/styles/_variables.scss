@@ -4,35 +4,71 @@ $logo-img-url: url('/logo.png');
 // BRAND COLOR SYSTEM - Source of truth for all colors
 // =============================================================================
 
-// Brand Colors (ONLY these 4 colors should be used)
-$color-highlight: #e2e891; // Yellow-green highlight/attention color (Logo, text, background)
-$color-background-primary: #353535; // Main website background, text and borders on light
-$color-background-secondary: #232323; // Darker background for content that needs to stand out
-$color-text-light: #fff; // Text and borders on dark backgrounds
+// Primary brand colors (named by purpose/usage, not by color value)
+$brand-primary: #e2e891; // Main brand color for accents and highlights
+$brand-secondary: #353535; // Primary supporting color
+$brand-tertiary: #232323; // Secondary supporting color
+$brand-neutral: #fff; // Neutral color for contrast
 
-// Semantic aliases for clarity
-$color-primary: $color-highlight; // For compatibility - but prefer $color-highlight
-$color-secondary: $color-background-secondary; // For compatibility
-$color-background: $color-background-primary; // For compatibility
-$color-text-primary: $color-text-light; // For compatibility
+// =============================================================================
+// SEMANTIC ALIASES - Specific usage contexts
+// =============================================================================
 
-// Navigation-specific semantic variables
-$nav-background: $color-background-primary;
-$nav-container-background: $color-highlight;
-$nav-slider-background: $color-background-secondary;
-$nav-slider-border: $color-highlight;
-$nav-text-active: $color-text-light;
-$nav-text-inactive: $color-background-primary;
-$nav-text-hover: $color-text-light;
+// Text colors
+$text-primary: $brand-secondary; // Main text color (#353535)
+$text-inverse: $brand-neutral; // Text on dark backgrounds (#fff)
+$text-accent: $brand-primary; // Accent text color (#e2e891)
 
-// Mobile drawer semantic variables
-$drawer-background: $color-background-primary;
-$drawer-active-background: rgba($color-highlight, 0.15);
-$drawer-active-border: rgba($color-highlight, 0.3);
-$drawer-active-text: $color-highlight;
-$drawer-inactive-text: $color-text-light;
-$drawer-hover-background: rgba($color-highlight, 0.25);
-$drawer-border-accent: rgba($color-highlight, 0.2);
+// Background colors
+$background-primary: $brand-secondary; // Main page background (#353535)
+$background-secondary: $brand-tertiary; // Secondary backgrounds (#232323)
+$background-accent: $brand-primary; // Accent/highlight backgrounds (#e2e891)
+$background-inverse: $brand-neutral; // Light backgrounds (#fff)
+
+// Border colors
+$border-primary: $brand-secondary; // Standard borders (#353535)
+$border-accent: $brand-primary; // Accent borders (#e2e891)
+$border-inverse: $brand-neutral; // Borders on dark backgrounds (#fff)
+
+// Legacy compatibility aliases (maintain existing functionality)
+$color-highlight: $brand-primary; // #e2e891
+$color-background-primary: $brand-secondary; // #353535
+$color-background-secondary: $brand-tertiary; // #232323
+$color-text-light: $brand-neutral; // #fff
+$color-primary: $brand-primary; // #e2e891
+$color-secondary: $brand-tertiary; // #232323
+$color-background: $brand-secondary; // #353535
+$color-text-primary: $brand-neutral; // #fff
+
+// Navigation-specific semantic variables (using new semantic system)
+$nav-background: $background-primary; // #353535 (same as before)
+$nav-container-background: $background-accent; // #e2e891 (same as before)
+$nav-slider-background: $background-secondary; // #232323 (same as before)
+$nav-slider-border: $border-accent; // #e2e891 (same as before)
+$nav-text-active: $text-inverse; // #fff (same as before)
+$nav-text-inactive: $text-primary; // #353535 (same as before)
+$nav-text-hover: $text-inverse; // #fff (same as before)
+
+// Mobile drawer semantic variables (using new semantic system)
+$drawer-background: $background-primary; // #353535 (same as before)
+$drawer-active-background: rgba(
+  $background-accent,
+  0.15
+); // rgba(#e2e891, 0.15) (same as before)
+$drawer-active-border: rgba(
+  $border-accent,
+  0.3
+); // rgba(#e2e891, 0.3) (same as before)
+$drawer-active-text: $text-accent; // #e2e891 (same as before)
+$drawer-inactive-text: $text-inverse; // #fff (same as before)
+$drawer-hover-background: rgba(
+  $background-accent,
+  0.25
+); // rgba(#e2e891, 0.25) (same as before)
+$drawer-border-accent: rgba(
+  $border-accent,
+  0.2
+); // rgba(#e2e891, 0.2) (same as before)
 
 // =============================================================================
 // SPACING SYSTEM - Consistent spacing scale

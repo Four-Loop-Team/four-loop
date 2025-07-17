@@ -119,7 +119,7 @@ const Toast: React.FC<ToastProps> = ({
       case 'success':
         return (
           <svg
-            className='w-5 h-5 text-green-600'
+            className='toast-icon toast-icon-success'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -133,7 +133,7 @@ const Toast: React.FC<ToastProps> = ({
       case 'error':
         return (
           <svg
-            className='w-5 h-5 text-red-600'
+            className='toast-icon toast-icon-error'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -147,7 +147,7 @@ const Toast: React.FC<ToastProps> = ({
       case 'warning':
         return (
           <svg
-            className='w-5 h-5 text-yellow-600'
+            className='toast-icon toast-icon-warning'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -160,13 +160,9 @@ const Toast: React.FC<ToastProps> = ({
         );
       case 'loading':
         return (
-          <svg
-            className='animate-spin w-5 h-5 text-blue-600'
-            fill='none'
-            viewBox='0 0 24 24'
-          >
+          <svg className='toast-spinner' fill='none' viewBox='0 0 24 24'>
             <circle
-              className='opacity-25'
+              className='toast-spinner-circle'
               cx='12'
               cy='12'
               r='10'
@@ -174,7 +170,7 @@ const Toast: React.FC<ToastProps> = ({
               strokeWidth='4'
             />
             <path
-              className='opacity-75'
+              className='toast-spinner-path'
               fill='currentColor'
               d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
             />
@@ -183,7 +179,7 @@ const Toast: React.FC<ToastProps> = ({
       default:
         return (
           <svg
-            className='w-5 h-5 text-blue-600'
+            className='toast-icon toast-icon-info'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -222,18 +218,14 @@ const Toast: React.FC<ToastProps> = ({
       `}
       data-testid={`${testId}-${toast.id}`}
     >
-      <div className='p-4'>
-        <div className='flex items-start'>
-          <div className='flex-shrink-0'>{getIcon()}</div>
-          <div className='ml-3 flex-1'>
-            {toast.title && (
-              <p className='text-sm font-medium text-gray-900 mb-1'>
-                {toast.title}
-              </p>
-            )}
-            <p className='text-sm text-gray-700'>{toast.message}</p>
+      <div className='toast-content'>
+        <div className='toast-main'>
+          <div className='toast-icon'>{getIcon()}</div>
+          <div className='toast-text'>
+            {toast.title && <p className='toast-title'>{toast.title}</p>}
+            <p className='toast-message'>{toast.message}</p>
             {toast.actions && toast.actions.length > 0 && (
-              <div className='mt-3 flex gap-2'>
+              <div className='toast-actions'>
                 {toast.actions.map((action, index) => (
                   <button
                     key={index}
@@ -256,14 +248,14 @@ const Toast: React.FC<ToastProps> = ({
             )}
           </div>
           {toast.dismissible !== false && (
-            <div className='ml-4 flex-shrink-0'>
+            <div className='toast-dismiss'>
               <button
                 onClick={handleDismiss}
-                className='text-gray-400 hover:text-gray-600 transition-colors duration-200 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center'
+                className='toast-dismiss-button'
                 aria-label='Dismiss notification'
               >
                 <svg
-                  className='w-5 h-5'
+                  className='toast-dismiss-icon'
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke='currentColor'
@@ -325,11 +317,11 @@ const ToastContainer: React.FC<ToastContainerProps> = ({
 
   const containerContent = (
     <div
-      className={`fixed z-50 pointer-events-none ${getPositionClasses()} ${className}`}
+      className={`toast-container-wrapper ${getPositionClasses()} ${className}`}
       style={{ gap: `${gap}px` }}
       data-testid={testId}
     >
-      <div className='flex flex-col gap-2'>
+      <div className='toast-container'>
         {orderedToasts.map((toast) => (
           <Toast
             key={toast.id}

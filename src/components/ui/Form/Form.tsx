@@ -351,7 +351,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
 
       case 'checkbox':
         return (
-          <div className='flex items-center'>
+          <div className='form-checkbox-container'>
             <input
               id={name}
               type='checkbox'
@@ -360,17 +360,14 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
               required={required}
               disabled={isDisabled}
               readOnly={readOnly}
-              className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+              className='form-checkbox-input'
               onChange={handleChange}
               onBlur={onBlur}
             />
             {label && (
-              <label
-                htmlFor={name}
-                className='ml-2 block text-sm text-gray-900'
-              >
+              <label htmlFor={name} className='form-checkbox-label'>
                 {label}
-                {required && <span className='text-red-500 ml-1'>*</span>}
+                {required && <span className='form-required-indicator'>*</span>}
               </label>
             )}
           </div>
@@ -378,11 +375,11 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
 
       case 'radio':
         return (
-          <div className='space-y-2'>
+          <div className='form-radio-group'>
             {options?.map((option) => {
               const radioId = `${name}-${option.value}`;
               return (
-                <div key={option.value} className='flex items-center'>
+                <div key={option.value} className='form-radio-container'>
                   <input
                     id={radioId}
                     type='radio'
@@ -391,14 +388,11 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
                     checked={value === option.value}
                     required={required}
                     disabled={isDisabled ?? option.disabled}
-                    className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300'
+                    className='form-radio-input'
                     onChange={handleChange}
                     onBlur={onBlur}
                   />
-                  <label
-                    htmlFor={radioId}
-                    className='ml-2 block text-sm text-gray-900'
-                  >
+                  <label htmlFor={radioId} className='form-radio-label'>
                     {option.label}
                   </label>
                 </div>
@@ -453,21 +447,19 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
       {label && type !== 'checkbox' && (
         <label
           htmlFor={name}
-          className={`block text-sm font-medium text-gray-700 ${layout === 'horizontal' ? 'pt-2' : 'mb-1'}`}
+          className={`form-label ${layout === 'horizontal' ? 'form-label-horizontal' : ''}`}
         >
           {label}
-          {required && <span className='text-red-500 ml-1'>*</span>}
+          {required && <span className='form-required-indicator'>*</span>}
         </label>
       )}
 
       <div className={layout === 'horizontal' ? 'col-span-2' : ''}>
         {renderInput()}
 
-        {description && (
-          <p className='mt-1 text-sm text-gray-500'>{description}</p>
-        )}
+        {description && <p className='form-description'>{description}</p>}
 
-        {showError && <p className='mt-1 text-sm text-red-600'>{error}</p>}
+        {showError && <p className='form-error'>{error}</p>}
       </div>
     </div>
   );
@@ -748,7 +740,7 @@ export const Form: React.FC<FormProps> = ({
 
       {(showSubmit || showReset) && (
         <div
-          className={`flex ${layout === 'horizontal' ? 'col-start-2 col-span-2' : ''} gap-2 mt-6`}
+          className={`form-buttons ${layout === 'horizontal' ? 'form-buttons-horizontal' : ''}`}
         >
           {showSubmit && (
             <button
@@ -923,21 +915,21 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   };
 
   return (
-    <div className={`max-w-2xl mx-auto ${className}`} data-testid={testId}>
+    <div className={`wizard-wrapper ${className}`} data-testid={testId}>
       {/* Progress indicator */}
       {showProgress && (
-        <div className='mb-8'>
+        <div className='wizard-progress'>
           {/* Step counter */}
-          <div className='text-center mb-4'>
-            <p className='text-sm text-gray-500'>
+          <div className='wizard-step-counter'>
+            <p className='wizard-step-text'>
               Step {state.currentStep + 1} of {steps.length}
             </p>
           </div>
 
-          <div className='flex items-center'>
+          <div className='wizard-progress-container'>
             {steps.map((step, index) => (
               <React.Fragment key={index}>
-                <div className='flex items-center'>
+                <div className='wizard-step-wrapper'>
                   <div
                     className={`
                       flex items-center justify-center w-8 h-8 rounded-full border-2
@@ -952,7 +944,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                   >
                     {state.completedSteps.has(index) ? (
                       <svg
-                        className='w-5 h-5'
+                        className='wizard-step-icon'
                         fill='currentColor'
                         viewBox='0 0 20 20'
                       >
@@ -967,14 +959,14 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                     ) : null}
                   </div>
                   {showStepNumbers && (
-                    <div className='ml-2'>
+                    <div className='wizard-step-details'>
                       <p
-                        className={`text-sm font-medium ${index === state.currentStep ? 'text-blue-600' : 'text-gray-500'}`}
+                        className={`wizard-step-title ${index === state.currentStep ? 'wizard-step-title-active' : 'wizard-step-title-inactive'}`}
                       >
                         {step.title}
                       </p>
                       {step.description && (
-                        <p className='text-xs text-gray-400'>
+                        <p className='wizard-step-description'>
                           {step.description}
                         </p>
                       )}
@@ -984,10 +976,10 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
 
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-0.5 ml-4 mr-4 ${
+                    className={`wizard-step-connector ${
                       state.completedSteps.has(index)
-                        ? 'bg-green-600'
-                        : 'bg-gray-300'
+                        ? 'wizard-step-connector-completed'
+                        : ''
                     }`}
                   />
                 )}
@@ -998,13 +990,11 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
       )}
 
       {/* Current step content */}
-      <div className='bg-white p-6 border border-gray-200 rounded-lg shadow-sm'>
-        <div className='mb-6'>
-          <h2 className='text-lg font-semibold text-gray-900'>
-            {currentStepConfig.title}
-          </h2>
+      <div className='wizard-step-content'>
+        <div className='wizard-step-header'>
+          <h2 className='wizard-step-title-main'>{currentStepConfig.title}</h2>
           {currentStepConfig.description && (
-            <p className='mt-1 text-sm text-gray-600'>
+            <p className='wizard-step-description-main'>
               {currentStepConfig.description}
             </p>
           )}
@@ -1039,7 +1029,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
         </div>
 
         {/* Navigation buttons */}
-        <div className='flex justify-between mt-8'>
+        <div className='wizard-navigation'>
           {allowBackward ? (
             <button
               type='button'

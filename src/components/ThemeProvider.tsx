@@ -201,7 +201,7 @@ export function ThemeToggle({ className = '', size = 'md' }: ThemeToggleProps) {
       {resolvedTheme === 'dark' ? (
         // Sun icon for light mode
         <svg
-          className='w-5 h-5'
+          style={{ width: '1.25rem', height: '1.25rem' }}
           fill='none'
           strokeLinecap='round'
           strokeLinejoin='round'
@@ -215,7 +215,7 @@ export function ThemeToggle({ className = '', size = 'md' }: ThemeToggleProps) {
       ) : (
         // Moon icon for dark mode
         <svg
-          className='w-5 h-5'
+          style={{ width: '1.25rem', height: '1.25rem' }}
           fill='none'
           strokeLinecap='round'
           strokeLinejoin='round'

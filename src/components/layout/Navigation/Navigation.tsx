@@ -24,6 +24,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import NavigationSkeleton from './NavigationSkeleton';
 
 const navigationItems = [
   { label: 'Work', href: '/work' },
@@ -75,7 +76,12 @@ export default function Navigation() {
   }>({ left: 0, width: 0, opacity: 0 });
 
   useEffect(() => {
-    setMounted(true);
+    // Extended delay (2000ms = 2 seconds) before showing real navigation
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const isActive = useCallback(
@@ -150,6 +156,11 @@ export default function Navigation() {
     }
   };
 
+  // Show skeleton while component is mounting
+  if (!mounted) {
+    return <NavigationSkeleton />;
+  }
+
   // Mobile drawer content
   const drawer = (
     <Box
@@ -189,7 +200,7 @@ export default function Navigation() {
             <ListItem key={item.label} disablePadding sx={{ mb: 1.5 }}>
               <Link
                 href={item.href}
-                className='no-underline w-full'
+                className='nav-link'
                 onClick={handleNavClick}
                 prefetch={true}
               >
@@ -197,20 +208,20 @@ export default function Navigation() {
                   sx={{
                     borderRadius: spacing.component.lg, // Using component spacing
                     color: active
-                      ? 'var(--drawer-active-text)'
-                      : 'var(--drawer-inactive-text)',
+                      ? 'var(--text-accent)'
+                      : 'var(--text-inverse)',
                     backgroundColor: active
-                      ? 'var(--drawer-active-background)'
+                      ? 'var(--background-accent)'
                       : 'transparent',
                     border: active
-                      ? '1px solid var(--drawer-active-border)'
+                      ? '1px solid var(--border-accent)'
                       : '1px solid transparent',
                     py: 'var(--space-lg)',
                     px: 'var(--space-2xl)',
                     transition: 'var(--nav-button-transition)',
                     '&:hover': {
                       backgroundColor: active
-                        ? 'var(--drawer-hover-background)'
+                        ? 'var(--background-accent)'
                         : 'rgba(255, 255, 255, 0.08)',
                       transform: 'translateX(4px)',
                     },
@@ -279,7 +290,7 @@ export default function Navigation() {
             }}
           >
             {/* Logo */}
-            <Link href='/' className='no-underline text-light' prefetch={true}>
+            <Link href='/' className='nav-brand-link' prefetch={true}>
               <Box
                 sx={{
                   display: 'flex',
@@ -296,13 +307,12 @@ export default function Navigation() {
                     fontWeight: 600,
                     letterSpacing: '0.1em', // Reduce letter spacing to match design
                     fontFamily: 'inherit',
+                    color: 'var(--text-inverse)', // Use brand variable for white text
+                    whiteSpace: 'nowrap', // Ensure whitespace is preserved
                   }}
                 >
                   FOUR LOOP{' '}
-                  <Box
-                    component='span'
-                    sx={{ color: 'var(--nav-container-background)' }}
-                  >
+                  <Box component='span' sx={{ color: 'var(--text-accent)' }}>
                     DIGITAL
                   </Box>
                 </Box>
@@ -314,7 +324,7 @@ export default function Navigation() {
               <Box
                 ref={navContainerRef}
                 sx={{
-                  backgroundColor: 'var(--nav-container-background)',
+                  backgroundColor: 'var(--background-accent)',
                   borderRadius: 'var(--nav-container-border-radius)',
                   padding: '0px',
                   display: 'flex',
@@ -328,8 +338,8 @@ export default function Navigation() {
                     position: 'absolute',
                     top: 0,
                     height: '100%',
-                    backgroundColor: 'var(--nav-slider-background)',
-                    border: '1px solid var(--nav-slider-border)',
+                    backgroundColor: 'var(--background-secondary)',
+                    border: '1px solid var(--border-accent)',
                     borderRadius: 'var(--nav-container-border-radius)',
                     transition: 'var(--nav-slider-transition)',
                     zIndex: 1,
@@ -344,27 +354,27 @@ export default function Navigation() {
                   // Define specific padding for each navigation item
                   let buttonPadding;
                   if (item.label === 'Work') {
-                    buttonPadding = '0 15px 0 20px';
+                    buttonPadding = '6px 15px 6px 20px';
                   } else if (item.label === 'About Us') {
-                    buttonPadding = '0 15px';
+                    buttonPadding = '6px 15px';
                   } else if (item.label === 'Contact') {
-                    buttonPadding = '0 20px 0 15px';
+                    buttonPadding = '6px 20px 6px 15px';
                   } else {
-                    buttonPadding = '0 15px'; // fallback updated to match About Us
+                    buttonPadding = '6px 15px'; // fallback updated to match About Us
                   }
 
                   return (
                     <Link
                       key={item.label}
                       href={item.href}
-                      className='no-underline'
+                      className='nav-menu-link'
                       prefetch={true}
                     >
                       <Button
                         sx={{
                           color: active
-                            ? 'var(--nav-text-active)'
-                            : 'var(--nav-text-inactive)',
+                            ? 'var(--text-inverse)'
+                            : 'var(--text-primary)',
                           textTransform: 'none',
                           fontSize: '1rem',
                           fontWeight: 400, // Normal weight, not bold
@@ -379,8 +389,8 @@ export default function Navigation() {
                           transition: 'color 0.15s ease',
                           '&:hover': {
                             color: active
-                              ? 'var(--nav-text-active)'
-                              : 'var(--nav-text-hover)',
+                              ? 'var(--text-inverse)'
+                              : 'var(--text-inverse)',
                             backgroundColor: 'transparent',
                           },
                         }}
@@ -437,8 +447,8 @@ export default function Navigation() {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: 'var(--nav-mobile-width)',
-              backgroundColor: 'var(--drawer-background)',
-              backgroundImage: `linear-gradient(135deg, var(--drawer-background) 0%, ${colors.accent} 100%)`,
+              backgroundColor: 'var(--background-primary)',
+              backgroundImage: `linear-gradient(135deg, var(--background-primary) 0%, ${colors.accent} 100%)`,
             },
           }}
         >

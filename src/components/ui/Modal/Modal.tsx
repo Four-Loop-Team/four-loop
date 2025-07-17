@@ -167,13 +167,13 @@ const Modal: React.FC<ModalProps> = ({
 
   const modalContent = (
     <div
-      className={`fixed inset-0 z-50 flex ${positionClasses[position]} ${backdropClasses[backdrop]} ${overlayClassName}`}
+      className={`modal-overlay ${positionClasses[position]} ${backdropClasses[backdrop]} ${overlayClassName}`}
       onClick={handleBackdropClick}
       data-testid={testId}
     >
       <div
         ref={modalRef}
-        className={`relative w-full ${sizeClasses[size]} bg-white rounded-lg shadow-xl transform transition-all duration-200 scale-100 opacity-100 ${className}`}
+        className={`modal-content ${sizeClasses[size]} ${className}`}
         role='dialog'
         aria-modal='true'
         aria-label={ariaLabel}
@@ -196,20 +196,17 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
   'data-testid': testId = 'modal-header',
 }) => {
   return (
-    <div
-      className={`flex items-center justify-between p-6 border-b border-gray-200 ${className}`}
-      data-testid={testId}
-    >
-      <div className='text-lg font-semibold text-gray-900'>{children}</div>
+    <div className={`modal-header ${className}`} data-testid={testId}>
+      <div className='modal-header-title'>{children}</div>
       {onClose && (
         <button
           onClick={onClose}
-          className='ml-4 text-gray-400 hover:text-gray-600 transition-colors duration-200'
+          className='modal-close-button'
           aria-label='Close modal'
           data-testid='modal-close-button'
         >
           <svg
-            className='w-6 h-6'
+            className='modal-close-icon'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -234,7 +231,7 @@ const ModalBody: React.FC<ModalBodyProps> = ({
   'data-testid': testId = 'modal-body',
 }) => {
   return (
-    <div className={`p-6 ${className}`} data-testid={testId}>
+    <div className={`modal-body ${className}`} data-testid={testId}>
       {children}
     </div>
   );
@@ -247,10 +244,7 @@ const ModalFooter: React.FC<ModalFooterProps> = ({
   'data-testid': testId = 'modal-footer',
 }) => {
   return (
-    <div
-      className={`flex items-center justify-end gap-3 p-6 border-t border-gray-200 ${className}`}
-      data-testid={testId}
-    >
+    <div className={`modal-footer ${className}`} data-testid={testId}>
       {children}
     </div>
   );
@@ -293,7 +287,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       case 'danger':
         return (
           <svg
-            className='w-6 h-6'
+            className='modal-icon'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -309,7 +303,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       case 'warning':
         return (
           <svg
-            className='w-6 h-6'
+            className='modal-icon'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -325,7 +319,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       default:
         return (
           <svg
-            className='w-6 h-6'
+            className='modal-icon'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -349,18 +343,14 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       className={className}
       data-testid={testId}
     >
-      <div className='p-6'>
-        <div className='flex items-start gap-4'>
-          <div className={`flex-shrink-0 ${variantStyles[variant].icon}`}>
+      <div className='modal-dialog-content'>
+        <div className='modal-dialog-layout'>
+          <div className={`modal-dialog-icon ${variantStyles[variant].icon}`}>
             {getIcon()}
           </div>
-          <div className='flex-1'>
-            {title && (
-              <h3 className='text-lg font-medium text-gray-900 mb-2'>
-                {title}
-              </h3>
-            )}
-            <p className='text-sm text-gray-600'>{message}</p>
+          <div className='modal-dialog-text'>
+            {title && <h3 className='modal-dialog-title'>{title}</h3>}
+            <p className='modal-dialog-message'>{message}</p>
           </div>
         </div>
       </div>
@@ -368,19 +358,19 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <button
           onClick={onCancel}
           disabled={loading}
-          className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
+          className='modal-button-cancel'
         >
           {cancelText}
         </button>
         <button
           onClick={onConfirm}
           disabled={loading}
-          className={`px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed ${variantStyles[variant].button}`}
+          className={`modal-button-confirm ${variantStyles[variant].button}`}
         >
           {loading ? (
-            <div className='flex items-center gap-2'>
+            <div className='modal-button-loading'>
               <svg
-                className='animate-spin w-4 h-4'
+                className='modal-button-spinner'
                 fill='none'
                 viewBox='0 0 24 24'
               >

@@ -178,7 +178,7 @@ const Tabs: React.FC<TabsProps> = ({
             >
               {addButtonContent ?? (
                 <svg
-                  className='w-4 h-4'
+                  className='tab-add-icon'
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke='currentColor'
@@ -326,17 +326,17 @@ const Tab: React.FC<TabProps> = ({
       id={`tab-${item.id}`}
       data-testid={`${testId}-${item.id}`}
     >
-      {item.icon && <span className='flex-shrink-0'>{item.icon}</span>}
+      {item.icon && <span className='tab-icon'>{item.icon}</span>}
       <span className='truncate'>{item.label}</span>
-      {item.badge && <span className='flex-shrink-0'>{item.badge}</span>}
+      {item.badge && <span className='tab-badge'>{item.badge}</span>}
       {onClose && (
         <button
           onClick={handleClose}
-          className='ml-1 flex-shrink-0 p-0.5 rounded hover:bg-black/10 transition-colors duration-200'
+          className='tab-close-button'
           aria-label={`Close ${item.label} tab`}
         >
           <svg
-            className='w-3 h-3'
+            className='tab-close-icon'
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'

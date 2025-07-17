@@ -177,12 +177,10 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   return (
     <div className='w-full'>
       {/* Header with day names */}
-      <div className='grid grid-cols-7 mb-2'>
-        {showWeekNumbers && (
-          <div className='font-medium text-gray-500 text-center'>Wk</div>
-        )}
+      <div className='calendar-grid'>
+        {showWeekNumbers && <div className='calendar-week-header'>Wk</div>}
         {weekDays.map((day) => (
-          <div key={day} className='font-medium text-gray-500 text-center p-2'>
+          <div key={day} className='calendar-day-header'>
             {day}
           </div>
         ))}
@@ -190,9 +188,9 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
 
       {/* Calendar grid */}
       {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} className='grid grid-cols-7'>
+        <div key={weekIndex} className='calendar-week'>
           {showWeekNumbers && (
-            <div className='text-gray-400 text-center flex items-center justify-center'>
+            <div className='calendar-week-number'>
               {Math.ceil((week[0].getDate() + firstDayOfWeek) / 7)}
             </div>
           )}
@@ -325,7 +323,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
       : hours;
 
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
+    <div className={`calendar-time-picker ${className}`}>
       {/* Hours */}
       <select
         value={displayHours}
@@ -348,7 +346,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
         })}
       </select>
 
-      <span className='text-gray-500'>:</span>
+      <span className='time-separator'>:</span>
 
       {/* Minutes */}
       <select
@@ -557,15 +555,15 @@ export const Calendar: React.FC<CalendarProps> = ({
       data-testid={testId}
     >
       {/* Header */}
-      <div className='flex items-center justify-between mb-4'>
+      <div className='calendar-header'>
         <button
           type='button'
           onClick={handlePreviousMonth}
-          className='p-1 hover:bg-gray-100 rounded'
+          className='calendar-nav-button'
           aria-label='Previous month'
         >
           <svg
-            className='w-5 h-5'
+            className='calendar-nav-icon'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -579,16 +577,16 @@ export const Calendar: React.FC<CalendarProps> = ({
           </svg>
         </button>
 
-        <h2 className='text-lg font-semibold'>{monthYear}</h2>
+        <h2 className='calendar-title'>{monthYear}</h2>
 
         <button
           type='button'
           onClick={handleNextMonth}
-          className='p-1 hover:bg-gray-100 rounded'
+          className='calendar-nav-button'
           aria-label='Next month'
         >
           <svg
-            className='w-5 h-5'
+            className='calendar-nav-icon'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -638,12 +636,12 @@ export const Calendar: React.FC<CalendarProps> = ({
 
       {/* Footer */}
       {(showToday || showClear) && (
-        <div className='flex justify-between mt-4 pt-4 border-t border-gray-200'>
+        <div className='calendar-footer'>
           {showToday && (
             <button
               type='button'
               onClick={handleToday}
-              className='px-3 py-1 text-sm text-blue-600 hover:bg-blue-50 rounded'
+              className='calendar-footer-button calendar-footer-button-primary'
             >
               Today
             </button>
@@ -652,7 +650,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             <button
               type='button'
               onClick={handleClear}
-              className='px-3 py-1 text-sm text-gray-600 hover:bg-gray-50 rounded'
+              className='calendar-footer-button calendar-footer-button-secondary'
             >
               Clear
             </button>
@@ -770,7 +768,10 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   if (trigger) {
     return (
-      <div className={`relative ${className}`} data-testid={testId}>
+      <div
+        className={`calendar-popup-wrapper ${className}`}
+        data-testid={testId}
+      >
         <div onClick={handleToggle}>{trigger}</div>
 
         {actualIsOpen && (
@@ -797,8 +798,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   }
 
   return (
-    <div className={`relative ${className}`} data-testid={testId}>
-      <div className='relative'>
+    <div className={`date-picker-wrapper ${className}`} data-testid={testId}>
+      <div className='date-picker-input-wrapper'>
         <input
           ref={inputRef}
           type='text'
@@ -811,9 +812,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         />
 
         {showIcon && (
-          <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>
+          <div className='date-picker-icon-wrapper'>
             <svg
-              className='w-5 h-5 text-gray-400'
+              className='date-picker-icon'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'

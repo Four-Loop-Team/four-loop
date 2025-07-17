@@ -257,27 +257,21 @@ export const DataTable = <T extends Record<string, unknown>>({
 
   if (loading) {
     return (
-      <div className='flex items-center justify-center py-12'>
-        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
-        <span className='ml-2 text-neutral-600 dark:text-neutral-400'>
-          Loading...
-        </span>
+      <div className='data-table-loading'>
+        <div className='data-table-spinner'></div>
+        <span className='data-table-loading-text'>Loading...</span>
       </div>
     );
   }
 
   if (processedData.length === 0) {
-    return (
-      <div className='text-center py-12 text-neutral-500 dark:text-neutral-400'>
-        {emptyMessage}
-      </div>
-    );
+    return <div className='data-table-empty'>{emptyMessage}</div>;
   }
 
   return (
-    <div className='overflow-x-auto'>
+    <div className='data-table-container'>
       <table className={tableClasses}>
-        <thead className='bg-neutral-50 dark:bg-neutral-800'>
+        <thead className='data-table-header'>
           <tr>
             {selectable && (
               <th className={headerCellClasses}>
@@ -287,7 +281,7 @@ export const DataTable = <T extends Record<string, unknown>>({
                     selectedRows.length === data.length && data.length > 0
                   }
                   onChange={(e) => handleSelectAll(e.target.checked)}
-                  className='rounded border-neutral-300 text-primary-600 focus:ring-primary-500'
+                  className='data-table-checkbox'
                 />
               </th>
             )}
@@ -297,12 +291,12 @@ export const DataTable = <T extends Record<string, unknown>>({
                 className={`${headerCellClasses} ${column.align === 'center' ? 'text-center' : column.align === 'right' ? 'text-right' : ''}`}
                 style={{ width: column.width, minWidth: column.minWidth }}
               >
-                <div className='flex items-center space-x-1'>
+                <div className='data-table-sort-header'>
                   <span>{column.header}</span>
                   {sortable && column.sortable && (
                     <button
                       onClick={() => handleSort(column.id)}
-                      className='ml-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300'
+                      className='data-table-sort-button'
                     >
                       {internalSort?.key === column.id
                         ? internalSort.direction === 'asc'
@@ -316,7 +310,7 @@ export const DataTable = <T extends Record<string, unknown>>({
                   <input
                     type='text'
                     placeholder='Filter...'
-                    className='mt-1 block w-full text-sm border border-neutral-300 dark:border-neutral-600 rounded px-2 py-1 bg-white dark:bg-neutral-700'
+                    className='data-table-filter-input'
                     onChange={(e) => handleFilter(column.id, e.target.value)}
                   />
                 )}
@@ -324,7 +318,7 @@ export const DataTable = <T extends Record<string, unknown>>({
             ))}
           </tr>
         </thead>
-        <tbody className='bg-white dark:bg-neutral-900 divide-y divide-neutral-200 dark:divide-neutral-700'>
+        <tbody className='data-table-body'>
           {processedData.map((row, index) => {
             const rowId = index.toString();
             const isSelected = selectedRows.includes(rowId);
@@ -345,7 +339,7 @@ export const DataTable = <T extends Record<string, unknown>>({
                       onChange={(e) =>
                         handleRowSelection(rowId, e.target.checked)
                       }
-                      className='rounded border-neutral-300 text-primary-600 focus:ring-primary-500'
+                      className='data-table-checkbox'
                     />
                   </td>
                 )}
@@ -373,8 +367,8 @@ export const DataTable = <T extends Record<string, unknown>>({
       </table>
 
       {pagination && (
-        <div className='flex items-center justify-between px-6 py-3 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-700'>
-          <div className='text-sm text-neutral-700 dark:text-neutral-300'>
+        <div className='data-table-pagination'>
+          <div className='data-table-pagination-info'>
             Showing {pagination.page * pagination.pageSize + 1} to{' '}
             {Math.min(
               (pagination.page + 1) * pagination.pageSize,
@@ -382,7 +376,7 @@ export const DataTable = <T extends Record<string, unknown>>({
             )}{' '}
             of {pagination.total} results
           </div>
-          <div className='flex space-x-2'>
+          <div className='data-table-pagination-controls'>
             <button
               onClick={() =>
                 onPaginationChange?.({
@@ -391,7 +385,7 @@ export const DataTable = <T extends Record<string, unknown>>({
                 })
               }
               disabled={pagination.page === 0}
-              className='px-3 py-1 text-sm font-medium text-neutral-500 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-neutral-800 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-700'
+              className='data-table-pagination-button'
             >
               Previous
             </button>
@@ -405,7 +399,7 @@ export const DataTable = <T extends Record<string, unknown>>({
               disabled={
                 (pagination.page + 1) * pagination.pageSize >= pagination.total
               }
-              className='px-3 py-1 text-sm font-medium text-neutral-500 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-neutral-800 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-700'
+              className='data-table-pagination-button'
             >
               Next
             </button>
