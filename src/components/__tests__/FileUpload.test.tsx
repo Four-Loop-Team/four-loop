@@ -97,7 +97,7 @@ describe('FileUpload', () => {
     render(<FileUpload {...defaultProps} disabled />);
 
     const container = screen.getByTestId('file-upload');
-    expect(container).toHaveClass('disabled');
+    expect(container).toHaveClass('file-upload-disabled');
 
     const fileInput = screen.getByTestId('file-input');
     expect(fileInput).toBeDisabled();
@@ -152,11 +152,11 @@ describe('FileUpload', () => {
 
     // Test drag enter
     fireEvent.dragEnter(container);
-    expect(container).toHaveClass('drag-over');
+    expect(container).toHaveClass('file-upload-dragover');
 
     // Test drag leave
     fireEvent.dragLeave(container);
-    expect(container).not.toHaveClass('drag-over');
+    expect(container).not.toHaveClass('file-upload-dragover');
   });
 
   it('should handle file drop', async () => {

@@ -1,6 +1,6 @@
 import { renderWithTheme } from '@/test/utils';
 import { useMediaQuery } from '@mui/material';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { usePathname } from 'next/navigation';
 import Navigation from '../Navigation';
@@ -22,6 +22,25 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(),
 }));
 
+// Mock Next.js Link
+jest.mock('next/link', () => {
+  return function MockedLink({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode;
+    href: string;
+    [key: string]: any;
+  }) {
+    return (
+      <a href={href} {...props}>
+        {children}
+      </a>
+    );
+  };
+});
+
 const mockUseMediaQuery = useMediaQuery as jest.MockedFunction<
   typeof useMediaQuery
 >;
@@ -34,10 +53,14 @@ describe('Navigation - Routing', () => {
     mockUsePathname.mockReturnValue('/'); // Default to home page
   });
 
-  it('renders navigation bar with correct items', () => {
+  it('renders navigation bar with correct items', async () => {
     renderWithTheme(<Navigation />);
 
-    expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    // Wait for component to mount (has 100ms delay)
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
+
     expect(screen.getAllByText('Work').length).toBeGreaterThan(0);
     expect(screen.getAllByText('About Us').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Contact').length).toBeGreaterThan(0);
@@ -48,42 +71,67 @@ describe('Navigation - Routing', () => {
     expect(logoLink).toHaveAttribute('href', '/');
   });
 
-  it('shows active state for current page', () => {
+  it('shows active state for current page', async () => {
     mockUsePathname.mockReturnValue('/work');
     renderWithTheme(<Navigation />);
+
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
 
     // Find the button inside the work link
     const workLink = screen.getByRole('link', { name: 'Work' });
     expect(workLink).toHaveAttribute('href', '/work');
 
     const workButton = screen.getByRole('button', { name: 'Work' });
-    expect(workButton).toHaveStyle('color: var(--nav-text-active)');
+    expect(workButton).toHaveStyle('color: var(--text-inverse)');
   });
 
-  it('has correct link for work page', () => {
+  it('has correct link for work page', async () => {
     renderWithTheme(<Navigation />);
+
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
 
     const workLink = screen.getByRole('link', { name: 'Work' });
     expect(workLink).toHaveAttribute('href', '/work');
   });
 
-  it('has correct link for about page', () => {
+  it('has correct link for about page', async () => {
     renderWithTheme(<Navigation />);
+
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
 
     const aboutLink = screen.getByRole('link', { name: 'About Us' });
     expect(aboutLink).toHaveAttribute('href', '/about');
   });
 
-  it('has correct link for contact page', () => {
+  it('has correct link for contact page', async () => {
     renderWithTheme(<Navigation />);
+
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
 
     const contactLink = screen.getByRole('link', { name: 'Contact' });
     expect(contactLink).toHaveAttribute('href', '/contact');
   });
 
-  it('renders mobile drawer with navigation items', () => {
+  it('renders mobile drawer with navigation items', async () => {
     mockUseMediaQuery.mockReturnValue(true); // Mobile
     renderWithTheme(<Navigation />);
+
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
 
     const menuButton = screen.getByLabelText('Open navigation menu');
     fireEvent.click(menuButton);
@@ -107,6 +155,11 @@ describe('Navigation - Routing', () => {
     mockUseMediaQuery.mockReturnValue(true); // Mobile
     renderWithTheme(<Navigation />);
 
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
+
     // Open drawer
     const menuButton = screen.getByLabelText('Open navigation menu');
     await user.click(menuButton);
@@ -124,8 +177,13 @@ describe('Navigation - Routing', () => {
     // which is attached to the Link onClick handler
   });
 
-  it('has proper accessibility attributes', () => {
+  it('has proper accessibility attributes', async () => {
     renderWithTheme(<Navigation />);
+
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
 
     const nav = screen.getByLabelText('Main navigation');
     expect(nav).toBeInTheDocument();
@@ -149,34 +207,49 @@ describe('Navigation - Routing', () => {
     expect(contactButton).toBeInTheDocument();
   });
 
-  it('shows correct active states for different routes', () => {
+  it('shows correct active states for different routes', async () => {
     const routes = [
       { path: '/work', expectedActive: 'Work' },
       { path: '/about', expectedActive: 'About Us' },
       { path: '/contact', expectedActive: 'Contact' },
     ];
 
-    routes.forEach(({ path, expectedActive }) => {
+    for (const { path, expectedActive } of routes) {
       mockUsePathname.mockReturnValue(path);
       const { unmount } = renderWithTheme(<Navigation />);
 
+      // Wait for component to mount
+      await waitFor(() => {
+        expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+      });
+
       const activeButton = screen.getByRole('button', { name: expectedActive });
-      expect(activeButton).toHaveStyle('color: var(--nav-text-active)');
+      expect(activeButton).toHaveStyle('color: var(--text-inverse)');
 
       unmount();
-    });
+    }
   });
 
-  it('renders sticky navigation bar', () => {
+  it('renders sticky navigation bar', async () => {
     renderWithTheme(<Navigation />);
+
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
 
     const navbar = screen.getByLabelText('Main navigation');
     expect(navbar).toHaveStyle('position: sticky');
   });
 
-  it('renders mobile drawer with correct ARIA attributes', () => {
+  it('renders mobile drawer with correct ARIA attributes', async () => {
     mockUseMediaQuery.mockReturnValue(true);
     renderWithTheme(<Navigation />);
+
+    // Wait for component to mount
+    await waitFor(() => {
+      expect(screen.getByLabelText('Main navigation')).toBeInTheDocument();
+    });
 
     const menuButton = screen.getByLabelText('Open navigation menu');
     fireEvent.click(menuButton);

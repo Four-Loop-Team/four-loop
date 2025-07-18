@@ -263,7 +263,10 @@ describe('Timeline', () => {
     it('should show connectors by default', () => {
       const { container } = render(<Timeline {...defaultProps} />);
       // Connectors should be present (lines connecting timeline items)
-      expect(container.querySelector('.bg-gray-300')).toBeInTheDocument();
+      expect(
+        container.querySelector('.timeline-connector') ??
+          container.querySelector('.timeline-connector-compact')
+      ).toBeInTheDocument();
     });
 
     it('should hide connectors when showConnectors is false', () => {
@@ -271,7 +274,12 @@ describe('Timeline', () => {
         <Timeline {...defaultProps} showConnectors={false} />
       );
       // Should not find connector lines
-      expect(container.querySelector('.bg-gray-300')).not.toBeInTheDocument();
+      expect(
+        container.querySelector('.timeline-connector')
+      ).not.toBeInTheDocument();
+      expect(
+        container.querySelector('.timeline-connector-compact')
+      ).not.toBeInTheDocument();
     });
   });
 

@@ -575,7 +575,7 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
               <div className='dropdown-controls'>
                 {loading && (
                   <svg
-                    className='dropdown-spinner'
+                    className='dropdown-spinner animate-spin'
                     fill='none'
                     viewBox='0 0 24 24'
                   >

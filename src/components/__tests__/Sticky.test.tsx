@@ -141,7 +141,7 @@ describe('Sticky', () => {
       expect(element).toHaveStyle({
         position: 'fixed',
       });
-      expect(element).toHaveClass('fixed');
+      expect(element).toHaveClass('sticky-fixed');
     });
 
     it('should not set up IntersectionObserver when fixed is true', () => {
@@ -158,7 +158,7 @@ describe('Sticky', () => {
       expect(element).toHaveStyle({
         position: 'sticky',
       });
-      expect(element).toHaveClass('sticky');
+      expect(element).toHaveClass('sticky-default');
     });
   });
 
@@ -286,36 +286,36 @@ describe('Sticky', () => {
       render(<Sticky breakpoint='sm'>Content</Sticky>);
       const element = screen.getByTestId('sticky');
 
-      expect(element).toHaveClass('sm:sticky');
+      expect(element).toHaveClass('sm:sticky-default');
     });
 
     it('should apply responsive classes for medium breakpoint', () => {
       render(<Sticky breakpoint='md'>Content</Sticky>);
       const element = screen.getByTestId('sticky');
 
-      expect(element).toHaveClass('md:sticky');
+      expect(element).toHaveClass('md:sticky-default');
     });
 
     it('should apply responsive classes for large breakpoint', () => {
       render(<Sticky breakpoint='lg'>Content</Sticky>);
       const element = screen.getByTestId('sticky');
 
-      expect(element).toHaveClass('lg:sticky');
+      expect(element).toHaveClass('lg:sticky-default');
     });
 
     it('should apply responsive classes for extra large breakpoint', () => {
       render(<Sticky breakpoint='xl'>Content</Sticky>);
       const element = screen.getByTestId('sticky');
 
-      expect(element).toHaveClass('xl:sticky');
+      expect(element).toHaveClass('xl:sticky-default');
     });
 
     it('should handle invalid breakpoint gracefully', () => {
       render(<Sticky {...({ breakpoint: 'invalid' } as any)}>Content</Sticky>);
       const element = screen.getByTestId('sticky');
 
-      expect(element).toHaveClass('sticky');
-      expect(element).not.toHaveClass('invalid:sticky');
+      expect(element).toHaveClass('sticky-default');
+      expect(element).not.toHaveClass('invalid:sticky-default');
     });
 
     it('should combine breakpoint with fixed positioning', () => {
@@ -326,7 +326,7 @@ describe('Sticky', () => {
       );
       const element = screen.getByTestId('sticky');
 
-      expect(element).toHaveClass('md:fixed');
+      expect(element).toHaveClass('md:sticky-fixed');
     });
   });
 
@@ -336,7 +336,7 @@ describe('Sticky', () => {
       const element = screen.getByTestId('sticky');
 
       expect(element).toHaveClass('custom-class');
-      expect(element).toHaveClass('sticky');
+      expect(element).toHaveClass('sticky-default');
     });
 
     it('should combine multiple classes correctly', () => {
@@ -347,7 +347,7 @@ describe('Sticky', () => {
       );
       const element = screen.getByTestId('sticky');
 
-      expect(element).toHaveClass('md:sticky', 'bg-white', 'shadow-lg');
+      expect(element).toHaveClass('md:sticky-default', 'bg-white', 'shadow-lg');
     });
   });
 

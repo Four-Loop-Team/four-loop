@@ -107,11 +107,7 @@ describe('CardHeader Component', () => {
     render(<CardHeader title='Test Title' data-testid='header' />);
 
     expect(screen.getByText('Test Title')).toBeInTheDocument();
-    expect(screen.getByText('Test Title')).toHaveClass(
-      'text-lg',
-      'font-semibold',
-      'text-gray-900'
-    );
+    expect(screen.getByText('Test Title')).toHaveClass('card-title');
   });
 
   it('renders with title and subtitle', () => {
