@@ -1,0 +1,374 @@
+/**
+ * Accordion Component Styles
+ * Using CSS custom properties from design system
+ */
+
+@use '../../../app/ui/styles/variables' as vars;
+
+// =============================================================================
+// ACCORDION CONTAINER VARIANTS
+// =============================================================================
+
+.accordion-default {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.accordion-bordered {
+  border: 1px solid var(--color-border-inverse);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
+.accordion-filled {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  background-color: var(--color-surface-secondary);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+}
+
+.accordion-minimal {
+  border-top: 1px solid var(--color-border-inverse);
+  border-bottom: 1px solid var(--color-border-inverse);
+  background-color: transparent;
+}
+
+// =============================================================================
+// ACCORDION ITEM VARIANTS
+// =============================================================================
+
+.accordion-item-default {
+  background-color: var(--color-surface-primary);
+  border: 1px solid var(--color-border-inverse);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.accordion-item-bordered {
+  border-bottom: 1px solid var(--color-border-inverse);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.accordion-item-filled {
+  background-color: var(--color-surface-primary);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.accordion-item-minimal {
+  border-bottom: 1px solid var(--color-border-inverse);
+  background-color: transparent;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// =============================================================================
+// ACCORDION TRIGGER (BUTTON) STYLES
+// =============================================================================
+
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  transition: all var(--duration-fast) var(--easing-ease-out);
+  border: none;
+  background: transparent;
+}
+
+.accordion-trigger-enabled {
+  cursor: pointer;
+}
+
+.accordion-trigger-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.accordion-trigger-focus {
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-border-interactive);
+  }
+}
+
+.accordion-trigger-minimal-layout {
+  padding-left: 0;
+  padding-right: 0;
+  height: 84px;
+  display: flex;
+  align-items: center;
+
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}
+
+// Trigger variants
+.accordion-trigger-default {
+  &:hover {
+    background-color: var(--color-surface-secondary);
+  }
+}
+
+.accordion-trigger-bordered {
+  &:hover {
+    background-color: var(--color-surface-secondary);
+  }
+}
+
+.accordion-trigger-filled {
+  &:hover {
+    background-color: var(--color-surface-secondary);
+  }
+}
+
+.accordion-trigger-minimal {
+  background-color: transparent;
+  height: 84px;
+}
+
+// =============================================================================
+// ACCORDION SIZE VARIANTS
+// =============================================================================
+
+.accordion-size-sm {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  min-height: 44px; // Touch target accessibility
+}
+
+.accordion-size-md {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-size: var(--font-size-base);
+  min-height: 44px; // Touch target accessibility
+}
+
+.accordion-size-lg {
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  font-size: var(--font-size-lg);
+  min-height: 44px; // Touch target accessibility
+}
+
+// =============================================================================
+// ACCORDION CONTENT STYLES
+// =============================================================================
+
+.accordion-content {
+  overflow: hidden;
+  transition: height var(--duration-normal) var(--easing-ease-in-out);
+}
+
+.accordion-content-default {
+  background-color: var(--color-surface-primary);
+}
+
+.accordion-content-bordered {
+  background-color: var(--color-surface-primary);
+}
+
+.accordion-content-filled {
+  background-color: var(--color-surface-secondary);
+}
+
+.accordion-content-minimal {
+  background-color: transparent;
+  border: none;
+}
+
+// Content inner styles
+.accordion-content-inner {
+  padding: var(--spacing-lg) var(--spacing-xl);
+}
+
+.accordion-content-bordered-inner {
+  border-top: 1px solid var(--color-border-inverse);
+}
+
+.accordion-content-minimal-inner {
+  padding: 0 0 var(--spacing-xl) 0;
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-base);
+}
+
+// =============================================================================
+// ACCORDION TRIGGER CONTENT STYLES
+// =============================================================================
+
+.accordion-trigger-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.accordion-trigger-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.accordion-trigger-text {
+  font-weight: var(--font-weight-medium);
+}
+
+.accordion-trigger-text-minimal {
+  color: var(--color-text-inverse);
+}
+
+// =============================================================================
+// ACCORDION ICONS
+// =============================================================================
+
+.accordion-icon-default {
+  width: 1.25rem; // 20px
+  height: 1.25rem; // 20px
+  color: var(--color-text-tertiary);
+  transition: transform var(--duration-normal) var(--easing-ease-in-out);
+  flex-shrink: 0;
+
+  &.accordion-icon-expanded {
+    transform: rotate(180deg);
+  }
+}
+
+.accordion-icon-minimal {
+  flex-shrink: 0;
+  transition: transform var(--duration-normal) var(--easing-ease-in-out);
+
+  &.accordion-icon-expanded {
+    transform: rotate(45deg);
+  }
+}
+
+// =============================================================================
+// COLLAPSIBLE COMPONENT STYLES
+// =============================================================================
+
+.collapsible-container-default {
+  background-color: var(--color-surface-primary);
+  border: 1px solid var(--color-border-inverse);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.collapsible-container-bordered {
+  border: 1px solid var(--color-border-inverse);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
+.collapsible-container-filled {
+  background-color: var(--color-surface-secondary);
+  border-radius: var(--border-radius-md);
+}
+
+.collapsible-container-minimal {
+  // No container styles for minimal variant
+}
+
+// Collapsible trigger variants
+.collapsible-trigger-default {
+  &:hover {
+    background-color: var(--color-surface-secondary);
+  }
+}
+
+.collapsible-trigger-bordered {
+  background-color: var(--color-surface-primary);
+  border-bottom: 1px solid var(--color-border-inverse);
+
+  &:hover {
+    background-color: var(--color-surface-secondary);
+  }
+}
+
+.collapsible-trigger-filled {
+  background-color: var(--color-surface-primary);
+  border-top-left-radius: var(--border-radius-md);
+  border-top-right-radius: var(--border-radius-md);
+
+  &:hover {
+    background-color: var(--color-surface-secondary);
+  }
+}
+
+.collapsible-trigger-minimal {
+  &:hover {
+    background-color: var(--color-surface-secondary);
+  }
+}
+
+// =============================================================================
+// COLLAPSIBLE CONTENT STYLES
+// =============================================================================
+
+.collapsible-content {
+  overflow: hidden;
+  transition: height var(--duration-normal) var(--easing-ease-in-out);
+}
+
+// Collapsible content variants
+.collapsible-content-default {
+  background-color: var(--color-surface-primary);
+}
+
+.collapsible-content-bordered {
+  background-color: var(--color-surface-primary);
+}
+
+.collapsible-content-filled {
+  background-color: var(--color-surface-secondary);
+}
+
+.collapsible-content-minimal {
+  background-color: var(--color-surface-primary);
+}
+
+// Collapsible size variants
+.collapsible-size-sm {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  min-height: 44px; // Touch target accessibility
+}
+
+.collapsible-size-md {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-size: var(--font-size-base);
+  min-height: 44px; // Touch target accessibility
+}
+
+.collapsible-size-lg {
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  font-size: var(--font-size-lg);
+  min-height: 44px; // Touch target accessibility
+}
+
+// =============================================================================
+// COLLAPSIBLE ARROW/ICON STYLES
+// =============================================================================
+
+.collapsible-arrow {
+  width: 1.25rem; // 20px
+  height: 1.25rem; // 20px
+  color: var(--color-text-tertiary);
+  transition: transform var(--duration-normal) var(--easing-ease-in-out);
+  flex-shrink: 0;
+
+  &.collapsible-arrow-expanded {
+    transform: rotate(180deg);
+  }
+}
+
+.collapsible-trigger-text {
+  font-weight: var(--font-weight-medium);
+}
