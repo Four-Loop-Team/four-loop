@@ -133,6 +133,7 @@ export const colors = {
   textDark: '#353535', // Dark text for light backgrounds
   textMuted: '#666666', // Muted text for secondary content
   accent: '#2d4747', // Accent color for gradients and special elements
+  error: '#ef4444', // Error state color
 } as const;
 
 /**

@@ -86,7 +86,7 @@ const StyledTextField = styled(TextField)<TextFieldProps>(
     '& .MuiFormHelperText-root': {
       color: colors.textMuted,
       '&.Mui-error': {
-        color: 'var(--color-error, #d32f2f)',
+        color: colors.error,
       },
     },
   })

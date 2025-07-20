@@ -1,55 +1,57 @@
 // Navigation-specific utility classes for CSS modules
+@use '../../../app/ui/styles/variables' as vars;
+
 .navigation {
   // These classes can be used for any additional custom styling
   &__container {
-    background-color: var(--background-accent, #e2e891);
-    transition: var(--nav-slider-transition, all 0.15s ease);
+    background-color: vars.$background-accent;
+    transition: vars.$nav-slider-transition;
   }
 
   &__slider {
-    background-color: var(--background-secondary, #232323);
-    border: 2px solid var(--border-accent, #e2e891);
-    transition: var(--nav-slider-transition, all 0.15s ease);
+    background-color: vars.$background-secondary;
+    border: 2px solid vars.$border-accent;
+    transition: vars.$nav-slider-transition;
   }
 
   &__button {
-    transition: var(--nav-button-transition, all 0.15s ease);
+    transition: vars.$nav-button-transition;
 
     &--active {
-      color: var(--text-inverse, #fff);
+      color: vars.$text-inverse;
     }
 
     &--inactive {
-      color: var(--text-primary, #353535);
+      color: vars.$text-primary;
     }
 
     &:hover {
-      color: var(--text-inverse, #fff);
+      color: vars.$text-inverse;
     }
   }
 }
 
 .drawer {
   &__background {
-    background-color: var(--background-primary, #353535);
-    transition: var(--drawer-transition, all 0.15s ease);
+    background-color: vars.$background-primary;
+    transition: vars.$drawer-transition;
   }
 
   &__item {
-    transition: var(--nav-button-transition, all 0.15s ease);
+    transition: vars.$nav-button-transition;
 
     &--active {
-      background-color: var(--background-accent, #e2e891);
-      border-left: 3px solid var(--border-accent, #e2e891);
-      color: var(--text-accent, #e2e891);
+      background-color: vars.$background-accent;
+      border-left: 3px solid vars.$border-accent;
+      color: vars.$text-accent;
     }
 
     &--inactive {
-      color: var(--text-inverse, #fff);
+      color: vars.$text-inverse;
     }
 
     &:hover {
-      background-color: var(--background-accent, #e2e891);
+      background-color: vars.$background-accent;
     }
   }
 }

@@ -4,9 +4,6 @@
 @use 'accessibility';
 @use 'utilities';
 
-/* Import Design System CSS */
-@import '../../../styles/design-system.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -106,6 +103,11 @@
   --nav-slider-transition: #{variables.$nav-slider-transition};
   --nav-button-transition: #{variables.$nav-button-transition};
   --drawer-transition: #{variables.$drawer-transition};
+
+  /* General Animation Durations (matching design-system.css) */
+  --duration-quick: #{variables.$animation-duration-quick};
+  --duration-standard: #{variables.$animation-duration-standard};
+  --duration-gentle: #{variables.$animation-duration-gentle};
 
   /* Breakpoint Variables */
   --breakpoint-xs: #{variables.$breakpoint-xs};

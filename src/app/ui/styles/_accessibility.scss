@@ -1,4 +1,5 @@
 /* Accessibility-focused styles */
+@use 'variables';
 
 /* Ensure minimum touch target sizes (44px minimum) for accessibility, excluding input elements */
 button,
@@ -20,8 +21,8 @@ textarea:not([class*='Mui']) {
   left: -9999px;
   z-index: 9999;
   padding: 8px 16px;
-  background-color: var(--color-primary);
-  color: var(--color-secondary);
+  background-color: variables.$color-primary;
+  color: variables.$color-secondary;
   text-decoration: none;
   border-radius: 4px;
   font-size: 14px;
@@ -41,13 +42,13 @@ textarea:not([class*='Mui']) {
 /* Improve button accessibility */
 button:focus-visible,
 .MuiButton-root:focus-visible {
-  outline: 3px solid var(--color-primary) !important;
+  outline: 3px solid variables.$color-primary !important;
   outline-offset: 2px !important;
 }
 
 /* Enhanced link accessibility */
 a:focus-visible {
-  outline: 3px solid var(--color-primary) !important;
+  outline: 3px solid variables.$color-primary !important;
   outline-offset: 2px !important;
   text-decoration: underline;
 }
@@ -124,7 +125,7 @@ a:focus-visible {
 .keyboard-nav a:focus,
 .keyboard-nav select:not([class*='Mui']):focus {
   /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: focus styles must override all other styles */
-  outline: 3px solid var(--color-primary) !important;
+  outline: 3px solid variables.$color-primary !important;
   /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: focus styles must override all other styles */
   outline-offset: 2px !important;
   /* stylelint-disable-next-line declaration-no-important -- Required for accessibility: focus styles must override all other styles */

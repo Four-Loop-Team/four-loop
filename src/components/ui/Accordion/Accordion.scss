@@ -1,6 +1,6 @@
 /**
  * Accordion Component Styles
- * Using CSS custom properties from design system
+ * Using SCSS variables from design system
  */
 
 @use '../../../app/ui/styles/variables' as vars;
@@ -12,27 +12,27 @@
 .accordion-default {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: vars.$spacing-sm;
 }
 
 .accordion-bordered {
-  border: 1px solid var(--color-border-inverse);
-  border-radius: var(--border-radius-md);
+  border: 1px solid vars.$border-inverse;
+  border-radius: vars.$border-radius-md;
   overflow: hidden;
 }
 
 .accordion-filled {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
-  background-color: var(--color-surface-secondary);
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius-md);
+  gap: vars.$spacing-xs;
+  background-color: vars.$color-surface-secondary;
+  padding: vars.$spacing-sm;
+  border-radius: vars.$border-radius-md;
 }
 
 .accordion-minimal {
-  border-top: 1px solid var(--color-border-inverse);
-  border-bottom: 1px solid var(--color-border-inverse);
+  border-top: 1px solid vars.$border-inverse;
+  border-bottom: 1px solid vars.$border-inverse;
   background-color: transparent;
 }
 
@@ -41,14 +41,14 @@
 // =============================================================================
 
 .accordion-item-default {
-  background-color: var(--color-surface-primary);
-  border: 1px solid var(--color-border-inverse);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
+  background-color: vars.$color-surface-primary;
+  border: 1px solid vars.$border-inverse;
+  border-radius: vars.$border-radius-md;
+  box-shadow: vars.$shadow-sm;
 }
 
 .accordion-item-bordered {
-  border-bottom: 1px solid var(--color-border-inverse);
+  border-bottom: 1px solid vars.$border-inverse;
 
   &:last-child {
     border-bottom: none;
@@ -56,13 +56,13 @@
 }
 
 .accordion-item-filled {
-  background-color: var(--color-surface-primary);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
+  background-color: vars.$color-surface-primary;
+  border-radius: vars.$border-radius-md;
+  box-shadow: vars.$shadow-sm;
 }
 
 .accordion-item-minimal {
-  border-bottom: 1px solid var(--color-border-inverse);
+  border-bottom: 1px solid vars.$border-inverse;
   background-color: transparent;
 
   &:last-child {
@@ -80,7 +80,7 @@
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  transition: all var(--duration-fast) var(--easing-ease-out);
+  transition: all vars.$animation-duration-quick vars.$easing-ease-out;
   border: none;
   background: transparent;
 }
@@ -97,7 +97,7 @@
 .accordion-trigger-focus {
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--color-border-interactive);
+    box-shadow: 0 0 0 2px vars.$color-border-interactive;
   }
 }
 
@@ -117,19 +117,19 @@
 // Trigger variants
 .accordion-trigger-default {
   &:hover {
-    background-color: var(--color-surface-secondary);
+    background-color: vars.$color-surface-secondary;
   }
 }
 
 .accordion-trigger-bordered {
   &:hover {
-    background-color: var(--color-surface-secondary);
+    background-color: vars.$color-surface-secondary;
   }
 }
 
 .accordion-trigger-filled {
   &:hover {
-    background-color: var(--color-surface-secondary);
+    background-color: vars.$color-surface-secondary;
   }
 }
 
@@ -143,20 +143,20 @@
 // =============================================================================
 
 .accordion-size-sm {
-  padding: var(--spacing-md) var(--spacing-lg);
-  font-size: var(--font-size-sm);
+  padding: vars.$spacing-md vars.$spacing-lg;
+  font-size: vars.$font-size-sm;
   min-height: 44px; // Touch target accessibility
 }
 
 .accordion-size-md {
-  padding: var(--spacing-lg) var(--spacing-xl);
-  font-size: var(--font-size-base);
+  padding: vars.$spacing-lg vars.$spacing-xl;
+  font-size: vars.$font-size-base;
   min-height: 44px; // Touch target accessibility
 }
 
 .accordion-size-lg {
-  padding: var(--spacing-xl) var(--spacing-2xl);
-  font-size: var(--font-size-lg);
+  padding: vars.$spacing-xl vars.$spacing-2xl;
+  font-size: vars.$font-size-lg;
   min-height: 44px; // Touch target accessibility
 }
 
@@ -166,19 +166,19 @@
 
 .accordion-content {
   overflow: hidden;
-  transition: height var(--duration-normal) var(--easing-ease-in-out);
+  transition: height vars.$animation-duration-standard vars.$easing-ease-in-out;
 }
 
 .accordion-content-default {
-  background-color: var(--color-surface-primary);
+  background-color: vars.$color-surface-primary;
 }
 
 .accordion-content-bordered {
-  background-color: var(--color-surface-primary);
+  background-color: vars.$color-surface-primary;
 }
 
 .accordion-content-filled {
-  background-color: var(--color-surface-secondary);
+  background-color: vars.$color-surface-secondary;
 }
 
 .accordion-content-minimal {
@@ -188,17 +188,17 @@
 
 // Content inner styles
 .accordion-content-inner {
-  padding: var(--spacing-lg) var(--spacing-xl);
+  padding: vars.$spacing-lg vars.$spacing-xl;
 }
 
 .accordion-content-bordered-inner {
-  border-top: 1px solid var(--color-border-inverse);
+  border-top: 1px solid vars.$border-inverse;
 }
 
 .accordion-content-minimal-inner {
-  padding: 0 0 var(--spacing-xl) 0;
-  color: var(--color-text-inverse);
-  font-size: var(--font-size-base);
+  padding: 0 0 vars.$spacing-xl 0;
+  color: vars.$text-inverse;
+  font-size: vars.$font-size-base;
 }
 
 // =============================================================================
@@ -208,7 +208,7 @@
 .accordion-trigger-content {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: vars.$spacing-sm;
 }
 
 .accordion-trigger-icon {
@@ -218,11 +218,11 @@
 }
 
 .accordion-trigger-text {
-  font-weight: var(--font-weight-medium);
+  font-weight: vars.$font-weight-medium;
 }
 
 .accordion-trigger-text-minimal {
-  color: var(--color-text-inverse);
+  color: vars.$text-inverse;
 }
 
 // =============================================================================
@@ -232,8 +232,9 @@
 .accordion-icon-default {
   width: 1.25rem; // 20px
   height: 1.25rem; // 20px
-  color: var(--color-text-tertiary);
-  transition: transform var(--duration-normal) var(--easing-ease-in-out);
+  color: vars.$color-text-tertiary;
+  transition: transform vars.$animation-duration-standard
+    vars.$easing-ease-in-out;
   flex-shrink: 0;
 
   &.accordion-icon-expanded {
@@ -243,7 +244,8 @@
 
 .accordion-icon-minimal {
   flex-shrink: 0;
-  transition: transform var(--duration-normal) var(--easing-ease-in-out);
+  transition: transform vars.$animation-duration-standard
+    vars.$easing-ease-in-out;
 
   &.accordion-icon-expanded {
     transform: rotate(45deg);
@@ -255,21 +257,21 @@
 // =============================================================================
 
 .collapsible-container-default {
-  background-color: var(--color-surface-primary);
-  border: 1px solid var(--color-border-inverse);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
+  background-color: vars.$color-surface-primary;
+  border: 1px solid vars.$border-inverse;
+  border-radius: vars.$border-radius-md;
+  box-shadow: vars.$shadow-sm;
 }
 
 .collapsible-container-bordered {
-  border: 1px solid var(--color-border-inverse);
-  border-radius: var(--border-radius-md);
+  border: 1px solid vars.$border-inverse;
+  border-radius: vars.$border-radius-md;
   overflow: hidden;
 }
 
 .collapsible-container-filled {
-  background-color: var(--color-surface-secondary);
-  border-radius: var(--border-radius-md);
+  background-color: vars.$color-surface-secondary;
+  border-radius: vars.$border-radius-md;
 }
 
 .collapsible-container-minimal {
@@ -279,32 +281,32 @@
 // Collapsible trigger variants
 .collapsible-trigger-default {
   &:hover {
-    background-color: var(--color-surface-secondary);
+    background-color: vars.$color-surface-secondary;
   }
 }
 
 .collapsible-trigger-bordered {
-  background-color: var(--color-surface-primary);
-  border-bottom: 1px solid var(--color-border-inverse);
+  background-color: vars.$color-surface-primary;
+  border-bottom: 1px solid vars.$border-inverse;
 
   &:hover {
-    background-color: var(--color-surface-secondary);
+    background-color: vars.$color-surface-secondary;
   }
 }
 
 .collapsible-trigger-filled {
-  background-color: var(--color-surface-primary);
-  border-top-left-radius: var(--border-radius-md);
-  border-top-right-radius: var(--border-radius-md);
+  background-color: vars.$color-surface-primary;
+  border-top-left-radius: vars.$border-radius-md;
+  border-top-right-radius: vars.$border-radius-md;
 
   &:hover {
-    background-color: var(--color-surface-secondary);
+    background-color: vars.$color-surface-secondary;
   }
 }
 
 .collapsible-trigger-minimal {
   &:hover {
-    background-color: var(--color-surface-secondary);
+    background-color: vars.$color-surface-secondary;
   }
 }
 
@@ -314,42 +316,42 @@
 
 .collapsible-content {
   overflow: hidden;
-  transition: height var(--duration-normal) var(--easing-ease-in-out);
+  transition: height vars.$animation-duration-standard vars.$easing-ease-in-out;
 }
 
 // Collapsible content variants
 .collapsible-content-default {
-  background-color: var(--color-surface-primary);
+  background-color: vars.$color-surface-primary;
 }
 
 .collapsible-content-bordered {
-  background-color: var(--color-surface-primary);
+  background-color: vars.$color-surface-primary;
 }
 
 .collapsible-content-filled {
-  background-color: var(--color-surface-secondary);
+  background-color: vars.$color-surface-secondary;
 }
 
 .collapsible-content-minimal {
-  background-color: var(--color-surface-primary);
+  background-color: vars.$color-surface-primary;
 }
 
 // Collapsible size variants
 .collapsible-size-sm {
-  padding: var(--spacing-md) var(--spacing-lg);
-  font-size: var(--font-size-sm);
+  padding: vars.$spacing-md vars.$spacing-lg;
+  font-size: vars.$font-size-sm;
   min-height: 44px; // Touch target accessibility
 }
 
 .collapsible-size-md {
-  padding: var(--spacing-lg) var(--spacing-xl);
-  font-size: var(--font-size-base);
+  padding: vars.$spacing-lg vars.$spacing-xl;
+  font-size: vars.$font-size-base;
   min-height: 44px; // Touch target accessibility
 }
 
 .collapsible-size-lg {
-  padding: var(--spacing-xl) var(--spacing-2xl);
-  font-size: var(--font-size-lg);
+  padding: vars.$spacing-xl vars.$spacing-2xl;
+  font-size: vars.$font-size-lg;
   min-height: 44px; // Touch target accessibility
 }
 
@@ -360,8 +362,9 @@
 .collapsible-arrow {
   width: 1.25rem; // 20px
   height: 1.25rem; // 20px
-  color: var(--color-text-tertiary);
-  transition: transform var(--duration-normal) var(--easing-ease-in-out);
+  color: vars.$color-text-tertiary;
+  transition: transform vars.$animation-duration-standard
+    vars.$easing-ease-in-out;
   flex-shrink: 0;
 
   &.collapsible-arrow-expanded {
@@ -370,5 +373,5 @@
 }
 
 .collapsible-trigger-text {
-  font-weight: var(--font-weight-medium);
+  font-weight: vars.$font-weight-medium;
 }

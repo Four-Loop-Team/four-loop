@@ -211,7 +211,7 @@ export default function Navigation() {
           <CloseIcon sx={{ fontSize: '1.5rem' }} />
         </IconButton>
       </Box>
-      <List sx={{ px: 'var(--space-lg)', pt: 'var(--space-md)' }}>
+      <List sx={{ px: spacing.component.lg, pt: spacing.component.md }}>
         {navigationItems.map((item) => {
           const active = isActive(item.href);
           return (
