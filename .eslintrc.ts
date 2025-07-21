@@ -1,5 +1,6 @@
-/* eslint-env node */
-module.exports = {
+import type { Linter } from 'eslint';
+
+const config: Linter.Config = {
   root: true,
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'jest', 'react-hooks'],
@@ -94,7 +95,7 @@ module.exports = {
     },
     {
       // Configuration files
-      files: ['*.config.{js,ts}', '.eslintrc.js'],
+      files: ['*.config.{js,ts}', '.eslintrc.{js,ts}'],
       rules: {
         'no-console': 'off',
         '@typescript-eslint/no-var-requires': 'off',
@@ -121,3 +122,5 @@ module.exports = {
     },
   ],
 };
+
+export default config;

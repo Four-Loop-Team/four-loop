@@ -1,12 +1,39 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 /* eslint-disable no-console */
 
-const { chromium } = require('playwright');
-const fs = require('fs');
-const path = require('path');
+import { existsSync, promises as fs, mkdirSync } from 'fs';
+import { join } from 'path';
+import { chromium } from 'playwright';
+
+interface VitalsData {
+  fcp?: number;
+  lcp?: number;
+  cls?: number;
+}
+
+interface PerformanceThreshold {
+  warning: number;
+  error: number;
+}
+
+interface PerformanceThresholds {
+  [key: string]: PerformanceThreshold;
+}
+
+interface BudgetConfig {
+  performance?: PerformanceThresholds;
+}
+
+interface VitalsResults {
+  timestamp: string;
+  url: string;
+  vitals: VitalsData;
+  thresholds: PerformanceThresholds;
+  analysis: Record<string, string>;
+}
 
 // Core Web Vitals measurement script
-async function measureCoreWebVitals() {
+async function measureCoreWebVitals(): Promise<void> {
   console.log('🌐 Measuring Core Web Vitals...');
 
   let browser;
@@ -18,7 +45,7 @@ async function measureCoreWebVitals() {
     // Inject Web Vitals script
     await page.addInitScript(() => {
       // Simple Web Vitals measurement
-      window.vitalsData = {};
+      (window as any).vitalsData = {};
 
       // Listen for paint events
       if ('PerformanceObserver' in window) {
@@ -26,7 +53,7 @@ async function measureCoreWebVitals() {
         const paintObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             if (entry.name === 'first-contentful-paint') {
-              window.vitalsData.fcp = entry.startTime;
+              (window as any).vitalsData.fcp = entry.startTime;
             }
           }
         });
@@ -36,7 +63,7 @@ async function measureCoreWebVitals() {
         const lcpObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
-          window.vitalsData.lcp = lastEntry.startTime;
+          (window as any).vitalsData.lcp = lastEntry.startTime;
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
 
@@ -44,18 +71,18 @@ async function measureCoreWebVitals() {
         let clsValue = 0;
         const clsObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            if (!entry.hadRecentInput) {
+            if (!(entry as any).hadRecentInput) {
               clsValue += entry.value;
             }
           }
-          window.vitalsData.cls = clsValue;
+          (window as any).vitalsData.cls = clsValue;
         });
         clsObserver.observe({ entryTypes: ['layout-shift'] });
       }
     });
 
     // Navigate to the application
-    const url = process.env.TEST_URL || 'http://localhost:3000';
+    const url = process.env.TEST_URL ?? 'http://localhost:3000';
     console.log(`📍 Navigating to: ${url}`);
 
     await page.goto(url, { waitUntil: 'networkidle' });
@@ -64,18 +91,21 @@ async function measureCoreWebVitals() {
     await page.waitForTimeout(3000);
 
     // Get the vitals data
-    const vitals = await page.evaluate(() => window.vitalsData || {});
+    const vitals = (await page.evaluate(
+      () => (window as any).vitalsData || {}
+    )) as VitalsData;
 
     // Load performance budget for thresholds
-    const budgetPath = path.join(process.cwd(), 'performance-budget.json');
-    let thresholds = {};
-    if (fs.existsSync(budgetPath)) {
-      const budgetConfig = JSON.parse(fs.readFileSync(budgetPath, 'utf8'));
-      thresholds = budgetConfig.performance || {};
+    const budgetPath = join(process.cwd(), 'performance-budget.json');
+    let thresholds: PerformanceThresholds = {};
+    if (existsSync(budgetPath)) {
+      const budgetData = await fs.readFile(budgetPath, 'utf8');
+      const budgetConfig = JSON.parse(budgetData) as BudgetConfig;
+      thresholds = budgetConfig.performance ?? {};
     }
 
     // Analyze results
-    const results = {
+    const results: VitalsResults = {
       timestamp: new Date().toISOString(),
       url,
       vitals,
@@ -85,10 +115,10 @@ async function measureCoreWebVitals() {
 
     // Check against thresholds
     Object.keys(vitals).forEach((metric) => {
-      const value = vitals[metric];
+      const value = vitals[metric as keyof VitalsData];
       const threshold = thresholds[metric];
 
-      if (threshold) {
+      if (threshold && typeof value === 'number') {
         if (value <= threshold.warning) {
           results.analysis[metric] = 'good';
         } else if (value <= threshold.error) {
@@ -100,22 +130,22 @@ async function measureCoreWebVitals() {
     });
 
     // Create results directory
-    const resultsDir = path.join(process.cwd(), 'vitals-results');
-    if (!fs.existsSync(resultsDir)) {
-      fs.mkdirSync(resultsDir, { recursive: true });
+    const resultsDir = join(process.cwd(), 'vitals-results');
+    if (!existsSync(resultsDir)) {
+      mkdirSync(resultsDir, { recursive: true });
     }
 
     // Write results
-    fs.writeFileSync(
-      path.join(resultsDir, 'core-web-vitals.json'),
+    await fs.writeFile(
+      join(resultsDir, 'core-web-vitals.json'),
       JSON.stringify(results, null, 2)
     );
 
     // Log results
     console.log('📊 Core Web Vitals Results:');
     Object.keys(vitals).forEach((metric) => {
-      const value = vitals[metric];
-      const status = results.analysis[metric] || 'unknown';
+      const value = vitals[metric as keyof VitalsData];
+      const status = results.analysis[metric] ?? 'unknown';
       const unit = metric === 'cls' ? '' : 'ms';
       console.log(`  ${metric.toUpperCase()}: ${value}${unit} (${status})`);
     });
@@ -123,7 +153,10 @@ async function measureCoreWebVitals() {
     console.log('✅ Core Web Vitals measurement completed');
     console.log('📋 Results saved to vitals-results/core-web-vitals.json');
   } catch (error) {
-    console.error('❌ Core Web Vitals measurement failed:', error.message);
+    console.error(
+      '❌ Core Web Vitals measurement failed:',
+      (error as Error).message
+    );
     process.exit(1);
   } finally {
     if (browser) {
@@ -132,4 +165,9 @@ async function measureCoreWebVitals() {
   }
 }
 
-measureCoreWebVitals();
+// Only run if this is the main module
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void measureCoreWebVitals();
+}
+
+export { measureCoreWebVitals };

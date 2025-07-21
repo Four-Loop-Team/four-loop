@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 /* eslint-disable no-console */
 /**
  * Standards Enforcement Script
@@ -6,12 +6,39 @@
  * Runs comprehensive checks and enforces quality standards
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+
+interface StandardsOptions {
+  checkOnly?: boolean;
+  autoFix?: boolean;
+  skipE2E?: boolean;
+  skipAccessibility?: boolean;
+}
+
+interface StandardsStats {
+  filesChecked: number;
+  testsRun: number;
+  documentsValidated: number;
+  accessibilityChecks: number;
+}
+
+interface JSDocResult {
+  coverage: string;
+  quality: string;
+  issues: number;
+}
 
 class StandardsEnforcer {
-  constructor(options = {}) {
+  private projectRoot: string;
+  private errors: string[];
+  private warnings: string[];
+  private fixes: string[];
+  private options: Required<StandardsOptions>;
+  public stats: StandardsStats;
+
+  constructor(options: StandardsOptions = {}) {
     this.projectRoot = process.cwd();
     this.errors = [];
     this.warnings = [];
@@ -21,7 +48,6 @@ class StandardsEnforcer {
       autoFix: options.autoFix || false,
       skipE2E: options.skipE2E || false,
       skipAccessibility: options.skipAccessibility || false,
-      ...options,
     };
     this.stats = {
       filesChecked: 0,
@@ -31,31 +57,31 @@ class StandardsEnforcer {
     };
   }
 
-  logError(message) {
+  logError(message: string): void {
     this.errors.push(message);
     console.error(`❌ ERROR: ${message}`);
   }
 
-  logWarning(message) {
+  logWarning(message: string): void {
     this.warnings.push(message);
     console.warn(`⚠️  WARNING: ${message}`);
   }
 
-  logFix(message) {
+  logFix(message: string): void {
     this.fixes.push(message);
     console.log(`🔧 FIXED: ${message}`);
   }
 
-  logInfo(message) {
+  logInfo(message: string): void {
     console.log(`ℹ️  ${message}`);
   }
 
-  logSuccess(message) {
+  logSuccess(message: string): void {
     console.log(`✅ ${message}`);
   }
 
   // Check for outdated documentation
-  async checkDocumentationFreshness() {
+  async checkDocumentationFreshness(): Promise<void> {
     console.log('\n📚 Checking documentation freshness...');
 
     const srcFiles = this.getSourceFiles();
@@ -102,13 +128,13 @@ class StandardsEnforcer {
   }
 
   // Check test coverage and ensure tests exist for components
-  async checkTestCoverage() {
+  async checkTestCoverage(): Promise<void> {
     console.log('\n🧪 Checking test coverage and completeness...');
 
     const components = this.getComponentFiles();
     const testFiles = this.getTestFiles();
 
-    const missingTests = [];
+    const missingTests: string[] = [];
 
     for (const component of components) {
       const componentName = path.basename(component, path.extname(component));
@@ -149,8 +175,10 @@ class StandardsEnforcer {
     }
 
     this.stats.testsRun = testFiles.length;
-  } // Check accessibility compliance
-  async checkAccessibility() {
+  }
+
+  // Check accessibility compliance
+  async checkAccessibility(): Promise<void> {
     console.log('\n♿ Checking accessibility compliance...');
 
     if (this.options.skipAccessibility) {
@@ -186,7 +214,7 @@ class StandardsEnforcer {
   }
 
   // Check if demos are working and up-to-date
-  async checkDemos() {
+  async checkDemos(): Promise<void> {
     console.log('\n🎨 Checking demo components and examples...');
 
     // Check if modern demo structure exists and is accessible
@@ -220,7 +248,7 @@ class StandardsEnforcer {
   }
 
   // Check if E2E tests cover all critical paths
-  async checkE2ETesting() {
+  async checkE2ETesting(): Promise<void> {
     console.log('\n🎭 Checking E2E test coverage...');
 
     if (this.options.skipE2E) {
@@ -263,7 +291,7 @@ class StandardsEnforcer {
   }
 
   // Check code quality standards
-  async checkCodeQuality() {
+  async checkCodeQuality(): Promise<void> {
     console.log('\n🏆 Checking code quality standards...');
 
     try {
@@ -314,7 +342,7 @@ class StandardsEnforcer {
   }
 
   // Check security standards
-  async checkSecurity() {
+  async checkSecurity(): Promise<void> {
     console.log('\n🔒 Checking security standards...');
 
     try {
@@ -338,7 +366,7 @@ class StandardsEnforcer {
   }
 
   // Check JSDoc quality and coverage for components
-  async checkJSDocQuality() {
+  async checkJSDocQuality(): Promise<JSDocResult> {
     console.log('\n📖 Checking JSDoc documentation quality...');
 
     const componentFiles = this.findFiles(
@@ -354,7 +382,7 @@ class StandardsEnforcer {
     let componentsWithJSDoc = 0;
     let componentsWithGoodJSDoc = 0;
     let totalComponentsRequiringJSDoc = 0;
-    const issuesFound = [];
+    const issuesFound: string[] = [];
 
     for (const filePath of componentFiles) {
       try {
@@ -432,7 +460,7 @@ class StandardsEnforcer {
         if (quality >= requiredQuality) {
           componentsWithGoodJSDoc++;
         } else {
-          const missing = [];
+          const missing: string[] = [];
           if (!hasDescription) missing.push('description');
           if (!hasComponentTag && !isReExportFile)
             missing.push('@component tag');
@@ -446,7 +474,7 @@ class StandardsEnforcer {
         }
       } catch (error) {
         this.logWarning(
-          `Error checking JSDoc in ${filePath}: ${error.message}`
+          `Error checking JSDoc in ${filePath}: ${error instanceof Error ? error.message : 'Unknown error'}`
         );
       }
     }
@@ -456,11 +484,11 @@ class StandardsEnforcer {
     const jsdocCoverage =
       totalComponents > 0
         ? ((componentsWithJSDoc / totalComponents) * 100).toFixed(1)
-        : 0;
+        : '0';
     const qualityCoverage =
       totalComponents > 0
         ? ((componentsWithGoodJSDoc / totalComponents) * 100).toFixed(1)
-        : 0;
+        : '0';
 
     if (componentsWithJSDoc === totalComponents) {
       this.logSuccess(
@@ -500,14 +528,14 @@ class StandardsEnforcer {
   }
 
   // Helper methods
-  getSourceFiles() {
+  getSourceFiles(): string[] {
     const srcDir = path.join(this.projectRoot, 'src');
     return this.findFiles(srcDir, /\.(ts|tsx|js|jsx)$/).filter(
       (file) => !file.includes('.test.') && !file.includes('.spec.')
     );
   }
 
-  getComponentFiles() {
+  getComponentFiles(): string[] {
     const componentsDir = path.join(this.projectRoot, 'src/components');
     if (!fs.existsSync(componentsDir)) return [];
     return this.findFiles(componentsDir, /\.(ts|tsx)$/).filter(
@@ -515,18 +543,18 @@ class StandardsEnforcer {
     );
   }
 
-  getTestFiles() {
+  getTestFiles(): string[] {
     return this.findFiles(this.projectRoot, /\.(test|spec)\.(ts|tsx|js|jsx)$/);
   }
 
-  getDocumentationFiles() {
+  getDocumentationFiles(): string[] {
     const docsDir = path.join(this.projectRoot, 'docs');
     if (!fs.existsSync(docsDir)) return [];
     return this.findFiles(docsDir, /\.md$/);
   }
 
-  findFiles(dir, pattern) {
-    let files = [];
+  findFiles(dir: string, pattern: RegExp): string[] {
+    let files: string[] = [];
     try {
       const items = fs.readdirSync(dir, { withFileTypes: true });
       for (const item of items) {
@@ -547,7 +575,7 @@ class StandardsEnforcer {
     return files;
   }
 
-  async regenerateDocumentation() {
+  async regenerateDocumentation(): Promise<void> {
     this.logInfo('Regenerating documentation...');
     try {
       execSync('npm run docs:generate', { stdio: 'pipe' });
@@ -557,7 +585,7 @@ class StandardsEnforcer {
     }
   }
 
-  async generateMissingTests(components) {
+  async generateMissingTests(components: string[]): Promise<void> {
     this.logInfo(
       `Generating test templates for ${components.length} components...`
     );
@@ -570,14 +598,14 @@ class StandardsEnforcer {
     }
   }
 
-  async createDemoSuggestion() {
+  async createDemoSuggestion(): Promise<void> {
     this.logInfo(
       'Consider creating demo structure at src/app/demo/ with components and style-guide subdirectories'
     );
     // Could auto-generate basic demo structure if needed
   }
 
-  generateReport() {
+  generateReport(): boolean {
     console.log('\n📊 Standards Enforcement Report');
     console.log('=====================================');
     console.log(`Files checked: ${this.stats.filesChecked}`);
@@ -627,7 +655,7 @@ class StandardsEnforcer {
     return this.errors.length === 0;
   }
 
-  async run() {
+  async run(): Promise<void> {
     console.log('🚀 Starting standards enforcement...\n');
 
     await this.checkDocumentationFreshness();
@@ -657,7 +685,7 @@ class StandardsEnforcer {
 if (require.main === module) {
   // Parse command line arguments
   const args = process.argv.slice(2);
-  const options = {
+  const options: StandardsOptions = {
     checkOnly: args.includes('--check-only'),
     autoFix: args.includes('--auto-fix'),
     skipE2E: args.includes('--skip-e2e'),
@@ -668,7 +696,7 @@ if (require.main === module) {
     console.log(`
 Standards Enforcement Script
 
-Usage: node scripts/enforce-standards.js [options]
+Usage: tsx scripts/enforce-standards.ts [options]
 
 Options:
   --check-only           Only check standards, don't run expensive tests
@@ -678,8 +706,8 @@ Options:
   --help, -h            Show this help message
 
 Examples:
-  node scripts/enforce-standards.js --check-only
-  node scripts/enforce-standards.js --auto-fix --skip-e2e
+  tsx scripts/enforce-standards.ts --check-only
+  tsx scripts/enforce-standards.ts --auto-fix --skip-e2e
 `);
     process.exit(0);
   }
@@ -691,4 +719,4 @@ Examples:
   });
 }
 
-module.exports = StandardsEnforcer;
+export default StandardsEnforcer;

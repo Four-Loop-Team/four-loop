@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
 /* eslint-disable no-console */
 
@@ -7,10 +7,21 @@
  * Validates documentation for consistency, broken links, and completeness
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+
+interface ValidationStats {
+  documentsChecked: number;
+  linksChecked: number;
+  imagesChecked: number;
+}
 
 class DocumentationValidator {
+  private projectRoot: string;
+  private errors: string[];
+  private warnings: string[];
+  public stats: ValidationStats;
+
   constructor() {
     this.projectRoot = process.cwd();
     this.errors = [];
@@ -22,21 +33,21 @@ class DocumentationValidator {
     };
   }
 
-  logError(message) {
+  logError(message: string): void {
     this.errors.push(message);
     console.error(`❌ ERROR: ${message}`);
   }
 
-  logWarning(message) {
+  logWarning(message: string): void {
     this.warnings.push(message);
     console.warn(`⚠️  WARNING: ${message}`);
   }
 
-  logInfo(message) {
+  logInfo(message: string): void {
     console.log(`ℹ️  ${message}`);
   }
 
-  validateFileStructure() {
+  validateFileStructure(): void {
     console.log('🏗️  Validating documentation structure...');
 
     const requiredFiles = [
@@ -60,7 +71,7 @@ class DocumentationValidator {
     }
   }
 
-  validateMarkdownSyntax() {
+  validateMarkdownSyntax(): void {
     console.log('📝 Validating Markdown syntax...');
 
     const markdownFiles = this.findMarkdownFiles('.');
@@ -74,7 +85,7 @@ class DocumentationValidator {
     }
   }
 
-  validateMarkdownFile(file, content) {
+  validateMarkdownFile(file: string, content: string): void {
     const lines = content.split('\n');
 
     // Check for unclosed code blocks
@@ -110,7 +121,7 @@ class DocumentationValidator {
     }
   }
 
-  isValidLink(line, file) {
+  isValidLink(line: string, file: string): boolean {
     // Extract all markdown links from the line
     const linkRegex = /\[([^\]]*)\]\(([^)]+)\)/g;
     let match;
@@ -145,7 +156,7 @@ class DocumentationValidator {
     return allValid;
   }
 
-  validateCodeSamples() {
+  validateCodeSamples(): void {
     console.log('💻 Validating code samples...');
 
     const markdownFiles = this.findMarkdownFiles('.');
@@ -156,7 +167,7 @@ class DocumentationValidator {
     }
   }
 
-  validateCodeInFile(file, content) {
+  validateCodeInFile(file: string, content: string): void {
     const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
     let match;
 
@@ -181,7 +192,7 @@ class DocumentationValidator {
     }
   }
 
-  validateJavaScriptCode(file, code, language) {
+  validateJavaScriptCode(file: string, code: string, language: string): void {
     // Basic validation - check for obvious syntax errors
     try {
       // Check for unmatched brackets/braces
@@ -208,20 +219,22 @@ class DocumentationValidator {
       }
     } catch (error) {
       this.logWarning(
-        `Could not validate ${language} code in ${file}: ${error.message}`
+        `Could not validate ${language} code in ${file}: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     }
   }
 
-  validateJsonCode(file, code) {
+  validateJsonCode(file: string, code: string): void {
     try {
       JSON.parse(code);
     } catch (error) {
-      this.logError(`Invalid JSON in code block in ${file}: ${error.message}`);
+      this.logError(
+        `Invalid JSON in code block in ${file}: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
-  validateConsistency() {
+  validateConsistency(): void {
     console.log('🔍 Validating documentation consistency...');
 
     // Check if README stats match generated docs
@@ -244,11 +257,13 @@ class DocumentationValidator {
         }
       }
     } catch (error) {
-      this.logWarning(`Could not validate consistency: ${error.message}`);
+      this.logWarning(
+        `Could not validate consistency: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
-  validateImages() {
+  validateImages(): void {
     console.log('🖼️  Validating images...');
 
     const markdownFiles = this.findMarkdownFiles('.');
@@ -279,8 +294,8 @@ class DocumentationValidator {
     }
   }
 
-  findMarkdownFiles(dir) {
-    const files = [];
+  findMarkdownFiles(dir: string): string[] {
+    const files: string[] = [];
     const items = fs.readdirSync(dir);
 
     for (const item of items) {
@@ -305,7 +320,7 @@ class DocumentationValidator {
     return files;
   }
 
-  generateValidationReport() {
+  generateValidationReport(): void {
     console.log('\n📊 Generating validation report...');
 
     const report = `# Documentation Validation Report
@@ -366,7 +381,7 @@ ${this.warnings.map((warning) => `- ${warning}`).join('\n')}
     console.log('✅ Validation report saved to docs/VALIDATION_REPORT.md');
   }
 
-  async run() {
+  async run(): Promise<void> {
     console.log('🚀 Starting documentation validation...\n');
 
     this.validateFileStructure();
@@ -408,4 +423,4 @@ if (require.main === module) {
   validator.run().catch(console.error);
 }
 
-module.exports = DocumentationValidator;
+export default DocumentationValidator;

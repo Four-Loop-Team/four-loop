@@ -1,15 +1,33 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 /* eslint-disable no-console */
 /**
  * Standards and Automation Setup Script
  * Ensures all automation systems are properly configured and working
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
-class AutomationSetup {
+interface SetupCheck {
+  checks: string[];
+  errors: string[];
+  warnings: string[];
+  fixes: string[];
+}
+
+interface TestableScript {
+  script: string;
+  name: string;
+}
+
+class AutomationSetup implements SetupCheck {
+  private projectRoot: string;
+  public checks: string[];
+  public errors: string[];
+  public warnings: string[];
+  public fixes: string[];
+
   constructor() {
     this.projectRoot = process.cwd();
     this.checks = [];
@@ -18,40 +36,40 @@ class AutomationSetup {
     this.fixes = [];
   }
 
-  logError(message) {
+  logError(message: string): void {
     this.errors.push(message);
     console.error(`❌ ERROR: ${message}`);
   }
 
-  logWarning(message) {
+  logWarning(message: string): void {
     this.warnings.push(message);
     console.warn(`⚠️  WARNING: ${message}`);
   }
 
-  logFix(message) {
+  logFix(message: string): void {
     this.fixes.push(message);
     console.log(`🔧 FIXED: ${message}`);
   }
 
-  logInfo(message) {
+  logInfo(message: string): void {
     console.log(`ℹ️  ${message}`);
   }
 
-  logSuccess(message) {
+  logSuccess(message: string): void {
     console.log(`✅ ${message}`);
     this.checks.push(message);
   }
 
   // Check if all required scripts exist
-  checkRequiredScripts() {
+  checkRequiredScripts(): void {
     console.log('\n📝 Checking required scripts...');
 
     const requiredScripts = [
-      'scripts/enforce-standards.js',
-      'scripts/generate-docs.js',
-      'scripts/validate-docs.js',
-      'scripts/check-performance-budget.js',
-      'scripts/measure-core-web-vitals.js',
+      'scripts/enforce-standards.ts',
+      'scripts/generate-docs.ts',
+      'scripts/validate-docs.ts',
+      'scripts/check-performance-budget.ts',
+      'scripts/measure-core-web-vitals.ts',
     ];
 
     for (const script of requiredScripts) {
@@ -65,7 +83,7 @@ class AutomationSetup {
   }
 
   // Check if git hooks are properly configured
-  checkGitHooks() {
+  checkGitHooks(): void {
     console.log('\n🪝 Checking git hooks...');
 
     const huskyDir = path.join(this.projectRoot, '.husky');
@@ -86,7 +104,7 @@ class AutomationSetup {
   }
 
   // Check package.json scripts
-  checkPackageScripts() {
+  checkPackageScripts(): void {
     console.log('\n📦 Checking package.json scripts...');
 
     const packagePath = path.join(this.projectRoot, 'package.json');
@@ -119,7 +137,7 @@ class AutomationSetup {
   }
 
   // Check CI/CD configuration
-  checkCIConfiguration() {
+  checkCIConfiguration(): void {
     console.log('\n🔄 Checking CI/CD configuration...');
 
     const ciFiles = [
@@ -138,7 +156,7 @@ class AutomationSetup {
   }
 
   // Check documentation structure
-  checkDocumentationStructure() {
+  checkDocumentationStructure(): void {
     console.log('\n📚 Checking documentation structure...');
 
     const docDirs = [
@@ -167,7 +185,7 @@ class AutomationSetup {
   }
 
   // Check testing configuration
-  checkTestingConfiguration() {
+  checkTestingConfiguration(): void {
     console.log('\n🧪 Checking testing configuration...');
 
     const testConfigs = [
@@ -188,10 +206,10 @@ class AutomationSetup {
   }
 
   // Test that scripts can run
-  testScriptExecution() {
+  testScriptExecution(): void {
     console.log('\n🚀 Testing script execution...');
 
-    const testableScripts = [
+    const testableScripts: TestableScript[] = [
       { script: 'npm run type-check', name: 'TypeScript compilation' },
       { script: 'npm run lint:check', name: 'Linting check' },
       { script: 'npm run docs:generate', name: 'Documentation generation' },
@@ -208,11 +226,11 @@ class AutomationSetup {
   }
 
   // Run initial standards check
-  runInitialStandardsCheck() {
+  runInitialStandardsCheck(): void {
     console.log('\n🔍 Running initial standards check...');
 
     try {
-      execSync('node scripts/enforce-standards.js --check-only', {
+      execSync('tsx scripts/enforce-standards.ts --check-only', {
         stdio: 'pipe',
       });
       this.logSuccess('Standards enforcement system is working');
@@ -223,7 +241,7 @@ class AutomationSetup {
   }
 
   // Generate summary report
-  generateSummaryReport() {
+  generateSummaryReport(): void {
     console.log('\n📊 Setup Summary');
     console.log('==================');
     console.log(`✅ Successful checks: ${this.checks.length}`);
@@ -265,7 +283,7 @@ class AutomationSetup {
     console.log('  • Project overview: docs/README.md');
   }
 
-  async run() {
+  async run(): Promise<boolean> {
     console.log('🚀 Setting up automation and standards enforcement...\n');
 
     this.checkRequiredScripts();
@@ -307,4 +325,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = AutomationSetup;
+export default AutomationSetup;

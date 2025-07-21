@@ -1,17 +1,25 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 /* eslint-disable no-console */
 /**
  * JSDoc Enhancement Script
  * Helps improve JSDoc documentation quality for React components
  */
 
-const fs = require('fs');
-const path = require('path');
+import { promises as fs } from 'fs';
+import { basename, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
  * Enhanced JSDoc template for React components
  */
-function generateJSDocTemplate(componentName, propsInterface) {
+function generateJSDocTemplate(
+  componentName: string,
+  propsInterface: string
+): string {
   return `/**
  * ${componentName} component provides [brief description of functionality].
  *
@@ -42,16 +50,18 @@ function generateJSDocTemplate(componentName, propsInterface) {
 /**
  * Add JSDoc to a component file
  */
-function enhanceComponentJSDoc(filePath) {
+async function enhanceComponentJSDoc(filePath: string): Promise<boolean> {
   try {
-    const content = fs.readFileSync(filePath, 'utf8');
-    const componentName = path.basename(filePath, '.tsx');
+    const content = await fs.readFile(filePath, 'utf8');
+    const componentName = basename(filePath, '.tsx');
 
     // Check if component already has JSDoc
     if (content.includes('/**') && content.includes('@component')) {
       console.log(`✅ ${componentName}: Already has good JSDoc`);
       return false;
-    } // Find component export
+    }
+
+    // Find component export
     const exportMatch =
       content.match(/export\s+(const|function|default\s+function)\s+(\w+)/) ||
       content.match(/export\s+default\s+function\s+(\w+)/);
@@ -84,14 +94,16 @@ function enhanceComponentJSDoc(filePath) {
 
     // Write enhanced file
     const backupPath = filePath + '.backup';
-    fs.writeFileSync(backupPath, content); // Backup original
-    fs.writeFileSync(filePath, newContent);
+    await fs.writeFile(backupPath, content); // Backup original
+    await fs.writeFile(filePath, newContent);
 
     console.log(`🔧 ${componentName}: Enhanced with JSDoc template`);
     console.log(`   Backup saved: ${backupPath}`);
     return true;
   } catch (error) {
-    console.error(`❌ Error enhancing ${filePath}: ${error.message}`);
+    console.error(
+      `❌ Error enhancing ${filePath}: ${(error as Error).message}`
+    );
     return false;
   }
 }
@@ -99,7 +111,7 @@ function enhanceComponentJSDoc(filePath) {
 /**
  * Show JSDoc best practices guide
  */
-function showJSDocGuide() {
+function showJSDocGuide(): void {
   console.log(`
 📖 JSDoc Best Practices for React Components
 ===========================================
@@ -153,15 +165,24 @@ function showJSDocGuide() {
 const args = process.argv.slice(2);
 const command = args[0];
 
-if (command === 'help' || !command) {
-  showJSDocGuide();
-} else if (command === 'enhance') {
-  const targetFile = args[1];
-  if (targetFile) {
-    enhanceComponentJSDoc(targetFile);
+async function main(): Promise<void> {
+  if (command === 'help' || !command) {
+    showJSDocGuide();
+  } else if (command === 'enhance') {
+    const targetFile = args[1];
+    if (targetFile) {
+      await enhanceComponentJSDoc(targetFile);
+    } else {
+      console.log('Usage: tsx enhance-jsdoc.ts enhance <file-path>');
+    }
   } else {
-    console.log('Usage: node enhance-jsdoc.js enhance <file-path>');
+    console.log('Unknown command. Use "help" for guidance.');
   }
-} else {
-  console.log('Unknown command. Use "help" for guidance.');
 }
+
+// Only run if this is the main module
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void main();
+}
+
+export { enhanceComponentJSDoc, showJSDocGuide };

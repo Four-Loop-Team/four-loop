@@ -1,14 +1,14 @@
 # Dependency Report
 
-> 🤖 Auto-generated on 2025-07-20T16:06:41.816Z
+> 🤖 Auto-generated on 2025-07-21T20:51:02.435Z
 
 ## 📊 Summary
 
-| Type                     | Count  |
-| ------------------------ | ------ |
-| Production Dependencies  | 3      |
-| Development Dependencies | 52     |
-| **Total Dependencies**   | **55** |
+| Type | Count |
+|------|-------|
+| Production Dependencies | 3 |
+| Development Dependencies | 53 |
+| **Total Dependencies** | **56** |
 
 ## 🏗️ Production Dependencies
 
@@ -69,6 +69,7 @@
 - **stylelint-config-standard-scss**: ^13.0.0
 - **tailwindcss**: ^4.1.10
 - **ts-jest**: ^29.1.2
+- **tsx**: ^4.20.3
 - **typescript**: ^5.3.3
 
 ## 🔄 Maintenance
@@ -88,4 +89,4 @@ npm install package-name@latest
 
 ---
 
-_This report is automatically generated from package.json._
+*This report is automatically generated from package.json.*

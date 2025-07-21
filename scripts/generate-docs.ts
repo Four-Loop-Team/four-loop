@@ -1,9 +1,9 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+import fs from 'fs';
+import glob from 'glob';
+import path from 'path';
 
 console.log('🚀 Starting documentation generation...');
 
@@ -28,8 +28,47 @@ requiredDirs.forEach((dir) => {
   }
 });
 
+interface FileCounts {
+  [key: string]: number;
+}
+
+interface ComponentDoc {
+  name: string;
+  file: string;
+  description: string;
+}
+
+interface DependencyReport {
+  production: number;
+  development: number;
+  total: number;
+  details: {
+    dependencies?: Record<string, string>;
+    devDependencies?: Record<string, string>;
+  };
+}
+
+interface ProjectStats {
+  generatedAt: string;
+  files: FileCounts;
+  components: {
+    total: number;
+    documented: number;
+    coverage: number;
+  };
+  testing: {
+    testFiles: number;
+    coverage: string;
+  };
+  dependencies: DependencyReport;
+  documentation: {
+    pages: number;
+    lastUpdated: string;
+  };
+}
+
 // Count files and components
-function countFiles() {
+function countFiles(): FileCounts {
   const patterns = {
     components: 'src/components/**/*.tsx',
     tests: '**/*.test.{ts,tsx,js,jsx}',
@@ -42,13 +81,15 @@ function countFiles() {
     docs: 'docs/**/*.md',
   };
 
-  const counts = {};
+  const counts: FileCounts = {};
   for (const [key, pattern] of Object.entries(patterns)) {
     try {
       const files = glob.sync(pattern, { cwd: rootDir });
       counts[key] = files.length;
     } catch (error) {
-      console.warn(`⚠️ Error counting ${key}: ${error.message}`);
+      console.warn(
+        `⚠️ Error counting ${key}: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
       counts[key] = 0;
     }
   }
@@ -57,12 +98,12 @@ function countFiles() {
 }
 
 // Extract JSDoc from components
-function extractComponentDocs() {
+function extractComponentDocs(): ComponentDoc[] {
   try {
     const componentFiles = glob.sync('src/components/**/*.tsx', {
       cwd: rootDir,
     });
-    const componentDocs = [];
+    const componentDocs: ComponentDoc[] = [];
 
     componentFiles.forEach((filePath) => {
       const fullPath = path.join(rootDir, filePath);
@@ -89,19 +130,23 @@ function extractComponentDocs() {
           });
         }
       } catch (error) {
-        console.warn(`⚠️ Error processing ${filePath}: ${error.message}`);
+        console.warn(
+          `⚠️ Error processing ${filePath}: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
       }
     });
 
     return componentDocs;
   } catch (error) {
-    console.warn(`⚠️ Error extracting component docs: ${error.message}`);
+    console.warn(
+      `⚠️ Error extracting component docs: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
     return [];
   }
 }
 
 // Generate dependency report
-function generateDependencyReport() {
+function generateDependencyReport(): DependencyReport {
   try {
     const packageJsonPath = path.join(rootDir, 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
@@ -109,7 +154,7 @@ function generateDependencyReport() {
     const dependencies = packageJson.dependencies || {};
     const devDependencies = packageJson.devDependencies || {};
 
-    const report = {
+    const report: DependencyReport = {
       production: Object.keys(dependencies).length,
       development: Object.keys(devDependencies).length,
       total:
@@ -122,20 +167,22 @@ function generateDependencyReport() {
 
     return report;
   } catch (error) {
-    console.warn(`⚠️ Error generating dependency report: ${error.message}`);
+    console.warn(
+      `⚠️ Error generating dependency report: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
     return { production: 0, development: 0, total: 0, details: {} };
   }
 }
 
 // Generate project statistics
-function generateProjectStats() {
+function generateProjectStats(): ProjectStats {
   console.log('📊 Generating project statistics...');
 
   const counts = countFiles();
   const componentDocs = extractComponentDocs();
   const depReport = generateDependencyReport();
 
-  const stats = {
+  const stats: ProjectStats = {
     generatedAt: new Date().toISOString(),
     files: counts,
     components: {
@@ -208,7 +255,7 @@ function generateProjectStats() {
 }
 
 // Generate API documentation
-function generateApiDocs() {
+function generateApiDocs(): ComponentDoc[] {
   console.log('📖 Generating API documentation...');
 
   const componentDocs = extractComponentDocs();
@@ -275,7 +322,7 @@ To add API documentation for your components:
 }
 
 // Generate dependency report
-function generateDepReport() {
+function generateDepReport(): DependencyReport {
   console.log('📦 Generating dependency report...');
 
   const depData = generateDependencyReport();
@@ -297,7 +344,7 @@ function generateDepReport() {
 `;
 
   if (Object.keys(depData.details.dependencies || {}).length > 0) {
-    Object.entries(depData.details.dependencies).forEach(([name, version]) => {
+    Object.entries(depData.details.dependencies!).forEach(([name, version]) => {
       depContent += `- **${name}**: ${version}\n`;
     });
   } else {
@@ -310,7 +357,7 @@ function generateDepReport() {
 `;
 
   if (Object.keys(depData.details.devDependencies || {}).length > 0) {
-    Object.entries(depData.details.devDependencies).forEach(
+    Object.entries(depData.details.devDependencies!).forEach(
       ([name, version]) => {
         depContent += `- **${name}**: ${version}\n`;
       }
@@ -347,7 +394,7 @@ npm install package-name@latest
 }
 
 // Update README.md with current stats
-function updateReadme() {
+function updateReadme(): void {
   console.log('📝 Updating README.md...');
 
   const readmePath = path.join(rootDir, 'README.md');
@@ -390,7 +437,7 @@ function updateReadme() {
 }
 
 // Main execution
-async function main() {
+async function main(): Promise<void> {
   try {
     console.log('🏗️ Setting up documentation structure...');
 
@@ -417,9 +464,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = {
-  main,
-  generateProjectStats,
-  generateApiDocs,
-  generateDepReport,
-};
+export { generateApiDocs, generateDepReport, generateProjectStats, main };

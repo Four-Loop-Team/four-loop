@@ -1,18 +1,24 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 /* eslint-disable no-console */
 /**
  * Test Template Generator
  * Automatically generates test templates for components that lack test coverage
  */
 
-const fs = require('fs');
-const path = require('path');
+import {
+  existsSync,
+  promises as fs,
+  mkdirSync,
+  readdirSync,
+  statSync,
+} from 'fs';
+import { basename, join, parse, relative } from 'path';
 
 // Template for basic component test
-const COMPONENT_TEST_TEMPLATE = (
-  componentName,
-  componentPath
-) => `import React from 'react';
+const componentTestTemplate = (
+  componentName: string,
+  componentPath: string
+): string => `import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ${componentName} from '${componentPath}';
@@ -39,9 +45,9 @@ describe('${componentName}', () => {
 `;
 
 // Template for index file test
-const INDEX_TEST_TEMPLATE = (
-  dirName
-) => `import * as ComponentIndex from '../${dirName}/index';
+const indexTestTemplate = (
+  dirName: string
+): string => `import * as ComponentIndex from '../${dirName}/index';
 
 describe('${dirName} Index', () => {
   it('exports all expected components', () => {
@@ -59,7 +65,9 @@ describe('${dirName} Index', () => {
 `;
 
 // Template for types file test
-const TYPES_TEST_TEMPLATE = (fileName) => `// Test file for ${fileName} types
+const typesTestTemplate = (
+  fileName: string
+): string => `// Test file for ${fileName} types
 // Note: TypeScript interfaces and types don't need runtime tests
 // but we can test type guards, validators, and utility functions
 
@@ -77,26 +85,29 @@ describe('${fileName} Types', () => {
 });
 `;
 
-async function generateTestTemplates() {
+async function generateTestTemplates(): Promise<void> {
   console.log('🧪 Generating test templates for missing component tests...\n');
 
-  const srcDir = path.join(process.cwd(), 'src');
-  const testsDir = path.join(srcDir, 'components', '__tests__');
+  const srcDir = join(process.cwd(), 'src');
+  const testsDir = join(srcDir, 'components', '__tests__');
 
   // Ensure tests directory exists
-  if (!fs.existsSync(testsDir)) {
-    fs.mkdirSync(testsDir, { recursive: true });
+  if (!existsSync(testsDir)) {
+    mkdirSync(testsDir, { recursive: true });
   }
 
-  const componentsDir = path.join(srcDir, 'components');
+  const componentsDir = join(srcDir, 'components');
   let templatesGenerated = 0;
 
-  function scanForComponents(dir, baseDir = componentsDir) {
-    const items = fs.readdirSync(dir);
+  async function scanForComponents(
+    dir: string,
+    baseDir: string = componentsDir
+  ): Promise<void> {
+    const items = readdirSync(dir);
 
     for (const item of items) {
-      const itemPath = path.join(dir, item);
-      const stat = fs.statSync(itemPath);
+      const itemPath = join(dir, item);
+      const stat = statSync(itemPath);
 
       if (
         stat.isDirectory() &&
@@ -104,7 +115,7 @@ async function generateTestTemplates() {
         item !== 'node_modules'
       ) {
         // Check if this directory has component files
-        const files = fs.readdirSync(itemPath);
+        const files = readdirSync(itemPath);
         const hasComponent = files.some(
           (file) => file.endsWith('.tsx') || file.endsWith('.ts')
         );
@@ -116,40 +127,41 @@ async function generateTestTemplates() {
               file.endsWith('.tsx') ||
               (file.endsWith('.ts') && !file.endsWith('.d.ts'))
             ) {
-              const fileName = path.parse(file).name;
+              const fileName = parse(file).name;
               const testFileName = `${fileName}.test.tsx`;
-              const testFilePath = path.join(testsDir, testFileName);
+              const testFilePath = join(testsDir, testFileName);
 
               // Skip if test already exists
-              if (fs.existsSync(testFilePath)) {
+              if (existsSync(testFilePath)) {
                 continue;
               }
 
-              let template;
-              const relativePath = path
-                .relative(testsDir, itemPath)
-                .replace(/\\/g, '/');
+              let template: string;
+              const relativePath = relative(testsDir, itemPath).replace(
+                /\\/g,
+                '/'
+              );
 
               if (fileName === 'index') {
-                const dirName = path.basename(itemPath);
-                template = INDEX_TEST_TEMPLATE(dirName);
+                const dirName = basename(itemPath);
+                template = indexTestTemplate(dirName);
               } else if (fileName.includes('type') || fileName === 'types') {
-                template = TYPES_TEST_TEMPLATE(fileName);
+                template = typesTestTemplate(fileName);
               } else {
-                template = COMPONENT_TEST_TEMPLATE(
+                template = componentTestTemplate(
                   fileName,
                   `../${relativePath}/${file}`
                 );
               }
 
               try {
-                fs.writeFileSync(testFilePath, template);
+                await fs.writeFile(testFilePath, template);
                 console.log(`✅ Generated: ${testFileName}`);
                 templatesGenerated++;
               } catch (error) {
                 console.log(
                   `❌ Error generating ${testFileName}:`,
-                  error.message
+                  (error as Error).message
                 );
               }
             }
@@ -157,12 +169,12 @@ async function generateTestTemplates() {
         }
 
         // Recursively scan subdirectories
-        scanForComponents(itemPath, baseDir);
+        await scanForComponents(itemPath, baseDir);
       }
     }
   }
 
-  scanForComponents(componentsDir);
+  await scanForComponents(componentsDir);
 
   console.log(`\n📊 Generated ${templatesGenerated} test templates`);
 
@@ -178,9 +190,9 @@ async function generateTestTemplates() {
   }
 }
 
-// Run if called directly
-if (require.main === module) {
-  generateTestTemplates().catch(console.error);
+// Only run if this is the main module
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void generateTestTemplates().catch(console.error);
 }
 
-module.exports = { generateTestTemplates };
+export { generateTestTemplates };
