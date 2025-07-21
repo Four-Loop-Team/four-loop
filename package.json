@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run lint:check && npm run type-check && next build",
+    "build": "npm run tokens:generate && npm run lint:check && npm run type-check && next build",
     "start": "next start",
     "lint": "npm run lint:js && npm run lint:styles && npm run format:check",
     "lint:js": "next lint",
@@ -35,6 +35,8 @@
     "docs:deps": "npm run docs:generate && echo '📊 Dependency report generated at docs/DEPENDENCY_REPORT.md'",
     "docs:open:api": "npm run docs:api && open docs/API_DOCUMENTATION.md",
     "docs:open:deps": "npm run docs:deps && open docs/DEPENDENCY_REPORT.md",
+    "tokens:generate": "node scripts/generate-scss-variables.js",
+    "tokens:watch": "nodemon --watch src/constants/unified-design-tokens.ts --exec 'npm run tokens:generate'",
     "jsdoc:enhance": "node scripts/enhance-jsdoc.js enhance",
     "jsdoc:guide": "node scripts/enhance-jsdoc.js help",
     "jsdoc:validate": "npm run standards:check | grep -A 20 'JSDoc'",
