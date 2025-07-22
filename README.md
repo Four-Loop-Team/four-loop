@@ -20,7 +20,7 @@ open http://localhost:3000
 ## ✨ Key Features
 
 - **🔥 Modern Tech Stack**: Next.js 15, React 19, TypeScript 5.8, Material UI 7
-- **🎨 Advanced Styling**: SCSS variables, CSS custom properties, TailwindCSS
+- **🎨 Advanced Styling**: SCSS variables, CSS custom properties, Design System
 - **📱 Responsive Design**: 12-column grid system with mobile-first approach
 - **⚡ Performance Optimized**: Smooth animations, scroll detection
 - **🔒 Type-Safe Development**: Full TypeScript implementation
@@ -86,7 +86,7 @@ open http://localhost:3000
 - **Framework**: Next.js 15 with App Router
 - **Language**: TypeScript 5.8
 - **UI Library**: Material UI 7 + Emotion 11
-- **Styling**: SCSS + CSS Custom Properties + TailwindCSS
+- **Styling**: SCSS + CSS Custom Properties + Design System
 - **Testing**: Jest 30 + React Testing Library + Playwright
 - **Quality**: ESLint 8 + Prettier 3 + Stylelint 16
 - **Automation**: Husky 9 + lint-staged 15

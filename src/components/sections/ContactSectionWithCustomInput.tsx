@@ -1,11 +1,7 @@
 'use client';
 
-import {
-  colors,
-  spacing,
-  typography,
-} from '@/components/system/BrandThemeProvider/BrandThemeProvider';
 import { Input } from '@/components/ui/Input';
+import { useDesignSystem } from '@/lib/hooks';
 import { Box, Container, Typography } from '@mui/material';
 import { useState } from 'react';
 
@@ -21,6 +17,7 @@ import { useState } from 'react';
  * ```
  */
 export const ContactSectionWithCustomInput = () => {
+  const { colors, spacing, typography } = useDesignSystem();
   const [email, setEmail] = useState('');
   const [project, setProject] = useState('');
 
@@ -37,8 +34,8 @@ export const ContactSectionWithCustomInput = () => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        pt: { xs: spacing.section.xs, md: spacing.section.md },
-        pb: { xs: spacing.section.xs, md: spacing.section.md },
+        pt: { xs: spacing.section.sm, md: spacing.section.md },
+        pb: { xs: spacing.section.sm, md: spacing.section.md },
         backgroundColor: 'transparent',
         color: 'white',
         position: 'relative',
@@ -54,10 +51,10 @@ export const ContactSectionWithCustomInput = () => {
       >
         <Box
           sx={{
-            backgroundColor: colors.highlight,
+            backgroundColor: colors.background.accent,
             borderRadius: '86px',
-            paddingTop: spacing.section.xs,
-            paddingBottom: spacing.section.xs,
+            paddingTop: spacing.section.sm,
+            paddingBottom: spacing.section.sm,
             paddingLeft: spacing.layout.lg,
             paddingRight: spacing.layout.lg,
           }}
@@ -67,7 +64,7 @@ export const ContactSectionWithCustomInput = () => {
             sx={{
               textAlign: 'center',
               paddingBottom: spacing.layout.xs,
-              borderBottom: `1px solid ${colors.textMuted}`,
+              borderBottom: `1px solid ${colors.text.muted}`,
             }}
           >
             <Box
@@ -94,8 +91,8 @@ export const ContactSectionWithCustomInput = () => {
                       xs: typography.fontSize['4xl'],
                       md: typography.fontSize['6xl'],
                     },
-                    fontWeight: typography.fontWeight.regular,
-                    color: colors.textDark,
+                    fontWeight: typography.fontWeight.normal,
+                    color: colors.text.primary,
                     lineHeight: typography.lineHeight.tight,
                   }}
                 >
@@ -108,7 +105,7 @@ export const ContactSectionWithCustomInput = () => {
                       xs: typography.fontSize.base,
                       md: typography.fontSize.xl,
                     },
-                    color: colors.textDark,
+                    color: colors.text.primary,
                     fontWeight: typography.fontWeight.light,
                   }}
                 >
@@ -167,7 +164,7 @@ export const ContactSectionWithCustomInput = () => {
                 type='submit'
                 sx={{
                   backgroundColor: 'transparent',
-                  color: colors.textDark,
+                  color: colors.text.primary,
                   border: 'none',
                   borderRadius: spacing.component.lg,
                   fontSize: typography.fontSize.lg,
@@ -197,7 +194,7 @@ export const ContactSectionWithCustomInput = () => {
                 <Box
                   component='span'
                   sx={{
-                    color: colors.textDark,
+                    color: colors.text.primary,
                     fontSize: typography.fontSize.lg,
                     fontWeight: typography.fontWeight.medium,
                   }}
@@ -208,7 +205,7 @@ export const ContactSectionWithCustomInput = () => {
                   component='span'
                   sx={{
                     fontSize: '1.2em',
-                    color: colors.textDark,
+                    color: colors.text.primary,
                     marginLeft: spacing.component.sm,
                   }}
                 >

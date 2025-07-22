@@ -1,10 +1,6 @@
-import { colors } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
-import {
-  InputAdornment,
-  TextField,
-  TextFieldProps,
-  styled,
-} from '@mui/material';
+import { COLOR_TOKENS } from '@/constants/design-tokens-consolidated';
+import { useDesignSystemMUI } from '@/lib/hooks';
+import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { forwardRef } from 'react';
 
 /**
@@ -39,59 +35,66 @@ export interface InputProps
 /**
  * Styled TextField with our brand styling
  */
-const StyledTextField = styled(TextField)<TextFieldProps>(
-  ({ variant: _variant }) => ({
-    // TODO: Implement variant-based styling
-    '& .MuiInputLabel-root': {
-      color: colors.textDark,
-      '&.Mui-focused': {
-        color: colors.textDark,
+const StyledTextField = (props: TextFieldProps) => {
+  const muiTheme = useDesignSystemMUI();
+
+  const styledProps = {
+    ...props,
+    sx: {
+      '& .MuiInputLabel-root': {
+        color: muiTheme.palette.text.primary,
+        '&.Mui-focused': {
+          color: muiTheme.palette.text.primary,
+        },
+        '& .MuiInputLabel-asterisk': {
+          display: 'none',
+        },
       },
-      '& .MuiInputLabel-asterisk': {
-        display: 'none',
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: COLOR_TOKENS.border.muted,
+        },
+        '&:hover fieldset': {
+          borderColor: muiTheme.palette.text.primary,
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: muiTheme.palette.text.primary,
+          borderWidth: '2px',
+        },
       },
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: colors.textMuted,
-      },
-      '&:hover fieldset': {
-        borderColor: colors.textDark,
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: colors.textDark,
-        borderWidth: '2px',
-      },
-    },
-    '& .MuiFilledInput-root': {
-      backgroundColor: 'rgba(53, 53, 53, 0.08)',
-      '&:hover': {
-        backgroundColor: 'rgba(53, 53, 53, 0.12)',
-      },
-      '&.Mui-focused': {
+      '& .MuiFilledInput-root': {
         backgroundColor: 'rgba(53, 53, 53, 0.08)',
+        '&:hover': {
+          backgroundColor: 'rgba(53, 53, 53, 0.12)',
+        },
+        '&.Mui-focused': {
+          backgroundColor: 'rgba(53, 53, 53, 0.08)',
+        },
+        '&:before': {
+          borderBottomColor: muiTheme.palette.text.primary,
+        },
+        '&:hover:before': {
+          borderBottomColor: muiTheme.palette.text.primary,
+        },
+        '&:after': {
+          borderBottomColor: muiTheme.palette.text.primary,
+        },
       },
-      '&:before': {
-        borderBottomColor: colors.textDark,
+      '& .MuiInputBase-input': {
+        color: muiTheme.palette.text.primary,
       },
-      '&:hover:before': {
-        borderBottomColor: colors.textDark,
+      '& .MuiFormHelperText-root': {
+        color: muiTheme.palette.text.secondary,
+        '&.Mui-error': {
+          color: muiTheme.palette.error.main,
+        },
       },
-      '&:after': {
-        borderBottomColor: colors.textDark,
-      },
+      ...props.sx,
     },
-    '& .MuiInputBase-input': {
-      color: colors.textDark,
-    },
-    '& .MuiFormHelperText-root': {
-      color: colors.textMuted,
-      '&.Mui-error': {
-        color: colors.error,
-      },
-    },
-  })
-);
+  };
+
+  return <TextField {...styledProps} />;
+};
 
 /**
  * A comprehensive input component with validation and accessibility features.

@@ -41,6 +41,7 @@
  * ```
  */
 
+import { useDesignSystem } from '@/lib/hooks';
 import React, {
   createContext,
   forwardRef,
@@ -213,6 +214,7 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
     },
     ref
   ) => {
+    const { colors, spacing, typography, radius, shadows } = useDesignSystem();
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -455,10 +457,33 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
       [searchable, multiple, onChange, onOpen, onClose]
     );
 
-    const sizeClasses = {
-      sm: 'text-sm px-3 py-1.5',
-      md: 'text-sm px-3 py-2',
-      lg: 'text-base px-4 py-2.5',
+    const getSizeStyles = (size: 'sm' | 'md' | 'lg') => {
+      switch (size) {
+        case 'sm':
+          return {
+            fontSize: typography.fontSize.sm,
+            paddingLeft: spacing.component.sm,
+            paddingRight: spacing.component.sm,
+            paddingTop: spacing.micro.xs + 2,
+            paddingBottom: spacing.micro.xs + 2,
+          };
+        case 'lg':
+          return {
+            fontSize: typography.fontSize.base,
+            paddingLeft: spacing.component.lg,
+            paddingRight: spacing.component.lg,
+            paddingTop: spacing.micro.sm + 2,
+            paddingBottom: spacing.micro.sm + 2,
+          };
+        default:
+          return {
+            fontSize: typography.fontSize.sm,
+            paddingLeft: spacing.component.sm,
+            paddingRight: spacing.component.sm,
+            paddingTop: spacing.micro.sm,
+            paddingBottom: spacing.micro.sm,
+          };
+      }
     };
 
     const menuId = `dropdown-menu-${testId}`;
@@ -504,15 +529,34 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
           )}
 
           <div
-            className={`
-            relative w-full border rounded-md shadow-sm cursor-pointer transition-colors duration-200
-            ${error ? 'border-red-300' : 'border-gray-300 hover:border-gray-400'}
-            ${disabled ? 'bg-gray-50 cursor-not-allowed' : 'bg-white'}
-            ${isOpen ? 'ring-1 ring-blue-500 border-blue-500' : ''}
-            ${sizeClasses[size]}
-          `}
+            style={{
+              position: 'relative',
+              width: '100%',
+              border: `1px solid ${error ? colors.state.error : colors.border.default}`,
+              borderRadius: radius.input,
+              boxShadow: shadows.sm,
+              cursor: disabled ? 'not-allowed' : 'pointer',
+              transition: 'all 200ms ease',
+              backgroundColor: disabled
+                ? colors.background.secondary
+                : colors.background.primary,
+              outline: isOpen ? `1px solid ${colors.state.info}` : 'none',
+              ...getSizeStyles(size),
+            }}
             onClick={toggleDropdown}
             onKeyDown={handleKeyDown}
+            onMouseEnter={(e) => {
+              if (!disabled && !error) {
+                e.currentTarget.style.borderColor = colors.border.accent;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isOpen) {
+                e.currentTarget.style.borderColor = error
+                  ? colors.state.error
+                  : colors.border.default;
+              }
+            }}
             tabIndex={searchable ? -1 : 0}
             role='combobox'
             aria-expanded={isOpen}
@@ -691,7 +735,12 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
           {/* Helper text or error message */}
           {(helperText ?? errorMessage) && (
             <p
-              className={`dropdown-helper-text ${error ? 'dropdown-helper-text-error' : ''}`}
+              style={{
+                marginTop: spacing.micro.xs,
+                fontSize: typography.fontSize.sm,
+                color: error ? colors.state.error : colors.text.muted,
+                lineHeight: typography.lineHeight.normal,
+              }}
             >
               {error ? errorMessage : helperText}
             </p>

@@ -1,11 +1,7 @@
 'use client';
 
 import { Logo } from '@/components/brand';
-import {
-  colors,
-  spacing,
-  typography,
-} from '@/components/system/BrandThemeProvider/BrandThemeProvider';
+import { useDesignSystem } from '@/lib/hooks';
 import { Box, Container, Typography } from '@mui/material';
 
 /**
@@ -19,6 +15,8 @@ import { Box, Container, Typography } from '@mui/material';
  * ```
  */
 export const IntroSection = () => {
+  const { colors, spacing, typography } = useDesignSystem();
+
   return (
     <Box
       component='section'
@@ -42,10 +40,10 @@ export const IntroSection = () => {
       >
         <Box
           sx={{
-            backgroundColor: colors.backgroundSecondary,
+            backgroundColor: colors.background.secondary,
             borderRadius: '86px',
-            paddingTop: spacing.section.xs, // Using section spacing (64px)
-            paddingBottom: spacing.section.xs, // Using section spacing (64px)
+            paddingTop: spacing.section.sm, // Using section spacing (64px)
+            paddingBottom: spacing.section.sm, // Using section spacing (64px)
             paddingLeft: spacing.layout.lg, // Using layout spacing (similar to 58px)
             paddingRight: spacing.layout.lg, // Using layout spacing (similar to 58px)
           }}
@@ -57,8 +55,8 @@ export const IntroSection = () => {
               alignItems: 'center',
               gap: spacing.layout.xs, // Using layout spacing
               position: 'relative',
-              borderTop: `1px solid ${colors.textLight}`,
-              borderBottom: `1px solid ${colors.textLight}`,
+              borderTop: `1px solid ${colors.text.inverse}`,
+              borderBottom: `1px solid ${colors.text.inverse}`,
               paddingTop: spacing.layout.xs, // Using layout spacing (32px)
               paddingBottom: spacing.layout.xs, // Using layout spacing (32px)
             }}
@@ -84,7 +82,7 @@ export const IntroSection = () => {
                     md: typography.fontSize.lg,
                   }, // Using typography tokens
                   lineHeight: typography.lineHeight.relaxed, // Using typography tokens
-                  color: colors.textLight,
+                  color: colors.text.inverse,
                 }}
               >
                 At Four Loop Digital, we believe in building better brands
@@ -101,7 +99,7 @@ export const IntroSection = () => {
                       md: typography.fontSize.lg,
                     }, // Using typography tokens
                     lineHeight: typography.lineHeight.relaxed, // Using typography tokens
-                    color: colors.highlight,
+                    color: colors.text.accent,
                   }}
                 >
                   Crafted Code. Thoughtful Design. Real Results.
@@ -114,7 +112,10 @@ export const IntroSection = () => {
               sx={{
                 flex: '0 0 40%',
                 order: { xs: 1, md: 3 },
-                borderLeft: { xs: 'none', md: `1px solid ${colors.textLight}` },
+                borderLeft: {
+                  xs: 'none',
+                  md: `1px solid ${colors.text.inverse}`,
+                },
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -125,7 +126,7 @@ export const IntroSection = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  height: { xs: 'auto', md: spacing.scale[72] }, // Using spacing scale (18rem = 288px, close to 300px)
+                  height: { xs: 'auto', md: '18rem' }, // Using fixed height instead of spacing scale
                 }}
               >
                 <Logo

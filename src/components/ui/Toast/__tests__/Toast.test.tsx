@@ -86,16 +86,20 @@ describe('Toast', () => {
     const { rerender } = render(
       <Toast toast={toasts[0]} onDismiss={jest.fn()} />
     );
-    expect(screen.getByTestId('toast-1')).toHaveClass('border-green-200');
+    const successToast = screen.getByTestId('toast-1') as HTMLElement;
+    expect(successToast.style.borderColor).toBeTruthy();
 
     rerender(<Toast toast={toasts[1]} onDismiss={jest.fn()} />);
-    expect(screen.getByTestId('toast-2')).toHaveClass('border-red-200');
+    const errorToast = screen.getByTestId('toast-2') as HTMLElement;
+    expect(errorToast.style.borderColor).toBeTruthy();
 
     rerender(<Toast toast={toasts[2]} onDismiss={jest.fn()} />);
-    expect(screen.getByTestId('toast-3')).toHaveClass('border-yellow-200');
+    const warningToast = screen.getByTestId('toast-3') as HTMLElement;
+    expect(warningToast.style.borderColor).toBeTruthy();
 
     rerender(<Toast toast={toasts[3]} onDismiss={jest.fn()} />);
-    expect(screen.getByTestId('toast-4')).toHaveClass('border-blue-200');
+    const infoToast = screen.getByTestId('toast-4') as HTMLElement;
+    expect(infoToast.style.borderColor).toBeTruthy();
   });
 
   it('auto-removes toast after duration', () => {

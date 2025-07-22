@@ -1,5 +1,6 @@
 'use client';
 
+import { useDesignSystem } from '@/lib/hooks';
 import EastIcon from '@mui/icons-material/East';
 import React, {
   ButtonHTMLAttributes,
@@ -7,11 +8,6 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import {
-  colors,
-  spacing,
-  typography,
-} from '../../system/BrandThemeProvider/BrandThemeProvider';
 
 /**
  * Button component props interface
@@ -64,6 +60,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const [isMounted, setIsMounted] = useState(false);
+    const { colors, spacing, typography } = useDesignSystem();
 
     useEffect(() => {
       setIsMounted(true);
@@ -71,29 +68,67 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Handle primary variant with integrated ButtonPrimary functionality
     if (variant === 'primary') {
-      // Use SCSS utility classes - no Tailwind
-      const wrapperClasses = [
-        'btn-primary',
-        disabled && 'opacity-60 cursor-not-allowed',
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ');
+      // Primary button styles using design system tokens
+      const buttonStyles: React.CSSProperties = {
+        backgroundColor: 'transparent',
+        border: `1px solid ${colors.text.inverse}`,
+        borderRadius: '30px',
+        color: colors.text.inverse,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        display: 'inline-flex',
+        alignItems: 'center',
+        transition: 'all 0.2s ease-in-out',
+        opacity: disabled ? 0.6 : 1,
+        fontFamily: typography.fontFamily.primary,
+        textDecoration: 'none',
+        outline: 'none',
+        padding: 0,
+      };
 
-      // CTA and arrow classes using SCSS utilities only
-      const ctaClasses = 'inline-block py-em-02 px-em-18 font-medium';
-      const arrowClasses =
-        'inline-flex items-center justify-center rounded-full p-6px mr-neg-15px';
+      // CTA and arrow styles using inline styles instead of classes
+      const ctaStyles = {
+        display: 'inline-block',
+        paddingTop: '0.2em',
+        paddingBottom: '0.2em',
+        paddingLeft: '1.8em',
+        paddingRight: '1.8em',
+        fontWeight: 500,
+      };
+
+      // Arrow container with correct sizing to match button height
+      const arrowStyles = {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        width: '42px',
+        height: '42px',
+        backgroundColor: colors.background.accent,
+        color: colors.text.primary,
+        flexShrink: 0,
+      };
 
       return (
         <button
           ref={ref}
-          className={wrapperClasses}
+          style={buttonStyles}
           disabled={disabled}
+          onMouseEnter={(e) => {
+            if (!disabled) {
+              e.currentTarget.style.backgroundColor = colors.background.accent;
+              e.currentTarget.style.color = colors.text.primary;
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!disabled) {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = colors.text.inverse;
+            }
+          }}
           {...props}
         >
-          <span className={ctaClasses}>{children}</span>
-          <span className={arrowClasses}>
+          <span style={ctaStyles}>{children}</span>
+          <span style={arrowStyles}>
             {isMounted ? <EastIcon fontSize='small' /> : <span>→</span>}
           </span>
         </button>
@@ -116,16 +151,16 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantStyles: Record<string, React.CSSProperties> = {
       secondary: {
-        backgroundColor: colors.backgroundSecondary,
-        color: colors.textLight,
+        backgroundColor: colors.background.secondary,
+        color: colors.text.inverse,
       },
       outline: {
-        border: `1px solid ${colors.textMuted}`,
-        color: colors.textLight,
+        border: `1px solid ${colors.text.muted}`,
+        color: colors.text.inverse,
         backgroundColor: 'transparent',
       },
       ghost: {
-        color: colors.textLight,
+        color: colors.text.inverse,
         backgroundColor: 'transparent',
       },
     };

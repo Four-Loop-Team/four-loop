@@ -98,13 +98,13 @@ describe('Tabs', () => {
   it('applies variant styles correctly', () => {
     const { rerender } = render(<Tabs {...defaultProps} variant='default' />);
 
-    let tabList = screen.getByRole('tablist');
-    expect(tabList).toHaveClass('border-b');
+    let tabList = screen.getByRole('tablist') as HTMLElement;
+    expect(tabList.style.borderBottom).toBeTruthy();
 
     rerender(<Tabs {...defaultProps} variant='underline' />);
 
-    tabList = screen.getByRole('tablist');
-    expect(tabList).toHaveClass('border-b');
+    tabList = screen.getByRole('tablist') as HTMLElement;
+    expect(tabList.style.borderBottom).toBeTruthy();
   });
 
   it('supports controlled mode with activeTab prop', () => {
@@ -124,8 +124,8 @@ describe('Tabs', () => {
   it('supports vertical orientation', () => {
     render(<Tabs {...defaultProps} orientation='vertical' />);
 
-    const tabList = screen.getByRole('tablist');
-    expect(tabList).toHaveClass('flex-col');
+    const tabList = screen.getByRole('tablist') as HTMLElement;
+    expect(tabList.style.flexDirection).toBe('column');
   });
 
   it('renders tab with badge when provided', () => {

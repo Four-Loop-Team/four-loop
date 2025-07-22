@@ -16,3 +16,11 @@ export {
   useScrollPosition,
   useScrollThreshold,
 } from './useScrollPosition';
+
+// Design System hooks
+export {
+  useDesignSystem,
+  useDesignSystemCSS,
+  useDesignSystemClasses,
+  useDesignSystemMUI,
+} from '../../hooks/useDesignSystem';

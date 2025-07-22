@@ -1,6 +1,6 @@
 'use client';
 
-import { spacing } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
+import { useDesignSystem } from '@/lib/hooks';
 import { Home } from '@mui/icons-material';
 import { Box, Breadcrumbs, Link, Typography } from '@mui/material';
 import NextLink from 'next/link';
@@ -42,6 +42,7 @@ interface BreadcrumbNavProps {
  * @returns {JSX.Element} The rendered breadcrumb navigation component
  */
 export default function BreadcrumbNav({ items }: BreadcrumbNavProps) {
+  const { spacing } = useDesignSystem();
   const pathname = usePathname();
 
   // Generate breadcrumbs from pathname if items not provided

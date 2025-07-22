@@ -4,10 +4,6 @@
 @use 'accessibility';
 @use 'utilities';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* CSS Custom Properties for Navigation using semantic SCSS variables */
 :root {
   --nav-container-background: #{variables.$nav-container-background};

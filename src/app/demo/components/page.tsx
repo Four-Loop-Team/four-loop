@@ -110,13 +110,13 @@ export default function ComponentsShowcase() {
       id: 'getting-started',
       trigger: 'Getting Started',
       content:
-        'Learn how to use our component library with TypeScript, React 19, and Tailwind CSS.',
+        'Learn how to use our component library with TypeScript, React 19, and our design system.',
     },
     {
       id: 'customization',
       trigger: 'Customization',
       content:
-        'Components can be customized using Tailwind CSS classes and Material-UI theming.',
+        'Components can be customized using inline styles with design tokens and Material-UI theming.',
     },
     {
       id: 'accessibility',

@@ -57,6 +57,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useDesignSystem } from '../../../hooks/useDesignSystem';
 import { FileUploadProps, UploadedFile } from './types';
 
 const FileUpload: React.FC<FileUploadProps> = ({
@@ -71,6 +72,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   'data-testid': testId = 'file-upload',
   'aria-label': ariaLabel,
 }) => {
+  const tokens = useDesignSystem();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -191,7 +193,15 @@ const FileUpload: React.FC<FileUploadProps> = ({
       />
 
       {files.length > 0 && (
-        <div className='mt-4 space-y-2'>
+        <div
+          className='file-list-container'
+          style={{
+            marginTop: tokens.spacing.component.md,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: tokens.spacing.micro.sm,
+          }}
+        >
           {files.map((file) => (
             <div key={file.id} className='file-upload-item'>
               <span className='file-upload-name'>{file.name}</span>

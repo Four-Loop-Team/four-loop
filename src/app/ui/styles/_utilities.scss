@@ -1,7 +1,7 @@
 /**
  * Brand Utility Classes
  * SCSS utilities that use only approved brand colors
- * Use these instead of inline styles or broken Tailwind custom classes
+ * Use these instead of inline styles for consistent design system values
  */
 
 // =============================================================================
@@ -103,7 +103,7 @@
 }
 
 // =============================================================================
-// LAYOUT UTILITIES (to replace Tailwind where needed)
+// LAYOUT UTILITIES (for consistent design system spacing)
 // =============================================================================
 
 .flex {

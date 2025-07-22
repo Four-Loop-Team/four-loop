@@ -76,6 +76,7 @@
  * - Focus management for actions
  */
 
+import { useDesignSystem } from '@/lib/hooks';
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useToastContext } from './ToastProvider';
@@ -94,6 +95,7 @@ const Toast: React.FC<ToastProps> = ({
   className = '',
   'data-testid': testId = 'toast',
 }) => {
+  const { colors, spacing, radius, shadows } = useDesignSystem();
   const [isVisible, setIsVisible] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
 
@@ -196,50 +198,167 @@ const Toast: React.FC<ToastProps> = ({
   const getTypeStyles = () => {
     switch (toast.type) {
       case 'success':
-        return 'bg-green-50 border-green-200';
+        return {
+          backgroundColor: colors.state.success + '20', // 20% opacity
+          borderColor: colors.state.success + '40', // 40% opacity
+          color: colors.state.success,
+        };
       case 'error':
-        return 'bg-red-50 border-red-200';
+        return {
+          backgroundColor: colors.state.error + '20',
+          borderColor: colors.state.error + '40',
+          color: colors.state.error,
+        };
       case 'warning':
-        return 'bg-yellow-50 border-yellow-200';
+        return {
+          backgroundColor: colors.state.warning + '20',
+          borderColor: colors.state.warning + '40',
+          color: colors.state.warning,
+        };
       case 'loading':
-        return 'bg-blue-50 border-blue-200';
+        return {
+          backgroundColor: colors.state.info + '20',
+          borderColor: colors.state.info + '40',
+          color: colors.state.info,
+        };
       default:
-        return 'bg-blue-50 border-blue-200';
+        return {
+          backgroundColor: colors.state.info + '20',
+          borderColor: colors.state.info + '40',
+          color: colors.state.info,
+        };
     }
+  };
+
+  const toastStyle: React.CSSProperties = {
+    position: 'relative',
+    maxWidth: '384px', // max-w-sm
+    width: '100%',
+    border: `1px solid ${getTypeStyles().borderColor}`,
+    borderRadius: radius.lg,
+    boxShadow: shadows.lg,
+    pointerEvents: 'auto',
+    transition: 'all 200ms ease-in-out',
+    transform: animated
+      ? isVisible && !isLeaving
+        ? 'translateX(0)'
+        : 'translateX(100%)'
+      : 'none',
+    opacity: animated ? (isVisible && !isLeaving ? 1 : 0) : 1,
+    ...getTypeStyles(),
   };
 
   return (
     <div
-      className={`
-        relative max-w-sm w-full bg-white border rounded-lg shadow-lg pointer-events-auto
-        transition-all duration-200 ease-in-out transform
-        ${animated ? (isVisible && !isLeaving ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0') : ''}
-        ${getTypeStyles()} ${className}
-      `}
+      style={toastStyle}
+      className={className}
       data-testid={`${testId}-${toast.id}`}
     >
-      <div className='toast-content'>
-        <div className='toast-main'>
-          <div className='toast-icon'>{getIcon()}</div>
-          <div className='toast-text'>
-            {toast.title && <p className='toast-title'>{toast.title}</p>}
-            <p className='toast-message'>{toast.message}</p>
+      <div style={{ padding: spacing.component.sm }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: spacing.micro.md,
+          }}
+        >
+          <div
+            style={{
+              flexShrink: 0,
+              width: '1.25rem',
+              height: '1.25rem',
+              color: 'currentColor',
+            }}
+          >
+            {getIcon()}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {toast.title && (
+              <p
+                style={{
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  color: colors.text.primary,
+                  margin: 0,
+                  marginBottom: spacing.micro.xs,
+                }}
+              >
+                {toast.title}
+              </p>
+            )}
+            <p
+              style={{
+                fontSize: '0.875rem',
+                color: colors.text.primary,
+                margin: 0,
+                lineHeight: 1.5,
+              }}
+            >
+              {toast.message}
+            </p>
             {toast.actions && toast.actions.length > 0 && (
-              <div className='toast-actions'>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: spacing.micro.sm,
+                  marginTop: spacing.micro.md,
+                }}
+              >
                 {toast.actions.map((action, index) => (
                   <button
                     key={index}
                     onClick={action.onClick}
-                    className={`
-                      text-xs font-medium px-4 py-3 rounded transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center
-                      ${
-                        action.variant === 'primary'
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : action.variant === 'secondary'
-                            ? 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-                            : 'text-blue-600 hover:text-blue-700 hover:bg-blue-100'
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      padding: `${spacing.micro.sm} ${spacing.component.xs}`,
+                      borderRadius: radius.sm,
+                      transition: 'colors 200ms ease',
+                      minWidth: '44px',
+                      minHeight: '44px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: 'none',
+                      cursor: 'pointer',
+                      ...(action.variant === 'primary'
+                        ? {
+                            backgroundColor: colors.state.info,
+                            color: colors.text.inverse,
+                          }
+                        : action.variant === 'secondary'
+                          ? {
+                              backgroundColor: colors.background.secondary,
+                              color: colors.text.primary,
+                            }
+                          : {
+                              backgroundColor: 'transparent',
+                              color: colors.state.info,
+                            }),
+                    }}
+                    onMouseEnter={(e) => {
+                      if (action.variant === 'primary') {
+                        e.currentTarget.style.backgroundColor =
+                          colors.state.info + 'DD';
+                      } else if (action.variant === 'secondary') {
+                        e.currentTarget.style.backgroundColor =
+                          colors.border.muted;
+                      } else {
+                        e.currentTarget.style.backgroundColor =
+                          colors.state.info + '20';
                       }
-                    `}
+                    }}
+                    onMouseLeave={(e) => {
+                      if (action.variant === 'primary') {
+                        e.currentTarget.style.backgroundColor =
+                          colors.state.info;
+                      } else if (action.variant === 'secondary') {
+                        e.currentTarget.style.backgroundColor =
+                          colors.background.secondary;
+                      } else {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                      }
+                    }}
                   >
                     {action.label}
                   </button>
@@ -248,14 +367,36 @@ const Toast: React.FC<ToastProps> = ({
             )}
           </div>
           {toast.dismissible !== false && (
-            <div className='toast-dismiss'>
+            <div style={{ flexShrink: 0 }}>
               <button
                 onClick={handleDismiss}
-                className='toast-dismiss-button'
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '1.5rem',
+                  height: '1.5rem',
+                  padding: 0,
+                  border: 'none',
+                  background: 'none',
+                  color: colors.text.muted,
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  transition: 'all 150ms ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = colors.text.primary;
+                  e.currentTarget.style.backgroundColor =
+                    colors.background.secondary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = colors.text.muted;
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }}
                 aria-label='Dismiss notification'
               >
                 <svg
-                  className='toast-dismiss-icon'
+                  style={{ width: '1rem', height: '1rem' }}
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke='currentColor'
@@ -289,22 +430,60 @@ const ToastContainer: React.FC<ToastContainerProps> = ({
   className = '',
   'data-testid': testId = 'toast-container',
 }) => {
-  const getPositionClasses = () => {
+  const { zIndex } = useDesignSystem();
+
+  const getPositionStyles = (): React.CSSProperties => {
+    const baseStyles = {
+      position: 'fixed' as const,
+      zIndex: zIndex.toast,
+      pointerEvents: 'none' as const,
+    };
+
     switch (position) {
       case 'top':
-        return `top-${offset} left-1/2 transform -translate-x-1/2`;
+        return {
+          ...baseStyles,
+          top: `${offset}px`,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        };
       case 'bottom':
-        return `bottom-${offset} left-1/2 transform -translate-x-1/2`;
+        return {
+          ...baseStyles,
+          bottom: `${offset}px`,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        };
       case 'top-left':
-        return `top-${offset} left-${offset}`;
+        return {
+          ...baseStyles,
+          top: `${offset}px`,
+          left: `${offset}px`,
+        };
       case 'top-right':
-        return `top-${offset} right-${offset}`;
+        return {
+          ...baseStyles,
+          top: `${offset}px`,
+          right: `${offset}px`,
+        };
       case 'bottom-left':
-        return `bottom-${offset} left-${offset}`;
+        return {
+          ...baseStyles,
+          bottom: `${offset}px`,
+          left: `${offset}px`,
+        };
       case 'bottom-right':
-        return `bottom-${offset} right-${offset}`;
+        return {
+          ...baseStyles,
+          bottom: `${offset}px`,
+          right: `${offset}px`,
+        };
       default:
-        return `top-${offset} right-${offset}`;
+        return {
+          ...baseStyles,
+          top: `${offset}px`,
+          right: `${offset}px`,
+        };
     }
   };
 
@@ -316,12 +495,15 @@ const ToastContainer: React.FC<ToastContainerProps> = ({
   if (orderedToasts.length === 0) return null;
 
   const containerContent = (
-    <div
-      className={`toast-container-wrapper ${getPositionClasses()} ${className}`}
-      style={{ gap: `${gap}px` }}
-      data-testid={testId}
-    >
-      <div className='toast-container'>
+    <div style={getPositionStyles()} className={className} data-testid={testId}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: `${gap}px`,
+          alignItems: position.includes('left') ? 'flex-start' : 'flex-end',
+        }}
+      >
         {orderedToasts.map((toast) => (
           <Toast
             key={toast.id}

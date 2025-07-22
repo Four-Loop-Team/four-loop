@@ -1,11 +1,8 @@
 'use client';
 
-import {
-  spacing,
-  typography,
-} from '@/components/system/BrandThemeProvider/BrandThemeProvider';
 import { Accordion } from '@/components/ui/Accordion';
 import { Button } from '@/components/ui/Button';
+import { useDesignSystem } from '@/lib/hooks';
 import { Box, Container, Typography } from '@mui/material';
 
 /**
@@ -19,6 +16,8 @@ import { Box, Container, Typography } from '@mui/material';
  * ```
  */
 export const ServicesSection = () => {
+  const { spacing, typography } = useDesignSystem();
+
   const services = [
     {
       id: 'digital-design',
@@ -58,8 +57,8 @@ export const ServicesSection = () => {
     <Box
       component='section'
       sx={{
-        pt: { xs: spacing.section.xs, md: spacing.section.md }, // Using section spacing
-        pb: { xs: spacing.section.xs, md: spacing.section.md }, // Using section spacing
+        pt: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
+        pb: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
         backgroundColor: 'transparent',
         color: 'white',
         position: 'relative',
@@ -102,7 +101,7 @@ export const ServicesSection = () => {
                     xs: typography.fontSize['4xl'],
                     md: typography.fontSize['6xl'],
                   }, // Using typography tokens
-                  fontWeight: typography.fontWeight.regular, // Using typography tokens
+                  fontWeight: typography.fontWeight.normal, // Using typography tokens
                   color: 'white',
                   lineHeight: typography.lineHeight.tight, // Using typography tokens
                 }}
@@ -141,7 +140,7 @@ export const ServicesSection = () => {
             display: 'flex',
             flexDirection: { xs: 'column', lg: 'row' },
             alignItems: { xs: 'stretch', lg: 'flex-start' },
-            gap: { xs: spacing.section.xs, lg: spacing.section.md }, // Using section spacing
+            gap: { xs: spacing.section.sm, lg: spacing.section.md }, // Using section spacing
           }}
         >
           {/* Services Accordion */}

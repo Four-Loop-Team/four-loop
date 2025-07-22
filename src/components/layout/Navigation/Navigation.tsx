@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  colors,
-  spacing,
-} from '@/components/system/BrandThemeProvider/BrandThemeProvider';
+import { useDesignSystem } from '@/lib/hooks';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -63,6 +60,7 @@ const navigationItems = [
  * - Header persistence across page transitions
  */
 export default function Navigation() {
+  const { colors, spacing } = useDesignSystem();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const theme = useTheme();
@@ -272,7 +270,7 @@ export default function Navigation() {
         component='nav'
         aria-label='Main navigation'
         sx={{
-          backgroundColor: colors.backgroundPrimary,
+          backgroundColor: colors.background.primary,
           borderBottom: 'none',
           boxShadow: 'none', // Remove any shadow
           '&::after': {
@@ -466,7 +464,7 @@ export default function Navigation() {
               boxSizing: 'border-box',
               width: 'var(--nav-mobile-width)',
               backgroundColor: 'var(--background-primary)',
-              backgroundImage: `linear-gradient(135deg, var(--background-primary) 0%, ${colors.accent} 100%)`,
+              backgroundImage: `linear-gradient(135deg, var(--background-primary) 0%, ${colors.background.accent} 100%)`,
             },
           }}
         >

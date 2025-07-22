@@ -68,6 +68,7 @@
 
 'use client';
 
+import { useDesignSystem } from '@/lib/hooks';
 import React, {
   createContext,
   useCallback,
@@ -75,7 +76,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { colors } from '../../system/BrandThemeProvider/BrandThemeProvider';
 import './Accordion.scss';
 import {
   AccordionContextValue,
@@ -213,6 +213,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
 }) => {
   // Animation duration is handled by CSS classes but kept for API compatibility
   void animationDuration;
+  const { colors } = useDesignSystem();
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState<number | undefined>(
     isExpanded ? undefined : 0
@@ -327,7 +328,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
             }}
             fill='none'
             viewBox='0 0 24 24'
-            stroke={colors.highlight}
+            stroke={colors.text.accent}
             strokeWidth={2}
           >
             <path

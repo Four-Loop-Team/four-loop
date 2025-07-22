@@ -70,6 +70,7 @@
 
 import React, { useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useDesignSystem } from '../../../hooks/useDesignSystem';
 import {
   ConfirmDialogProps,
   ModalBodyProps,
@@ -95,6 +96,7 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const tokens = useDesignSystem();
 
   // Handle escape key
   useEffect(() => {
@@ -144,36 +146,108 @@ const Modal: React.FC<ModalProps> = ({
 
   if (!isOpen) return null;
 
-  const sizeClasses: Record<NonNullable<ModalProps['size']>, string> = {
-    sm: 'max-w-md',
-    md: 'max-w-lg',
-    lg: 'max-w-2xl',
-    xl: 'max-w-4xl',
-    full: 'max-w-full mx-4',
+  const getSizeStyles = (size: NonNullable<ModalProps['size']>) => {
+    switch (size) {
+      case 'sm':
+        return { maxWidth: '400px' };
+      case 'md':
+        return { maxWidth: '500px' };
+      case 'lg':
+        return { maxWidth: '672px' };
+      case 'xl':
+        return { maxWidth: '896px' };
+      case 'full':
+        return { maxWidth: '100%', margin: `0 ${tokens.spacing.layout.md}` };
+      default:
+        return { maxWidth: '500px' };
+    }
   };
 
-  const positionClasses: Record<NonNullable<ModalProps['position']>, string> = {
-    center: 'items-center justify-center',
-    top: 'items-start justify-center pt-16',
-    bottom: 'items-end justify-center pb-16',
+  const getPositionStyles = (position: NonNullable<ModalProps['position']>) => {
+    const baseStyles = {
+      position: 'fixed' as const,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      display: 'flex',
+      zIndex: tokens.zIndex.modal,
+    };
+
+    switch (position) {
+      case 'center':
+        return {
+          ...baseStyles,
+          alignItems: 'center',
+          justifyContent: 'center',
+        };
+      case 'top':
+        return {
+          ...baseStyles,
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          paddingTop: tokens.spacing.layout.xl,
+        };
+      case 'bottom':
+        return {
+          ...baseStyles,
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          paddingBottom: tokens.spacing.layout.xl,
+        };
+      default:
+        return {
+          ...baseStyles,
+          alignItems: 'center',
+          justifyContent: 'center',
+        };
+    }
   };
 
-  const backdropClasses: Record<NonNullable<ModalProps['backdrop']>, string> = {
-    default: 'bg-black/50',
-    light: 'bg-black/25',
-    dark: 'bg-black/75',
-    blur: 'bg-black/50 backdrop-blur-sm',
+  const getBackdropStyles = (backdrop: NonNullable<ModalProps['backdrop']>) => {
+    const baseColor = 'rgba(0, 0, 0, 0.5)';
+    switch (backdrop) {
+      case 'default':
+        return { backgroundColor: baseColor };
+      case 'light':
+        return { backgroundColor: 'rgba(0, 0, 0, 0.25)' };
+      case 'dark':
+        return { backgroundColor: 'rgba(0, 0, 0, 0.75)' };
+      case 'blur':
+        return { backgroundColor: baseColor, backdropFilter: 'blur(4px)' };
+      default:
+        return { backgroundColor: baseColor };
+    }
   };
 
   const modalContent = (
     <div
-      className={`modal-overlay ${positionClasses[position]} ${backdropClasses[backdrop]} ${overlayClassName}`}
+      className={`modal-overlay ${overlayClassName}`}
+      style={getPositionStyles(position)}
       onClick={handleBackdropClick}
       data-testid={testId}
     >
       <div
+        style={{
+          ...getBackdropStyles(backdrop),
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+      />
+      <div
         ref={modalRef}
-        className={`modal-content ${sizeClasses[size]} ${className}`}
+        className={`modal-content ${className}`}
+        style={{
+          ...getSizeStyles(size),
+          backgroundColor: tokens.colors.background.primary,
+          borderRadius: tokens.radius.modal,
+          boxShadow: tokens.shadows.modal,
+          position: 'relative',
+          zIndex: 1,
+        }}
         role='dialog'
         aria-modal='true'
         aria-label={ariaLabel}
@@ -195,18 +269,65 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
   className = '',
   'data-testid': testId = 'modal-header',
 }) => {
+  const tokens = useDesignSystem();
+
   return (
-    <div className={`modal-header ${className}`} data-testid={testId}>
-      <div className='modal-header-title'>{children}</div>
+    <div
+      className={`modal-header ${className}`}
+      data-testid={testId}
+      style={{
+        padding: `${tokens.spacing.component.md} ${tokens.spacing.component.md} 0`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <div
+        className='modal-header-title'
+        style={{
+          fontSize: tokens.typography.fontSize.xl,
+          fontWeight: tokens.typography.fontWeight.semibold,
+          color: tokens.colors.text.primary,
+          flex: 1,
+        }}
+      >
+        {children}
+      </div>
       {onClose && (
         <button
           onClick={onClose}
           className='modal-close-button'
           aria-label='Close modal'
           data-testid='modal-close-button'
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: tokens.spacing.micro.xs,
+            borderRadius: tokens.radius.sm,
+            color: tokens.colors.text.muted,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition:
+              'color 150ms ease-in-out, background-color 150ms ease-in-out',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor =
+              tokens.colors.background.secondary;
+            e.currentTarget.style.color = tokens.colors.text.primary;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = tokens.colors.text.muted;
+          }}
         >
           <svg
             className='modal-close-icon'
+            style={{
+              width: '20px',
+              height: '20px',
+            }}
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -230,8 +351,18 @@ const ModalBody: React.FC<ModalBodyProps> = ({
   className = '',
   'data-testid': testId = 'modal-body',
 }) => {
+  const tokens = useDesignSystem();
+
   return (
-    <div className={`modal-body ${className}`} data-testid={testId}>
+    <div
+      className={`modal-body ${className}`}
+      data-testid={testId}
+      style={{
+        padding: tokens.spacing.component.md,
+        color: tokens.colors.text.primary,
+        lineHeight: tokens.typography.lineHeight.relaxed,
+      }}
+    >
       {children}
     </div>
   );
@@ -243,8 +374,20 @@ const ModalFooter: React.FC<ModalFooterProps> = ({
   className = '',
   'data-testid': testId = 'modal-footer',
 }) => {
+  const tokens = useDesignSystem();
+
   return (
-    <div className={`modal-footer ${className}`} data-testid={testId}>
+    <div
+      className={`modal-footer ${className}`}
+      data-testid={testId}
+      style={{
+        padding: `0 ${tokens.spacing.component.md} ${tokens.spacing.component.md}`,
+        display: 'flex',
+        gap: tokens.spacing.component.sm,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+      }}
+    >
       {children}
     </div>
   );
@@ -264,30 +407,62 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   className = '',
   'data-testid': testId = 'confirm-dialog',
 }) => {
-  const variantStyles: Record<
-    NonNullable<ConfirmDialogProps['variant']>,
-    { button: string; icon: string }
-  > = {
-    default: {
-      button: 'bg-blue-600 hover:bg-blue-700 text-white',
-      icon: 'text-blue-600',
-    },
-    danger: {
-      button: 'bg-red-600 hover:bg-red-700 text-white',
-      icon: 'text-red-600',
-    },
-    warning: {
-      button: 'bg-yellow-600 hover:bg-yellow-700 text-white',
-      icon: 'text-yellow-600',
-    },
+  const tokens = useDesignSystem();
+
+  const getVariantStyles = (
+    variant: NonNullable<ConfirmDialogProps['variant']>
+  ) => {
+    switch (variant) {
+      case 'danger':
+        return {
+          button: {
+            backgroundColor: tokens.colors.state.error,
+            color: tokens.colors.text.inverse,
+          },
+          hoverButton: {
+            backgroundColor: '#dc2626', // Darker red on hover
+          },
+          icon: { color: tokens.colors.state.error },
+        };
+      case 'warning':
+        return {
+          button: {
+            backgroundColor: tokens.colors.state.warning,
+            color: tokens.colors.text.inverse,
+          },
+          hoverButton: {
+            backgroundColor: '#d97706', // Darker yellow on hover
+          },
+          icon: { color: tokens.colors.state.warning },
+        };
+      default:
+        return {
+          button: {
+            backgroundColor: tokens.colors.state.info,
+            color: tokens.colors.text.inverse,
+          },
+          hoverButton: {
+            backgroundColor: '#2563eb', // Darker blue on hover
+          },
+          icon: { color: tokens.colors.state.info },
+        };
+    }
   };
 
+  const variantStyles = getVariantStyles(variant);
+
   const getIcon = () => {
+    const iconStyle = {
+      width: '100%',
+      height: '100%',
+    };
+
     switch (variant) {
       case 'danger':
         return (
           <svg
             className='modal-icon'
+            style={iconStyle}
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -304,6 +479,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         return (
           <svg
             className='modal-icon'
+            style={iconStyle}
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -320,6 +496,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         return (
           <svg
             className='modal-icon'
+            style={iconStyle}
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -343,14 +520,65 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       className={className}
       data-testid={testId}
     >
-      <div className='modal-dialog-content'>
-        <div className='modal-dialog-layout'>
-          <div className={`modal-dialog-icon ${variantStyles[variant].icon}`}>
+      <div
+        className='modal-dialog-content'
+        style={{
+          padding: tokens.spacing.component.lg,
+        }}
+      >
+        <div
+          className='modal-dialog-layout'
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: tokens.spacing.component.sm,
+          }}
+        >
+          <div
+            className='modal-dialog-icon'
+            style={{
+              ...variantStyles.icon,
+              flexShrink: 0,
+              width: '48px',
+              height: '48px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             {getIcon()}
           </div>
-          <div className='modal-dialog-text'>
-            {title && <h3 className='modal-dialog-title'>{title}</h3>}
-            <p className='modal-dialog-message'>{message}</p>
+          <div
+            className='modal-dialog-text'
+            style={{
+              flex: 1,
+            }}
+          >
+            {title && (
+              <h3
+                className='modal-dialog-title'
+                style={{
+                  margin: 0,
+                  marginBottom: tokens.spacing.micro.sm,
+                  fontSize: tokens.typography.fontSize.lg,
+                  fontWeight: tokens.typography.fontWeight.semibold,
+                  color: tokens.colors.text.primary,
+                }}
+              >
+                {title}
+              </h3>
+            )}
+            <p
+              className='modal-dialog-message'
+              style={{
+                margin: 0,
+                fontSize: tokens.typography.fontSize.base,
+                lineHeight: tokens.typography.lineHeight.relaxed,
+                color: tokens.colors.text.primary,
+              }}
+            >
+              {message}
+            </p>
           </div>
         </div>
       </div>
@@ -359,18 +587,78 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           onClick={onCancel}
           disabled={loading}
           className='modal-button-cancel'
+          style={{
+            padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+            border: `1px solid ${tokens.colors.border.default}`,
+            borderRadius: tokens.radius.button,
+            backgroundColor: tokens.colors.background.primary,
+            color: tokens.colors.text.primary,
+            fontSize: tokens.typography.fontSize.base,
+            fontWeight: tokens.typography.fontWeight.medium,
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.6 : 1,
+            transition: 'all 150ms ease-in-out',
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              e.currentTarget.style.backgroundColor =
+                tokens.colors.background.secondary;
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading) {
+              e.currentTarget.style.backgroundColor =
+                tokens.colors.background.primary;
+            }
+          }}
         >
           {cancelText}
         </button>
         <button
           onClick={onConfirm}
           disabled={loading}
-          className={`modal-button-confirm ${variantStyles[variant].button}`}
+          className='modal-button-confirm'
+          style={{
+            ...variantStyles.button,
+            padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+            border: 'none',
+            borderRadius: tokens.radius.button,
+            fontSize: tokens.typography.fontSize.base,
+            fontWeight: tokens.typography.fontWeight.medium,
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.6 : 1,
+            transition: 'all 150ms ease-in-out',
+            display: 'flex',
+            alignItems: 'center',
+            gap: tokens.spacing.micro.xs,
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              Object.assign(e.currentTarget.style, variantStyles.hoverButton);
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading) {
+              Object.assign(e.currentTarget.style, variantStyles.button);
+            }
+          }}
         >
           {loading ? (
-            <div className='modal-button-loading'>
+            <div
+              className='modal-button-loading'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: tokens.spacing.micro.xs,
+              }}
+            >
               <svg
                 className='modal-button-spinner'
+                style={{
+                  width: '16px',
+                  height: '16px',
+                  animation: 'spin 1s linear infinite',
+                }}
                 fill='none'
                 viewBox='0 0 24 24'
               >

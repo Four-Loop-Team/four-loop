@@ -774,7 +774,7 @@ export default function StyleGuide() {
                   variant='body2'
                   sx={{ color: '#ffffff', opacity: 0.8, mb: 2 }}
                 >
-                  Using Tailwind classes with your custom styling
+                  Using design system classes with your custom styling
                 </Typography>
                 <Stack
                   spacing={2}
@@ -904,7 +904,7 @@ export default function StyleGuide() {
                   variant='body2'
                   sx={{ color: '#ffffff', opacity: 0.8 }}
                 >
-                  • Maintain consistent component patterns with Tailwind
+                  • Maintain consistent component patterns with design system
                   utilities
                 </Typography>
               </Stack>

@@ -1,6 +1,6 @@
 'use client';
 
-import { spacing } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
+import { useDesignSystem } from '@/lib/hooks';
 import { Box, Container, Typography } from '@mui/material';
 
 /**
@@ -14,11 +14,13 @@ import { Box, Container, Typography } from '@mui/material';
  * ```
  */
 export const PartnersSection = () => {
+  const { spacing } = useDesignSystem();
+
   return (
     <Box
       component='section'
       sx={{
-        py: { xs: spacing.section.xs, md: spacing.section.md }, // Using section spacing
+        py: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
         backgroundColor: 'transparent',
         color: 'white',
         position: 'relative',
