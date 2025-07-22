@@ -202,7 +202,7 @@ describe('GridSystemDemo', () => {
 
     const heading = screen.getByTestId('typography-h2');
     expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent('12-Column Grid System Demo');
+    expect(heading).toHaveTextContent('Dual Grid System Demo');
   });
 
   it('renders the subtitle correctly', () => {
@@ -211,7 +211,7 @@ describe('GridSystemDemo', () => {
     const subtitle = screen.getByTestId('typography-h5');
     expect(subtitle).toBeInTheDocument();
     expect(subtitle).toHaveTextContent(
-      'Comprehensive examples of the responsive grid system in action.'
+      'Comprehensive examples of our 12-column layout grid combined with 8px spacing system.'
     );
   });
 
@@ -220,13 +220,16 @@ describe('GridSystemDemo', () => {
 
     const sectionHeadings = screen.getAllByTestId('typography-h4');
 
-    expect(sectionHeadings).toHaveLength(6);
+    expect(sectionHeadings).toHaveLength(7);
     expect(sectionHeadings[0]).toHaveTextContent('Basic Grid Examples');
-    expect(sectionHeadings[1]).toHaveTextContent('Pre-built Layout Components');
-    expect(sectionHeadings[2]).toHaveTextContent('Card Grid Layout');
-    expect(sectionHeadings[3]).toHaveTextContent('Advanced Grid Features');
-    expect(sectionHeadings[4]).toHaveTextContent('Gap Size Examples');
-    expect(sectionHeadings[5]).toHaveTextContent('Container Size Examples');
+    expect(sectionHeadings[1]).toHaveTextContent(
+      '8px Spacing System Integration'
+    );
+    expect(sectionHeadings[2]).toHaveTextContent('Pre-built Layout Components');
+    expect(sectionHeadings[3]).toHaveTextContent('Card Grid Layout');
+    expect(sectionHeadings[4]).toHaveTextContent('Advanced Grid Features');
+    expect(sectionHeadings[5]).toHaveTextContent('Gap Size Examples');
+    expect(sectionHeadings[6]).toHaveTextContent('Container Size Examples');
   });
 
   it('renders equal columns example', () => {

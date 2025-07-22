@@ -1,0 +1,49 @@
+{
+  "extends": ["next/core-web-vitals", "@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "Literal[value=/^#[0-9A-Fa-f]{6}$/]",
+        "message": "❌ Hardcoded hex colors are not allowed. Use CSS custom properties (var(--color-*)) or theme colors from '@/lib/theme' instead."
+      },
+      {
+        "selector": "Literal[value=/^#[0-9A-Fa-f]{3}$/]",
+        "message": "❌ Hardcoded hex colors are not allowed. Use CSS custom properties (var(--color-*)) or theme colors from '@/lib/theme' instead."
+      },
+      {
+        "selector": "Property[key.name='color'] > Literal[value=/^rgb\\(/]",
+        "message": "❌ Hardcoded RGB colors are not allowed. Use CSS custom properties (var(--color-*)) or theme colors from '@/lib/theme' instead."
+      },
+      {
+        "selector": "Property[key.name='backgroundColor'] > Literal[value=/^#/]",
+        "message": "❌ Hardcoded background colors are not allowed. Use CSS custom properties (var(--color-*)) or theme colors from '@/lib/theme' instead."
+      }
+    ],
+    "no-restricted-globals": [
+      "warn",
+      {
+        "name": "white",
+        "message": "Consider using 'var(--color-text-light)' instead of 'white'"
+      },
+      {
+        "name": "black",
+        "message": "Consider using 'var(--color-background-secondary)' instead of 'black'"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/theme/**/*",
+        "**/_variables.scss",
+        "**/_global.scss",
+        "**/design-system.css"
+      ],
+      "rules": {
+        "no-restricted-syntax": "off"
+      }
+    }
+  ]
+}

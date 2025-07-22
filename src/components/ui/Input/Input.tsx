@@ -1,27 +1,104 @@
-import React, { InputHTMLAttributes, forwardRef } from 'react';
+import { COLOR_TOKENS } from '@/constants/design-tokens-consolidated';
+import { useDesignSystemMUI } from '@/lib/hooks';
+import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import { forwardRef } from 'react';
 
 /**
- * Input component props interface
+ * Input component props interface extending Material-UI TextField
  */
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  /** Input label text */
-  label?: string;
-  /** Error message to display */
-  error?: string;
-  /** Helper text to display */
-  helperText?: string;
-  /** Input variant style */
-  variant?: 'default' | 'filled' | 'outlined';
+export interface InputProps
+  extends Omit<TextFieldProps, 'size' | 'error' | 'variant'> {
   /** Input size */
   inputSize?: 'sm' | 'md' | 'lg';
+  /** Error message to display (will set error state to true) */
+  error?: string | boolean;
+  /** Input variant style */
+  variant?: 'default' | 'filled' | 'outlined' | 'standard';
   /** Icon to display on the left side */
   leftIcon?: React.ReactNode;
   /** Icon to display on the right side */
   rightIcon?: React.ReactNode;
+  /** HTML input pattern attribute for validation */
+  pattern?: string;
+  /** Input mode for mobile keyboards */
+  inputMode?:
+    | 'none'
+    | 'text'
+    | 'decimal'
+    | 'numeric'
+    | 'tel'
+    | 'search'
+    | 'email'
+    | 'url';
 }
 
 /**
+ * Styled TextField with our brand styling
+ */
+const StyledTextField = (props: TextFieldProps) => {
+  const muiTheme = useDesignSystemMUI();
+
+  const styledProps = {
+    ...props,
+    sx: {
+      '& .MuiInputLabel-root': {
+        color: muiTheme.palette.text.primary,
+        '&.Mui-focused': {
+          color: muiTheme.palette.text.primary,
+        },
+        '& .MuiInputLabel-asterisk': {
+          display: 'none',
+        },
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: COLOR_TOKENS.border.muted,
+        },
+        '&:hover fieldset': {
+          borderColor: muiTheme.palette.text.primary,
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: muiTheme.palette.text.primary,
+          borderWidth: '2px',
+        },
+      },
+      '& .MuiFilledInput-root': {
+        backgroundColor: 'rgba(53, 53, 53, 0.08)',
+        '&:hover': {
+          backgroundColor: 'rgba(53, 53, 53, 0.12)',
+        },
+        '&.Mui-focused': {
+          backgroundColor: 'rgba(53, 53, 53, 0.08)',
+        },
+        '&:before': {
+          borderBottomColor: muiTheme.palette.text.primary,
+        },
+        '&:hover:before': {
+          borderBottomColor: muiTheme.palette.text.primary,
+        },
+        '&:after': {
+          borderBottomColor: muiTheme.palette.text.primary,
+        },
+      },
+      '& .MuiInputBase-input': {
+        color: muiTheme.palette.text.primary,
+      },
+      '& .MuiFormHelperText-root': {
+        color: muiTheme.palette.text.secondary,
+        '&.Mui-error': {
+          color: muiTheme.palette.error.main,
+        },
+      },
+      ...props.sx,
+    },
+  };
+
+  return <TextField {...styledProps} />;
+};
+
+/**
  * A comprehensive input component with validation and accessibility features.
+ * Built on top of Material-UI's TextField with our brand styling.
  *
  * @component
  * @example
@@ -33,134 +110,106 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * <Input
  *   label="Password"
  *   type="password"
- *   error="Password is required"
+ *   error
+ *   helperText="Password is required"
  * />
  *
- * // With helper text
+ * // Multiline textarea
  * <Input
- *   label="Username"
- *   helperText="Must be at least 3 characters"
+ *   label="Description"
+ *   multiline
+ *   rows={4}
+ *   placeholder="Tell us about your project..."
+ * />
+ *
+ * // Filled variant with floating label
+ * <Input
+ *   label="Name"
+ *   variant="filled"
+ *   placeholder="Enter your name"
  * />
  * ```
  */
-const Input = forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLDivElement, InputProps>(
   (
     {
-      label,
-      error,
-      helperText,
-      variant = 'default',
       inputSize = 'md',
+      variant = 'filled',
+      error,
       leftIcon,
       rightIcon,
-      className = '',
-      id,
+      pattern,
+      inputMode,
       ...props
     },
     ref
   ) => {
-    const inputId = id ?? `input-${Math.random().toString(36).substr(2, 9)}`;
+    // Map our inputSize to Material-UI size
+    const muiSize =
+      inputSize === 'sm' ? 'small' : inputSize === 'lg' ? 'medium' : 'medium';
 
-    const baseClasses =
-      'w-full rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500';
+    // Convert variant 'default' to 'outlined' for Material-UI
+    const muiVariant = variant === 'default' ? 'outlined' : variant;
 
-    const variantClasses = {
-      default: 'border border-gray-300 bg-white',
-      filled: 'border-0 bg-gray-100',
-      outlined: 'border-2 border-gray-300 bg-white',
-    };
+    // Handle error prop - if it's a string, use it as helperText and set error to true
+    const hasError = Boolean(error);
+    const errorText = typeof error === 'string' ? error : undefined;
+    const helperText = errorText ?? props.helperText;
 
-    const sizeClasses = {
-      sm: 'px-3 py-2 text-sm',
-      md: 'px-4 py-2 text-base',
-      lg: 'px-5 py-3 text-lg',
-    };
+    // Prepare InputProps for icons
+    const inputPropsForIcons: {
+      startAdornment?: React.ReactNode;
+      endAdornment?: React.ReactNode;
+    } = {};
 
-    const stateClasses = error
-      ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-      : 'focus:border-blue-500';
+    // Prepare inputProps for HTML attributes
+    const htmlInputProps: {
+      pattern?: string;
+      inputMode?:
+        | 'none'
+        | 'text'
+        | 'decimal'
+        | 'numeric'
+        | 'tel'
+        | 'search'
+        | 'email'
+        | 'url';
+    } = {};
 
-    const iconPadding = {
-      left: leftIcon
-        ? inputSize === 'sm'
-          ? 'pl-10'
-          : inputSize === 'lg'
-            ? 'pl-12'
-            : 'pl-11'
-        : '',
-      right: rightIcon
-        ? inputSize === 'sm'
-          ? 'pr-10'
-          : inputSize === 'lg'
-            ? 'pr-12'
-            : 'pr-11'
-        : '',
-    };
+    if (leftIcon) {
+      inputPropsForIcons.startAdornment = (
+        <InputAdornment position='start'>{leftIcon}</InputAdornment>
+      );
+    }
+    if (rightIcon) {
+      inputPropsForIcons.endAdornment = (
+        <InputAdornment position='end'>{rightIcon}</InputAdornment>
+      );
+    }
 
-    const inputClasses = [
-      baseClasses,
-      variantClasses[variant],
-      sizeClasses[inputSize],
-      stateClasses,
-      iconPadding.left,
-      iconPadding.right,
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    if (pattern) {
+      htmlInputProps.pattern = pattern;
+    }
+    if (inputMode) {
+      htmlInputProps.inputMode = inputMode;
+    }
 
     return (
-      <div className='w-full'>
-        {label && (
-          <label
-            htmlFor={inputId}
-            className='block text-sm font-medium text-gray-700 mb-1'
-          >
-            {label}
-          </label>
-        )}
-
-        <div className='relative'>
-          {leftIcon && (
-            <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-              <span className='text-gray-400'>{leftIcon}</span>
-            </div>
-          )}
-
-          <input
-            ref={ref}
-            id={inputId}
-            className={inputClasses}
-            aria-invalid={error ? 'true' : 'false'}
-            aria-describedby={
-              error
-                ? `${inputId}-error`
-                : helperText
-                  ? `${inputId}-helper`
-                  : undefined
-            }
-            {...props}
-          />
-
-          {rightIcon && (
-            <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>
-              <span className='text-gray-400'>{rightIcon}</span>
-            </div>
-          )}
-        </div>
-
-        {error && (
-          <p id={`${inputId}-error`} className='mt-1 text-sm text-red-600'>
-            {error}
-          </p>
-        )}
-
-        {helperText && !error && (
-          <p id={`${inputId}-helper`} className='mt-1 text-sm text-gray-500'>
-            {helperText}
-          </p>
-        )}
-      </div>
+      <StyledTextField
+        ref={ref}
+        variant={muiVariant}
+        size={muiSize}
+        fullWidth
+        error={hasError}
+        helperText={helperText}
+        InputProps={
+          Object.keys(inputPropsForIcons).length > 0 ? inputPropsForIcons : {}
+        }
+        inputProps={
+          Object.keys(htmlInputProps).length > 0 ? htmlInputProps : {}
+        }
+        {...props}
+      />
     );
   }
 );

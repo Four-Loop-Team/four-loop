@@ -14,8 +14,9 @@ export const ROUTES = {
   WORK: '/work',
   CONTACT: '/contact',
   FAQ: '/faq',
-  COMPONENTS_DEMO: '/components-demo',
-  DESIGN_SYSTEM_DEMO: '/design-system-demo',
+  // Modern demo structure
+  DEMO_COMPONENTS: '/demo/components',
+  DEMO_STYLE_GUIDE: '/demo/style-guide',
 } as const;
 
 /**
@@ -59,9 +60,14 @@ export const NAVIGATION_ITEMS = [
     description: 'Frequently asked questions',
   },
   {
-    label: 'Design System',
-    href: ROUTES.DESIGN_SYSTEM_DEMO,
-    description: 'Explore our enhanced design system',
+    label: 'Components',
+    href: ROUTES.DEMO_COMPONENTS,
+    description: 'Interactive component showcase',
+  },
+  {
+    label: 'Style Guide',
+    href: ROUTES.DEMO_STYLE_GUIDE,
+    description: 'Design system and style guide',
   },
 ] as const;
 

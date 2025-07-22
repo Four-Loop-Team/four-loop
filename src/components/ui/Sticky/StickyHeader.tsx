@@ -113,7 +113,7 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({
       className={headerClasses}
       data-testid={testId}
     >
-      <div style={headerStyles} className='flex items-center'>
+      <div style={headerStyles} className='sticky-header-content'>
         {children}
       </div>
     </Sticky>

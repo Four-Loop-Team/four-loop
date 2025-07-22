@@ -1,55 +1,57 @@
 // Navigation-specific utility classes for CSS modules
+@use '../../../app/ui/styles/variables' as vars;
+
 .navigation {
   // These classes can be used for any additional custom styling
   &__container {
-    background-color: var(--nav-container-background);
-    transition: var(--nav-slider-transition);
+    background-color: vars.$background-accent;
+    transition: vars.$nav-slider-transition;
   }
 
   &__slider {
-    background-color: var(--nav-slider-background);
-    border: 2px solid var(--nav-slider-border);
-    transition: var(--nav-slider-transition);
+    background-color: vars.$background-secondary;
+    border: 2px solid vars.$border-accent;
+    transition: vars.$nav-slider-transition;
   }
 
   &__button {
-    transition: var(--nav-button-transition);
+    transition: vars.$nav-button-transition;
 
     &--active {
-      color: var(--nav-text-active) !important;
+      color: vars.$text-inverse;
     }
 
     &--inactive {
-      color: var(--nav-text-inactive) !important;
+      color: vars.$text-primary;
     }
 
     &:hover {
-      color: var(--nav-text-hover) !important;
+      color: vars.$text-inverse;
     }
   }
 }
 
 .drawer {
   &__background {
-    background-color: var(--drawer-background);
-    transition: var(--drawer-transition);
+    background-color: vars.$background-primary;
+    transition: vars.$drawer-transition;
   }
 
   &__item {
-    transition: var(--nav-button-transition);
+    transition: vars.$nav-button-transition;
 
     &--active {
-      background-color: var(--drawer-active-background);
-      border-left: 3px solid var(--drawer-active-border);
-      color: var(--drawer-active-text);
+      background-color: vars.$background-accent;
+      border-left: 3px solid vars.$border-accent;
+      color: vars.$text-accent;
     }
 
     &--inactive {
-      color: var(--drawer-inactive-text);
+      color: vars.$text-inverse;
     }
 
     &:hover {
-      background-color: var(--drawer-hover-background);
+      background-color: vars.$background-accent;
     }
   }
 }

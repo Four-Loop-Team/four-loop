@@ -6,6 +6,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useDesignSystem } from '../hooks/useDesignSystem';
 
 /**
  * Available theme options for the application.
@@ -177,31 +178,69 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ className = '', size = 'md' }: ThemeToggleProps) {
   const { theme, resolvedTheme, toggleTheme } = useTheme();
+  const tokens = useDesignSystem();
 
-  const sizeClasses = {
-    sm: 'p-1 text-sm',
-    md: 'p-2 text-base',
-    lg: 'p-3 text-lg',
+  const getSizeStyles = (size: 'sm' | 'md' | 'lg') => {
+    switch (size) {
+      case 'sm':
+        return {
+          padding: tokens.spacing.micro.xs,
+          fontSize: tokens.typography.fontSize.sm,
+        };
+      case 'lg':
+        return {
+          padding: tokens.spacing.micro.md,
+          fontSize: tokens.typography.fontSize.lg,
+        };
+      default:
+        return {
+          padding: tokens.spacing.micro.sm,
+          fontSize: tokens.typography.fontSize.base,
+        };
+    }
   };
+
+  const sizeStyles = getSizeStyles(size);
 
   return (
     <button
       onClick={toggleTheme}
-      className={`
-        inline-flex items-center justify-center
-        rounded-md border border-default
-        bg-surface hover:bg-surface-secondary
-        transition-colors duration-200
-        ${sizeClasses[size]}
-        ${className}
-      `}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: tokens.radius.input,
+        border: `1px solid ${tokens.colors.border.default}`,
+        backgroundColor: tokens.colors.background.primary,
+        color: tokens.colors.text.primary,
+        cursor: 'pointer',
+        transition: 'background-color 200ms ease-in-out',
+        padding: sizeStyles.padding,
+        fontSize: sizeStyles.fontSize,
+        outline: 'none',
+      }}
+      className={className}
       aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} theme`}
       title={`Current theme: ${theme} (${resolvedTheme})`}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor =
+          tokens.colors.background.secondary;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor =
+          tokens.colors.background.primary;
+      }}
+      onFocus={(e) => {
+        e.currentTarget.style.boxShadow = `0 0 0 2px ${tokens.colors.state.info}40`;
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.boxShadow = 'none';
+      }}
     >
       {resolvedTheme === 'dark' ? (
         // Sun icon for light mode
         <svg
-          className='w-5 h-5'
+          style={{ width: '1.25rem', height: '1.25rem' }}
           fill='none'
           strokeLinecap='round'
           strokeLinejoin='round'
@@ -215,7 +254,7 @@ export function ThemeToggle({ className = '', size = 'md' }: ThemeToggleProps) {
       ) : (
         // Moon icon for dark mode
         <svg
-          className='w-5 h-5'
+          style={{ width: '1.25rem', height: '1.25rem' }}
           fill='none'
           strokeLinecap='round'
           strokeLinejoin='round'
@@ -236,18 +275,34 @@ export function ThemeToggle({ className = '', size = 'md' }: ThemeToggleProps) {
  */
 export function ThemeSelector({ className = '' }: { className?: string }) {
   const { theme, setTheme } = useTheme();
+  const tokens = useDesignSystem();
 
   return (
     <select
       value={theme}
       onChange={(e) => setTheme(e.target.value as Theme)}
-      className={`
-        input rounded-md border-default
-        bg-surface text-primary
-        focus:ring focus:border-interactive
-        ${className}
-      `}
+      style={{
+        padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+        borderRadius: tokens.radius.input,
+        border: `1px solid ${tokens.colors.border.default}`,
+        backgroundColor: tokens.colors.background.primary,
+        color: tokens.colors.text.primary,
+        fontSize: tokens.typography.fontSize.base,
+        fontFamily: tokens.typography.fontFamily.primary,
+        cursor: 'pointer',
+        outline: 'none',
+        transition: 'all 150ms ease-in-out',
+      }}
+      className={className}
       aria-label='Select theme'
+      onFocus={(e) => {
+        e.currentTarget.style.borderColor = tokens.colors.border.accent;
+        e.currentTarget.style.boxShadow = `0 0 0 2px ${tokens.colors.state.info}40`;
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.borderColor = tokens.colors.border.default;
+        e.currentTarget.style.boxShadow = 'none';
+      }}
     >
       <option value='light'>Light</option>
       <option value='dark'>Dark</option>

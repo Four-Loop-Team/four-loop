@@ -1,6 +1,6 @@
 # Dependency Report
 
-> 🤖 Auto-generated on 2025-07-11T19:51:11.572Z
+> 🤖 Auto-generated on 2025-07-22T22:32:35.842Z
 
 ## 📊 Summary
 
@@ -27,19 +27,19 @@
 - **@mui/icons-material**: ^7.1.2
 - **@mui/material**: ^7.1.2
 - **@playwright/test**: ^1.53.1
-- **@tailwindcss/postcss**: ^4.1.10
 - **@testing-library/dom**: ^10.4.0
 - **@testing-library/jest-dom**: ^6.6.3
 - **@testing-library/react**: ^16.3.0
 - **@testing-library/user-event**: ^14.6.1
+- **@types/glob**: ^8.1.0
 - **@types/jest**: ^30.0.0
 - **@types/jest-axe**: ^3.5.9
 - **@types/node**: ^24.0.4
 - **@types/react**: ^19.1.8
 - **@types/react-dom**: ^19.1.6
 - **@types/react-test-renderer**: ^19.1.0
-- **@typescript-eslint/eslint-plugin**: ^8.35.0
-- **@typescript-eslint/parser**: ^8.35.0
+- **@typescript-eslint/eslint-plugin**: ^8.38.0
+- **@typescript-eslint/parser**: ^8.38.0
 - **audit-ci**: ^7.1.0
 - **autoprefixer**: ^10.4.17
 - **axe-core**: ^4.10.3
@@ -47,7 +47,7 @@
 - **babel-jest**: ^30.0.2
 - **eslint**: ^8.56.0
 - **eslint-config-next**: ^15.3.4
-- **eslint-config-prettier**: ^9.1.0
+- **eslint-config-prettier**: ^9.1.2
 - **eslint-plugin-flowtype**: ^8.0.3
 - **eslint-plugin-jest**: ^29.0.1
 - **eslint-plugin-react**: ^7.33.2
@@ -67,8 +67,8 @@
 - **stylelint**: ^16.2.1
 - **stylelint-config-prettier-scss**: ^1.0.0
 - **stylelint-config-standard-scss**: ^13.0.0
-- **tailwindcss**: ^4.1.10
 - **ts-jest**: ^29.1.2
+- **tsx**: ^4.20.3
 - **typescript**: ^5.3.3
 
 ## 🔄 Maintenance

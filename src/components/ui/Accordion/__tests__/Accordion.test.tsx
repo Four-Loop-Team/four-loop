@@ -52,16 +52,18 @@ describe('Accordion', () => {
 
     const firstButton = screen.getByRole('button', { name: /section 1/i });
 
-    // Content should not be visible initially
-    expect(screen.queryByText('Content for section 1')).not.toBeInTheDocument();
+    // Content should be hidden initially
+    const content = screen.getByText('Content for section 1');
+    const contentInner = content.closest('.accordion-content-inner');
+    expect(contentInner).toHaveStyle('visibility: hidden');
 
     // Click to expand
     fireEvent.click(firstButton);
-    expect(screen.getByText('Content for section 1')).toBeInTheDocument();
+    expect(contentInner).toHaveStyle('visibility: visible');
 
     // Click to collapse
     fireEvent.click(firstButton);
-    expect(screen.queryByText('Content for section 1')).not.toBeInTheDocument();
+    expect(contentInner).toHaveStyle('visibility: hidden');
   });
 
   it('supports multiple expanded items', () => {
@@ -70,25 +72,43 @@ describe('Accordion', () => {
     const firstButton = screen.getByRole('button', { name: /section 1/i });
     const secondButton = screen.getByRole('button', { name: /section 2/i });
 
+    const content1 = screen.getByText('Content for section 1');
+    const content2 = screen.getByText('Content for section 2');
+    const contentInner1 = content1.closest('.accordion-content-inner');
+    const contentInner2 = content2.closest('.accordion-content-inner');
+
+    // Initially both should be hidden
+    expect(contentInner1).toHaveStyle('visibility: hidden');
+    expect(contentInner2).toHaveStyle('visibility: hidden');
+
     fireEvent.click(firstButton);
     fireEvent.click(secondButton);
 
-    expect(screen.getByText('Content for section 1')).toBeInTheDocument();
-    expect(screen.getByText('Content for section 2')).toBeInTheDocument();
+    // Both should be visible in multiple mode
+    expect(contentInner1).toHaveStyle('visibility: visible');
+    expect(contentInner2).toHaveStyle('visibility: visible');
   });
 
-  it('collapses other items when multiple is false', () => {
-    render(<Accordion items={mockItems} multiple={false} />);
+  it('collapses other items when not in multiple mode', () => {
+    render(<Accordion items={mockItems} />);
 
     const firstButton = screen.getByRole('button', { name: /section 1/i });
     const secondButton = screen.getByRole('button', { name: /section 2/i });
 
-    fireEvent.click(firstButton);
-    expect(screen.getByText('Content for section 1')).toBeInTheDocument();
+    const content1 = screen.getByText('Content for section 1');
+    const content2 = screen.getByText('Content for section 2');
+    const contentInner1 = content1.closest('.accordion-content-inner');
+    const contentInner2 = content2.closest('.accordion-content-inner');
 
+    // Click first item
+    fireEvent.click(firstButton);
+    expect(contentInner1).toHaveStyle('visibility: visible');
+    expect(contentInner2).toHaveStyle('visibility: hidden');
+
+    // Click second item - first should collapse
     fireEvent.click(secondButton);
-    expect(screen.queryByText('Content for section 1')).not.toBeInTheDocument();
-    expect(screen.getByText('Content for section 2')).toBeInTheDocument();
+    expect(contentInner1).toHaveStyle('visibility: hidden');
+    expect(contentInner2).toHaveStyle('visibility: visible');
   });
 
   it('has proper ARIA attributes', () => {
@@ -128,7 +148,12 @@ describe('Accordion', () => {
       <Accordion items={mockItems} expandedItems={['1']} onChange={onChange} />
     );
 
-    expect(screen.getByText('Content for section 1')).toBeInTheDocument();
+    const content1 = screen.getByText('Content for section 1');
+    const content2 = screen.getByText('Content for section 2');
+    const contentInner1 = content1.closest('.accordion-content-inner');
+    const contentInner2 = content2.closest('.accordion-content-inner');
+
+    expect(contentInner1).toHaveStyle('visibility: visible');
 
     // Click should trigger onChange - in single mode, it should replace ['1'] with ['2']
     const secondButton = screen.getByRole('button', { name: /section 2/i });
@@ -140,15 +165,20 @@ describe('Accordion', () => {
       <Accordion items={mockItems} expandedItems={['2']} onChange={onChange} />
     );
 
-    expect(screen.queryByText('Content for section 1')).not.toBeInTheDocument();
-    expect(screen.getByText('Content for section 2')).toBeInTheDocument();
+    expect(contentInner1).toHaveStyle('visibility: hidden');
+    expect(contentInner2).toHaveStyle('visibility: visible');
   });
 
   it('supports default expanded items', () => {
     render(<Accordion items={mockItems} defaultExpandedItems={['1']} />);
 
-    expect(screen.getByText('Content for section 1')).toBeInTheDocument();
-    expect(screen.queryByText('Content for section 2')).not.toBeInTheDocument();
+    const content1 = screen.getByText('Content for section 1');
+    const content2 = screen.getByText('Content for section 2');
+    const contentInner1 = content1.closest('.accordion-content-inner');
+    const contentInner2 = content2.closest('.accordion-content-inner');
+
+    expect(contentInner1).toHaveStyle('visibility: visible');
+    expect(contentInner2).toHaveStyle('visibility: hidden');
   });
 
   it('supports variants', () => {
@@ -158,31 +188,25 @@ describe('Accordion', () => {
 
     // Test bordered variant
     expect(screen.getByTestId('accordion-item-1')).toHaveClass(
-      'border-b',
-      'border-gray-200'
+      'accordion-item-bordered'
     );
 
     rerender(<Accordion items={mockItems} variant='filled' />);
     // Test filled variant
     expect(screen.getByTestId('accordion-item-1')).toHaveClass(
-      'bg-white',
-      'rounded-md',
-      'shadow-sm'
+      'accordion-item-filled'
     );
 
     rerender(<Accordion items={mockItems} variant='minimal' />);
     // Test minimal variant
     expect(screen.getByTestId('accordion-item-1')).toHaveClass(
-      'border-b',
-      'border-white'
+      'accordion-item-minimal'
     );
 
     rerender(<Accordion items={mockItems} variant='default' />);
     // Test default variant
     expect(screen.getByTestId('accordion-item-1')).toHaveClass(
-      'bg-white',
-      'border',
-      'border-gray-200'
+      'accordion-item-default'
     );
   });
 
@@ -190,10 +214,10 @@ describe('Accordion', () => {
     const { rerender } = render(<Accordion items={mockItems} size='sm' />);
 
     const firstButton = screen.getByRole('button', { name: /section 1/i });
-    expect(firstButton).toHaveClass('px-4', 'py-3', 'text-sm');
+    expect(firstButton).toHaveClass('accordion-size-sm');
 
     rerender(<Accordion items={mockItems} size='lg' />);
-    expect(firstButton).toHaveClass('px-8', 'py-4', 'text-lg');
+    expect(firstButton).toHaveClass('accordion-size-lg');
   });
 
   it('handles disabled items', () => {
@@ -201,11 +225,13 @@ describe('Accordion', () => {
 
     const disabledButton = screen.getByRole('button', { name: /section 2/i });
     expect(disabledButton).toBeDisabled();
-    expect(disabledButton).toHaveClass('opacity-50', 'cursor-not-allowed');
+    expect(disabledButton).toHaveClass('accordion-trigger-disabled');
 
     // Clicking disabled item should not expand it
     fireEvent.click(disabledButton);
-    expect(screen.queryByText('Content for section 2')).not.toBeInTheDocument();
+    const content2 = screen.getByText('Content for section 2');
+    const contentInner2 = content2.closest('.accordion-content-inner');
+    expect(contentInner2).toHaveStyle('visibility: hidden');
   });
 
   it('renders icons when provided', () => {
@@ -264,17 +290,26 @@ describe('Accordion', () => {
     const firstButton = screen.getByRole('button', { name: /section 1/i });
     fireEvent.click(firstButton);
 
-    const contentElement = screen.getByRole('region');
-    expect(contentElement).toHaveClass('transition-all', 'duration-300');
+    const contentElement = document.getElementById('accordion-content-1');
+    expect(contentElement).toHaveClass('accordion-content');
   });
 
   it('disables animation when animated=false', () => {
     render(<Accordion items={mockItems} animated={false} />);
 
     const firstButton = screen.getByRole('button', { name: /section 1/i });
+    const content = screen.getByText('Content for section 1');
+    const contentInner = content.closest('.accordion-content-inner');
+
+    // Initially hidden
+    expect(contentInner).toHaveStyle('visibility: hidden');
+
     fireEvent.click(firstButton);
 
-    const contentElement = screen.getByRole('region');
+    // Should be visible after click (even without animation)
+    expect(contentInner).toHaveStyle('visibility: visible');
+
+    const contentElement = document.getElementById('accordion-content-1');
     expect(contentElement).toHaveStyle({ height: 'auto' });
   });
 
@@ -294,14 +329,16 @@ describe('Accordion', () => {
     render(<Accordion items={mockItems} />);
 
     const firstButton = screen.getByRole('button', { name: /section 1/i });
+    const content1 = screen.getByText('Content for section 1');
+    const contentInner1 = content1.closest('.accordion-content-inner');
 
     // Test Enter key
     fireEvent.keyDown(firstButton, { key: 'Enter' });
-    expect(screen.getByText('Content for section 1')).toBeInTheDocument();
+    expect(contentInner1).toHaveStyle('visibility: visible');
 
     // Test Space key
     fireEvent.keyDown(firstButton, { key: ' ' });
-    expect(screen.queryByText('Content for section 1')).not.toBeInTheDocument();
+    expect(contentInner1).toHaveStyle('visibility: hidden');
   });
 
   it('handles onChange callback with multiple items', () => {
@@ -385,12 +422,15 @@ describe('AccordionItem', () => {
     expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 
-  it('does not render content when collapsed', () => {
+  it('hides content when collapsed', () => {
     render(
       <AccordionItem item={mockItem} isExpanded={false} onToggle={() => {}} />
     );
 
-    expect(screen.queryByText('Test Content')).not.toBeInTheDocument();
+    const content = screen.getByText('Test Content');
+    const contentInner = content.closest('.accordion-content-inner');
+    expect(content).toBeInTheDocument();
+    expect(contentInner).toHaveStyle('visibility: hidden');
   });
 
   it('handles disabled state', () => {
@@ -439,7 +479,9 @@ describe('AccordionItem', () => {
       />
     );
 
-    expect(screen.getByTestId('accordion-item-1')).toHaveClass('border-b');
+    expect(screen.getByTestId('accordion-item-1')).toHaveClass(
+      'accordion-item-bordered'
+    );
 
     rerender(
       <AccordionItem
@@ -451,8 +493,7 @@ describe('AccordionItem', () => {
     );
 
     expect(screen.getByTestId('accordion-item-1')).toHaveClass(
-      'bg-white',
-      'rounded-md'
+      'accordion-item-filled'
     );
   });
 
@@ -467,7 +508,7 @@ describe('AccordionItem', () => {
     );
 
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('px-4', 'py-3', 'text-sm');
+    expect(button).toHaveClass('accordion-size-sm');
 
     rerender(
       <AccordionItem
@@ -478,7 +519,7 @@ describe('AccordionItem', () => {
       />
     );
 
-    expect(button).toHaveClass('px-8', 'py-4', 'text-lg');
+    expect(button).toHaveClass('accordion-size-lg');
   });
 
   it('handles animation settings', () => {
@@ -493,7 +534,7 @@ describe('AccordionItem', () => {
     );
 
     const contentElement = screen.getByRole('region');
-    expect(contentElement).toHaveClass('transition-all', 'duration-500');
+    expect(contentElement).toHaveClass('accordion-content');
   });
 
   it('disables animation when animated=false', () => {
@@ -657,7 +698,7 @@ describe('Collapsible', () => {
     );
 
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('px-8', 'py-4', 'text-lg');
+    expect(button).toHaveClass('collapsible-size-lg');
   });
 
   it('applies custom className', () => {
@@ -683,6 +724,6 @@ describe('Collapsible', () => {
     );
 
     const contentElement = screen.getByRole('region');
-    expect(contentElement).toHaveClass('transition-all', 'duration-300');
+    expect(contentElement).toHaveClass('collapsible-content');
   });
 });

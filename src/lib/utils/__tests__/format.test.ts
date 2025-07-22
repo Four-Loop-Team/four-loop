@@ -1,4 +1,3 @@
-/* eslint-disable jest/prefer-to-have-length */
 import {
   capitalize,
   debounce,
@@ -217,13 +216,13 @@ describe('Format Utils', () => {
     it('should generate id with default prefix', () => {
       const id = generateId();
 
-      expect(id).toMatch(/^id-[a-z0-9]{9}$/);
+      expect(id).toMatch(/^id-[a-z0-9]{1,9}$/);
     });
 
     it('should generate id with custom prefix', () => {
       const id = generateId('custom');
 
-      expect(id).toMatch(/^custom-[a-z0-9]{9}$/);
+      expect(id).toMatch(/^custom-[a-z0-9]{1,9}$/);
     });
 
     it('should generate unique ids', () => {

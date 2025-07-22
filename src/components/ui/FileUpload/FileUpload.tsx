@@ -57,6 +57,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useDesignSystem } from '../../../hooks/useDesignSystem';
 import { FileUploadProps, UploadedFile } from './types';
 
 const FileUpload: React.FC<FileUploadProps> = ({
@@ -71,6 +72,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   'data-testid': testId = 'file-upload',
   'aria-label': ariaLabel,
 }) => {
+  const tokens = useDesignSystem();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -155,9 +157,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   return (
     <div
-      className={`border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-blue-400 transition-colors ${
-        disabled ? 'opacity-50 cursor-not-allowed disabled' : ''
-      } ${isDragOver ? 'drag-over border-blue-500 bg-blue-50' : ''} ${className}`}
+      className={`file-upload ${
+        disabled ? 'file-upload-disabled' : ''
+      } ${isDragOver ? 'file-upload-dragover' : ''} ${className}`}
       onClick={openFileDialog}
       onKeyDown={handleKeyDown}
       onDragEnter={handleDragEnter}
@@ -169,21 +171,15 @@ const FileUpload: React.FC<FileUploadProps> = ({
       aria-label={ariaLabel}
       data-testid={testId}
     >
-      <svg
-        className='mx-auto h-12 w-12 text-gray-400 mb-4'
-        fill='currentColor'
-        viewBox='0 0 20 20'
-      >
+      <svg className='file-upload-icon' fill='currentColor' viewBox='0 0 20 20'>
         <path
           fillRule='evenodd'
           d='M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z'
           clipRule='evenodd'
         />
       </svg>
-      <p className='text-gray-600'>{placeholder}</p>
-      {accept && (
-        <p className='text-xs text-gray-500 mt-1'>Accepted: {accept}</p>
-      )}
+      <p className='file-upload-text'>{placeholder}</p>
+      {accept && <p className='file-upload-hint'>Accepted: {accept}</p>}
 
       <input
         ref={fileInputRef}
@@ -197,14 +193,19 @@ const FileUpload: React.FC<FileUploadProps> = ({
       />
 
       {files.length > 0 && (
-        <div className='mt-4 space-y-2'>
+        <div
+          className='file-list-container'
+          style={{
+            marginTop: tokens.spacing.component.md,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: tokens.spacing.micro.sm,
+          }}
+        >
           {files.map((file) => (
-            <div
-              key={file.id}
-              className='flex items-center justify-between p-2 bg-gray-50 rounded'
-            >
-              <span className='text-sm text-gray-700'>{file.name}</span>
-              <span className='text-xs text-green-600'>
+            <div key={file.id} className='file-upload-item'>
+              <span className='file-upload-name'>{file.name}</span>
+              <span className='file-upload-size'>
                 {formatFileSize(file.size)}
               </span>
             </div>

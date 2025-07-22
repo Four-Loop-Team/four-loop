@@ -66,6 +66,9 @@
  * - High contrast support
  */
 
+'use client';
+
+import { useDesignSystem } from '@/lib/hooks';
 import React, {
   createContext,
   useCallback,
@@ -73,6 +76,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import './Accordion.scss';
 import {
   AccordionContextValue,
   AccordionItemProps,
@@ -163,11 +167,10 @@ const Accordion: React.FC<AccordionProps> = ({
   };
 
   const variantClasses = {
-    default: 'space-y-2',
-    bordered: 'space-y-0 border border-gray-200 rounded-md overflow-hidden',
-    filled: 'space-y-1 bg-gray-50 p-2 rounded-md',
-    minimal:
-      'space-y-0 border-t border-white border-b border-white bg-transparent',
+    default: 'accordion-default',
+    bordered: 'accordion-bordered',
+    filled: 'accordion-filled',
+    minimal: 'accordion-minimal',
   };
 
   return (
@@ -196,6 +199,7 @@ const Accordion: React.FC<AccordionProps> = ({
 };
 
 // AccordionItem component
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const AccordionItem: React.FC<AccordionItemProps> = ({
   item,
   isExpanded,
@@ -203,10 +207,13 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   variant = 'default',
   size = 'md',
   animated = true,
-  animationDuration = 200,
+  animationDuration = 200, // Animation duration is handled by CSS classes
   className = '',
   'data-testid': testId = 'accordion-item',
 }) => {
+  // Animation duration is handled by CSS classes but kept for API compatibility
+  void animationDuration;
+  const { colors } = useDesignSystem();
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState<number | undefined>(
     isExpanded ? undefined : 0
@@ -223,36 +230,36 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   }, [isExpanded, animated]);
 
   const sizeClasses = {
-    sm: 'px-4 py-3 text-sm min-h-[44px]', // Updated for 44px min touch target
-    md: 'px-6 py-3 text-base min-h-[44px]', // Updated for 44px min touch target
-    lg: 'px-8 py-4 text-lg min-h-[44px]', // Updated for 44px min touch target
+    sm: 'accordion-size-sm', // Updated for 44px min touch target
+    md: 'accordion-size-md', // Updated for 44px min touch target
+    lg: 'accordion-size-lg', // Updated for 44px min touch target
   };
 
   const getVariantClasses = () => {
     switch (variant) {
       case 'bordered':
         return {
-          item: 'border-b border-gray-200 last:border-b-0',
-          trigger: 'hover:bg-gray-50',
-          content: 'bg-white',
+          item: 'accordion-item-bordered',
+          trigger: 'accordion-trigger-bordered',
+          content: 'accordion-content-bordered',
         };
       case 'filled':
         return {
-          item: 'bg-white rounded-md shadow-sm',
-          trigger: 'hover:bg-gray-50',
-          content: 'bg-gray-50',
+          item: 'accordion-item-filled',
+          trigger: 'accordion-trigger-filled',
+          content: 'accordion-content-filled',
         };
       case 'minimal':
         return {
-          item: 'border-b border-white last:border-b-0 bg-transparent',
-          trigger: 'h-[84px] bg-transparent',
-          content: 'bg-transparent',
+          item: 'accordion-item-minimal',
+          trigger: 'accordion-trigger-minimal',
+          content: 'accordion-content-minimal',
         };
       default:
         return {
-          item: 'bg-white border border-gray-200 rounded-md shadow-sm',
-          trigger: 'hover:bg-gray-50',
-          content: 'bg-white',
+          item: 'accordion-item-default',
+          trigger: 'accordion-trigger-default',
+          content: 'accordion-content-default',
         };
     }
   };
@@ -280,12 +287,15 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
     >
       {/* Trigger */}
       <button
-        className={`
-          w-full flex items-center justify-between text-left transition-colors duration-200
-          ${variant === 'minimal' ? 'px-0 h-[84px] flex items-center' : sizeClasses[size]} ${variantClasses.trigger}
-          ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-          ${variant === 'minimal' ? 'focus:outline-none border-none' : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'}
-        `}
+        className={`accordion-trigger ${variantClasses.trigger} ${sizeClasses[size]} ${
+          item.disabled
+            ? 'accordion-trigger-disabled'
+            : 'accordion-trigger-enabled'
+        } ${
+          variant === 'minimal'
+            ? 'accordion-trigger-minimal-layout'
+            : 'accordion-trigger-focus'
+        }`}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         disabled={item.disabled}
@@ -298,10 +308,12 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
             : {}
         }
       >
-        <div className='flex items-center gap-3 flex-1 min-w-0'>
-          {item.icon && <span className='flex-shrink-0'>{item.icon}</span>}
+        <div className='accordion-trigger-content'>
+          {item.icon && (
+            <span className='accordion-trigger-icon'>{item.icon}</span>
+          )}
           <span
-            className={`${variant === 'minimal' ? 'text-white text-xl font-normal' : 'font-medium'}`}
+            className={`accordion-trigger-text ${variant === 'minimal' ? 'accordion-trigger-text-minimal' : ''}`}
             style={variant === 'minimal' ? { color: 'white' } : {}}
           >
             {item.trigger}
@@ -309,17 +321,14 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         </div>
         {variant === 'minimal' ? (
           <svg
-            className={`
-              flex-shrink-0 transition-transform duration-200
-              ${isExpanded ? 'rotate-45' : ''}
-            `}
+            className={`accordion-icon-minimal ${isExpanded ? 'accordion-icon-expanded' : ''}`}
             style={{
               width: '30px',
               height: '30px',
             }}
             fill='none'
             viewBox='0 0 24 24'
-            stroke='#e2e891'
+            stroke={colors.text.accent}
             strokeWidth={2}
           >
             <path
@@ -330,10 +339,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
           </svg>
         ) : (
           <svg
-            className={`
-              w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0
-              ${isExpanded ? 'rotate-180' : ''}
-            `}
+            className={`accordion-icon-default ${isExpanded ? 'accordion-icon-expanded' : ''}`}
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -349,45 +355,40 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
       </button>
 
       {/* Content */}
-      {isExpanded && (
+      <div
+        className={`accordion-content ${variantClasses.content}`}
+        style={{
+          height: animated ? `${contentHeight}px` : isExpanded ? 'auto' : '0px',
+          backgroundColor: variant === 'minimal' ? 'transparent' : undefined,
+          border: variant === 'minimal' ? 'none' : undefined,
+        }}
+        aria-labelledby={`accordion-trigger-${item.id}`}
+        id={`accordion-content-${item.id}`}
+        role='region'
+      >
         <div
-          className={`
-            overflow-hidden transition-all duration-${animationDuration} ease-in-out
-            ${variantClasses.content}
-          `}
+          ref={contentRef}
+          className={`accordion-content-inner ${variant === 'minimal' ? 'accordion-content-minimal-inner' : `${sizeClasses[size]} accordion-content-bordered-inner`}`}
           style={{
-            height: animated ? `${contentHeight}px` : 'auto',
-            backgroundColor: variant === 'minimal' ? 'transparent' : undefined,
-            border: variant === 'minimal' ? 'none' : undefined,
+            ...(variant === 'minimal'
+              ? {
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  color: 'white',
+                }
+              : {}),
+            visibility: isExpanded ? 'visible' : 'hidden',
           }}
-          aria-labelledby={`accordion-trigger-${item.id}`}
-          id={`accordion-content-${item.id}`}
-          role='region'
         >
-          <div
-            ref={contentRef}
-            className={`
-              ${variant === 'minimal' ? 'px-0 pb-6 pt-0 text-white text-base' : `${sizeClasses[size]} border-t border-gray-200`}
-            `}
-            style={
-              variant === 'minimal'
-                ? {
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    color: 'white',
-                  }
-                : {}
-            }
-          >
-            {item.content}
-          </div>
+          {item.content}
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
 // Standalone Collapsible component
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Collapsible: React.FC<CollapsibleProps> = ({
   trigger,
   children,
@@ -397,13 +398,15 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   variant = 'default',
   size = 'md',
   animated = true,
-  animationDuration = 200,
+  animationDuration = 200, // Animation duration is handled by CSS classes
   onChange,
   className = '',
   triggerClassName = '',
   contentClassName = '',
   'data-testid': testId = 'collapsible',
 }) => {
+  // Animation duration is handled by CSS classes but kept for API compatibility
+  void animationDuration;
   const isControlled = controlledIsExpanded !== undefined;
   const [internalIsExpanded, setInternalIsExpanded] = useState(defaultExpanded);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -441,36 +444,36 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   };
 
   const sizeClasses = {
-    sm: 'px-4 py-3 text-sm min-h-[44px]', // Updated for 44px min touch target
-    md: 'px-6 py-3 text-base min-h-[44px]', // Updated for 44px min touch target
-    lg: 'px-8 py-4 text-lg min-h-[44px]', // Updated for 44px min touch target
+    sm: 'collapsible-size-sm', // Updated for 44px min touch target
+    md: 'collapsible-size-md', // Updated for 44px min touch target
+    lg: 'collapsible-size-lg', // Updated for 44px min touch target
   };
 
   const getVariantClasses = () => {
     switch (variant) {
       case 'bordered':
         return {
-          container: 'border border-gray-200 rounded-md overflow-hidden',
-          trigger: 'bg-white hover:bg-gray-50 border-b border-gray-200',
-          content: 'bg-white',
+          container: 'collapsible-container-bordered',
+          trigger: 'collapsible-trigger-bordered',
+          content: 'collapsible-content-bordered',
         };
       case 'filled':
         return {
-          container: 'bg-gray-50 rounded-md',
-          trigger: 'bg-white hover:bg-gray-50 rounded-t-md',
-          content: 'bg-gray-50',
+          container: 'collapsible-container-filled',
+          trigger: 'collapsible-trigger-filled',
+          content: 'collapsible-content-filled',
         };
       case 'minimal':
         return {
-          container: '',
-          trigger: 'hover:bg-gray-50',
-          content: 'bg-white',
+          container: 'collapsible-container-minimal',
+          trigger: 'collapsible-trigger-minimal',
+          content: 'collapsible-content-minimal',
         };
       default:
         return {
-          container: 'bg-white border border-gray-200 rounded-md shadow-sm',
-          trigger: 'hover:bg-gray-50',
-          content: 'bg-white',
+          container: 'collapsible-container-default',
+          trigger: 'collapsible-trigger-default',
+          content: 'collapsible-content-default',
         };
     }
   };
@@ -484,12 +487,11 @@ const Collapsible: React.FC<CollapsibleProps> = ({
     >
       {/* Trigger */}
       <button
-        className={`
-          w-full flex items-center justify-between text-left transition-colors duration-200
-          ${sizeClasses[size]} ${variantClasses.trigger} ${triggerClassName}
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-        `}
+        className={`collapsible-trigger ${sizeClasses[size]} ${variantClasses.trigger} ${triggerClassName} ${
+          disabled
+            ? 'collapsible-trigger-disabled'
+            : 'collapsible-trigger-enabled'
+        } collapsible-trigger-focus`}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         disabled={disabled}
@@ -497,12 +499,9 @@ const Collapsible: React.FC<CollapsibleProps> = ({
         aria-controls='collapsible-content'
         id='collapsible-trigger'
       >
-        <span className='flex-1 min-w-0'>{trigger}</span>
+        <span className='collapsible-trigger-text'>{trigger}</span>
         <svg
-          className={`
-            w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-2
-            ${isExpanded ? 'rotate-180' : ''}
-          `}
+          className={`collapsible-arrow ${isExpanded ? 'collapsible-arrow-expanded' : ''}`}
           fill='none'
           viewBox='0 0 24 24'
           stroke='currentColor'
@@ -518,10 +517,7 @@ const Collapsible: React.FC<CollapsibleProps> = ({
 
       {/* Content */}
       <div
-        className={`
-          overflow-hidden transition-all duration-${animationDuration} ease-in-out
-          ${variantClasses.content} ${contentClassName}
-        `}
+        className={`collapsible-content ${variantClasses.content} ${contentClassName}`}
         style={{
           height: animated ? `${contentHeight}px` : isExpanded ? 'auto' : '0px',
         }}
@@ -531,7 +527,7 @@ const Collapsible: React.FC<CollapsibleProps> = ({
       >
         <div
           ref={contentRef}
-          className={`${sizeClasses[size]} ${variant !== 'minimal' ? 'border-t border-gray-200' : ''}`}
+          className={`${sizeClasses[size]} ${variant !== 'minimal' ? 'collapsible-content-inner-bordered' : 'collapsible-content-inner-minimal'}`}
         >
           {children}
         </div>

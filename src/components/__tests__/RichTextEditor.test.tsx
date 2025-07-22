@@ -166,7 +166,7 @@ describe('RichTextEditor', () => {
 
     await waitFor(() => {
       const updatedBoldButton = screen.getByRole('button', { name: /bold/i });
-      expect(updatedBoldButton).toHaveClass('active');
+      expect(updatedBoldButton).toHaveClass('editor-toolbar-button-active');
     });
   });
 
@@ -181,7 +181,7 @@ describe('RichTextEditor', () => {
       const updatedItalicButton = screen.getByRole('button', {
         name: /italic/i,
       });
-      expect(updatedItalicButton).toHaveClass('active');
+      expect(updatedItalicButton).toHaveClass('editor-toolbar-button-active');
     });
   });
 
@@ -196,7 +196,9 @@ describe('RichTextEditor', () => {
       const updatedUnderlineButton = screen.getByRole('button', {
         name: /underline/i,
       });
-      expect(updatedUnderlineButton).toHaveClass('active');
+      expect(updatedUnderlineButton).toHaveClass(
+        'editor-toolbar-button-active'
+      );
     });
   });
 
@@ -211,7 +213,7 @@ describe('RichTextEditor', () => {
       const updatedAlignButton = screen.getByRole('button', {
         name: /align left/i,
       });
-      expect(updatedAlignButton).toHaveClass('active');
+      expect(updatedAlignButton).toHaveClass('editor-toolbar-button-active');
     });
   });
 
@@ -226,7 +228,7 @@ describe('RichTextEditor', () => {
       const updatedListButton = screen.getByRole('button', {
         name: /bullet list/i,
       });
-      expect(updatedListButton).toHaveClass('active');
+      expect(updatedListButton).toHaveClass('editor-toolbar-button-active');
     });
   });
 
@@ -245,7 +247,7 @@ describe('RichTextEditor', () => {
     // Bold should be active
     await waitFor(() => {
       const boldButton = screen.getByRole('button', { name: /bold/i });
-      expect(boldButton).toHaveClass('active');
+      expect(boldButton).toHaveClass('editor-toolbar-button-active');
     });
   });
 

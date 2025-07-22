@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-07-11T19:51:11.572Z
+> 🤖 Auto-generated on 2025-07-22T22:32:35.842Z
 
 ## Component API Reference
 
@@ -34,15 +34,6 @@ customizable dimensions and Material-UI Box styling.
 Logo"] - Alt text for accessibility @param {number} [props.width=200] - Logo width in pixels @param
 {number} [props.height=80] - Logo height in pixels @param {boolean} [props.priority=true] - Next.js
 Image priority loading @returns {JSX.Element} The rendered logo component
-
----
-
-### DesignSystemShowcase
-
-**File**: `src/components/DesignSystemShowcase.tsx`
-
-- @fileoverview Design System Component Examples and demonstrations. Showcases how to use enhanced
-  design tokens in React components with comprehensive examples.
 
 ---
 
@@ -125,6 +116,15 @@ page transitions for optimal UX.
 
 ---
 
+### NavigationSkeleton
+
+**File**: `src/components/layout/Navigation/NavigationSkeleton.tsx`
+
+- Loading skeleton for Navigation component Displays a placeholder layout while the navigation is
+  mounting/loading
+
+---
+
 ### SkipNavigationLink
 
 **File**: `src/components/layout/SkipNavigationLink.tsx`
@@ -145,17 +145,6 @@ page transitions for optimal UX.
 - Follows WCAG 2.1 AA guidelines for skip links
 - Becomes visible when focused via keyboard navigation
 - Uses high contrast colors for visibility
-
----
-
-### MuiThemeProvider.test
-
-**File**: `src/components/MuiThemeProvider/__tests__/MuiThemeProvider.test.tsx`
-
-- MuiThemeProvider Component Tests
-
-Note: Component implementation is empty, these are placeholder tests to prevent CI failures until
-the component is implemented.
 
 ---
 
@@ -180,6 +169,22 @@ the component is implemented.
 
 ```tsx
 <ContactSection />
+```
+
+---
+
+### ContactSectionWithCustomInput
+
+**File**: `src/components/sections/ContactSectionWithCustomInput.tsx`
+
+- Enhanced Contact section component using custom Input component This demonstrates how the
+  ContactSection could be migrated to use our custom Input component instead of Material-UI
+  TextField
+
+@component @example
+
+```tsx
+<ContactSectionWithCustomInput />
 ```
 
 ---
@@ -224,6 +229,15 @@ the component is implemented.
 ```tsx
 <ServicesSection />
 ```
+
+---
+
+### BrandThemeProvider
+
+**File**: `src/components/system/BrandThemeProvider/BrandThemeProvider.tsx`
+
+- Brand colors object for use in sx props and components These match our theme palette and SCSS
+  variables
 
 ---
 
@@ -314,44 +328,6 @@ component
 - CSS-based grid system for optimal performance
 - Efficient responsive breakpoint handling
 - Optimized Material-UI component usage
-
----
-
-### MuiThemeProvider
-
-**File**: `src/components/system/MuiThemeProvider/MuiThemeProvider.tsx`
-
-- Material-UI theme provider that configures the design system for the entire application.
-
-This component provides consistent theming across all Material-UI components, implementing the Four
-Loop Digital brand colors, typography, and design tokens. Includes dark mode support and
-accessibility-compliant color contrasts.
-
-@component @example
-
-```tsx
-// Wrap your app with the theme provider
-<MuiThemeProvider>
-  <App />
-</MuiThemeProvider>
-```
-
-@param {MuiThemeProviderProps} props - The theme provider props @param {React.ReactNode}
-props.children - Child components to receive theme context @returns {JSX.Element} The themed
-application wrapper
-
-@accessibility
-
-- WCAG AA compliant color contrasts (4.5:1 minimum)
-- Dark mode optimized for reduced eye strain
-- High contrast text and background combinations
-
-@design
-
-- Primary: #e2e891 (brand yellow-green)
-- Secondary: #353535 (dark gray)
-- Background: #232323 (deep dark)
-- Typography: Poppins font family
 
 ---
 
@@ -462,14 +438,6 @@ application wrapper
 **File**: `src/components/ui/Button/Button.tsx`
 
 - Button component props interface
-
----
-
-### ButtonPrimary
-
-**File**: `src/components/ui/Button/ButtonPrimary.tsx`
-
-- ButtonPrimary component props interface
 
 ---
 
@@ -833,7 +801,7 @@ including:
 
 **File**: `src/components/ui/Input/Input.tsx`
 
-- Input component props interface
+- Input component props interface extending Material-UI TextField
 
 ---
 

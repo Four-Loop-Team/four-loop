@@ -32,12 +32,7 @@ import { ServicesSection } from '@/components/sections/ServicesSection';
  */
 export default function WorkPage() {
   return (
-    <main
-      style={{
-        backgroundColor: '#353535',
-        minHeight: '100vh',
-      }}
-    >
+    <main className='work-page'>
       <IntroSection />
       <ServicesSection />
       <PartnersSection />

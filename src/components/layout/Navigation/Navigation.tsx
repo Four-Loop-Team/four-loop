@@ -1,5 +1,6 @@
 'use client';
 
+import { useDesignSystem } from '@/lib/hooks';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -20,6 +21,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import NavigationSkeleton from './NavigationSkeleton';
 
 const navigationItems = [
   { label: 'Work', href: '/work' },
@@ -58,6 +60,7 @@ const navigationItems = [
  * - Header persistence across page transitions
  */
 export default function Navigation() {
+  const { colors, spacing } = useDesignSystem();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const theme = useTheme();
@@ -71,7 +74,12 @@ export default function Navigation() {
   }>({ left: 0, width: 0, opacity: 0 });
 
   useEffect(() => {
-    setMounted(true);
+    // Brief delay to show skeleton loading state
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const isActive = useCallback(
@@ -104,9 +112,27 @@ export default function Navigation() {
       const containerRect = navContainerRef.current.getBoundingClientRect();
       const linkRect = activeLink.getBoundingClientRect();
 
+      // Apply conditional logic for slider positioning
+      let adjustedLeft = linkRect.left - containerRect.left;
+      let adjustedWidth = linkRect.width;
+
+      if (linkRect.left === containerRect.left) {
+        // First item: extend width to the right
+        adjustedLeft = 0;
+        adjustedWidth = linkRect.width + 5;
+      } else if (linkRect.right === containerRect.right) {
+        // Last item: extend width to the left
+        adjustedLeft = linkRect.left - containerRect.left - 5;
+        adjustedWidth = linkRect.width + 5;
+      } else {
+        // Middle item: extend width on both sides
+        adjustedLeft = linkRect.left - containerRect.left - 5;
+        adjustedWidth = linkRect.width + 10;
+      }
+
       setSliderStyle({
-        left: linkRect.left - containerRect.left - 7.5, // Offset left by 7.5px to center the extra width
-        width: linkRect.width + 15, // Make background 15px wider (was 10px, now adding 5px more)
+        left: adjustedLeft,
+        width: adjustedWidth,
         opacity: 1,
       });
     }
@@ -146,6 +172,11 @@ export default function Navigation() {
     }
   };
 
+  // Show skeleton while component is mounting
+  if (!mounted) {
+    return <NavigationSkeleton />;
+  }
+
   // Mobile drawer content
   const drawer = (
     <Box
@@ -159,7 +190,7 @@ export default function Navigation() {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-          p: 3,
+          p: spacing.component.lg, // Using component spacing
           borderBottom: '1px solid rgba(226, 232, 145, 0.2)',
         }}
       >
@@ -169,7 +200,7 @@ export default function Navigation() {
             color: 'white',
             minWidth: '44px',
             minHeight: '44px',
-            p: 1,
+            p: spacing.component.xs, // Using component spacing
             '&:hover': {
               backgroundColor: 'rgba(226, 232, 145, 0.1)',
             },
@@ -178,35 +209,35 @@ export default function Navigation() {
           <CloseIcon sx={{ fontSize: '1.5rem' }} />
         </IconButton>
       </Box>
-      <List sx={{ px: 'var(--space-lg)', pt: 'var(--space-md)' }}>
+      <List sx={{ px: spacing.component.lg, pt: spacing.component.md }}>
         {navigationItems.map((item) => {
           const active = isActive(item.href);
           return (
             <ListItem key={item.label} disablePadding sx={{ mb: 1.5 }}>
               <Link
                 href={item.href}
-                style={{ textDecoration: 'none', width: '100%' }}
+                className='nav-link'
                 onClick={handleNavClick}
                 prefetch={true}
               >
                 <ListItemButton
                   sx={{
-                    borderRadius: 3,
+                    borderRadius: spacing.component.lg, // Using component spacing
                     color: active
-                      ? 'var(--drawer-active-text)'
-                      : 'var(--drawer-inactive-text)',
+                      ? 'var(--text-accent)'
+                      : 'var(--text-inverse)',
                     backgroundColor: active
-                      ? 'var(--drawer-active-background)'
+                      ? 'var(--background-accent)'
                       : 'transparent',
                     border: active
-                      ? '1px solid var(--drawer-active-border)'
+                      ? '1px solid var(--border-accent)'
                       : '1px solid transparent',
                     py: 'var(--space-lg)',
                     px: 'var(--space-2xl)',
                     transition: 'var(--nav-button-transition)',
                     '&:hover': {
                       backgroundColor: active
-                        ? 'var(--drawer-hover-background)'
+                        ? 'var(--background-accent)'
                         : 'rgba(255, 255, 255, 0.08)',
                       transform: 'translateX(4px)',
                     },
@@ -239,7 +270,7 @@ export default function Navigation() {
         component='nav'
         aria-label='Main navigation'
         sx={{
-          backgroundColor: '#353535',
+          backgroundColor: colors.background.primary,
           borderBottom: 'none',
           boxShadow: 'none', // Remove any shadow
           '&::after': {
@@ -275,11 +306,7 @@ export default function Navigation() {
             }}
           >
             {/* Logo */}
-            <Link
-              href='/'
-              style={{ textDecoration: 'none', color: 'white' }}
-              prefetch={true}
-            >
+            <Link href='/' className='nav-brand-link' prefetch={true}>
               <Box
                 sx={{
                   display: 'flex',
@@ -296,13 +323,12 @@ export default function Navigation() {
                     fontWeight: 600,
                     letterSpacing: '0.1em', // Reduce letter spacing to match design
                     fontFamily: 'inherit',
+                    color: 'var(--text-inverse)', // Use brand variable for white text
+                    whiteSpace: 'nowrap', // Ensure whitespace is preserved
                   }}
                 >
                   FOUR LOOP{' '}
-                  <Box
-                    component='span'
-                    sx={{ color: 'var(--nav-container-background)' }}
-                  >
+                  <Box component='span' sx={{ color: 'var(--text-accent)' }}>
                     DIGITAL
                   </Box>
                 </Box>
@@ -314,7 +340,7 @@ export default function Navigation() {
               <Box
                 ref={navContainerRef}
                 sx={{
-                  backgroundColor: 'var(--nav-container-background)',
+                  backgroundColor: 'var(--background-accent)',
                   borderRadius: 'var(--nav-container-border-radius)',
                   padding: '0px',
                   display: 'flex',
@@ -328,8 +354,8 @@ export default function Navigation() {
                     position: 'absolute',
                     top: 0,
                     height: '100%',
-                    backgroundColor: 'var(--nav-slider-background)',
-                    border: '1px solid var(--nav-slider-border)',
+                    backgroundColor: 'var(--background-secondary)',
+                    border: '1px solid var(--border-accent)',
                     borderRadius: 'var(--nav-container-border-radius)',
                     transition: 'var(--nav-slider-transition)',
                     zIndex: 1,
@@ -344,27 +370,27 @@ export default function Navigation() {
                   // Define specific padding for each navigation item
                   let buttonPadding;
                   if (item.label === 'Work') {
-                    buttonPadding = '0 15px 0 20px';
+                    buttonPadding = '6px 15px 6px 20px';
                   } else if (item.label === 'About Us') {
-                    buttonPadding = '0 15px';
+                    buttonPadding = '6px 15px';
                   } else if (item.label === 'Contact') {
-                    buttonPadding = '0 20px 0 15px';
+                    buttonPadding = '6px 20px 6px 15px';
                   } else {
-                    buttonPadding = '0 15px'; // fallback updated to match About Us
+                    buttonPadding = '6px 15px'; // fallback updated to match About Us
                   }
 
                   return (
                     <Link
                       key={item.label}
                       href={item.href}
-                      style={{ textDecoration: 'none' }}
+                      className='nav-menu-link'
                       prefetch={true}
                     >
                       <Button
                         sx={{
                           color: active
-                            ? 'var(--nav-text-active)'
-                            : 'var(--nav-text-inactive)',
+                            ? 'var(--text-inverse)'
+                            : 'var(--text-primary)',
                           textTransform: 'none',
                           fontSize: '1rem',
                           fontWeight: 400, // Normal weight, not bold
@@ -379,8 +405,8 @@ export default function Navigation() {
                           transition: 'color 0.15s ease',
                           '&:hover': {
                             color: active
-                              ? 'var(--nav-text-active)'
-                              : 'var(--nav-text-hover)',
+                              ? 'var(--text-inverse)'
+                              : 'var(--text-inverse)',
                             backgroundColor: 'transparent',
                           },
                         }}
@@ -437,9 +463,8 @@ export default function Navigation() {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: 'var(--nav-mobile-width)',
-              backgroundColor: 'var(--drawer-background)',
-              backgroundImage:
-                'linear-gradient(135deg, var(--drawer-background) 0%, #2d4747 100%)',
+              backgroundColor: 'var(--background-primary)',
+              backgroundImage: `linear-gradient(135deg, var(--background-primary) 0%, ${colors.background.accent} 100%)`,
             },
           }}
         >

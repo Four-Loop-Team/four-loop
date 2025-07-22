@@ -1,27 +1,26 @@
 /**
  * @fileoverview Button component exports
- * @component Button, ButtonPrimary
+ * @component Button
  *
  * @description
  * Export module for Button components and related types.
- * Re-exports the Button and ButtonPrimary components and their TypeScript definitions for easy importing.
+ * Re-exports the Button component and its TypeScript definitions for easy importing.
+ * The Button component now includes integrated primary variant functionality.
  *
  * @example
  * ```tsx
- * import { Button, ButtonPrimary } from '@/components/ui/Button';
- * import type { ButtonProps, ButtonPrimaryProps } from '@/components/ui/Button';
+ * import { Button } from '@/components/ui/Button';
+ * import type { ButtonProps } from '@/components/ui/Button';
  *
  * <Button variant="primary" onClick={handleClick}>
- *   Click me
+ *   Let's Collaborate
  * </Button>
  *
- * <ButtonPrimary onClick={handleCTA}>
- *   Let's Collaborate
- * </ButtonPrimary>
+ * <Button variant="secondary" onClick={handleClick}>
+ *   Secondary Action
+ * </Button>
  * ```
  */
 
 export { default as Button } from './Button';
 export type { ButtonProps } from './Button';
-export { default as ButtonPrimary } from './ButtonPrimary';
-export type { ButtonPrimaryProps } from './ButtonPrimary';

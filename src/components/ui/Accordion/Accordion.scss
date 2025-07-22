@@ -1,0 +1,377 @@
+/**
+ * Accordion Component Styles
+ * Using SCSS variables from design system
+ */
+
+@use '../../../app/ui/styles/variables' as vars;
+
+// =============================================================================
+// ACCORDION CONTAINER VARIANTS
+// =============================================================================
+
+.accordion-default {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-sm;
+}
+
+.accordion-bordered {
+  border: 1px solid vars.$border-inverse;
+  border-radius: vars.$border-radius-md;
+  overflow: hidden;
+}
+
+.accordion-filled {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-xs;
+  background-color: vars.$color-surface-secondary;
+  padding: vars.$spacing-sm;
+  border-radius: vars.$border-radius-md;
+}
+
+.accordion-minimal {
+  border-top: 1px solid vars.$border-inverse;
+  border-bottom: 1px solid vars.$border-inverse;
+  background-color: transparent;
+}
+
+// =============================================================================
+// ACCORDION ITEM VARIANTS
+// =============================================================================
+
+.accordion-item-default {
+  background-color: vars.$color-surface-primary;
+  border: 1px solid vars.$border-inverse;
+  border-radius: vars.$border-radius-md;
+  box-shadow: vars.$shadow-sm;
+}
+
+.accordion-item-bordered {
+  border-bottom: 1px solid vars.$border-inverse;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.accordion-item-filled {
+  background-color: vars.$color-surface-primary;
+  border-radius: vars.$border-radius-md;
+  box-shadow: vars.$shadow-sm;
+}
+
+.accordion-item-minimal {
+  border-bottom: 1px solid vars.$border-inverse;
+  background-color: transparent;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// =============================================================================
+// ACCORDION TRIGGER (BUTTON) STYLES
+// =============================================================================
+
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  transition: all vars.$animation-duration-quick vars.$easing-ease-out;
+  border: none;
+  background: transparent;
+}
+
+.accordion-trigger-enabled {
+  cursor: pointer;
+}
+
+.accordion-trigger-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.accordion-trigger-focus {
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px vars.$color-border-interactive;
+  }
+}
+
+.accordion-trigger-minimal-layout {
+  padding-left: 0;
+  padding-right: 0;
+  height: 84px;
+  display: flex;
+  align-items: center;
+
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}
+
+// Trigger variants
+.accordion-trigger-default {
+  &:hover {
+    background-color: vars.$color-surface-secondary;
+  }
+}
+
+.accordion-trigger-bordered {
+  &:hover {
+    background-color: vars.$color-surface-secondary;
+  }
+}
+
+.accordion-trigger-filled {
+  &:hover {
+    background-color: vars.$color-surface-secondary;
+  }
+}
+
+.accordion-trigger-minimal {
+  background-color: transparent;
+  height: 84px;
+}
+
+// =============================================================================
+// ACCORDION SIZE VARIANTS
+// =============================================================================
+
+.accordion-size-sm {
+  padding: vars.$spacing-md vars.$spacing-lg;
+  font-size: vars.$font-size-sm;
+  min-height: 44px; // Touch target accessibility
+}
+
+.accordion-size-md {
+  padding: vars.$spacing-lg vars.$spacing-xl;
+  font-size: vars.$font-size-base;
+  min-height: 44px; // Touch target accessibility
+}
+
+.accordion-size-lg {
+  padding: vars.$spacing-xl vars.$spacing-2xl;
+  font-size: vars.$font-size-lg;
+  min-height: 44px; // Touch target accessibility
+}
+
+// =============================================================================
+// ACCORDION CONTENT STYLES
+// =============================================================================
+
+.accordion-content {
+  overflow: hidden;
+  transition: height vars.$animation-duration-standard vars.$easing-ease-in-out;
+}
+
+.accordion-content-default {
+  background-color: vars.$color-surface-primary;
+}
+
+.accordion-content-bordered {
+  background-color: vars.$color-surface-primary;
+}
+
+.accordion-content-filled {
+  background-color: vars.$color-surface-secondary;
+}
+
+.accordion-content-minimal {
+  background-color: transparent;
+  border: none;
+}
+
+// Content inner styles
+.accordion-content-inner {
+  padding: vars.$spacing-lg vars.$spacing-xl;
+}
+
+.accordion-content-bordered-inner {
+  border-top: 1px solid vars.$border-inverse;
+}
+
+.accordion-content-minimal-inner {
+  padding: 0 0 vars.$spacing-xl 0;
+  color: vars.$text-inverse;
+  font-size: vars.$font-size-base;
+}
+
+// =============================================================================
+// ACCORDION TRIGGER CONTENT STYLES
+// =============================================================================
+
+.accordion-trigger-content {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+}
+
+.accordion-trigger-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.accordion-trigger-text {
+  font-weight: vars.$font-weight-medium;
+}
+
+.accordion-trigger-text-minimal {
+  color: vars.$text-inverse;
+}
+
+// =============================================================================
+// ACCORDION ICONS
+// =============================================================================
+
+.accordion-icon-default {
+  width: 1.25rem; // 20px
+  height: 1.25rem; // 20px
+  color: vars.$color-text-tertiary;
+  transition: transform vars.$animation-duration-standard
+    vars.$easing-ease-in-out;
+  flex-shrink: 0;
+
+  &.accordion-icon-expanded {
+    transform: rotate(180deg);
+  }
+}
+
+.accordion-icon-minimal {
+  flex-shrink: 0;
+  transition: transform vars.$animation-duration-standard
+    vars.$easing-ease-in-out;
+
+  &.accordion-icon-expanded {
+    transform: rotate(45deg);
+  }
+}
+
+// =============================================================================
+// COLLAPSIBLE COMPONENT STYLES
+// =============================================================================
+
+.collapsible-container-default {
+  background-color: vars.$color-surface-primary;
+  border: 1px solid vars.$border-inverse;
+  border-radius: vars.$border-radius-md;
+  box-shadow: vars.$shadow-sm;
+}
+
+.collapsible-container-bordered {
+  border: 1px solid vars.$border-inverse;
+  border-radius: vars.$border-radius-md;
+  overflow: hidden;
+}
+
+.collapsible-container-filled {
+  background-color: vars.$color-surface-secondary;
+  border-radius: vars.$border-radius-md;
+}
+
+.collapsible-container-minimal {
+  // No container styles for minimal variant
+}
+
+// Collapsible trigger variants
+.collapsible-trigger-default {
+  &:hover {
+    background-color: vars.$color-surface-secondary;
+  }
+}
+
+.collapsible-trigger-bordered {
+  background-color: vars.$color-surface-primary;
+  border-bottom: 1px solid vars.$border-inverse;
+
+  &:hover {
+    background-color: vars.$color-surface-secondary;
+  }
+}
+
+.collapsible-trigger-filled {
+  background-color: vars.$color-surface-primary;
+  border-top-left-radius: vars.$border-radius-md;
+  border-top-right-radius: vars.$border-radius-md;
+
+  &:hover {
+    background-color: vars.$color-surface-secondary;
+  }
+}
+
+.collapsible-trigger-minimal {
+  &:hover {
+    background-color: vars.$color-surface-secondary;
+  }
+}
+
+// =============================================================================
+// COLLAPSIBLE CONTENT STYLES
+// =============================================================================
+
+.collapsible-content {
+  overflow: hidden;
+  transition: height vars.$animation-duration-standard vars.$easing-ease-in-out;
+}
+
+// Collapsible content variants
+.collapsible-content-default {
+  background-color: vars.$color-surface-primary;
+}
+
+.collapsible-content-bordered {
+  background-color: vars.$color-surface-primary;
+}
+
+.collapsible-content-filled {
+  background-color: vars.$color-surface-secondary;
+}
+
+.collapsible-content-minimal {
+  background-color: vars.$color-surface-primary;
+}
+
+// Collapsible size variants
+.collapsible-size-sm {
+  padding: vars.$spacing-md vars.$spacing-lg;
+  font-size: vars.$font-size-sm;
+  min-height: 44px; // Touch target accessibility
+}
+
+.collapsible-size-md {
+  padding: vars.$spacing-lg vars.$spacing-xl;
+  font-size: vars.$font-size-base;
+  min-height: 44px; // Touch target accessibility
+}
+
+.collapsible-size-lg {
+  padding: vars.$spacing-xl vars.$spacing-2xl;
+  font-size: vars.$font-size-lg;
+  min-height: 44px; // Touch target accessibility
+}
+
+// =============================================================================
+// COLLAPSIBLE ARROW/ICON STYLES
+// =============================================================================
+
+.collapsible-arrow {
+  width: 1.25rem; // 20px
+  height: 1.25rem; // 20px
+  color: vars.$color-text-tertiary;
+  transition: transform vars.$animation-duration-standard
+    vars.$easing-ease-in-out;
+  flex-shrink: 0;
+
+  &.collapsible-arrow-expanded {
+    transform: rotate(180deg);
+  }
+}
+
+.collapsible-trigger-text {
+  font-weight: vars.$font-weight-medium;
+}

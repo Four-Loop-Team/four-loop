@@ -98,10 +98,18 @@ const GridSystemDemo: React.FC = () => {
       <GridContainer size='lg'>
         <GridItem xs={12}>
           <Typography variant='h2' component='h1' gutterBottom>
-            12-Column Grid System Demo
+            Dual Grid System Demo
           </Typography>
           <Typography variant='h5' color='text.secondary' paragraph>
-            Comprehensive examples of the responsive grid system in action.
+            Comprehensive examples of our 12-column layout grid combined with
+            8px spacing system.
+          </Typography>
+          <Typography variant='body1' color='text.secondary' paragraph>
+            This demonstration showcases how Four Loop Digital uses two
+            complementary grid systems: the{' '}
+            <strong>12-column responsive layout</strong> for structural
+            flexibility and the <strong>8px spacing system</strong> for visual
+            harmony.
           </Typography>
         </GridItem>
       </GridContainer>
@@ -148,7 +156,7 @@ const GridSystemDemo: React.FC = () => {
           </Typography>
         </GridItem>
         <GridItem xs={12} sm={8} md={9}>
-          <Paper sx={{ p: 3, bgcolor: 'var(--nav-container-background)' }}>
+          <Paper sx={{ p: 3, bgcolor: 'var(--background-accent)' }}>
             <Typography variant='h6'>Main Content Area</Typography>
             <Typography>
               This content area adapts to different screen sizes. On extra small
@@ -159,17 +167,189 @@ const GridSystemDemo: React.FC = () => {
           </Paper>
         </GridItem>
         <GridItem xs={12} sm={4} md={3}>
-          <Paper sx={{ p: 3, bgcolor: 'var(--drawer-background)' }}>
-            <Typography
-              variant='h6'
-              sx={{ color: 'var(--drawer-inactive-text)' }}
-            >
+          <Paper sx={{ p: 3, bgcolor: 'var(--background-primary)' }}>
+            <Typography variant='h6' sx={{ color: 'var(--text-inverse)' }}>
               Sidebar
             </Typography>
-            <Typography sx={{ color: 'var(--drawer-inactive-text)' }}>
+            <Typography sx={{ color: 'var(--text-inverse)' }}>
               Responsive sidebar that stacks on mobile.
             </Typography>
           </Paper>
+        </GridItem>
+      </GridContainer>
+
+      {/* 8px Spacing Integration */}
+      <GridContainer size='lg' gap='md' sx={{ mb: 6 }}>
+        <GridItem xs={12}>
+          <Typography variant='h4' gutterBottom>
+            8px Spacing System Integration
+          </Typography>
+          <Typography variant='body1' color='text.secondary' paragraph>
+            Our grid system integrates seamlessly with the 8px spacing system.
+            Grid gaps, component padding, and margins all follow 8px multiples
+            for visual consistency.
+          </Typography>
+        </GridItem>
+
+        {/* Spacing Examples */}
+        <GridItem xs={12}>
+          <Typography variant='h6' gutterBottom>
+            Grid Gap Sizes (8px Multiples)
+          </Typography>
+        </GridItem>
+
+        {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((gapSize) => {
+          const gapPixels = {
+            xs: '8px (8px × 1)',
+            sm: '16px (8px × 2)',
+            md: '24px (8px × 3)',
+            lg: '32px (8px × 4)',
+            xl: '48px (8px × 6)',
+          };
+
+          return (
+            <GridItem key={gapSize} xs={12} sx={{ mb: 3 }}>
+              <Typography variant='body2' gutterBottom>
+                Gap: {gapSize} = {gapPixels[gapSize]}
+              </Typography>
+              <GridContainer
+                gap={gapSize}
+                sx={{
+                  border: '1px dashed',
+                  borderColor: 'divider',
+                  p: 2,
+                  borderRadius: 1,
+                }}
+              >
+                <GridItem xs={6} sm={3}>
+                  <Paper
+                    sx={{
+                      p: 2, // 16px = 8px × 2
+                      textAlign: 'center',
+                      bgcolor: 'primary.light',
+                      color: 'primary.contrastText',
+                    }}
+                  >
+                    <Typography variant='caption'>p: 2 (16px)</Typography>
+                  </Paper>
+                </GridItem>
+                <GridItem xs={6} sm={3}>
+                  <Paper
+                    sx={{
+                      p: 3, // 24px = 8px × 3
+                      textAlign: 'center',
+                      bgcolor: 'secondary.light',
+                      color: 'secondary.contrastText',
+                    }}
+                  >
+                    <Typography variant='caption'>p: 3 (24px)</Typography>
+                  </Paper>
+                </GridItem>
+                <GridItem xs={6} sm={3}>
+                  <Paper
+                    sx={{
+                      p: 4, // 32px = 8px × 4
+                      textAlign: 'center',
+                      bgcolor: 'success.light',
+                      color: 'success.contrastText',
+                    }}
+                  >
+                    <Typography variant='caption'>p: 4 (32px)</Typography>
+                  </Paper>
+                </GridItem>
+                <GridItem xs={6} sm={3}>
+                  <Paper
+                    sx={{
+                      p: 6, // 48px = 8px × 6
+                      textAlign: 'center',
+                      bgcolor: 'warning.light',
+                      color: 'warning.contrastText',
+                    }}
+                  >
+                    <Typography variant='caption'>p: 6 (48px)</Typography>
+                  </Paper>
+                </GridItem>
+              </GridContainer>
+            </GridItem>
+          );
+        })}
+
+        {/* Real-world Integration Example */}
+        <GridItem xs={12} sx={{ mt: 4 }}>
+          <Typography variant='h6' gutterBottom>
+            Real-world Integration Example
+          </Typography>
+          <Typography variant='body2' color='text.secondary' paragraph>
+            A practical example showing both systems working together:
+          </Typography>
+
+          <GridContainer
+            gap='lg'
+            sx={{
+              // 32px gap = 8px × 4
+              p: 3, // 24px padding = 8px × 3
+              bgcolor: 'background.paper',
+              border: '2px dashed',
+              borderColor: 'primary.main',
+              borderRadius: 2,
+            }}
+          >
+            <GridItem xs={12}>
+              <Typography
+                variant='caption'
+                color='primary.main'
+                gutterBottom
+                display='block'
+              >
+                {'<GridContainer gap="lg" sx={{ p: 3 }}>'}{' '}
+                {/* Shows both systems */}
+              </Typography>
+            </GridItem>
+            <GridItem xs={12} md={8}>
+              <Paper
+                sx={{
+                  p: 4, // 32px padding = 8px × 4
+                  bgcolor: 'var(--background-accent)',
+                  color: 'var(--nav-text-primary)',
+                  mb: 2, // 16px margin = 8px × 2
+                }}
+              >
+                <Typography variant='h6' sx={{ mb: 2 }}>
+                  {' '}
+                  {/* 16px margin = 8px × 2 */}
+                  Main Content (8/12 columns)
+                </Typography>
+                <Typography variant='body2'>
+                  • 12-column grid: xs={'{12}'} md={'{8}'}
+                  <br />• 8px spacing: p={'{4}'} (32px padding), mb={'{2}'}{' '}
+                  (16px margin)
+                  <br />• Grid gap: lg (32px between items)
+                </Typography>
+              </Paper>
+            </GridItem>
+            <GridItem xs={12} md={4}>
+              <Paper
+                sx={{
+                  p: 3, // 24px padding = 8px × 3
+                  bgcolor: 'var(--drawer-background)',
+                  color: 'var(--text-inverse)',
+                  mb: 2, // 16px margin = 8px × 2
+                }}
+              >
+                <Typography variant='h6' sx={{ mb: 2 }}>
+                  {' '}
+                  {/* 16px margin = 8px × 2 */}
+                  Sidebar (4/12 columns)
+                </Typography>
+                <Typography variant='body2'>
+                  • 12-column grid: xs={'{12}'} md={'{4}'}
+                  <br />• 8px spacing: p={'{3}'} (24px padding), mb={'{2}'}{' '}
+                  (16px margin)
+                  <br />• Responsive: stacks on mobile, side-by-side on desktop
+                </Typography>
+              </Paper>
+            </GridItem>
+          </GridContainer>
         </GridItem>
       </GridContainer>
 
@@ -188,7 +368,7 @@ const GridSystemDemo: React.FC = () => {
           </Typography>
           <TwoColumnLayout
             left={
-              <Paper sx={{ p: 3, bgcolor: 'var(--nav-container-background)' }}>
+              <Paper sx={{ p: 3, bgcolor: 'var(--background-accent)' }}>
                 <Typography variant='h6'>Left Column</Typography>
                 <Typography>
                   Content for the left side of the layout.
@@ -197,13 +377,10 @@ const GridSystemDemo: React.FC = () => {
             }
             right={
               <Paper sx={{ p: 3, bgcolor: 'var(--drawer-background)' }}>
-                <Typography
-                  variant='h6'
-                  sx={{ color: 'var(--drawer-inactive-text)' }}
-                >
+                <Typography variant='h6' sx={{ color: 'var(--text-inverse)' }}>
                   Right Column
                 </Typography>
-                <Typography sx={{ color: 'var(--drawer-inactive-text)' }}>
+                <Typography sx={{ color: 'var(--text-inverse)' }}>
                   Content for the right side of the layout.
                 </Typography>
               </Paper>
@@ -227,7 +404,7 @@ const GridSystemDemo: React.FC = () => {
               </Paper>
             }
             center={
-              <Paper sx={{ p: 2, bgcolor: 'var(--nav-container-background)' }}>
+              <Paper sx={{ p: 2, bgcolor: 'var(--background-accent)' }}>
                 <Typography variant='subtitle1'>Center</Typography>
                 <Typography variant='body2'>Main content area</Typography>
               </Paper>
@@ -282,7 +459,7 @@ const GridSystemDemo: React.FC = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              bgcolor: 'var(--nav-container-background)',
+              bgcolor: 'var(--background-accent)',
             }}
           >
             <Typography>
@@ -322,7 +499,7 @@ const GridSystemDemo: React.FC = () => {
               bgcolor: 'var(--drawer-background)',
             }}
           >
-            <Typography sx={{ color: 'var(--drawer-inactive-text)' }}>
+            <Typography sx={{ color: 'var(--text-inverse)' }}>
               Auto-sizing (fills remaining space)
             </Typography>
           </Paper>

@@ -10,7 +10,6 @@
     "stylelint.vscode-stylelint",
 
     // TypeScript and React
-    "bradlc.vscode-tailwindcss",
     "ms-vscode.vscode-typescript-next",
     "zhang-renyang.vscode-react",
 

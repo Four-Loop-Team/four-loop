@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useDesignSystem } from '../../../hooks/useDesignSystem';
 import { DataTableProps, FilterConfig, SortConfig } from './types';
 
 /**
@@ -115,6 +116,7 @@ export const DataTable = <T extends Record<string, unknown>>({
     defaultSort ?? null
   );
   const [filters, setFilters] = useState<FilterConfig[]>([]);
+  const tokens = useDesignSystem();
 
   // Handle sorting
   const handleSort = useCallback(
@@ -214,95 +216,185 @@ export const DataTable = <T extends Record<string, unknown>>({
     return result;
   }, [data, filters, internalSort, onFilter, onSort]);
 
-  // Size classes
-  const sizeClasses = {
-    sm: 'text-sm',
-    md: 'text-base',
-    lg: 'text-lg',
+  // Get size styles using design tokens
+  const getSizeStyles = (size: 'sm' | 'md' | 'lg') => {
+    switch (size) {
+      case 'sm':
+        return {
+          fontSize: tokens.typography.fontSize.sm,
+          headerPadding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+          cellPadding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+        };
+      case 'lg':
+        return {
+          fontSize: tokens.typography.fontSize.lg,
+          headerPadding: `${tokens.spacing.component.sm} ${tokens.spacing.component.lg}`,
+          cellPadding: `${tokens.spacing.component.sm} ${tokens.spacing.component.lg}`,
+        };
+      default:
+        return {
+          fontSize: tokens.typography.fontSize.base,
+          headerPadding: `${tokens.spacing.micro.md} ${tokens.spacing.component.md}`,
+          cellPadding: `${tokens.spacing.component.sm} ${tokens.spacing.component.md}`,
+        };
+    }
   };
 
-  // Table classes
-  const tableClasses = [
-    'w-full border-collapse',
-    sizeClasses[size],
-    bordered ? 'border border-neutral-200 dark:border-neutral-700' : '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const sizeStyles = getSizeStyles(size);
 
-  // Header cell classes
-  const headerCellClasses = [
-    'px-6 py-3 text-left font-medium text-neutral-900 dark:text-neutral-100 uppercase tracking-wider border-b border-neutral-200 dark:border-neutral-700',
-    size === 'sm' ? 'px-4 py-2' : size === 'lg' ? 'px-8 py-4' : 'px-6 py-3',
-  ].join(' ');
+  // Table container styles
+  const tableContainerStyles: React.CSSProperties = {
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: sizeStyles.fontSize,
+    ...(bordered && {
+      border: `1px solid ${tokens.colors.border.default}`,
+    }),
+  };
 
-  // Body cell classes
-  const bodyCellClasses = [
-    'px-6 py-4 whitespace-nowrap text-neutral-900 dark:text-neutral-100 border-b border-neutral-100 dark:border-neutral-800',
-    size === 'sm' ? 'px-4 py-2' : size === 'lg' ? 'px-8 py-4' : 'px-6 py-4',
-  ].join(' ');
+  // Header cell styles
+  const getHeaderCellStyles = (): React.CSSProperties => ({
+    padding: sizeStyles.headerPadding,
+    textAlign: 'left',
+    fontWeight: tokens.typography.fontWeight.medium,
+    color: tokens.colors.text.primary,
+    textTransform: 'uppercase',
+    letterSpacing: tokens.typography.letterSpacing.wide,
+    borderBottom: `1px solid ${tokens.colors.border.default}`,
+  });
 
-  // Row classes
-  const getRowClasses = (index: number) =>
-    [
-      striped && index % 2 === 1 ? 'bg-neutral-50 dark:bg-neutral-800' : '',
-      hoverable
-        ? 'hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors'
-        : '',
-      onRowClick ? 'cursor-pointer' : '',
-    ]
-      .filter(Boolean)
-      .join(' ');
+  // Body cell styles
+  const getBodyCellStyles = (): React.CSSProperties => ({
+    padding: sizeStyles.cellPadding,
+    whiteSpace: 'nowrap',
+    color: tokens.colors.text.primary,
+    borderBottom: `1px solid ${tokens.colors.border.muted}`,
+  });
+
+  // Row styles
+  const getRowStyles = (index: number): React.CSSProperties => {
+    const baseStyles: React.CSSProperties = {
+      ...(onRowClick && { cursor: 'pointer' }),
+      transition: 'background-color 150ms ease-in-out',
+    };
+
+    if (striped && index % 2 === 1) {
+      baseStyles.backgroundColor = tokens.colors.background.secondary;
+    }
+
+    return baseStyles;
+  };
 
   if (loading) {
     return (
-      <div className='flex items-center justify-center py-12'>
-        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
-        <span className='ml-2 text-neutral-600 dark:text-neutral-400'>
-          Loading...
-        </span>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: tokens.spacing.component.sm,
+          padding: tokens.spacing.component.lg,
+          color: tokens.colors.text.muted,
+        }}
+      >
+        <div
+          style={{
+            width: '20px',
+            height: '20px',
+            border: `2px solid ${tokens.colors.border.muted}`,
+            borderTop: `2px solid ${tokens.colors.state.info}`,
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+          }}
+        ></div>
+        <span>Loading...</span>
       </div>
     );
   }
 
   if (processedData.length === 0) {
     return (
-      <div className='text-center py-12 text-neutral-500 dark:text-neutral-400'>
+      <div
+        style={{
+          padding: tokens.spacing.component.lg,
+          textAlign: 'center',
+          color: tokens.colors.text.muted,
+          fontSize: tokens.typography.fontSize.base,
+        }}
+      >
         {emptyMessage}
       </div>
     );
   }
 
   return (
-    <div className='overflow-x-auto'>
-      <table className={tableClasses}>
-        <thead className='bg-neutral-50 dark:bg-neutral-800'>
+    <div style={{ overflow: 'auto' }}>
+      <table style={tableContainerStyles}>
+        <thead>
           <tr>
             {selectable && (
-              <th className={headerCellClasses}>
+              <th style={getHeaderCellStyles()}>
                 <input
                   type='checkbox'
                   checked={
                     selectedRows.length === data.length && data.length > 0
                   }
                   onChange={(e) => handleSelectAll(e.target.checked)}
-                  className='rounded border-neutral-300 text-primary-600 focus:ring-primary-500'
+                  style={{
+                    accentColor: tokens.colors.state.info,
+                  }}
                 />
               </th>
             )}
             {columns.map((column) => (
               <th
                 key={column.id}
-                className={`${headerCellClasses} ${column.align === 'center' ? 'text-center' : column.align === 'right' ? 'text-right' : ''}`}
-                style={{ width: column.width, minWidth: column.minWidth }}
+                style={{
+                  ...getHeaderCellStyles(),
+                  width: column.width,
+                  minWidth: column.minWidth,
+                  textAlign:
+                    column.align === 'center'
+                      ? 'center'
+                      : column.align === 'right'
+                        ? 'right'
+                        : 'left',
+                }}
               >
-                <div className='flex items-center space-x-1'>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: tokens.spacing.micro.xs,
+                    justifyContent:
+                      column.align === 'center'
+                        ? 'center'
+                        : column.align === 'right'
+                          ? 'flex-end'
+                          : 'flex-start',
+                  }}
+                >
                   <span>{column.header}</span>
                   {sortable && column.sortable && (
                     <button
                       onClick={() => handleSort(column.id)}
-                      className='ml-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300'
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: tokens.colors.text.muted,
+                        fontSize: tokens.typography.fontSize.sm,
+                        padding: tokens.spacing.micro.xs,
+                        borderRadius: tokens.radius.sm,
+                        transition: 'color 150ms ease-in-out',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color =
+                          tokens.colors.text.primary;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = tokens.colors.text.muted;
+                      }}
                     >
                       {internalSort?.key === column.id
                         ? internalSort.direction === 'asc'
@@ -316,7 +408,16 @@ export const DataTable = <T extends Record<string, unknown>>({
                   <input
                     type='text'
                     placeholder='Filter...'
-                    className='mt-1 block w-full text-sm border border-neutral-300 dark:border-neutral-600 rounded px-2 py-1 bg-white dark:bg-neutral-700'
+                    style={{
+                      marginTop: tokens.spacing.micro.xs,
+                      padding: tokens.spacing.micro.xs,
+                      border: `1px solid ${tokens.colors.border.default}`,
+                      borderRadius: tokens.radius.input,
+                      fontSize: tokens.typography.fontSize.sm,
+                      backgroundColor: tokens.colors.background.primary,
+                      color: tokens.colors.text.primary,
+                      width: '100%',
+                    }}
                     onChange={(e) => handleFilter(column.id, e.target.value)}
                   />
                 )}
@@ -324,7 +425,7 @@ export const DataTable = <T extends Record<string, unknown>>({
             ))}
           </tr>
         </thead>
-        <tbody className='bg-white dark:bg-neutral-900 divide-y divide-neutral-200 dark:divide-neutral-700'>
+        <tbody>
           {processedData.map((row, index) => {
             const rowId = index.toString();
             const isSelected = selectedRows.includes(rowId);
@@ -333,19 +434,40 @@ export const DataTable = <T extends Record<string, unknown>>({
             return (
               <tr
                 key={rowId}
-                className={`${getRowClasses(index)} ${customRowProps.className ?? ''}`}
+                style={{
+                  ...getRowStyles(index),
+                  ...(customRowProps.style || {}),
+                }}
+                className={className}
                 onClick={() => onRowClick?.(row, index)}
+                onMouseEnter={(e) => {
+                  if (hoverable) {
+                    e.currentTarget.style.backgroundColor =
+                      tokens.colors.background.secondary;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (hoverable) {
+                    const baseColor =
+                      striped && index % 2 === 1
+                        ? tokens.colors.background.secondary
+                        : 'transparent';
+                    e.currentTarget.style.backgroundColor = baseColor;
+                  }
+                }}
                 {...customRowProps}
               >
                 {selectable && (
-                  <td className={bodyCellClasses}>
+                  <td style={getBodyCellStyles()}>
                     <input
                       type='checkbox'
                       checked={isSelected}
                       onChange={(e) =>
                         handleRowSelection(rowId, e.target.checked)
                       }
-                      className='rounded border-neutral-300 text-primary-600 focus:ring-primary-500'
+                      style={{
+                        accentColor: tokens.colors.state.info,
+                      }}
                     />
                   </td>
                 )}
@@ -360,7 +482,15 @@ export const DataTable = <T extends Record<string, unknown>>({
                   return (
                     <td
                       key={column.id}
-                      className={`${bodyCellClasses} ${column.align === 'center' ? 'text-center' : column.align === 'right' ? 'text-right' : ''}`}
+                      style={{
+                        ...getBodyCellStyles(),
+                        textAlign:
+                          column.align === 'center'
+                            ? 'center'
+                            : column.align === 'right'
+                              ? 'right'
+                              : 'left',
+                      }}
                     >
                       {cellContent}
                     </td>
@@ -373,8 +503,22 @@ export const DataTable = <T extends Record<string, unknown>>({
       </table>
 
       {pagination && (
-        <div className='flex items-center justify-between px-6 py-3 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-700'>
-          <div className='text-sm text-neutral-700 dark:text-neutral-300'>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: tokens.spacing.component.md,
+            borderTop: `1px solid ${tokens.colors.border.muted}`,
+            marginTop: tokens.spacing.component.sm,
+          }}
+        >
+          <div
+            style={{
+              color: tokens.colors.text.muted,
+              fontSize: tokens.typography.fontSize.sm,
+            }}
+          >
             Showing {pagination.page * pagination.pageSize + 1} to{' '}
             {Math.min(
               (pagination.page + 1) * pagination.pageSize,
@@ -382,7 +526,12 @@ export const DataTable = <T extends Record<string, unknown>>({
             )}{' '}
             of {pagination.total} results
           </div>
-          <div className='flex space-x-2'>
+          <div
+            style={{
+              display: 'flex',
+              gap: tokens.spacing.component.sm,
+            }}
+          >
             <button
               onClick={() =>
                 onPaginationChange?.({
@@ -391,7 +540,35 @@ export const DataTable = <T extends Record<string, unknown>>({
                 })
               }
               disabled={pagination.page === 0}
-              className='px-3 py-1 text-sm font-medium text-neutral-500 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-neutral-800 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-700'
+              style={{
+                padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+                border: `1px solid ${tokens.colors.border.default}`,
+                borderRadius: tokens.radius.button,
+                backgroundColor:
+                  pagination.page === 0
+                    ? tokens.colors.background.secondary
+                    : tokens.colors.background.primary,
+                color:
+                  pagination.page === 0
+                    ? tokens.colors.text.muted
+                    : tokens.colors.text.primary,
+                cursor: pagination.page === 0 ? 'not-allowed' : 'pointer',
+                fontSize: tokens.typography.fontSize.sm,
+                fontWeight: tokens.typography.fontWeight.medium,
+                transition: 'all 150ms ease-in-out',
+              }}
+              onMouseEnter={(e) => {
+                if (pagination.page !== 0) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.background.secondary;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (pagination.page !== 0) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.background.primary;
+                }
+              }}
             >
               Previous
             </button>
@@ -405,7 +582,47 @@ export const DataTable = <T extends Record<string, unknown>>({
               disabled={
                 (pagination.page + 1) * pagination.pageSize >= pagination.total
               }
-              className='px-3 py-1 text-sm font-medium text-neutral-500 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-neutral-800 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-700'
+              style={{
+                padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+                border: `1px solid ${tokens.colors.border.default}`,
+                borderRadius: tokens.radius.button,
+                backgroundColor:
+                  (pagination.page + 1) * pagination.pageSize >=
+                  pagination.total
+                    ? tokens.colors.background.secondary
+                    : tokens.colors.background.primary,
+                color:
+                  (pagination.page + 1) * pagination.pageSize >=
+                  pagination.total
+                    ? tokens.colors.text.muted
+                    : tokens.colors.text.primary,
+                cursor:
+                  (pagination.page + 1) * pagination.pageSize >=
+                  pagination.total
+                    ? 'not-allowed'
+                    : 'pointer',
+                fontSize: tokens.typography.fontSize.sm,
+                fontWeight: tokens.typography.fontWeight.medium,
+                transition: 'all 150ms ease-in-out',
+              }}
+              onMouseEnter={(e) => {
+                if (
+                  (pagination.page + 1) * pagination.pageSize <
+                  pagination.total
+                ) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.background.secondary;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (
+                  (pagination.page + 1) * pagination.pageSize <
+                  pagination.total
+                ) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.background.primary;
+                }
+              }}
             >
               Next
             </button>

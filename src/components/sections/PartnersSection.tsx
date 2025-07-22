@@ -1,5 +1,6 @@
 'use client';
 
+import { useDesignSystem } from '@/lib/hooks';
 import { Box, Container, Typography } from '@mui/material';
 
 /**
@@ -13,11 +14,13 @@ import { Box, Container, Typography } from '@mui/material';
  * ```
  */
 export const PartnersSection = () => {
+  const { spacing } = useDesignSystem();
+
   return (
     <Box
       component='section'
       sx={{
-        py: { xs: 8, md: 12 },
+        py: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
         backgroundColor: 'transparent',
         color: 'white',
         position: 'relative',
@@ -28,14 +31,14 @@ export const PartnersSection = () => {
         sx={{
           maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
           margin: '0 auto', // Center the container
-          px: { xs: 2, md: '82px' }, // Add 82px padding on desktop
+          px: { xs: spacing.component.sm, md: spacing.section.sm }, // Using spacing tokens (82px ~ section.sm)
           position: 'relative',
           zIndex: 1,
         }}
       >
         <Box
           sx={{
-            mb: { xs: 6, md: 8 },
+            mb: { xs: spacing.layout.sm, md: spacing.layout.lg }, // Using layout spacing
           }}
         >
           <Box
@@ -43,15 +46,15 @@ export const PartnersSection = () => {
               display: 'flex',
               alignItems: 'baseline',
               justifyContent: 'flex-start',
-              gap: { xs: 2, md: 3 },
-              mb: { xs: 4, md: 6 },
+              gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
+              mb: { xs: spacing.layout.xs, md: spacing.layout.sm }, // Using layout spacing
             }}
           >
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'baseline',
-                gap: { xs: 2, md: 3 },
+                gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
               }}
             >
               <Typography
@@ -85,7 +88,7 @@ export const PartnersSection = () => {
             textAlign: 'left',
             borderTop: '1px solid white',
             borderBottom: '1px solid white',
-            py: 4,
+            py: spacing.layout.xs, // Using layout spacing
           }}
         >
           <Typography
@@ -96,7 +99,7 @@ export const PartnersSection = () => {
               color: 'white',
             }}
           >
-            <span style={{ color: '#e2e891' }}>
+            <span className='highlight-text'>
               Partnerships That Shaped Our Journey.
             </span>{' '}
             Over the past 25 years, we&apos;ve collaborated with teams across

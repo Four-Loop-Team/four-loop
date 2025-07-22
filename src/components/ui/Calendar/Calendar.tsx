@@ -3,6 +3,7 @@
  * Provides calendar view, date input, time picker, and range selection capabilities.
  */
 
+import { useDesignSystem } from '@/lib/hooks';
 import React, {
   useCallback,
   useEffect,
@@ -119,13 +120,14 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   maxDate,
   disabledDates,
   firstDayOfWeek,
-  multiple: _multiple,
-  range: _range,
+  multiple: _multiple, // TODO: Implement multiple date selection
+  range: _range, // TODO: Implement date range selection
   onDateClick,
   renderDate,
   showWeekNumbers,
   size,
 }) => {
+  const { colors, spacing, typography, radius, brand } = useDesignSystem();
   // Generate calendar grid
   const weeks = useMemo(() => {
     const firstOfMonth = new Date(
@@ -165,24 +167,77 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
     return orderedDays;
   }, [firstDayOfWeek]);
 
-  // Size classes
-  const sizeClasses = {
-    sm: 'text-xs p-1 h-6 w-6',
-    md: 'text-sm p-2 h-8 w-8',
-    lg: 'text-base p-2 h-10 w-10',
+  // Size styles using design tokens
+  const getSizeStyles = (size: 'sm' | 'md' | 'lg') => {
+    switch (size) {
+      case 'sm':
+        return {
+          fontSize: typography.fontSize.xs,
+          padding: spacing.micro.xs,
+          height: '1.5rem',
+          width: '1.5rem',
+        };
+      case 'lg':
+        return {
+          fontSize: typography.fontSize.base,
+          padding: spacing.micro.sm,
+          height: '2.5rem',
+          width: '2.5rem',
+        };
+      default: // md
+        return {
+          fontSize: typography.fontSize.sm,
+          padding: spacing.micro.sm,
+          height: '2rem',
+          width: '2rem',
+        };
+    }
   };
 
-  const cellClasses = sizeClasses[size];
+  const cellStyles = getSizeStyles(size);
 
   return (
-    <div className='w-full'>
+    <div style={{ width: '100%' }}>
       {/* Header with day names */}
-      <div className='grid grid-cols-7 mb-2'>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: showWeekNumbers
+            ? 'auto repeat(7, 1fr)'
+            : 'repeat(7, 1fr)',
+          gap: '1px',
+          backgroundColor: colors.border.muted,
+          borderRadius: radius.md,
+          overflow: 'hidden',
+          marginBottom: '1px',
+        }}
+      >
         {showWeekNumbers && (
-          <div className='font-medium text-gray-500 text-center'>Wk</div>
+          <div
+            style={{
+              padding: spacing.micro.sm,
+              backgroundColor: colors.background.secondary,
+              fontSize: typography.fontSize.xs,
+              fontWeight: typography.fontWeight.medium,
+              color: colors.text.muted,
+              textAlign: 'center',
+            }}
+          >
+            Wk
+          </div>
         )}
         {weekDays.map((day) => (
-          <div key={day} className='font-medium text-gray-500 text-center p-2'>
+          <div
+            key={day}
+            style={{
+              padding: spacing.micro.sm,
+              backgroundColor: colors.background.secondary,
+              fontSize: typography.fontSize.xs,
+              fontWeight: typography.fontWeight.medium,
+              color: colors.text.muted,
+              textAlign: 'center',
+            }}
+          >
             {day}
           </div>
         ))}
@@ -190,9 +245,31 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
 
       {/* Calendar grid */}
       {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} className='grid grid-cols-7'>
+        <div
+          key={weekIndex}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: showWeekNumbers
+              ? 'auto repeat(7, 1fr)'
+              : 'repeat(7, 1fr)',
+            gap: '1px',
+            backgroundColor: colors.border.muted,
+            marginBottom: '1px',
+          }}
+        >
           {showWeekNumbers && (
-            <div className='text-gray-400 text-center flex items-center justify-center'>
+            <div
+              style={{
+                padding: spacing.micro.sm,
+                backgroundColor: colors.background.inverse,
+                fontSize: typography.fontSize.xs,
+                color: colors.text.muted,
+                textAlign: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               {Math.ceil((week[0].getDate() + firstDayOfWeek) / 7)}
             </div>
           )}
@@ -216,24 +293,57 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
                 onClick={() => !isDisabled && onDateClick(date)}
                 disabled={isDisabled}
                 aria-disabled={isDisabled}
-                className={`
-                  ${cellClasses}
-                  rounded-md transition-colors
-                  ${
-                    isSelected
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : !isDisabled
-                        ? 'hover:bg-gray-100'
-                        : ''
+                style={{
+                  ...cellStyles,
+                  border: 'none',
+                  backgroundColor: isSelected
+                    ? brand.primary
+                    : colors.background.inverse,
+                  color: isSelected
+                    ? colors.text.inverse
+                    : isDisabled
+                      ? colors.text.muted + '80' // 50% opacity
+                      : isOtherMonth
+                        ? colors.text.muted
+                        : colors.text.primary,
+                  borderRadius: radius.md,
+                  transition: 'all 200ms ease',
+                  cursor: isDisabled ? 'not-allowed' : 'pointer',
+                  opacity: isDisabled ? 0.5 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  fontWeight: isToday
+                    ? typography.fontWeight.bold
+                    : typography.fontWeight.normal,
+                  ...(isToday && !isSelected
+                    ? {
+                        backgroundColor: brand.primary + '20', // 20% opacity
+                      }
+                    : {}),
+                }}
+                onMouseEnter={(e) => {
+                  if (!isDisabled && !isSelected) {
+                    e.currentTarget.style.backgroundColor =
+                      colors.background.secondary;
+                  } else if (isSelected) {
+                    e.currentTarget.style.backgroundColor =
+                      brand.primary + 'DD'; // Darker
                   }
-                  ${
-                    isDisabled
-                      ? 'text-gray-300 cursor-not-allowed opacity-50'
-                      : 'cursor-pointer'
+                }}
+                onMouseLeave={(e) => {
+                  if (!isDisabled && !isSelected) {
+                    e.currentTarget.style.backgroundColor =
+                      colors.background.inverse;
+                  } else if (isSelected) {
+                    e.currentTarget.style.backgroundColor = brand.primary;
                   }
-                  ${isOtherMonth && !isSelected ? 'text-gray-400' : ''}
-                  ${isToday && !isSelected ? 'bg-gray-200 font-semibold' : ''}
-                `}
+                  if (isToday && !isSelected) {
+                    e.currentTarget.style.backgroundColor =
+                      brand.primary + '20';
+                  }
+                }}
               >
                 {renderDate
                   ? renderDate(date, isSelected, isDisabled)
@@ -252,14 +362,15 @@ const TimePicker: React.FC<TimePickerProps> = ({
   value,
   onChange,
   format = '24h',
-  minTime: _minTime,
-  maxTime: _maxTime,
+  minTime: _minTime, // TODO: Implement time constraints
+  maxTime: _maxTime, // TODO: Implement time constraints
   minuteStep = 1,
-  hourStep: _hourStep = 1,
+  hourStep: _hourStep = 1, // TODO: Implement hour stepping
   size = 'md',
   className = '',
   disabled = false,
 }) => {
+  const { typography, spacing } = useDesignSystem();
   const [hours, setHours] = useState(value?.getHours() ?? 0);
   const [minutes, setMinutes] = useState(value?.getMinutes() ?? 0);
   const [ampm, setAmpm] = useState(
@@ -309,10 +420,33 @@ const TimePicker: React.FC<TimePickerProps> = ({
     updateTime(newHours, minutes);
   };
 
-  const sizeClasses = {
-    sm: 'text-sm px-2 py-1',
-    md: 'text-base px-3 py-2',
-    lg: 'text-lg px-4 py-3',
+  const getSizeStyles = (size: 'sm' | 'md' | 'lg') => {
+    switch (size) {
+      case 'sm':
+        return {
+          fontSize: typography.fontSize.sm,
+          paddingLeft: spacing.component.xs,
+          paddingRight: spacing.component.xs,
+          paddingTop: spacing.micro.xs,
+          paddingBottom: spacing.micro.xs,
+        };
+      case 'lg':
+        return {
+          fontSize: typography.fontSize.lg,
+          paddingLeft: spacing.component.md,
+          paddingRight: spacing.component.md,
+          paddingTop: spacing.micro.md,
+          paddingBottom: spacing.micro.md,
+        };
+      default:
+        return {
+          fontSize: typography.fontSize.base,
+          paddingLeft: spacing.component.sm,
+          paddingRight: spacing.component.sm,
+          paddingTop: spacing.micro.sm,
+          paddingBottom: spacing.micro.sm,
+        };
+    }
   };
 
   const displayHours =
@@ -325,18 +459,28 @@ const TimePicker: React.FC<TimePickerProps> = ({
       : hours;
 
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
+    <div className={`calendar-time-picker ${className}`}>
       {/* Hours */}
       <select
         value={displayHours}
         onChange={(e) => handleHourChange(Number(e.target.value))}
         disabled={disabled}
-        className={`
-          ${sizeClasses[size]}
-          border border-gray-300 rounded-md bg-white
-          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-          disabled:bg-gray-100 disabled:cursor-not-allowed
-        `}
+        style={{
+          ...getSizeStyles(size),
+          border: '1px solid #d1d5db',
+          borderRadius: '0.375rem',
+          backgroundColor: disabled ? '#f3f4f6' : '#ffffff',
+          outline: 'none',
+          cursor: disabled ? 'not-allowed' : 'pointer',
+        }}
+        onFocus={(e) => {
+          e.target.style.outline = '2px solid #3b82f6';
+          e.target.style.borderColor = 'transparent';
+        }}
+        onBlur={(e) => {
+          e.target.style.outline = 'none';
+          e.target.style.borderColor = '#d1d5db';
+        }}
       >
         {Array.from({ length: format === '12h' ? 12 : 24 }, (_, i) => {
           const hour = format === '12h' ? i + 1 : i;
@@ -348,19 +492,29 @@ const TimePicker: React.FC<TimePickerProps> = ({
         })}
       </select>
 
-      <span className='text-gray-500'>:</span>
+      <span className='time-separator'>:</span>
 
       {/* Minutes */}
       <select
         value={minutes}
         onChange={(e) => handleMinuteChange(Number(e.target.value))}
         disabled={disabled}
-        className={`
-          ${sizeClasses[size]}
-          border border-gray-300 rounded-md bg-white
-          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-          disabled:bg-gray-100 disabled:cursor-not-allowed
-        `}
+        style={{
+          ...getSizeStyles(size),
+          border: '1px solid #d1d5db',
+          borderRadius: '0.375rem',
+          backgroundColor: disabled ? '#f3f4f6' : '#ffffff',
+          outline: 'none',
+          cursor: disabled ? 'not-allowed' : 'pointer',
+        }}
+        onFocus={(e) => {
+          e.target.style.outline = '2px solid #3b82f6';
+          e.target.style.borderColor = 'transparent';
+        }}
+        onBlur={(e) => {
+          e.target.style.outline = 'none';
+          e.target.style.borderColor = '#d1d5db';
+        }}
       >
         {Array.from({ length: 60 / minuteStep }, (_, i) => {
           const minute = i * minuteStep;
@@ -378,12 +532,22 @@ const TimePicker: React.FC<TimePickerProps> = ({
           value={ampm}
           onChange={(e) => handleAmPmChange(e.target.value as 'AM' | 'PM')}
           disabled={disabled}
-          className={`
-            ${sizeClasses[size]}
-            border border-gray-300 rounded-md bg-white
-            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-            disabled:bg-gray-100 disabled:cursor-not-allowed
-          `}
+          style={{
+            ...getSizeStyles(size),
+            border: '1px solid #d1d5db',
+            borderRadius: '0.375rem',
+            backgroundColor: disabled ? '#f3f4f6' : '#ffffff',
+            outline: 'none',
+            cursor: disabled ? 'not-allowed' : 'pointer',
+          }}
+          onFocus={(e) => {
+            e.target.style.outline = '2px solid #3b82f6';
+            e.target.style.borderColor = 'transparent';
+          }}
+          onBlur={(e) => {
+            e.target.style.outline = 'none';
+            e.target.style.borderColor = '#d1d5db';
+          }}
         >
           <option value='AM'>AM</option>
           <option value='PM'>PM</option>
@@ -440,6 +604,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   variant = 'default',
   'data-testid': testId = 'calendar',
 }) => {
+  const { colors, spacing, radius } = useDesignSystem();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDates, setSelectedDates] = useState<Date[]>(() => {
     if (!value) return [];
@@ -539,11 +704,29 @@ export const Calendar: React.FC<CalendarProps> = ({
     onChange?.(multiple || range ? [] : null);
   };
 
-  // Variant classes
-  const variantClasses = {
-    default: 'p-4 bg-white border border-gray-200 rounded-lg shadow-sm',
-    compact: 'p-2 bg-white border border-gray-200 rounded',
-    inline: 'p-0',
+  // Variant styles
+  const getVariantStyles = (variant: 'default' | 'compact' | 'inline') => {
+    switch (variant) {
+      case 'default':
+        return {
+          padding: spacing.component.lg,
+          backgroundColor: colors.background.primary,
+          border: `1px solid ${colors.border.default}`,
+          borderRadius: radius.lg,
+          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        };
+      case 'compact':
+        return {
+          padding: spacing.component.sm,
+          backgroundColor: colors.background.primary,
+          border: `1px solid ${colors.border.default}`,
+          borderRadius: radius.md,
+        };
+      case 'inline':
+        return {
+          padding: 0,
+        };
+    }
   };
 
   const monthYear = currentMonth.toLocaleDateString(locale, {
@@ -553,19 +736,20 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div
-      className={`${variantClasses[variant]} ${className}`}
+      style={getVariantStyles(variant)}
+      className={className}
       data-testid={testId}
     >
       {/* Header */}
-      <div className='flex items-center justify-between mb-4'>
+      <div className='calendar-header'>
         <button
           type='button'
           onClick={handlePreviousMonth}
-          className='p-1 hover:bg-gray-100 rounded'
+          className='calendar-nav-button'
           aria-label='Previous month'
         >
           <svg
-            className='w-5 h-5'
+            className='calendar-nav-icon'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -579,16 +763,16 @@ export const Calendar: React.FC<CalendarProps> = ({
           </svg>
         </button>
 
-        <h2 className='text-lg font-semibold'>{monthYear}</h2>
+        <h2 className='calendar-title'>{monthYear}</h2>
 
         <button
           type='button'
           onClick={handleNextMonth}
-          className='p-1 hover:bg-gray-100 rounded'
+          className='calendar-nav-button'
           aria-label='Next month'
         >
           <svg
-            className='w-5 h-5'
+            className='calendar-nav-icon'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -621,7 +805,13 @@ export const Calendar: React.FC<CalendarProps> = ({
 
       {/* Time Picker */}
       {showTime && selectedDates.length > 0 && (
-        <div className='mt-4 pt-4 border-t border-gray-200'>
+        <div
+          style={{
+            marginTop: spacing.component.sm,
+            paddingTop: spacing.component.sm,
+            borderTop: `1px solid ${colors.border.muted}`,
+          }}
+        >
           <TimePicker
             value={selectedDates[0]}
             onChange={(time) => {
@@ -638,12 +828,12 @@ export const Calendar: React.FC<CalendarProps> = ({
 
       {/* Footer */}
       {(showToday || showClear) && (
-        <div className='flex justify-between mt-4 pt-4 border-t border-gray-200'>
+        <div className='calendar-footer'>
           {showToday && (
             <button
               type='button'
               onClick={handleToday}
-              className='px-3 py-1 text-sm text-blue-600 hover:bg-blue-50 rounded'
+              className='calendar-footer-button calendar-footer-button-primary'
             >
               Today
             </button>
@@ -652,7 +842,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             <button
               type='button'
               onClick={handleClear}
-              className='px-3 py-1 text-sm text-gray-600 hover:bg-gray-50 rounded'
+              className='calendar-footer-button calendar-footer-button-secondary'
             >
               Clear
             </button>
@@ -686,6 +876,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const [inputValue, setInputValue] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { colors, spacing, typography, radius } = useDesignSystem();
 
   const isControlled = open !== undefined;
   const actualIsOpen = isControlled ? open : isOpen;
@@ -751,38 +942,69 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     return undefined;
   }, [actualIsOpen, isControlled, onOpenChange]);
 
-  // Size classes
-  const sizeClasses = {
-    sm: 'px-3 py-1 text-sm',
-    md: 'px-3 py-2 text-base',
-    lg: 'px-4 py-3 text-lg',
+  // Size styles
+  const getSizeStyles = (size: 'sm' | 'md' | 'lg') => {
+    switch (size) {
+      case 'sm':
+        return {
+          paddingLeft: spacing.component.sm,
+          paddingRight: spacing.component.sm,
+          paddingTop: spacing.micro.xs,
+          paddingBottom: spacing.micro.xs,
+          fontSize: typography.fontSize.sm,
+        };
+      case 'lg':
+        return {
+          paddingLeft: spacing.component.lg,
+          paddingRight: spacing.component.lg,
+          paddingTop: spacing.micro.md,
+          paddingBottom: spacing.micro.md,
+          fontSize: typography.fontSize.lg,
+        };
+      default:
+        return {
+          paddingLeft: spacing.component.sm,
+          paddingRight: spacing.component.sm,
+          paddingTop: spacing.micro.sm,
+          paddingBottom: spacing.micro.sm,
+          fontSize: typography.fontSize.base,
+        };
+    }
   };
 
-  const inputClasses = `
-    ${sizeClasses[size]}
-    w-full border rounded-md bg-white
-    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-    transition-colors
-    ${error ? 'border-red-500' : 'border-gray-300'}
-    ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}
-    ${readOnly ? 'cursor-default' : 'cursor-pointer'}
-  `;
+  const getInputStyles = () => ({
+    ...getSizeStyles(size),
+    width: '100%',
+    border: `1px solid ${error ? colors.state.error : colors.border.default}`,
+    borderRadius: radius.input,
+    backgroundColor: disabled
+      ? colors.background.secondary
+      : colors.background.primary,
+    outline: 'none',
+    cursor: disabled ? 'not-allowed' : readOnly ? 'default' : 'pointer',
+    transition: 'all 0.15s ease-in-out',
+  });
 
   if (trigger) {
     return (
-      <div className={`relative ${className}`} data-testid={testId}>
+      <div
+        className={`calendar-popup-wrapper ${className}`}
+        data-testid={testId}
+      >
         <div onClick={handleToggle}>{trigger}</div>
 
         {actualIsOpen && (
           <div
             ref={dropdownRef}
-            className={`
-              absolute z-50 mt-1
-              ${placement === 'bottom-start' ? 'left-0' : ''}
-              ${placement === 'bottom-end' ? 'right-0' : ''}
-              ${placement === 'top-start' ? 'left-0 bottom-full mb-1' : ''}
-              ${placement === 'top-end' ? 'right-0 bottom-full mb-1' : ''}
-            `}
+            style={{
+              position: 'absolute',
+              zIndex: 50,
+              marginTop: placement.includes('bottom') ? spacing.base.xs : '',
+              marginBottom: placement.includes('top') ? spacing.base.xs : '',
+              left: placement.includes('start') ? 0 : 'auto',
+              right: placement.includes('end') ? 0 : 'auto',
+              bottom: placement.includes('top') ? '100%' : 'auto',
+            }}
           >
             <Calendar
               {...calendarProps}
@@ -797,8 +1019,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   }
 
   return (
-    <div className={`relative ${className}`} data-testid={testId}>
-      <div className='relative'>
+    <div className={`date-picker-wrapper ${className}`} data-testid={testId}>
+      <div className='date-picker-input-wrapper'>
         <input
           ref={inputRef}
           type='text'
@@ -807,13 +1029,25 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           onClick={handleToggle}
           readOnly
           disabled={disabled}
-          className={inputClasses}
+          style={getInputStyles()}
+          onFocus={(e) => {
+            if (!disabled && !readOnly) {
+              e.target.style.outline = `2px solid ${colors.state.info}`;
+              e.target.style.borderColor = 'transparent';
+            }
+          }}
+          onBlur={(e) => {
+            e.target.style.outline = 'none';
+            e.target.style.borderColor = error
+              ? colors.state.error
+              : colors.border.default;
+          }}
         />
 
         {showIcon && (
-          <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>
+          <div className='date-picker-icon-wrapper'>
             <svg
-              className='w-5 h-5 text-gray-400'
+              className='date-picker-icon'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -832,13 +1066,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       {actualIsOpen && (
         <div
           ref={dropdownRef}
-          className={`
-            absolute z-50 mt-1
-            ${placement === 'bottom-start' ? 'left-0' : ''}
-            ${placement === 'bottom-end' ? 'right-0' : ''}
-            ${placement === 'top-start' ? 'left-0 bottom-full mb-1' : ''}
-            ${placement === 'top-end' ? 'right-0 bottom-full mb-1' : ''}
-          `}
+          style={{
+            position: 'absolute',
+            zIndex: 50,
+            marginTop: placement.includes('bottom') ? spacing.base.xs : '',
+            marginBottom: placement.includes('top') ? spacing.base.xs : '',
+            left: placement.includes('start') ? 0 : 'auto',
+            right: placement.includes('end') ? 0 : 'auto',
+            bottom: placement.includes('top') ? '100%' : 'auto',
+          }}
         >
           <Calendar
             {...calendarProps}

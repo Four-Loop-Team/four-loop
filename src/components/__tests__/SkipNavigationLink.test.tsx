@@ -19,11 +19,8 @@ describe('SkipNavigationLink', () => {
     const skipLink = screen.getByRole('link', {
       name: /skip to main content/i,
     });
-    expect(skipLink).toHaveStyle({
-      position: 'absolute',
-      left: '-9999px',
-      zIndex: '9999',
-    });
+    expect(skipLink).toHaveClass('skip-link');
+    expect(skipLink).not.toHaveClass('skip-link-focused');
   });
 
   it('becomes visible on focus', async () => {
@@ -38,11 +35,8 @@ describe('SkipNavigationLink', () => {
     await user.tab();
     expect(skipLink).toHaveFocus();
 
-    // Should be visible when focused
-    expect(skipLink).toHaveStyle({
-      left: '8px',
-      top: '8px',
-    });
+    // Should have focused class when focused
+    expect(skipLink).toHaveClass('skip-link-focused');
   });
 
   it('becomes hidden on blur', async () => {
@@ -62,19 +56,14 @@ describe('SkipNavigationLink', () => {
     // Focus the skip link first
     await user.tab();
     expect(skipLink).toHaveFocus();
-    expect(skipLink).toHaveStyle({
-      left: '8px',
-      top: '8px',
-    });
+    expect(skipLink).toHaveClass('skip-link-focused');
 
     // Tab to next element (blur the skip link)
     await user.tab();
     expect(button).toHaveFocus();
 
-    // Skip link should be hidden again
-    expect(skipLink).toHaveStyle({
-      left: '-9999px',
-    });
+    // Skip link should not have focused class
+    expect(skipLink).not.toHaveClass('skip-link-focused');
   });
 
   it('has proper accessibility attributes', () => {
@@ -96,16 +85,8 @@ describe('SkipNavigationLink', () => {
       name: /skip to main content/i,
     });
 
-    // Check key accessibility styles
-    expect(skipLink).toHaveStyle({
-      backgroundColor: '#e2e891',
-      color: '#232323',
-      textDecoration: 'none',
-      borderRadius: '4px',
-      fontSize: '14px',
-      fontWeight: '600',
-      padding: '8px 16px',
-    });
+    // Check that the element has the correct class
+    expect(skipLink).toHaveClass('skip-link');
   });
 
   it('can be focused with keyboard navigation', async () => {
@@ -143,6 +124,6 @@ describe('SkipNavigationLink', () => {
     const skipLink = screen.getByRole('link', {
       name: /skip to main content/i,
     });
-    expect(skipLink).toHaveStyle({ zIndex: '9999' });
+    expect(skipLink).toHaveClass('skip-link');
   });
 });

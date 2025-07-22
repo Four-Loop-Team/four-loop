@@ -113,7 +113,7 @@ describe('Chart', () => {
 
     expect(canvas).toBeInTheDocument();
     expect(canvas.tagName).toBe('CANVAS');
-    expect(canvas).toHaveClass('cursor-pointer');
+    expect(canvas).toHaveClass('chart-canvas');
   });
 
   it('should apply custom className', () => {

@@ -1,4 +1,13 @@
-import React, { ButtonHTMLAttributes, forwardRef } from 'react';
+'use client';
+
+import { useDesignSystem } from '@/lib/hooks';
+import EastIcon from '@mui/icons-material/East';
+import React, {
+  ButtonHTMLAttributes,
+  forwardRef,
+  useEffect,
+  useState,
+} from 'react';
 
 /**
  * Button component props interface
@@ -50,50 +59,167 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const baseClasses =
-      'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+    const [isMounted, setIsMounted] = useState(false);
+    const { colors, spacing, typography } = useDesignSystem();
 
-    const variantClasses = {
-      primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-      secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
-      outline:
-        'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-blue-500',
-      ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-blue-500',
+    useEffect(() => {
+      setIsMounted(true);
+    }, []);
+
+    // Handle primary variant with integrated ButtonPrimary functionality
+    if (variant === 'primary') {
+      // Primary button styles using design system tokens
+      const buttonStyles: React.CSSProperties = {
+        backgroundColor: 'transparent',
+        border: `1px solid ${colors.text.inverse}`,
+        borderRadius: '30px',
+        color: colors.text.inverse,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        display: 'inline-flex',
+        alignItems: 'center',
+        transition: 'all 0.2s ease-in-out',
+        opacity: disabled ? 0.6 : 1,
+        fontFamily: typography.fontFamily.primary,
+        textDecoration: 'none',
+        outline: 'none',
+        padding: 0,
+      };
+
+      // CTA and arrow styles using inline styles instead of classes
+      const ctaStyles = {
+        display: 'inline-block',
+        paddingTop: '0.2em',
+        paddingBottom: '0.2em',
+        paddingLeft: '1.8em',
+        paddingRight: '1.8em',
+        fontWeight: 500,
+      };
+
+      // Arrow container with correct sizing to match button height
+      const arrowStyles = {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        width: '42px',
+        height: '42px',
+        backgroundColor: colors.background.accent,
+        color: colors.text.primary,
+        flexShrink: 0,
+      };
+
+      return (
+        <button
+          ref={ref}
+          style={buttonStyles}
+          disabled={disabled}
+          onMouseEnter={(e) => {
+            if (!disabled) {
+              e.currentTarget.style.backgroundColor = colors.background.accent;
+              e.currentTarget.style.color = colors.text.primary;
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!disabled) {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = colors.text.inverse;
+            }
+          }}
+          {...props}
+        >
+          <span style={ctaStyles}>{children}</span>
+          <span style={arrowStyles}>
+            {isMounted ? <EastIcon fontSize='small' /> : <span>→</span>}
+          </span>
+        </button>
+      );
+    }
+
+    const baseStyles: React.CSSProperties = {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontWeight: typography.fontWeight.medium,
+      borderRadius: spacing.component.sm, // 8px
+      transition: 'all 0.2s ease-in-out',
+      border: 'none',
+      cursor: 'pointer',
+      fontFamily: typography.fontFamily.primary,
+      textDecoration: 'none',
+      outline: 'none',
     };
 
-    const sizeClasses = {
-      sm: 'px-4 py-3 text-sm min-w-[44px] min-h-[44px]', // Updated for 44px min touch target
-      md: 'px-6 py-3 text-base min-w-[44px] min-h-[44px]', // Updated for 44px min touch target
-      lg: 'px-8 py-4 text-lg min-w-[44px] min-h-[44px]', // Updated for 44px min touch target
+    const variantStyles: Record<string, React.CSSProperties> = {
+      secondary: {
+        backgroundColor: colors.background.secondary,
+        color: colors.text.inverse,
+      },
+      outline: {
+        border: `1px solid ${colors.text.muted}`,
+        color: colors.text.inverse,
+        backgroundColor: 'transparent',
+      },
+      ghost: {
+        color: colors.text.inverse,
+        backgroundColor: 'transparent',
+      },
     };
 
-    const classes = [
-      baseClasses,
-      variantClasses[variant],
-      sizeClasses[size],
-      fullWidth && 'w-full',
-      (disabled ?? loading) && 'opacity-50 cursor-not-allowed',
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    const sizeStyles = {
+      sm: {
+        padding: `${spacing.component.sm} ${spacing.component.md}`,
+        fontSize: typography.fontSize.sm,
+        minWidth: '44px',
+        minHeight: '44px',
+      },
+      md: {
+        padding: `${spacing.component.lg} ${spacing.component.xl}`,
+        fontSize: typography.fontSize.base,
+        minWidth: '44px',
+        minHeight: '44px',
+      },
+      lg: {
+        padding: `${spacing.component.xl} ${spacing.layout.xs}`,
+        fontSize: typography.fontSize.lg,
+        minWidth: '44px',
+        minHeight: '44px',
+      },
+    };
+
+    const combinedStyles: React.CSSProperties = {
+      ...baseStyles,
+      ...variantStyles[variant],
+      ...sizeStyles[size],
+      ...(fullWidth && { width: '100%' }),
+      ...((disabled ?? loading) && {
+        opacity: 0.5,
+        cursor: 'not-allowed',
+      }),
+    };
 
     return (
       <button
         ref={ref}
-        className={classes}
+        style={combinedStyles}
+        className={className}
         disabled={disabled ?? loading}
         {...props}
       >
+        {' '}
         {loading && (
           <svg
-            className='animate-spin -ml-1 mr-2 h-4 w-4'
+            style={{
+              marginLeft: '-4px',
+              marginRight: spacing.component.sm,
+              height: '16px',
+              width: '16px',
+            }}
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
             viewBox='0 0 24 24'
           >
             <circle
-              className='opacity-25'
+              className='button-icon-opacity-disabled'
               cx='12'
               cy='12'
               r='10'
@@ -101,15 +227,19 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               strokeWidth='4'
             />
             <path
-              className='opacity-75'
+              className='button-icon-opacity-loading'
               fill='currentColor'
               d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
             />
           </svg>
         )}
-        {leftIcon && !loading && <span className='mr-2'>{leftIcon}</span>}
+        {leftIcon && !loading && (
+          <span style={{ marginRight: spacing.component.sm }}>{leftIcon}</span>
+        )}
         {children}
-        {rightIcon && <span className='ml-2'>{rightIcon}</span>}
+        {rightIcon && (
+          <span style={{ marginLeft: spacing.component.sm }}>{rightIcon}</span>
+        )}
       </button>
     );
   }

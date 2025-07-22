@@ -1,6 +1,6 @@
 import { poppins } from '@/app/ui/fonts';
 import { Navigation, SkipNavigationLink } from '@/components/layout';
-import { MuiThemeProvider } from '@/components/system';
+import BrandThemeProvider from '@/components/system/BrandThemeProvider/BrandThemeProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { homeMetadata } from '@/lib/metadata';
 import {
@@ -68,27 +68,15 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${poppins.variable} antialiased`}
-        style={{
-          backgroundColor: 'var(--color-background)',
-          minHeight: '100vh',
-        }}
-      >
+      <body className={`${poppins.variable} antialiased layout-body`}>
         <ThemeProvider defaultTheme='auto'>
           <SkipNavigationLink />
-          <MuiThemeProvider>
+          <BrandThemeProvider>
             <Navigation />
-            <main
-              id='main-content'
-              style={{
-                backgroundColor: 'var(--color-background)',
-                minHeight: '100vh',
-              }}
-            >
+            <main id='main-content' className='layout-main'>
               {children}
             </main>
-          </MuiThemeProvider>
+          </BrandThemeProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { useDesignSystem } from '@/lib/hooks';
 import { HTMLAttributes, forwardRef } from 'react';
 
 /**
@@ -41,35 +42,68 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
-    const baseClasses = 'bg-white rounded-lg';
+    const { colors, spacing, shadows, radius } = useDesignSystem();
 
-    const variantClasses = {
-      default: 'border border-gray-200',
-      elevated: 'shadow-md',
-      outlined: 'border-2 border-gray-300',
+    const baseStyles: React.CSSProperties = {
+      backgroundColor: colors.background.inverse,
+      borderRadius: radius.md,
     };
 
-    const paddingClasses = {
-      none: '',
-      sm: 'p-4',
-      md: 'p-6',
-      lg: 'p-8',
+    const variantStyles: Record<string, React.CSSProperties> = {
+      default: {
+        border: `1px solid ${colors.border.muted}`,
+      },
+      elevated: {
+        boxShadow: shadows.md,
+      },
+      outlined: {
+        border: `2px solid ${colors.border.default}`,
+      },
     };
 
-    const hoverClasses = hoverable ? 'transition-shadow hover:shadow-lg' : '';
+    const paddingStyles: Record<string, React.CSSProperties> = {
+      none: { padding: 0 },
+      sm: { padding: spacing.component.sm },
+      md: { padding: spacing.component.md },
+      lg: { padding: spacing.component.lg },
+    };
 
-    const classes = [
-      baseClasses,
-      variantClasses[variant],
-      paddingClasses[padding],
-      hoverClasses,
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    const hoverStyles: React.CSSProperties = hoverable
+      ? {
+          transition: 'box-shadow 0.2s ease-in-out',
+          cursor: 'pointer',
+        }
+      : {};
+
+    const combinedStyles: React.CSSProperties = {
+      ...baseStyles,
+      ...variantStyles[variant],
+      ...paddingStyles[padding],
+      ...hoverStyles,
+    };
+
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+      if (hoverable) {
+        e.currentTarget.style.boxShadow = shadows.lg;
+      }
+    };
+
+    const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+      if (hoverable) {
+        e.currentTarget.style.boxShadow =
+          variantStyles[variant]?.boxShadow || shadows.md;
+      }
+    };
 
     return (
-      <div ref={ref} className={classes} {...props}>
+      <div
+        ref={ref}
+        style={combinedStyles}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={className}
+        {...props}
+      >
         {children}
       </div>
     );
@@ -101,16 +135,17 @@ export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
  */
 export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ children, title, subtitle, className = '', ...props }, ref) => {
-    const classes = ['pb-4 border-b border-gray-200', className]
-      .filter(Boolean)
-      .join(' ');
+    const { colors, spacing } = useDesignSystem();
+
+    const headerStyles: React.CSSProperties = {
+      paddingBottom: spacing.component.sm,
+      borderBottom: `1px solid ${colors.border.muted}`,
+    };
 
     return (
-      <div ref={ref} className={classes} {...props}>
-        {title && (
-          <h3 className='text-lg font-semibold text-gray-900'>{title}</h3>
-        )}
-        {subtitle && <p className='mt-1 text-sm text-gray-600'>{subtitle}</p>}
+      <div ref={ref} style={headerStyles} className={className} {...props}>
+        {title && <h3 className='card-title'>{title}</h3>}
+        {subtitle && <p className='card-subtitle'>{subtitle}</p>}
         {children}
       </div>
     );
@@ -137,10 +172,15 @@ export type CardContentProps = HTMLAttributes<HTMLDivElement>;
  */
 export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
   ({ children, className = '', ...props }, ref) => {
-    const classes = ['py-4', className].filter(Boolean).join(' ');
+    const { spacing } = useDesignSystem();
+
+    const contentStyles: React.CSSProperties = {
+      paddingTop: spacing.component.sm,
+      paddingBottom: spacing.component.sm,
+    };
 
     return (
-      <div ref={ref} className={classes} {...props}>
+      <div ref={ref} style={contentStyles} className={className} {...props}>
         {children}
       </div>
     );
@@ -167,12 +207,15 @@ export type CardFooterProps = HTMLAttributes<HTMLDivElement>;
  */
 export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   ({ children, className = '', ...props }, ref) => {
-    const classes = ['pt-4 border-t border-gray-200', className]
-      .filter(Boolean)
-      .join(' ');
+    const { colors, spacing } = useDesignSystem();
+
+    const footerStyles: React.CSSProperties = {
+      paddingTop: spacing.component.sm,
+      borderTop: `1px solid ${colors.border.muted}`,
+    };
 
     return (
-      <div ref={ref} className={classes} {...props}>
+      <div ref={ref} style={footerStyles} className={className} {...props}>
         {children}
       </div>
     );

@@ -41,6 +41,7 @@
  * ```
  */
 
+import { useDesignSystem } from '@/lib/hooks';
 import React, {
   createContext,
   forwardRef,
@@ -213,6 +214,7 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
     },
     ref
   ) => {
+    const { colors, spacing, typography, radius, shadows } = useDesignSystem();
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -455,10 +457,33 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
       [searchable, multiple, onChange, onOpen, onClose]
     );
 
-    const sizeClasses = {
-      sm: 'text-sm px-3 py-1.5',
-      md: 'text-sm px-3 py-2',
-      lg: 'text-base px-4 py-2.5',
+    const getSizeStyles = (size: 'sm' | 'md' | 'lg') => {
+      switch (size) {
+        case 'sm':
+          return {
+            fontSize: typography.fontSize.sm,
+            paddingLeft: spacing.component.sm,
+            paddingRight: spacing.component.sm,
+            paddingTop: spacing.micro.xs + 2,
+            paddingBottom: spacing.micro.xs + 2,
+          };
+        case 'lg':
+          return {
+            fontSize: typography.fontSize.base,
+            paddingLeft: spacing.component.lg,
+            paddingRight: spacing.component.lg,
+            paddingTop: spacing.micro.sm + 2,
+            paddingBottom: spacing.micro.sm + 2,
+          };
+        default:
+          return {
+            fontSize: typography.fontSize.sm,
+            paddingLeft: spacing.component.sm,
+            paddingRight: spacing.component.sm,
+            paddingTop: spacing.micro.sm,
+            paddingBottom: spacing.micro.sm,
+          };
+      }
     };
 
     const menuId = `dropdown-menu-${testId}`;
@@ -488,29 +513,50 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
     return (
       <DropdownContext.Provider value={contextValue}>
         <div
-          className={`relative ${className}`}
+          className={`dropdown-wrapper ${className}`}
           ref={dropdownRef}
           data-testid={testId}
         >
           {label && (
             <label
-              className={`block text-sm font-medium mb-1 ${error ? 'text-red-700' : 'text-gray-700'}`}
+              className={`dropdown-label ${error ? 'dropdown-label-error' : ''}`}
             >
               {label}
-              {required && <span className='text-red-500 ml-1'>*</span>}
+              {required && (
+                <span className='dropdown-required-indicator'>*</span>
+              )}
             </label>
           )}
 
           <div
-            className={`
-            relative w-full border rounded-md shadow-sm cursor-pointer transition-colors duration-200
-            ${error ? 'border-red-300' : 'border-gray-300 hover:border-gray-400'}
-            ${disabled ? 'bg-gray-50 cursor-not-allowed' : 'bg-white'}
-            ${isOpen ? 'ring-1 ring-blue-500 border-blue-500' : ''}
-            ${sizeClasses[size]}
-          `}
+            style={{
+              position: 'relative',
+              width: '100%',
+              border: `1px solid ${error ? colors.state.error : colors.border.default}`,
+              borderRadius: radius.input,
+              boxShadow: shadows.sm,
+              cursor: disabled ? 'not-allowed' : 'pointer',
+              transition: 'all 200ms ease',
+              backgroundColor: disabled
+                ? colors.background.secondary
+                : colors.background.primary,
+              outline: isOpen ? `1px solid ${colors.state.info}` : 'none',
+              ...getSizeStyles(size),
+            }}
             onClick={toggleDropdown}
             onKeyDown={handleKeyDown}
+            onMouseEnter={(e) => {
+              if (!disabled && !error) {
+                e.currentTarget.style.borderColor = colors.border.accent;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isOpen) {
+                e.currentTarget.style.borderColor = error
+                  ? colors.state.error
+                  : colors.border.default;
+              }
+            }}
             tabIndex={searchable ? -1 : 0}
             role='combobox'
             aria-expanded={isOpen}
@@ -519,8 +565,8 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
             aria-disabled={disabled}
             aria-label={label ?? placeholder}
           >
-            <div className='flex items-center justify-between'>
-              <div className='flex-1 min-w-0'>
+            <div className='dropdown-content-wrapper'>
+              <div className='dropdown-content'>
                 {searchable && isOpen ? (
                   <input
                     ref={inputRef}
@@ -528,7 +574,7 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
                     value={searchTerm}
                     onChange={handleSearchChange}
                     onKeyDown={handleKeyDown}
-                    className='w-full border-0 p-0 bg-transparent focus:outline-none'
+                    className='dropdown-search-input'
                     placeholder={selectedOptions.length > 0 ? '' : placeholder}
                     disabled={disabled}
                   />
@@ -540,11 +586,11 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
                           multiple ? selectedOptions : selectedOptions[0]
                         )
                       ) : multiple ? (
-                        <div className='flex flex-wrap gap-1'>
+                        <div className='dropdown-selected-multiple'>
                           {selectedOptions.map((option) => (
                             <span
                               key={option.value}
-                              className='inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded'
+                              className='dropdown-selected-tag'
                             >
                               {option.label}
                               <button
@@ -552,7 +598,7 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
                                   e.stopPropagation();
                                   selectOption(option);
                                 }}
-                                className='hover:text-blue-600'
+                                className='dropdown-tag-remove'
                               >
                                 ×
                               </button>
@@ -563,21 +609,22 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
                         selectedOptions[0].label
                       )
                     ) : (
-                      <span className='text-gray-500'>{placeholder}</span>
+                      <span className='dropdown-placeholder'>
+                        {placeholder}
+                      </span>
                     )}
                   </div>
                 )}
               </div>
-
-              <div className='flex items-center ml-2'>
+              <div className='dropdown-controls'>
                 {loading && (
                   <svg
-                    className='animate-spin w-4 h-4 text-gray-400 mr-2'
+                    className='dropdown-spinner animate-spin'
                     fill='none'
                     viewBox='0 0 24 24'
                   >
                     <circle
-                      className='opacity-25'
+                      className='dropdown-spinner-circle'
                       cx='12'
                       cy='12'
                       r='10'
@@ -592,7 +639,7 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
                   </svg>
                 )}
                 <svg
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                  className={`dropdown-arrow ${isOpen ? 'dropdown-arrow-open' : ''}`}
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke='currentColor'
@@ -624,12 +671,12 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
               aria-label='Options'
             >
               {loading ? (
-                <li className='px-3 py-2 text-gray-500'>{loadingMessage}</li>
+                <li className='dropdown-loading'>{loadingMessage}</li>
               ) : flatFilteredOptions.length === 0 ? (
-                <li className='px-3 py-2 text-gray-500'>
+                <li className='dropdown-empty'>
                   {creatable && searchTerm ? (
                     <button
-                      className='w-full text-left hover:bg-gray-50'
+                      className='dropdown-create-button'
                       onClick={() => onCreate?.(searchTerm)}
                     >
                       Create &quot;{searchTerm}&quot;
@@ -643,7 +690,7 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
                   if (isOptionGroup(item)) {
                     return (
                       <li key={`group-${groupIndex}`}>
-                        <div className='px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50'>
+                        <div className='dropdown-group-header'>
                           {item.label}
                         </div>
                         {item.options.map((option) => {
@@ -688,7 +735,12 @@ const Dropdown = forwardRef<DropdownRef, DropdownProps>(
           {/* Helper text or error message */}
           {(helperText ?? errorMessage) && (
             <p
-              className={`mt-1 text-xs ${error ? 'text-red-600' : 'text-gray-500'}`}
+              style={{
+                marginTop: spacing.micro.xs,
+                fontSize: typography.fontSize.sm,
+                color: error ? colors.state.error : colors.text.muted,
+                lineHeight: typography.lineHeight.normal,
+              }}
             >
               {error ? errorMessage : helperText}
             </p>
@@ -740,12 +792,14 @@ const OptionItem: React.FC<OptionItemProps> = ({
       role='option'
       aria-selected={isSelected}
     >
-      <div className='flex items-center gap-2 flex-1 min-w-0'>
-        {option.icon && <span className='flex-shrink-0'>{option.icon}</span>}
-        <div className='flex-1 min-w-0'>
-          <div className='truncate'>{option.label}</div>
+      <div className='dropdown-option-content'>
+        {option.icon && (
+          <span className='dropdown-option-icon'>{option.icon}</span>
+        )}
+        <div className='dropdown-option-text'>
+          <div className='dropdown-option-label'>{option.label}</div>
           {option.description && (
-            <div className='text-xs text-gray-500 truncate'>
+            <div className='dropdown-option-description'>
               {option.description}
             </div>
           )}
@@ -753,7 +807,7 @@ const OptionItem: React.FC<OptionItemProps> = ({
       </div>
       {isSelected && (
         <svg
-          className='w-4 h-4 text-blue-600 flex-shrink-0'
+          className='dropdown-option-check'
           fill='currentColor'
           viewBox='0 0 20 20'
         >

@@ -57,6 +57,7 @@
  * - High contrast support
  */
 
+import { useDesignSystem } from '@/lib/hooks';
 import React, {
   createContext,
   useCallback,
@@ -97,6 +98,7 @@ const Tabs: React.FC<TabsProps> = ({
   tabContentClassName = '',
   'data-testid': testId = 'tabs',
 }) => {
+  const { colors, spacing, radius } = useDesignSystem();
   const isControlled = controlledActiveTab !== undefined;
   const [internalActiveTab, setInternalActiveTab] = useState(
     defaultActiveTab ?? items[0]?.id ?? ''
@@ -168,17 +170,45 @@ const Tabs: React.FC<TabsProps> = ({
           {showAddButton && (
             <button
               onClick={onTabAdd}
-              className={`
-                flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-500
-                hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-200
-                ${size === 'sm' ? 'px-2 py-1 text-xs' : size === 'lg' ? 'px-4 py-3 text-base' : ''}
-              `}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding:
+                  size === 'sm'
+                    ? `${spacing.micro.xs} ${spacing.micro.sm}`
+                    : size === 'lg'
+                      ? `${spacing.micro.md} ${spacing.component.sm}`
+                      : `${spacing.micro.sm} ${spacing.micro.md}`,
+                fontSize:
+                  size === 'sm'
+                    ? '0.75rem'
+                    : size === 'lg'
+                      ? '1rem'
+                      : '0.875rem',
+                fontWeight: '500',
+                color: colors.text.muted,
+                backgroundColor: 'transparent',
+                border: 'none',
+                borderRadius: radius.md,
+                cursor: 'pointer',
+                transition: 'all 200ms ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = colors.text.primary;
+                e.currentTarget.style.backgroundColor =
+                  colors.background.secondary;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = colors.text.muted;
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
               aria-label='Add new tab'
               data-testid='add-tab-button'
             >
               {addButtonContent ?? (
                 <svg
-                  className='w-4 h-4'
+                  style={{ width: '1rem', height: '1rem' }}
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke='currentColor'
@@ -195,7 +225,7 @@ const Tabs: React.FC<TabsProps> = ({
           )}
         </TabList>
 
-        <div className={`flex-1 ${tabContentClassName}`}>
+        <div style={{ flex: 1 }} className={tabContentClassName}>
           {items.map((item) => (
             <TabPanel
               key={item.id}
@@ -221,28 +251,30 @@ const TabList: React.FC<TabListProps> = ({
   scrollable = false,
   'data-testid': testId = 'tab-list',
 }) => {
+  const { colors } = useDesignSystem();
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const baseClasses =
-    orientation === 'vertical' ? 'flex flex-col space-y-1' : 'flex space-x-1';
-
-  const variantClasses = {
-    default: 'border-b border-gray-200',
-    pills: '',
-    underline: 'border-b border-gray-200',
-    cards: 'border-b border-gray-200',
+  const baseStyles: React.CSSProperties = {
+    display: 'flex',
+    ...(orientation === 'vertical'
+      ? { flexDirection: 'column', gap: '0.25rem' }
+      : { flexDirection: 'row', gap: '0.25rem' }),
+    ...(variant === 'default' || variant === 'underline' || variant === 'cards'
+      ? { borderBottom: `1px solid ${colors.border.muted}` }
+      : {}),
+    ...(centered && orientation === 'horizontal'
+      ? { justifyContent: 'center' }
+      : {}),
+    ...(scrollable
+      ? { overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }
+      : {}),
   };
-
-  const centeredClasses =
-    centered && orientation === 'horizontal' ? 'justify-center' : '';
-  const scrollableClasses = scrollable ? 'overflow-x-auto scrollbar-hide' : '';
 
   return (
     <div
       ref={scrollRef}
-      className={`
-        ${baseClasses} ${variantClasses[variant]} ${centeredClasses} ${scrollableClasses} ${className}
-      `}
+      style={baseStyles}
+      className={className}
       role='tablist'
       aria-orientation={orientation}
       data-testid={testId}
@@ -263,44 +295,75 @@ const Tab: React.FC<TabProps> = ({
   className = '',
   'data-testid': testId = 'tab',
 }) => {
-  const sizeClasses = {
-    sm: 'px-3 py-1.5 text-xs',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-6 py-3 text-base',
+  const { colors, spacing, radius, typography, brand } = useDesignSystem();
+
+  const getSizeStyles = () => {
+    switch (size) {
+      case 'sm':
+        return {
+          padding: `${spacing.micro.xs} ${spacing.micro.md}`,
+          fontSize: typography.fontSize.xs,
+        };
+      case 'lg':
+        return {
+          padding: `${spacing.micro.md} ${spacing.component.sm}`,
+          fontSize: typography.fontSize.base,
+        };
+      default:
+        return {
+          padding: `${spacing.micro.sm} ${spacing.component.xs}`,
+          fontSize: typography.fontSize.sm,
+        };
+    }
   };
 
-  const getVariantClasses = () => {
-    const baseClasses = `
-      relative inline-flex items-center gap-2 font-medium transition-all duration-200
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-      ${sizeClasses[size]} ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-    `;
+  const getVariantStyles = (): React.CSSProperties => {
+    const baseStyles: React.CSSProperties = {
+      position: 'relative',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      fontWeight: typography.fontWeight.medium,
+      transition: 'all 200ms ease',
+      border: 'none',
+      background: 'none',
+      cursor: item.disabled ? 'not-allowed' : 'pointer',
+      opacity: item.disabled ? 0.5 : 1,
+      ...getSizeStyles(),
+    };
 
     switch (variant) {
       case 'pills':
-        return `${baseClasses} rounded-md ${
-          isActive
-            ? 'bg-blue-600 text-white'
-            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-        }`;
+        return {
+          ...baseStyles,
+          borderRadius: radius.md,
+          backgroundColor: isActive ? brand.primary : 'transparent',
+          color: isActive ? colors.text.inverse : colors.text.muted,
+        };
       case 'underline':
-        return `${baseClasses} border-b-2 ${
-          isActive
-            ? 'border-blue-600 text-blue-600'
-            : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
-        }`;
+        return {
+          ...baseStyles,
+          borderBottom: `2px solid ${isActive ? brand.primary : 'transparent'}`,
+          color: isActive ? brand.primary : colors.text.muted,
+        };
       case 'cards':
-        return `${baseClasses} rounded-t-md border border-b-0 ${
-          isActive
-            ? 'bg-white border-gray-200 text-gray-900'
-            : 'bg-gray-50 border-gray-200 text-gray-600 hover:text-gray-900'
-        }`;
+        return {
+          ...baseStyles,
+          borderTopLeftRadius: radius.md,
+          borderTopRightRadius: radius.md,
+          border: `1px solid ${colors.border.muted}`,
+          borderBottom: 'none',
+          backgroundColor: isActive
+            ? colors.background.inverse
+            : colors.background.secondary,
+          color: isActive ? colors.text.primary : colors.text.muted,
+        };
       default:
-        return `${baseClasses} ${
-          isActive
-            ? 'text-blue-600 border-b-2 border-blue-600'
-            : 'text-gray-600 hover:text-gray-900'
-        }`;
+        return {
+          ...baseStyles,
+          borderBottom: `2px solid ${isActive ? brand.primary : 'transparent'}`,
+          color: isActive ? brand.primary : colors.text.muted,
+        };
     }
   };
 
@@ -315,10 +378,30 @@ const Tab: React.FC<TabProps> = ({
     onClose?.();
   };
 
+  const [isHovered, setIsHovered] = useState(false);
+
+  const buttonStyle = {
+    ...getVariantStyles(),
+    ...(isHovered && !item.disabled && !isActive
+      ? {
+          color: colors.text.primary,
+          ...(variant === 'pills'
+            ? { backgroundColor: colors.background.secondary }
+            : {}),
+          ...(variant === 'underline'
+            ? { borderBottomColor: colors.border.default }
+            : {}),
+        }
+      : {}),
+  };
+
   return (
     <button
-      className={`${getVariantClasses()} ${className}`}
+      style={buttonStyle}
+      className={className}
       onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       disabled={item.disabled}
       role='tab'
       aria-selected={isActive}
@@ -326,17 +409,47 @@ const Tab: React.FC<TabProps> = ({
       id={`tab-${item.id}`}
       data-testid={`${testId}-${item.id}`}
     >
-      {item.icon && <span className='flex-shrink-0'>{item.icon}</span>}
-      <span className='truncate'>{item.label}</span>
-      {item.badge && <span className='flex-shrink-0'>{item.badge}</span>}
+      {item.icon && <span style={{ display: 'inline-flex' }}>{item.icon}</span>}
+      <span
+        style={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {item.label}
+      </span>
+      {item.badge && (
+        <span style={{ display: 'inline-flex' }}>{item.badge}</span>
+      )}
       {onClose && (
         <button
           onClick={handleClose}
-          className='ml-1 flex-shrink-0 p-0.5 rounded hover:bg-black/10 transition-colors duration-200'
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '1rem',
+            height: '1rem',
+            padding: 0,
+            border: 'none',
+            background: 'none',
+            color: 'currentColor',
+            borderRadius: '50%',
+            cursor: 'pointer',
+            opacity: 0.7,
+            transition: 'opacity 150ms ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '1';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '0.7';
+          }}
           aria-label={`Close ${item.label} tab`}
         >
           <svg
-            className='w-3 h-3'
+            style={{ width: '0.75rem', height: '0.75rem' }}
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
@@ -385,7 +498,10 @@ const TabPanel: React.FC<TabPanelProps> = ({
 
   return (
     <div
-      className={`${shouldShowContent ? 'block' : 'hidden'} ${className}`}
+      style={{
+        display: shouldShowContent ? 'block' : 'none',
+      }}
+      className={className}
       role='tabpanel'
       aria-labelledby={`tab-${item.id}`}
       id={`tabpanel-${item.id}`}

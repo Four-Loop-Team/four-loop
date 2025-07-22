@@ -1,6 +1,8 @@
 'use client';
 
-import { Box, Container, TextField, Typography } from '@mui/material';
+import Input from '@/components/ui/Input/Input';
+import { useDesignSystem } from '@/lib/hooks';
+import { Box, Container, Typography } from '@mui/material';
 import { useState } from 'react';
 
 /**
@@ -16,6 +18,7 @@ import { useState } from 'react';
 export const ContactSection = () => {
   const [email, setEmail] = useState('');
   const [project, setProject] = useState('');
+  const { colors, spacing, typography } = useDesignSystem();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,8 +33,8 @@ export const ContactSection = () => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        pt: { xs: 8, md: 12 },
-        pb: { xs: 8, md: 12 },
+        pt: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
+        pb: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
         backgroundColor: 'transparent',
         color: 'white',
         position: 'relative',
@@ -42,23 +45,23 @@ export const ContactSection = () => {
         sx={{
           maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
           margin: '0 auto', // Center the container
-          px: { xs: 2, md: 3 }, // Add some padding
+          px: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
         }}
       >
         <Box
           sx={{
-            backgroundColor: '#e2e891', // Primary brand color background
+            backgroundColor: colors.background.accent, // Primary brand color background
             borderRadius: '86px', // Same as intro section
-            paddingTop: '64px',
-            paddingBottom: '64px',
-            paddingLeft: '58px',
-            paddingRight: '58px',
+            paddingTop: spacing.section.sm, // Using section spacing (64px)
+            paddingBottom: spacing.section.sm, // Using section spacing (64px)
+            paddingLeft: spacing.layout.lg, // Using layout spacing (similar to 58px)
+            paddingRight: spacing.layout.lg, // Using layout spacing (similar to 58px)
           }}
         >
           {/* Header Section */}
           <Box
             sx={{
-              borderBottom: '1px solid #353535',
+              borderBottom: `1px solid ${colors.text.muted}`,
             }}
           >
             <Box
@@ -66,25 +69,28 @@ export const ContactSection = () => {
                 display: 'flex',
                 alignItems: 'baseline',
                 justifyContent: 'flex-start',
-                gap: { xs: 2, md: 3 },
-                mb: { xs: 4, md: 6 },
+                gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
+                mb: { xs: spacing.layout.xs, md: spacing.layout.sm }, // Using layout spacing
               }}
             >
               <Box
                 sx={{
                   display: 'flex',
                   alignItems: 'baseline',
-                  gap: { xs: 2, md: 3 },
+                  gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
                 }}
               >
                 <Typography
                   variant='h2'
                   component='h2'
                   sx={{
-                    fontSize: { xs: '2.5rem', md: '4rem' },
-                    fontWeight: 400,
-                    color: '#353535', // Secondary text color
-                    lineHeight: 1,
+                    fontSize: {
+                      xs: typography.fontSize['4xl'],
+                      md: typography.fontSize['6xl'],
+                    }, // Using typography tokens
+                    fontWeight: typography.fontWeight.normal, // Using typography tokens
+                    color: colors.text.primary, // Dark text for light background
+                    lineHeight: typography.lineHeight.tight, // Using typography tokens
                   }}
                 >
                   Get in Touch
@@ -92,9 +98,12 @@ export const ContactSection = () => {
 
                 <Typography
                   sx={{
-                    fontSize: { xs: '1rem', md: '1.25rem' },
-                    color: '#353535', // Secondary text color
-                    fontWeight: 300,
+                    fontSize: {
+                      xs: typography.fontSize.base,
+                      md: typography.fontSize.xl,
+                    }, // Using typography tokens
+                    color: colors.text.primary, // Secondary text color
+                    fontWeight: typography.fontWeight.light, // Using typography tokens
                   }}
                 >
                   /&nbsp;&nbsp;&nbsp;&nbsp;Tell us about your project
@@ -108,114 +117,38 @@ export const ContactSection = () => {
             component='form'
             onSubmit={handleSubmit}
             sx={{
-              paddingTop: '48px', // Increased for floating label space
-              paddingBottom: '32px',
+              paddingTop: spacing.layout.sm, // Using layout spacing (48px)
+              paddingBottom: spacing.layout.xs, // Using layout spacing (32px)
             }}
           >
             {/* Email Input */}
-            <Box sx={{ mb: 4, mt: 3 }}>
-              <TextField
+            <Box sx={{ mb: spacing.layout.xs, mt: spacing.component.lg }}>
+              <Input
                 type='email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
                 required
-                fullWidth
-                variant='filled'
                 label='Where can we reach you?'
                 placeholder='your.email@example.com'
-                InputLabelProps={{
-                  required: false,
-                }}
-                sx={{
-                  '& .MuiInputLabel-root': {
-                    color: '#353535',
-                  },
-                  '& .MuiInputLabel-root.Mui-focused': {
-                    color: '#666666',
-                  },
-                  '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                    color: '#666666',
-                  },
-                  '& .MuiInputBase-input': {
-                    color: '#353535',
-                  },
-                  '& .MuiInputBase-input::placeholder': {
-                    color: '#353535',
-                    opacity: 0.7,
-                  },
-                  '& .MuiFilledInput-root': {
-                    backgroundColor: 'rgba(53, 53, 53, 0.1)',
-                    '&:hover': {
-                      backgroundColor: 'rgba(53, 53, 53, 0.15)',
-                    },
-                    '&.Mui-focused': {
-                      backgroundColor: 'rgba(53, 53, 53, 0.1)',
-                    },
-                  },
-                  '& .MuiFilledInput-underline:before': {
-                    borderBottomColor: '#353535',
-                  },
-                  '& .MuiFilledInput-underline:hover:before': {
-                    borderBottomColor: '#353535',
-                  },
-                  '& .MuiFilledInput-underline:after': {
-                    borderBottomColor: '#353535',
-                  },
-                }}
+                variant='filled'
               />
             </Box>
 
             {/* Textarea */}
-            <Box sx={{ mb: 6, mt: 3 }}>
-              <TextField
-                id='filled-textarea'
+            <Box sx={{ mb: spacing.layout.sm, mt: spacing.component.lg }}>
+              <Input
                 label='What can we help you build?'
-                placeholder='Tell us about your project...'
                 multiline
                 variant='filled'
                 value={project}
-                onChange={(e) => setProject(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setProject(e.target.value)
+                }
                 required
-                fullWidth
-                InputLabelProps={{
-                  required: false,
-                }}
-                sx={{
-                  '& .MuiInputLabel-root': {
-                    color: '#353535',
-                  },
-                  '& .MuiInputLabel-root.Mui-focused': {
-                    color: '#666666',
-                  },
-                  '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-                    color: '#666666',
-                  },
-                  '& .MuiInputBase-input': {
-                    color: '#353535',
-                  },
-                  '& .MuiInputBase-input::placeholder': {
-                    color: '#353535',
-                    opacity: 0.7,
-                  },
-                  '& .MuiFilledInput-root': {
-                    backgroundColor: 'rgba(53, 53, 53, 0.1)',
-                    '&:hover': {
-                      backgroundColor: 'rgba(53, 53, 53, 0.15)',
-                    },
-                    '&.Mui-focused': {
-                      backgroundColor: 'rgba(53, 53, 53, 0.1)',
-                    },
-                  },
-                  '& .MuiFilledInput-underline:before': {
-                    borderBottomColor: '#353535',
-                  },
-                  '& .MuiFilledInput-underline:hover:before': {
-                    borderBottomColor: '#353535',
-                  },
-                  '& .MuiFilledInput-underline:after': {
-                    borderBottomColor: '#353535',
-                  },
-                }}
+                placeholder='Tell us about your project...'
+                rows={1}
               />
             </Box>
 
@@ -226,24 +159,24 @@ export const ContactSection = () => {
                 type='submit'
                 sx={{
                   backgroundColor: 'transparent',
-                  color: '#353535',
+                  color: colors.text.primary,
                   border: 'none',
-                  borderRadius: '24px',
-                  fontSize: '1.125rem',
-                  fontWeight: 500,
-                  padding: '12px 24px',
+                  borderRadius: spacing.component.lg, // Using spacing tokens (24px)
+                  fontSize: typography.fontSize.lg, // Using typography tokens
+                  fontWeight: typography.fontWeight.medium, // Using typography tokens
+                  padding: `${spacing.component.md} ${spacing.component.lg}`, // Using spacing tokens (12px 24px becomes 16px 24px)
                   minWidth: '44px',
                   minHeight: '44px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 1,
+                  gap: spacing.component.xs, // Using spacing tokens
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   outline: 'none',
-                  fontFamily: 'inherit',
+                  fontFamily: typography.fontFamily.primary, // Using typography tokens
                   textDecoration: 'none',
-                  lineHeight: 1,
+                  lineHeight: typography.lineHeight.tight, // Using typography tokens
                   '&:hover': {
                     opacity: 0.8,
                     transform: 'translateY(-1px)',
@@ -253,16 +186,16 @@ export const ContactSection = () => {
                   },
                   // Force visibility with secondary color
                   '& *': {
-                    color: '#353535',
+                    color: colors.text.primary,
                   },
                 }}
               >
                 <Box
                   component='span'
                   sx={{
-                    color: '#353535',
-                    fontSize: '1.125rem',
-                    fontWeight: 500,
+                    color: colors.text.primary,
+                    fontSize: typography.fontSize.lg, // Using typography tokens
+                    fontWeight: typography.fontWeight.medium, // Using typography tokens
                   }}
                 >
                   Let&apos;s Talk
@@ -271,8 +204,8 @@ export const ContactSection = () => {
                   component='span'
                   sx={{
                     fontSize: '1.2em',
-                    color: '#353535',
-                    marginLeft: '8px',
+                    color: colors.text.primary,
+                    marginLeft: spacing.component.sm, // Using spacing tokens
                   }}
                 >
                   →

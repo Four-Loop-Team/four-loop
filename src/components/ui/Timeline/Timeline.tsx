@@ -39,6 +39,7 @@
  */
 
 import React, { useMemo } from 'react';
+import { useDesignSystem } from '../../../hooks/useDesignSystem';
 import { TimelineItemProps, TimelineProps } from './types';
 
 /**
@@ -140,6 +141,8 @@ const Timeline: React.FC<TimelineProps> = ({
   itemClassName = '',
   'data-testid': testId = 'timeline',
 }) => {
+  const tokens = useDesignSystem();
+
   // Sort and reverse items if needed
   const sortedItems = useMemo(() => {
     const sorted = [...items].sort((a, b) => {
@@ -161,40 +164,87 @@ const Timeline: React.FC<TimelineProps> = ({
     return reverse ? sorted.reverse() : sorted;
   }, [items, reverse]);
 
-  const orientationClasses = {
-    vertical: 'flex flex-col',
-    horizontal: 'flex flex-row overflow-x-auto',
+  const getOrientationStyles = (orientation: 'vertical' | 'horizontal') => {
+    switch (orientation) {
+      case 'horizontal':
+        return {
+          display: 'flex',
+          flexDirection: 'row' as const,
+          overflowX: 'auto' as const,
+          gap: tokens.spacing.component.lg,
+        };
+      default:
+        return {
+          display: 'flex',
+          flexDirection: 'column' as const,
+          gap: tokens.spacing.component.sm,
+        };
+    }
   };
 
-  const variantClasses = {
-    default: '',
-    minimal: 'space-y-2',
-    detailed: 'space-y-4',
+  const getVariantSpacing = (variant: 'default' | 'minimal' | 'detailed') => {
+    switch (variant) {
+      case 'minimal':
+        return tokens.spacing.component.xs;
+      case 'detailed':
+        return tokens.spacing.component.lg;
+      default:
+        return tokens.spacing.component.sm;
+    }
   };
 
   if (loading) {
     return (
       <div
-        className={`flex items-center justify-center py-8 ${className}`}
+        className={`timeline-loading-wrapper ${className}`}
         data-testid={`${testId}-loading`}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: tokens.spacing.layout.lg,
+          gap: tokens.spacing.component.sm,
+        }}
       >
-        <div className='flex items-center gap-2 text-gray-500'>
-          <svg className='animate-spin w-5 h-5' fill='none' viewBox='0 0 24 24'>
+        <div
+          className='timeline-loading'
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: tokens.spacing.component.sm,
+            color: tokens.colors.text.muted,
+          }}
+        >
+          <svg
+            className='timeline-spinner'
+            fill='none'
+            viewBox='0 0 24 24'
+            style={{
+              width: '24px',
+              height: '24px',
+              animation: 'spin 1s linear infinite',
+            }}
+          >
             <circle
-              className='opacity-25'
+              className='timeline-spinner-circle'
               cx='12'
               cy='12'
               r='10'
               stroke='currentColor'
               strokeWidth='4'
+              style={{ opacity: 0.25 }}
             />
             <path
-              className='opacity-75'
+              className='timeline-spinner-path'
               fill='currentColor'
               d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+              style={{ opacity: 0.75 }}
             />
           </svg>
-          <span>{loadingMessage}</span>
+          <span style={{ fontSize: tokens.typography.fontSize.base }}>
+            {loadingMessage}
+          </span>
         </div>
       </div>
     );
@@ -203,8 +253,16 @@ const Timeline: React.FC<TimelineProps> = ({
   if (sortedItems.length === 0) {
     return (
       <div
-        className={`flex items-center justify-center py-8 text-gray-500 ${className}`}
+        className={`timeline-empty-wrapper ${className}`}
         data-testid={`${testId}-empty`}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: tokens.spacing.layout.lg,
+          color: tokens.colors.text.muted,
+          fontSize: tokens.typography.fontSize.base,
+        }}
       >
         {emptyMessage}
       </div>
@@ -213,8 +271,12 @@ const Timeline: React.FC<TimelineProps> = ({
 
   return (
     <div
-      className={`${orientationClasses[orientation]} ${variantClasses[variant]} ${className}`}
+      className={`timeline-container ${className}`}
       data-testid={testId}
+      style={{
+        ...getOrientationStyles(orientation),
+        gap: getVariantSpacing(variant),
+      }}
     >
       {sortedItems.map((item, index) => {
         const isLast = index === sortedItems.length - 1;
@@ -261,29 +323,47 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
   className = '',
   'data-testid': testId = 'timeline-item',
 }) => {
-  const sizeClasses = {
-    sm: {
-      icon: 'w-6 h-6',
-      content: 'text-sm',
-      title: 'text-sm font-medium',
-      timestamp: 'text-xs',
-      padding: 'p-3',
-    },
-    md: {
-      icon: 'w-8 h-8',
-      content: 'text-base',
-      title: 'text-base font-medium',
-      timestamp: 'text-sm',
-      padding: 'p-4',
-    },
-    lg: {
-      icon: 'w-10 h-10',
-      content: 'text-lg',
-      title: 'text-lg font-medium',
-      timestamp: 'text-base',
-      padding: 'p-5',
-    },
+  const tokens = useDesignSystem();
+
+  const getSizeStyles = (size: 'sm' | 'md' | 'lg') => {
+    switch (size) {
+      case 'sm':
+        return {
+          icon: { width: '24px', height: '24px' },
+          content: { fontSize: tokens.typography.fontSize.sm },
+          title: {
+            fontSize: tokens.typography.fontSize.sm,
+            fontWeight: tokens.typography.fontWeight.medium,
+          },
+          timestamp: { fontSize: tokens.typography.fontSize.xs },
+          padding: tokens.spacing.component.sm,
+        };
+      case 'lg':
+        return {
+          icon: { width: '40px', height: '40px' },
+          content: { fontSize: tokens.typography.fontSize.lg },
+          title: {
+            fontSize: tokens.typography.fontSize.lg,
+            fontWeight: tokens.typography.fontWeight.medium,
+          },
+          timestamp: { fontSize: tokens.typography.fontSize.base },
+          padding: tokens.spacing.component.lg,
+        };
+      default: // md
+        return {
+          icon: { width: '32px', height: '32px' },
+          content: { fontSize: tokens.typography.fontSize.base },
+          title: {
+            fontSize: tokens.typography.fontSize.base,
+            fontWeight: tokens.typography.fontWeight.medium,
+          },
+          timestamp: { fontSize: tokens.typography.fontSize.sm },
+          padding: tokens.spacing.component.md,
+        };
+    }
   };
+
+  const sizeStyles = getSizeStyles(size);
 
   const getIcon = () => {
     if (item.icon) return item.icon;
@@ -292,7 +372,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       case 'success':
         return (
           <svg
-            className='w-full h-full text-green-600'
+            className='timeline-icon-svg'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -306,7 +386,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       case 'error':
         return (
           <svg
-            className='w-full h-full text-red-600'
+            className='timeline-icon-svg'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -320,7 +400,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       case 'warning':
         return (
           <svg
-            className='w-full h-full text-yellow-600'
+            className='timeline-icon-svg'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -334,7 +414,7 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
       case 'info':
         return (
           <svg
-            className='w-full h-full text-blue-600'
+            className='timeline-icon-svg'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -346,24 +426,45 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
           </svg>
         );
       default:
-        return <div className='w-full h-full bg-gray-400 rounded-full'></div>;
+        return <div className='timeline-icon-default'></div>;
     }
   };
 
   const getIconBackgroundColor = () => {
-    if (item.highlighted) return 'bg-blue-100';
+    if (item.highlighted) {
+      return { backgroundColor: tokens.colors.state.info + '20' }; // 20% opacity
+    }
 
     switch (item.type) {
       case 'success':
-        return 'bg-green-100';
+        return { backgroundColor: tokens.colors.state.success + '20' };
       case 'error':
-        return 'bg-red-100';
+        return { backgroundColor: tokens.colors.state.error + '20' };
       case 'warning':
-        return 'bg-yellow-100';
+        return { backgroundColor: tokens.colors.state.warning + '20' };
       case 'info':
-        return 'bg-blue-100';
+        return { backgroundColor: tokens.colors.state.info + '20' };
       default:
-        return 'bg-gray-100';
+        return { backgroundColor: tokens.colors.background.secondary };
+    }
+  };
+
+  const getIconColor = () => {
+    if (item.highlighted) {
+      return { color: tokens.colors.state.info };
+    }
+
+    switch (item.type) {
+      case 'success':
+        return { color: tokens.colors.state.success };
+      case 'error':
+        return { color: tokens.colors.state.error };
+      case 'warning':
+        return { color: tokens.colors.state.warning };
+      case 'info':
+        return { color: tokens.colors.state.info };
+      default:
+        return { color: tokens.colors.text.muted };
     }
   };
 
@@ -378,68 +479,182 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
   if (orientation === 'horizontal') {
     return (
       <div
-        className={`
-          flex flex-col items-center min-w-0 flex-shrink-0
-          ${isClickable ? 'cursor-pointer hover:opacity-80' : ''}
-          ${className}
-        `}
+        className={`timeline-item-horizontal ${className}`}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          minWidth: 0,
+          flexShrink: 0,
+          cursor: isClickable ? 'pointer' : 'default',
+          opacity: 1,
+          transition: 'opacity 150ms ease-in-out',
+        }}
         onClick={isClickable ? handleClick : undefined}
         data-testid={`${testId}-${item.id}`}
+        onMouseEnter={(e) => {
+          if (isClickable) {
+            e.currentTarget.style.opacity = '0.8';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (isClickable) {
+            e.currentTarget.style.opacity = '1';
+          }
+        }}
       >
         {/* Icon */}
         <div
-          className={`
-          relative flex items-center justify-center rounded-full border-2 border-white shadow-sm
-          ${sizeClasses[size].icon} ${getIconBackgroundColor()}
-        `}
+          className='timeline-icon-container'
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '50%',
+            border: `2px solid ${tokens.colors.background.inverse}`,
+            boxShadow: tokens.shadows.sm,
+            ...sizeStyles.icon,
+            ...getIconBackgroundColor(),
+            ...getIconColor(),
+          }}
         >
           {getIcon()}
         </div>
 
         {/* Connector */}
-        {showConnector && <div className='w-px h-4 bg-gray-300 my-2'></div>}
+        {showConnector && (
+          <div
+            className='timeline-connector-compact'
+            style={{
+              width: '2px',
+              height: tokens.spacing.component.lg,
+              backgroundColor: tokens.colors.border.default,
+              margin: `${tokens.spacing.micro.xs} 0`,
+            }}
+          />
+        )}
 
         {/* Content */}
-        <div className={`text-center max-w-xs ${sizeClasses[size].padding}`}>
+        <div
+          className='timeline-item-content-compact'
+          style={{
+            padding: sizeStyles.padding,
+            textAlign: 'center',
+            maxWidth: '200px',
+          }}
+        >
           {showTimestamp && (
             <time
-              className={`block text-gray-500 mb-1 ${sizeClasses[size].timestamp}`}
+              className='timeline-item-timestamp'
+              style={{
+                display: 'block',
+                marginBottom: tokens.spacing.micro.xs,
+                color: tokens.colors.text.muted,
+                ...sizeStyles.timestamp,
+              }}
             >
               {formatTimestamp(item.timestamp)}
             </time>
           )}
-          <h3 className={`${sizeClasses[size].title} text-gray-900 mb-1`}>
+          <h3
+            className='timeline-item-title'
+            style={{
+              margin: 0,
+              marginBottom: tokens.spacing.micro.xs,
+              color: tokens.colors.text.primary,
+              ...sizeStyles.title,
+            }}
+          >
             {item.title}
           </h3>
           {(item.content ?? item.description) && (
-            <div className={`text-gray-600 ${sizeClasses[size].content}`}>
+            <div
+              className='timeline-item-content'
+              style={{
+                color: tokens.colors.text.primary,
+                lineHeight: tokens.typography.lineHeight.relaxed,
+                ...sizeStyles.content,
+              }}
+            >
               {item.content ?? item.description}
             </div>
           )}
           {item.actions && item.actions.length > 0 && (
-            <div className='flex gap-1 mt-2 justify-center'>
-              {item.actions.map((action, actionIndex) => (
-                <button
-                  key={actionIndex}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    action.onClick();
-                  }}
-                  className={`
-                    text-xs px-2 py-1 rounded transition-colors duration-200
-                    ${
-                      action.variant === 'primary'
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                        : action.variant === 'secondary'
-                          ? 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-                          : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
-                    }
-                  `}
-                >
-                  {action.icon && <span className='mr-1'>{action.icon}</span>}
-                  {action.label}
-                </button>
-              ))}
+            <div
+              className='timeline-actions'
+              style={{
+                display: 'flex',
+                gap: tokens.spacing.micro.xs,
+                marginTop: tokens.spacing.component.sm,
+                justifyContent: 'center',
+              }}
+            >
+              {item.actions.map((action, actionIndex) => {
+                const getActionStyles = () => {
+                  switch (action.variant) {
+                    case 'primary':
+                      return {
+                        backgroundColor: tokens.colors.state.info,
+                        color: tokens.colors.text.inverse,
+                        hoverBackgroundColor: '#2563eb',
+                      };
+                    case 'secondary':
+                      return {
+                        backgroundColor: tokens.colors.background.secondary,
+                        color: tokens.colors.text.primary,
+                        hoverBackgroundColor: tokens.colors.background.primary,
+                      };
+                    default:
+                      return {
+                        backgroundColor: 'transparent',
+                        color: tokens.colors.state.info,
+                        hoverBackgroundColor: tokens.colors.state.info + '10',
+                      };
+                  }
+                };
+
+                const actionStyles = getActionStyles();
+
+                return (
+                  <button
+                    key={actionIndex}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      action.onClick();
+                    }}
+                    className='timeline-action-button'
+                    style={{
+                      fontSize: tokens.typography.fontSize.xs,
+                      padding: `${tokens.spacing.micro.xs} ${tokens.spacing.micro.sm}`,
+                      borderRadius: tokens.radius.sm,
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'all 200ms ease-in-out',
+                      backgroundColor: actionStyles.backgroundColor,
+                      color: actionStyles.color,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: tokens.spacing.micro.xs,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        actionStyles.hoverBackgroundColor;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        actionStyles.backgroundColor;
+                    }}
+                  >
+                    {action.icon && (
+                      <span style={{ marginRight: tokens.spacing.micro.xs }}>
+                        {action.icon}
+                      </span>
+                    )}
+                    {action.label}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
@@ -450,70 +665,195 @@ const TimelineItemComponent: React.FC<TimelineItemProps> = ({
   // Vertical orientation
   return (
     <div
-      className={`
-        relative flex gap-4
-        ${isClickable ? 'cursor-pointer hover:opacity-80' : ''}
-        ${className}
-      `}
+      className={`timeline-item-vertical ${className}`}
+      style={{
+        position: 'relative',
+        display: 'flex',
+        gap: tokens.spacing.component.md,
+        cursor: isClickable ? 'pointer' : 'default',
+        opacity: 1,
+        transition: 'opacity 150ms ease-in-out',
+      }}
       onClick={isClickable ? handleClick : undefined}
       data-testid={`${testId}-${item.id}`}
+      onMouseEnter={(e) => {
+        if (isClickable) {
+          e.currentTarget.style.opacity = '0.8';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (isClickable) {
+          e.currentTarget.style.opacity = '1';
+        }
+      }}
     >
       {/* Icon and connector */}
-      <div className='flex flex-col items-center'>
+      <div
+        className='timeline-icon-container'
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          flexShrink: 0,
+        }}
+      >
         <div
-          className={`
-          relative flex items-center justify-center rounded-full border-2 border-white shadow-sm
-          ${sizeClasses[size].icon} ${getIconBackgroundColor()}
-        `}
+          className='timeline-icon'
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '50%',
+            border: `2px solid ${tokens.colors.background.inverse}`,
+            boxShadow: tokens.shadows.sm,
+            ...sizeStyles.icon,
+            ...getIconBackgroundColor(),
+            ...getIconColor(),
+          }}
         >
           {getIcon()}
         </div>
-        {showConnector && <div className='w-px flex-1 bg-gray-300 mt-2'></div>}
+        {showConnector && (
+          <div
+            className='timeline-connector'
+            style={{
+              width: '2px',
+              height: '100%',
+              backgroundColor: tokens.colors.border.default,
+              marginTop: tokens.spacing.micro.sm,
+              flexGrow: 1,
+              minHeight: tokens.spacing.component.xl,
+            }}
+          />
+        )}
       </div>
 
       {/* Content */}
       <div
-        className={`flex-1 pb-8 ${sizeClasses[size].padding} ${variant === 'detailed' ? 'bg-white border border-gray-200 rounded-lg shadow-sm' : ''}`}
+        className='timeline-content'
+        style={{
+          padding: sizeStyles.padding,
+          flex: 1,
+          backgroundColor:
+            variant === 'detailed'
+              ? tokens.colors.surface.primary
+              : 'transparent',
+          borderRadius: variant === 'detailed' ? tokens.radius.md : 0,
+          boxShadow: variant === 'detailed' ? tokens.shadows.sm : 'none',
+        }}
       >
         {showTimestamp && (
           <time
-            className={`block text-gray-500 mb-1 ${sizeClasses[size].timestamp}`}
+            className='timeline-item-timestamp'
+            style={{
+              display: 'block',
+              marginBottom: tokens.spacing.micro.sm,
+              color: tokens.colors.text.muted,
+              ...sizeStyles.timestamp,
+            }}
           >
             {formatTimestamp(item.timestamp)}
           </time>
         )}
-        <h3 className={`${sizeClasses[size].title} text-gray-900 mb-2`}>
+        <h3
+          className='timeline-item-title'
+          style={{
+            margin: 0,
+            marginBottom: tokens.spacing.micro.sm,
+            color: tokens.colors.text.primary,
+            ...sizeStyles.title,
+          }}
+        >
           {item.title}
         </h3>
         {(item.content ?? item.description) && (
-          <div className={`text-gray-600 mb-3 ${sizeClasses[size].content}`}>
+          <div
+            className='timeline-item-content'
+            style={{
+              color: tokens.colors.text.primary,
+              lineHeight: tokens.typography.lineHeight.relaxed,
+              marginBottom: tokens.spacing.component.sm,
+              ...sizeStyles.content,
+            }}
+          >
             {item.content ?? item.description}
           </div>
         )}
         {item.actions && item.actions.length > 0 && (
-          <div className='flex gap-2'>
-            {item.actions.map((action, actionIndex) => (
-              <button
-                key={actionIndex}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  action.onClick();
-                }}
-                className={`
-                  text-sm px-3 py-1 rounded transition-colors duration-200
-                  ${
-                    action.variant === 'primary'
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : action.variant === 'secondary'
-                        ? 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-                        : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
-                  }
-                `}
-              >
-                {action.icon && <span className='mr-1'>{action.icon}</span>}
-                {action.label}
-              </button>
-            ))}
+          <div
+            className='timeline-actions-detailed'
+            style={{
+              display: 'flex',
+              gap: tokens.spacing.component.sm,
+              flexWrap: 'wrap',
+              marginTop: tokens.spacing.component.sm,
+            }}
+          >
+            {item.actions.map((action, actionIndex) => {
+              const getActionStyles = () => {
+                switch (action.variant) {
+                  case 'primary':
+                    return {
+                      backgroundColor: tokens.colors.state.info,
+                      color: tokens.colors.text.inverse,
+                      hoverBackgroundColor: '#2563eb',
+                    };
+                  case 'secondary':
+                    return {
+                      backgroundColor: tokens.colors.background.secondary,
+                      color: tokens.colors.text.primary,
+                      hoverBackgroundColor: tokens.colors.background.primary,
+                    };
+                  default:
+                    return {
+                      backgroundColor: 'transparent',
+                      color: tokens.colors.state.info,
+                      hoverBackgroundColor: tokens.colors.state.info + '10',
+                    };
+                }
+              };
+
+              const actionStyles = getActionStyles();
+
+              return (
+                <button
+                  key={actionIndex}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    action.onClick();
+                  }}
+                  className='timeline-action-button-detailed'
+                  style={{
+                    fontSize: tokens.typography.fontSize.sm,
+                    padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+                    borderRadius: tokens.radius.sm,
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 200ms ease-in-out',
+                    backgroundColor: actionStyles.backgroundColor,
+                    color: actionStyles.color,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: tokens.spacing.micro.xs,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      actionStyles.hoverBackgroundColor;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      actionStyles.backgroundColor;
+                  }}
+                >
+                  {action.icon && (
+                    <span style={{ marginRight: tokens.spacing.micro.xs }}>
+                      {action.icon}
+                    </span>
+                  )}
+                  {action.label}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>

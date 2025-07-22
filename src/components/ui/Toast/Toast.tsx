@@ -76,6 +76,7 @@
  * - Focus management for actions
  */
 
+import { useDesignSystem } from '@/lib/hooks';
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useToastContext } from './ToastProvider';
@@ -94,6 +95,7 @@ const Toast: React.FC<ToastProps> = ({
   className = '',
   'data-testid': testId = 'toast',
 }) => {
+  const { colors, spacing, radius, shadows } = useDesignSystem();
   const [isVisible, setIsVisible] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
 
@@ -119,7 +121,7 @@ const Toast: React.FC<ToastProps> = ({
       case 'success':
         return (
           <svg
-            className='w-5 h-5 text-green-600'
+            className='toast-icon toast-icon-success'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -133,7 +135,7 @@ const Toast: React.FC<ToastProps> = ({
       case 'error':
         return (
           <svg
-            className='w-5 h-5 text-red-600'
+            className='toast-icon toast-icon-error'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -147,7 +149,7 @@ const Toast: React.FC<ToastProps> = ({
       case 'warning':
         return (
           <svg
-            className='w-5 h-5 text-yellow-600'
+            className='toast-icon toast-icon-warning'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -160,13 +162,9 @@ const Toast: React.FC<ToastProps> = ({
         );
       case 'loading':
         return (
-          <svg
-            className='animate-spin w-5 h-5 text-blue-600'
-            fill='none'
-            viewBox='0 0 24 24'
-          >
+          <svg className='toast-spinner' fill='none' viewBox='0 0 24 24'>
             <circle
-              className='opacity-25'
+              className='toast-spinner-circle'
               cx='12'
               cy='12'
               r='10'
@@ -174,7 +172,7 @@ const Toast: React.FC<ToastProps> = ({
               strokeWidth='4'
             />
             <path
-              className='opacity-75'
+              className='toast-spinner-path'
               fill='currentColor'
               d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
             />
@@ -183,7 +181,7 @@ const Toast: React.FC<ToastProps> = ({
       default:
         return (
           <svg
-            className='w-5 h-5 text-blue-600'
+            className='toast-icon toast-icon-info'
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -200,54 +198,167 @@ const Toast: React.FC<ToastProps> = ({
   const getTypeStyles = () => {
     switch (toast.type) {
       case 'success':
-        return 'bg-green-50 border-green-200';
+        return {
+          backgroundColor: colors.state.success + '20', // 20% opacity
+          borderColor: colors.state.success + '40', // 40% opacity
+          color: colors.state.success,
+        };
       case 'error':
-        return 'bg-red-50 border-red-200';
+        return {
+          backgroundColor: colors.state.error + '20',
+          borderColor: colors.state.error + '40',
+          color: colors.state.error,
+        };
       case 'warning':
-        return 'bg-yellow-50 border-yellow-200';
+        return {
+          backgroundColor: colors.state.warning + '20',
+          borderColor: colors.state.warning + '40',
+          color: colors.state.warning,
+        };
       case 'loading':
-        return 'bg-blue-50 border-blue-200';
+        return {
+          backgroundColor: colors.state.info + '20',
+          borderColor: colors.state.info + '40',
+          color: colors.state.info,
+        };
       default:
-        return 'bg-blue-50 border-blue-200';
+        return {
+          backgroundColor: colors.state.info + '20',
+          borderColor: colors.state.info + '40',
+          color: colors.state.info,
+        };
     }
+  };
+
+  const toastStyle: React.CSSProperties = {
+    position: 'relative',
+    maxWidth: '384px', // max-w-sm
+    width: '100%',
+    border: `1px solid ${getTypeStyles().borderColor}`,
+    borderRadius: radius.lg,
+    boxShadow: shadows.lg,
+    pointerEvents: 'auto',
+    transition: 'all 200ms ease-in-out',
+    transform: animated
+      ? isVisible && !isLeaving
+        ? 'translateX(0)'
+        : 'translateX(100%)'
+      : 'none',
+    opacity: animated ? (isVisible && !isLeaving ? 1 : 0) : 1,
+    ...getTypeStyles(),
   };
 
   return (
     <div
-      className={`
-        relative max-w-sm w-full bg-white border rounded-lg shadow-lg pointer-events-auto
-        transition-all duration-200 ease-in-out transform
-        ${animated ? (isVisible && !isLeaving ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0') : ''}
-        ${getTypeStyles()} ${className}
-      `}
+      style={toastStyle}
+      className={className}
       data-testid={`${testId}-${toast.id}`}
     >
-      <div className='p-4'>
-        <div className='flex items-start'>
-          <div className='flex-shrink-0'>{getIcon()}</div>
-          <div className='ml-3 flex-1'>
+      <div style={{ padding: spacing.component.sm }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: spacing.micro.md,
+          }}
+        >
+          <div
+            style={{
+              flexShrink: 0,
+              width: '1.25rem',
+              height: '1.25rem',
+              color: 'currentColor',
+            }}
+          >
+            {getIcon()}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
             {toast.title && (
-              <p className='text-sm font-medium text-gray-900 mb-1'>
+              <p
+                style={{
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  color: colors.text.primary,
+                  margin: 0,
+                  marginBottom: spacing.micro.xs,
+                }}
+              >
                 {toast.title}
               </p>
             )}
-            <p className='text-sm text-gray-700'>{toast.message}</p>
+            <p
+              style={{
+                fontSize: '0.875rem',
+                color: colors.text.primary,
+                margin: 0,
+                lineHeight: 1.5,
+              }}
+            >
+              {toast.message}
+            </p>
             {toast.actions && toast.actions.length > 0 && (
-              <div className='mt-3 flex gap-2'>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: spacing.micro.sm,
+                  marginTop: spacing.micro.md,
+                }}
+              >
                 {toast.actions.map((action, index) => (
                   <button
                     key={index}
                     onClick={action.onClick}
-                    className={`
-                      text-xs font-medium px-4 py-3 rounded transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center
-                      ${
-                        action.variant === 'primary'
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : action.variant === 'secondary'
-                            ? 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-                            : 'text-blue-600 hover:text-blue-700 hover:bg-blue-100'
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      padding: `${spacing.micro.sm} ${spacing.component.xs}`,
+                      borderRadius: radius.sm,
+                      transition: 'colors 200ms ease',
+                      minWidth: '44px',
+                      minHeight: '44px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: 'none',
+                      cursor: 'pointer',
+                      ...(action.variant === 'primary'
+                        ? {
+                            backgroundColor: colors.state.info,
+                            color: colors.text.inverse,
+                          }
+                        : action.variant === 'secondary'
+                          ? {
+                              backgroundColor: colors.background.secondary,
+                              color: colors.text.primary,
+                            }
+                          : {
+                              backgroundColor: 'transparent',
+                              color: colors.state.info,
+                            }),
+                    }}
+                    onMouseEnter={(e) => {
+                      if (action.variant === 'primary') {
+                        e.currentTarget.style.backgroundColor =
+                          colors.state.info + 'DD';
+                      } else if (action.variant === 'secondary') {
+                        e.currentTarget.style.backgroundColor =
+                          colors.border.muted;
+                      } else {
+                        e.currentTarget.style.backgroundColor =
+                          colors.state.info + '20';
                       }
-                    `}
+                    }}
+                    onMouseLeave={(e) => {
+                      if (action.variant === 'primary') {
+                        e.currentTarget.style.backgroundColor =
+                          colors.state.info;
+                      } else if (action.variant === 'secondary') {
+                        e.currentTarget.style.backgroundColor =
+                          colors.background.secondary;
+                      } else {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                      }
+                    }}
                   >
                     {action.label}
                   </button>
@@ -256,14 +367,36 @@ const Toast: React.FC<ToastProps> = ({
             )}
           </div>
           {toast.dismissible !== false && (
-            <div className='ml-4 flex-shrink-0'>
+            <div style={{ flexShrink: 0 }}>
               <button
                 onClick={handleDismiss}
-                className='text-gray-400 hover:text-gray-600 transition-colors duration-200 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center'
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '1.5rem',
+                  height: '1.5rem',
+                  padding: 0,
+                  border: 'none',
+                  background: 'none',
+                  color: colors.text.muted,
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  transition: 'all 150ms ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = colors.text.primary;
+                  e.currentTarget.style.backgroundColor =
+                    colors.background.secondary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = colors.text.muted;
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }}
                 aria-label='Dismiss notification'
               >
                 <svg
-                  className='w-5 h-5'
+                  style={{ width: '1rem', height: '1rem' }}
                   fill='none'
                   viewBox='0 0 24 24'
                   stroke='currentColor'
@@ -297,22 +430,60 @@ const ToastContainer: React.FC<ToastContainerProps> = ({
   className = '',
   'data-testid': testId = 'toast-container',
 }) => {
-  const getPositionClasses = () => {
+  const { zIndex } = useDesignSystem();
+
+  const getPositionStyles = (): React.CSSProperties => {
+    const baseStyles = {
+      position: 'fixed' as const,
+      zIndex: zIndex.toast,
+      pointerEvents: 'none' as const,
+    };
+
     switch (position) {
       case 'top':
-        return `top-${offset} left-1/2 transform -translate-x-1/2`;
+        return {
+          ...baseStyles,
+          top: `${offset}px`,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        };
       case 'bottom':
-        return `bottom-${offset} left-1/2 transform -translate-x-1/2`;
+        return {
+          ...baseStyles,
+          bottom: `${offset}px`,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        };
       case 'top-left':
-        return `top-${offset} left-${offset}`;
+        return {
+          ...baseStyles,
+          top: `${offset}px`,
+          left: `${offset}px`,
+        };
       case 'top-right':
-        return `top-${offset} right-${offset}`;
+        return {
+          ...baseStyles,
+          top: `${offset}px`,
+          right: `${offset}px`,
+        };
       case 'bottom-left':
-        return `bottom-${offset} left-${offset}`;
+        return {
+          ...baseStyles,
+          bottom: `${offset}px`,
+          left: `${offset}px`,
+        };
       case 'bottom-right':
-        return `bottom-${offset} right-${offset}`;
+        return {
+          ...baseStyles,
+          bottom: `${offset}px`,
+          right: `${offset}px`,
+        };
       default:
-        return `top-${offset} right-${offset}`;
+        return {
+          ...baseStyles,
+          top: `${offset}px`,
+          right: `${offset}px`,
+        };
     }
   };
 
@@ -324,12 +495,15 @@ const ToastContainer: React.FC<ToastContainerProps> = ({
   if (orderedToasts.length === 0) return null;
 
   const containerContent = (
-    <div
-      className={`fixed z-50 pointer-events-none ${getPositionClasses()} ${className}`}
-      style={{ gap: `${gap}px` }}
-      data-testid={testId}
-    >
-      <div className='flex flex-col gap-2'>
+    <div style={getPositionStyles()} className={className} data-testid={testId}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: `${gap}px`,
+          alignItems: position.includes('left') ? 'flex-start' : 'flex-end',
+        }}
+      >
         {orderedToasts.map((toast) => (
           <Toast
             key={toast.id}

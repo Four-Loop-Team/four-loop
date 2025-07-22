@@ -206,6 +206,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
   const handlePaste = useCallback(
     (_e: React.ClipboardEvent<HTMLDivElement>) => {
+      // TODO: Implement advanced paste handling
       if (disabled || readOnly) return;
 
       // Allow default paste behavior but trigger change
@@ -232,15 +233,15 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       <button
         type='button'
         onClick={() => executeCommand(command, value)}
-        className={`p-2 rounded hover:bg-gray-100 transition-colors ${
-          isActive ? 'bg-blue-100 text-blue-600 active' : 'text-gray-600'
-        } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`editor-toolbar-button ${
+          isActive ? 'editor-toolbar-button-active' : ''
+        } ${disabled ? 'editor-toolbar-button-disabled' : ''}`}
         title={title}
         aria-label={title}
         disabled={disabled}
         tabIndex={-1} // Prevent toolbar buttons from taking focus from editor
       >
-        <span className='text-sm font-semibold'>{icon}</span>
+        <span className='editor-button-label'>{icon}</span>
       </button>
     );
   };
@@ -256,7 +257,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
     return (
       <div
-        className='border-b border-gray-200 p-2 flex gap-1 flex-wrap bg-gray-50 rounded-t-md'
+        className='editor-toolbar'
         data-testid='editor-toolbar'
         role='toolbar'
       >
@@ -265,7 +266,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
             <ToolbarButton command='bold' icon='B' title='Bold' />
             <ToolbarButton command='italic' icon='I' title='Italic' />
             <ToolbarButton command='underline' icon='U' title='Underline' />
-            <div className='w-px h-6 bg-gray-300 mx-1' />
+            <div className='editor-separator' />
           </>
         )}
 
@@ -282,7 +283,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
               icon='➡'
               title='Align Right'
             />
-            <div className='w-px h-6 bg-gray-300 mx-1' />
+            <div className='editor-separator' />
           </>
         )}
 
@@ -298,7 +299,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
               icon='1.'
               title='Numbered List'
             />
-            <div className='w-px h-6 bg-gray-300 mx-1' />
+            <div className='editor-separator' />
           </>
         )}
 
@@ -309,10 +310,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   };
 
   return (
-    <div
-      className={`border border-gray-300 rounded-md overflow-hidden ${className}`}
-      data-testid={testId}
-    >
+    <div className={`rich-text-editor ${className}`} data-testid={testId}>
       {renderToolbar()}
 
       <div
@@ -323,12 +321,12 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         onFocus={handleFocus}
         onKeyDown={handleKeyDown}
         onPaste={handlePaste}
-        className={`p-3 outline-none overflow-auto ${
+        className={`rich-text-editor-content ${
           disabled
-            ? 'bg-gray-100 cursor-not-allowed'
+            ? 'rich-text-editor-content-disabled'
             : readOnly
-              ? 'bg-gray-50'
-              : 'bg-white'
+              ? 'rich-text-editor-content-readonly'
+              : ''
         }`}
         style={{
           height: typeof height === 'number' ? `${height}px` : height,
@@ -352,7 +350,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       {/* Placeholder when empty */}
       {!content && !isFormatting && (
         <div
-          className='absolute inset-3 pointer-events-none text-gray-400 select-none'
+          className='editor-placeholder'
           style={{ top: toolbar ? '54px' : '12px' }}
         >
           {placeholder}

@@ -95,6 +95,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDesignSystem } from '../../../hooks/useDesignSystem';
 import {
   FormErrors,
   FormField,
@@ -229,6 +230,8 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
   size,
   disabled,
 }) => {
+  const tokens = useDesignSystem();
+
   const {
     name,
     label,
@@ -242,7 +245,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
     rows = 3,
     multiple,
     accept,
-    className = '',
+    className: _className = '',
     size: fieldSize,
   } = field;
 
@@ -252,23 +255,40 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
   // Use field-level size if provided, otherwise use form-level size
   const effectiveSize = fieldSize ?? size;
 
-  // Size classes
-  const sizeClasses = {
-    sm: 'px-3 py-1 text-sm',
-    md: 'px-3 py-2 text-base',
-    lg: 'px-4 py-3 text-lg',
+  // Size styles using design tokens
+  const getSizeStyles = (size: string) => {
+    switch (size) {
+      case 'sm':
+        return {
+          padding: `${tokens.spacing.micro.xs} ${tokens.spacing.micro.sm}`,
+          fontSize: tokens.typography.fontSize.sm,
+        };
+      case 'lg':
+        return {
+          padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+          fontSize: tokens.typography.fontSize.lg,
+        };
+      default: // md
+        return {
+          padding: `${tokens.spacing.micro.sm} ${tokens.spacing.micro.sm}`,
+          fontSize: tokens.typography.fontSize.base,
+        };
+    }
   };
 
-  const inputClasses = `
-    ${sizeClasses[effectiveSize]}
-    w-full border rounded-md
-    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-    transition-colors
-    ${showError ? 'border-red-500' : 'border-gray-300'}
-    ${isDisabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
-    ${readOnly ? 'cursor-default' : ''}
-    ${className}
-  `;
+  const getInputStyles = () => ({
+    ...getSizeStyles(effectiveSize),
+    width: '100%',
+    border: `1px solid ${showError ? tokens.colors.state.error : tokens.colors.border.default}`,
+    borderRadius: tokens.radius.input,
+    backgroundColor: isDisabled
+      ? tokens.colors.background.secondary
+      : tokens.colors.background.primary,
+    color: tokens.colors.text.primary,
+    cursor: isDisabled ? 'not-allowed' : readOnly ? 'default' : 'text',
+    transition: 'all 150ms ease-in-out',
+    outline: 'none',
+  });
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -315,7 +335,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
             disabled={isDisabled}
             readOnly={readOnly}
             rows={rows}
-            className={inputClasses}
+            style={getInputStyles()}
             onChange={handleChange}
             onBlur={onBlur}
           />
@@ -330,7 +350,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
             required={required}
             disabled={isDisabled}
             multiple={multiple}
-            className={inputClasses}
+            style={getInputStyles()}
             onChange={handleChange}
             onBlur={onBlur}
           >
@@ -351,7 +371,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
 
       case 'checkbox':
         return (
-          <div className='flex items-center'>
+          <div className='form-checkbox-container'>
             <input
               id={name}
               type='checkbox'
@@ -360,17 +380,14 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
               required={required}
               disabled={isDisabled}
               readOnly={readOnly}
-              className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+              className='form-checkbox-input'
               onChange={handleChange}
               onBlur={onBlur}
             />
             {label && (
-              <label
-                htmlFor={name}
-                className='ml-2 block text-sm text-gray-900'
-              >
+              <label htmlFor={name} className='form-checkbox-label'>
                 {label}
-                {required && <span className='text-red-500 ml-1'>*</span>}
+                {required && <span className='form-required-indicator'>*</span>}
               </label>
             )}
           </div>
@@ -378,11 +395,11 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
 
       case 'radio':
         return (
-          <div className='space-y-2'>
+          <div className='form-radio-group'>
             {options?.map((option) => {
               const radioId = `${name}-${option.value}`;
               return (
-                <div key={option.value} className='flex items-center'>
+                <div key={option.value} className='form-radio-container'>
                   <input
                     id={radioId}
                     type='radio'
@@ -391,14 +408,11 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
                     checked={value === option.value}
                     required={required}
                     disabled={isDisabled ?? option.disabled}
-                    className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300'
+                    className='form-radio-input'
                     onChange={handleChange}
                     onBlur={onBlur}
                   />
-                  <label
-                    htmlFor={radioId}
-                    className='ml-2 block text-sm text-gray-900'
-                  >
+                  <label htmlFor={radioId} className='form-radio-label'>
                     {option.label}
                   </label>
                 </div>
@@ -417,7 +431,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
             disabled={isDisabled}
             multiple={multiple}
             accept={accept}
-            className={inputClasses}
+            style={getInputStyles()}
             onChange={handleChange}
             onBlur={onBlur}
           />
@@ -434,7 +448,7 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
             required={required}
             disabled={isDisabled}
             readOnly={readOnly}
-            className={inputClasses}
+            style={getInputStyles()}
             onChange={handleChange}
             onBlur={onBlur}
           />
@@ -442,32 +456,87 @@ const FormFieldComponent: React.FC<FormFieldProps> = ({
     }
   };
 
-  const layoutClasses = {
-    vertical: 'mb-4',
-    horizontal: 'grid grid-cols-3 gap-4 items-start mb-4',
-    inline: 'inline-block mr-4 mb-2',
+  const getLayoutStyles = (layout: string) => {
+    switch (layout) {
+      case 'horizontal':
+        return {
+          display: 'grid',
+          gridTemplateColumns: '1fr 2fr',
+          gap: tokens.spacing.component.md,
+          alignItems: 'start',
+          marginBottom: tokens.spacing.component.md,
+        };
+      case 'inline':
+        return {
+          display: 'inline-block',
+          marginRight: tokens.spacing.component.md,
+          marginBottom: tokens.spacing.micro.sm,
+        };
+      default: // vertical
+        return {
+          marginBottom: tokens.spacing.component.md,
+        };
+    }
   };
 
+  const getLabelStyles = (layout: string) => ({
+    fontSize: tokens.typography.fontSize.sm,
+    fontWeight: tokens.typography.fontWeight.medium,
+    color: tokens.colors.text.primary,
+    marginBottom: layout === 'vertical' ? tokens.spacing.micro.xs : 0,
+    display: 'block',
+  });
+
+  const getFieldWrapperStyles = (layout: string) => ({
+    gridColumn: layout === 'horizontal' ? 'span 2' : 'auto',
+  });
+
   return (
-    <div className={layoutClasses[layout]}>
+    <div style={getLayoutStyles(layout)}>
       {label && type !== 'checkbox' && (
-        <label
-          htmlFor={name}
-          className={`block text-sm font-medium text-gray-700 ${layout === 'horizontal' ? 'pt-2' : 'mb-1'}`}
-        >
+        <label htmlFor={name} style={getLabelStyles(layout)}>
           {label}
-          {required && <span className='text-red-500 ml-1'>*</span>}
+          {required && (
+            <span
+              style={{
+                color: tokens.colors.state.error,
+                marginLeft: tokens.spacing.micro.xs,
+              }}
+            >
+              *
+            </span>
+          )}
         </label>
       )}
 
-      <div className={layout === 'horizontal' ? 'col-span-2' : ''}>
+      <div style={getFieldWrapperStyles(layout)}>
         {renderInput()}
 
         {description && (
-          <p className='mt-1 text-sm text-gray-500'>{description}</p>
+          <p
+            style={{
+              fontSize: tokens.typography.fontSize.sm,
+              color: tokens.colors.text.muted,
+              marginTop: tokens.spacing.micro.xs,
+              margin: 0,
+            }}
+          >
+            {description}
+          </p>
         )}
 
-        {showError && <p className='mt-1 text-sm text-red-600'>{error}</p>}
+        {showError && (
+          <p
+            style={{
+              fontSize: tokens.typography.fontSize.sm,
+              color: tokens.colors.state.error,
+              marginTop: tokens.spacing.micro.xs,
+              margin: 0,
+            }}
+          >
+            {error}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -510,7 +579,7 @@ export const Form: React.FC<FormProps> = ({
   layout = 'vertical',
   size = 'md',
   disabled = false,
-  className = '',
+  className: _className = '',
   children,
   submitText = 'Submit',
   resetText = 'Reset',
@@ -524,6 +593,8 @@ export const Form: React.FC<FormProps> = ({
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<FormTouched>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const tokens = useDesignSystem();
 
   // Compute derived state
   const isDirty = useMemo(() => {
@@ -712,17 +783,77 @@ export const Form: React.FC<FormProps> = ({
     void helpers.submitForm();
   };
 
-  // Variant classes
-  const variantClasses = {
-    default: '',
-    card: 'p-6 bg-white border border-gray-200 rounded-lg shadow-sm',
-    inline: 'inline-block',
+  // Variant styles
+  const getVariantStyles = (variant: string) => {
+    switch (variant) {
+      case 'card':
+        return {
+          padding: tokens.spacing.component.lg,
+          backgroundColor: tokens.colors.background.primary,
+          border: `1px solid ${tokens.colors.border.default}`,
+          borderRadius: tokens.radius.card,
+          boxShadow: tokens.shadows.card,
+        };
+      case 'inline':
+        return {
+          display: 'inline-block',
+        };
+      default:
+        return {};
+    }
+  };
+
+  const getButtonStyles = (
+    type: 'primary' | 'secondary',
+    size: string,
+    disabled: boolean
+  ) => {
+    const sizeStyles = {
+      sm: {
+        padding: `${tokens.spacing.micro.xs} ${tokens.spacing.micro.sm}`,
+        fontSize: tokens.typography.fontSize.xs,
+      },
+      lg: {
+        padding: `${tokens.spacing.component.sm} ${tokens.spacing.component.md}`,
+        fontSize: tokens.typography.fontSize.base,
+      },
+      md: {
+        padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+        fontSize: tokens.typography.fontSize.sm,
+      },
+    };
+
+    const baseStyles = {
+      ...(sizeStyles[size as keyof typeof sizeStyles] || sizeStyles.md),
+      fontWeight: tokens.typography.fontWeight.medium,
+      borderRadius: tokens.radius.button,
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.5 : 1,
+      transition: 'all 150ms ease-in-out',
+      border: '1px solid',
+    };
+
+    if (type === 'primary') {
+      return {
+        ...baseStyles,
+        backgroundColor: tokens.colors.state.info,
+        color: tokens.colors.text.inverse,
+        borderColor: 'transparent',
+      };
+    } else {
+      return {
+        ...baseStyles,
+        backgroundColor: tokens.colors.background.primary,
+        color: tokens.colors.text.primary,
+        borderColor: tokens.colors.border.default,
+      };
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className={`${variantClasses[variant]} ${className}`}
+      style={getVariantStyles(variant)}
       data-testid={testId}
     >
       {typeof children === 'function'
@@ -748,18 +879,24 @@ export const Form: React.FC<FormProps> = ({
 
       {(showSubmit || showReset) && (
         <div
-          className={`flex ${layout === 'horizontal' ? 'col-start-2 col-span-2' : ''} gap-2 mt-6`}
+          className={`form-buttons ${layout === 'horizontal' ? 'form-buttons-horizontal' : ''}`}
         >
           {showSubmit && (
             <button
               type='submit'
               disabled={disabled || isSubmitting}
-              className={`
-                px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md
-                hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                disabled:opacity-50 disabled:cursor-not-allowed
-                ${size === 'sm' ? 'px-3 py-1 text-xs' : size === 'lg' ? 'px-6 py-3 text-base' : ''}
-              `}
+              style={getButtonStyles('primary', size, disabled || isSubmitting)}
+              onMouseEnter={(e) => {
+                if (!disabled && !isSubmitting) {
+                  e.currentTarget.style.backgroundColor = '#2563eb'; // Darker blue
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!disabled && !isSubmitting) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.state.info;
+                }
+              }}
             >
               {isSubmitting ? 'Submitting...' : submitText}
             </button>
@@ -770,12 +907,23 @@ export const Form: React.FC<FormProps> = ({
               type='button'
               onClick={helpers.resetForm}
               disabled={disabled || isSubmitting}
-              className={`
-                px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md
-                hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                disabled:opacity-50 disabled:cursor-not-allowed
-                ${size === 'sm' ? 'px-3 py-1 text-xs' : size === 'lg' ? 'px-6 py-3 text-base' : ''}
-              `}
+              style={getButtonStyles(
+                'secondary',
+                size,
+                disabled || isSubmitting
+              )}
+              onMouseEnter={(e) => {
+                if (!disabled && !isSubmitting) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.background.secondary;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!disabled && !isSubmitting) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.background.primary;
+                }
+              }}
             >
               {resetText}
             </button>
@@ -831,6 +979,55 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
     isSubmitting: false,
     completedSteps: new Set(),
   });
+
+  const tokens = useDesignSystem();
+
+  const getButtonStyles = (
+    type: 'primary' | 'secondary',
+    size: string,
+    disabled: boolean
+  ) => {
+    const sizeStyles = {
+      sm: {
+        padding: `${tokens.spacing.micro.xs} ${tokens.spacing.micro.sm}`,
+        fontSize: tokens.typography.fontSize.xs,
+      },
+      lg: {
+        padding: `${tokens.spacing.component.sm} ${tokens.spacing.component.md}`,
+        fontSize: tokens.typography.fontSize.base,
+      },
+      md: {
+        padding: `${tokens.spacing.micro.sm} ${tokens.spacing.component.sm}`,
+        fontSize: tokens.typography.fontSize.sm,
+      },
+    };
+
+    const baseStyles = {
+      ...(sizeStyles[size as keyof typeof sizeStyles] || sizeStyles.md),
+      fontWeight: tokens.typography.fontWeight.medium,
+      borderRadius: tokens.radius.button,
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.5 : 1,
+      transition: 'all 150ms ease-in-out',
+      border: '1px solid',
+    };
+
+    if (type === 'primary') {
+      return {
+        ...baseStyles,
+        backgroundColor: tokens.colors.state.info,
+        color: tokens.colors.text.inverse,
+        borderColor: 'transparent',
+      };
+    } else {
+      return {
+        ...baseStyles,
+        backgroundColor: tokens.colors.background.primary,
+        color: tokens.colors.text.primary,
+        borderColor: tokens.colors.border.default,
+      };
+    }
+  };
 
   const currentStepConfig = steps[state.currentStep];
   const isLastStep = state.currentStep === steps.length - 1;
@@ -923,21 +1120,21 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   };
 
   return (
-    <div className={`max-w-2xl mx-auto ${className}`} data-testid={testId}>
+    <div className={`wizard-wrapper ${className}`} data-testid={testId}>
       {/* Progress indicator */}
       {showProgress && (
-        <div className='mb-8'>
+        <div className='wizard-progress'>
           {/* Step counter */}
-          <div className='text-center mb-4'>
-            <p className='text-sm text-gray-500'>
+          <div className='wizard-step-counter'>
+            <p className='wizard-step-text'>
               Step {state.currentStep + 1} of {steps.length}
             </p>
           </div>
 
-          <div className='flex items-center'>
+          <div className='wizard-progress-container'>
             {steps.map((step, index) => (
               <React.Fragment key={index}>
-                <div className='flex items-center'>
+                <div className='wizard-step-wrapper'>
                   <div
                     className={`
                       flex items-center justify-center w-8 h-8 rounded-full border-2
@@ -952,7 +1149,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                   >
                     {state.completedSteps.has(index) ? (
                       <svg
-                        className='w-5 h-5'
+                        className='wizard-step-icon'
                         fill='currentColor'
                         viewBox='0 0 20 20'
                       >
@@ -967,14 +1164,14 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                     ) : null}
                   </div>
                   {showStepNumbers && (
-                    <div className='ml-2'>
+                    <div className='wizard-step-details'>
                       <p
-                        className={`text-sm font-medium ${index === state.currentStep ? 'text-blue-600' : 'text-gray-500'}`}
+                        className={`wizard-step-title ${index === state.currentStep ? 'wizard-step-title-active' : 'wizard-step-title-inactive'}`}
                       >
                         {step.title}
                       </p>
                       {step.description && (
-                        <p className='text-xs text-gray-400'>
+                        <p className='wizard-step-description'>
                           {step.description}
                         </p>
                       )}
@@ -984,10 +1181,10 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
 
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-0.5 ml-4 mr-4 ${
+                    className={`wizard-step-connector ${
                       state.completedSteps.has(index)
-                        ? 'bg-green-600'
-                        : 'bg-gray-300'
+                        ? 'wizard-step-connector-completed'
+                        : ''
                     }`}
                   />
                 )}
@@ -998,20 +1195,25 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
       )}
 
       {/* Current step content */}
-      <div className='bg-white p-6 border border-gray-200 rounded-lg shadow-sm'>
-        <div className='mb-6'>
-          <h2 className='text-lg font-semibold text-gray-900'>
-            {currentStepConfig.title}
-          </h2>
+      <div className='wizard-step-content'>
+        <div className='wizard-step-header'>
+          <h2 className='wizard-step-title-main'>{currentStepConfig.title}</h2>
           {currentStepConfig.description && (
-            <p className='mt-1 text-sm text-gray-600'>
+            <p className='wizard-step-description-main'>
               {currentStepConfig.description}
             </p>
           )}
         </div>
 
         {/* Form fields for current step */}
-        <div className='space-y-4'>
+        <div
+          className='wizard-step-fields'
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: tokens.spacing.component.md,
+          }}
+        >
           {currentStepConfig.fields.map((field) => (
             <FormFieldComponent
               key={field.name}
@@ -1039,18 +1241,36 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
         </div>
 
         {/* Navigation buttons */}
-        <div className='flex justify-between mt-8'>
+        <div
+          className='wizard-navigation'
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: tokens.spacing.component.lg,
+          }}
+        >
           {allowBackward ? (
             <button
               type='button'
               onClick={handlePrevious}
               disabled={isFirstStep || state.isSubmitting}
-              className={`
-                px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md
-                hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                disabled:opacity-50 disabled:cursor-not-allowed
-                ${size === 'sm' ? 'px-3 py-1 text-xs' : size === 'lg' ? 'px-6 py-3 text-base' : ''}
-              `}
+              style={getButtonStyles(
+                'secondary',
+                size,
+                isFirstStep || state.isSubmitting
+              )}
+              onMouseEnter={(e) => {
+                if (!isFirstStep && !state.isSubmitting) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.background.secondary;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isFirstStep && !state.isSubmitting) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.background.primary;
+                }
+              }}
             >
               {previousText}
             </button>
@@ -1063,12 +1283,18 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
               type='button'
               onClick={handleSubmit}
               disabled={state.isSubmitting}
-              className={`
-                px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md
-                hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                disabled:opacity-50 disabled:cursor-not-allowed
-                ${size === 'sm' ? 'px-3 py-1 text-xs' : size === 'lg' ? 'px-6 py-3 text-base' : ''}
-              `}
+              style={getButtonStyles('primary', size, state.isSubmitting)}
+              onMouseEnter={(e) => {
+                if (!state.isSubmitting) {
+                  e.currentTarget.style.backgroundColor = '#2563eb'; // Darker blue
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!state.isSubmitting) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.state.info;
+                }
+              }}
             >
               {state.isSubmitting ? 'Submitting...' : submitText}
             </button>
@@ -1077,12 +1303,18 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
               type='button'
               onClick={handleNext}
               disabled={state.isSubmitting}
-              className={`
-                px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md
-                hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                disabled:opacity-50 disabled:cursor-not-allowed
-                ${size === 'sm' ? 'px-3 py-1 text-xs' : size === 'lg' ? 'px-6 py-3 text-base' : ''}
-              `}
+              style={getButtonStyles('primary', size, state.isSubmitting)}
+              onMouseEnter={(e) => {
+                if (!state.isSubmitting) {
+                  e.currentTarget.style.backgroundColor = '#2563eb'; // Darker blue
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!state.isSubmitting) {
+                  e.currentTarget.style.backgroundColor =
+                    tokens.colors.state.info;
+                }
+              }}
             >
               {nextText}
             </button>

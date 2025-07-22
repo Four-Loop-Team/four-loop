@@ -2,18 +2,10 @@
 
 @use 'variables';
 @use 'accessibility';
-
-/* Import Design System CSS */
-@import '../../../styles/design-system.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@use 'utilities';
 
 /* CSS Custom Properties for Navigation using semantic SCSS variables */
 :root {
-  /* Color Variables */
-  --nav-background: #{variables.$nav-background};
   --nav-container-background: #{variables.$nav-container-background};
   --nav-slider-background: #{variables.$nav-slider-background};
   --nav-slider-border: #{variables.$nav-slider-border};
@@ -28,13 +20,33 @@
   --drawer-hover-background: #{variables.$drawer-hover-background};
   --drawer-border-accent: #{variables.$drawer-border-accent};
 
-  /* Accessibility Color Variables */
-  --color-primary: #{variables.$color-primary};
-  --color-secondary: #{variables.$color-secondary};
-  --color-text-primary: #{variables.$color-text-primary};
-  --color-text-secondary: #{variables.$color-text-secondary};
-  --color-background: #{variables.$color-background};
-  --color-surface: #{variables.$color-surface};
+  /* New Semantic Brand Color Variables */
+  --brand-primary: #{variables.$brand-primary};
+  --brand-secondary: #{variables.$brand-secondary};
+  --brand-tertiary: #{variables.$brand-tertiary};
+  --brand-neutral: #{variables.$brand-neutral};
+  --text-primary: #{variables.$text-primary};
+  --text-inverse: #{variables.$text-inverse};
+  --text-accent: #{variables.$text-accent};
+  --background-primary: #{variables.$background-primary};
+  --background-secondary: #{variables.$background-secondary};
+  --background-accent: #{variables.$background-accent};
+  --background-inverse: #{variables.$background-inverse};
+  --border-primary: #{variables.$border-primary};
+  --border-accent: #{variables.$border-accent};
+  --border-inverse: #{variables.$border-inverse};
+
+  /* Legacy Brand Color Variables - Source of Truth (maintain compatibility) */
+  --color-highlight: #{variables.$brand-primary};
+  --color-background-primary: #{variables.$brand-secondary};
+  --color-background-secondary: #{variables.$brand-tertiary};
+  --color-text-light: #{variables.$brand-neutral};
+
+  /* Legacy Color Variables (for compatibility) */
+  --color-primary: #{variables.$brand-primary};
+  --color-secondary: #{variables.$brand-tertiary};
+  --color-background: #{variables.$brand-secondary};
+  --color-text-primary: #{variables.$brand-neutral};
 
   /* Spacing Variables */
   --space-xs: #{variables.$space-xs};
@@ -88,6 +100,11 @@
   --nav-button-transition: #{variables.$nav-button-transition};
   --drawer-transition: #{variables.$drawer-transition};
 
+  /* General Animation Durations (matching design-system.css) */
+  --duration-quick: #{variables.$animation-duration-quick};
+  --duration-standard: #{variables.$animation-duration-standard};
+  --duration-gentle: #{variables.$animation-duration-gentle};
+
   /* Breakpoint Variables */
   --breakpoint-xs: #{variables.$breakpoint-xs};
   --breakpoint-sm: #{variables.$breakpoint-sm};
@@ -108,7 +125,7 @@ html {
   font-size: 16px;
   line-height: 1.6;
   scroll-behavior: smooth;
-  background-color: var(--color-background);
+  background-color: var(--background-primary);
   min-height: 100vh;
 }
 
@@ -117,7 +134,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: variables.$color-text-primary;
-  background-color: var(--color-background);
+  background-color: var(--background-primary);
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -128,7 +145,7 @@ body {
 #__next,
 #main-content,
 .MuiCssBaseline-root {
-  background-color: var(--color-background);
+  background-color: var(--background-primary);
   min-height: 100vh;
 }
 
