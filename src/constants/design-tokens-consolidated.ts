@@ -650,8 +650,66 @@ export function createThemeCSS(theme: 'light' | 'dark'): string {
   const themeData = THEME_TOKENS[theme];
 
   return Object.entries(themeData.colors)
-    .map(([key, value]) => `  --${key}: ${value};`)
+    .map(([key, value]) => {
+      const normalizedKey = `--${key.replace(/_/g, '-')}`;
+      const normalizedValue = normalizeColorFunction(normalizeHexColor(value));
+      return `  ${normalizedKey}: ${normalizedValue};`;
+    })
     .join('\n');
+}
+
+/**
+ * Helper function to normalize hex colors to shortest format
+ */
+function normalizeHexColor(color: string): string {
+  // Convert #ffffff to #fff, #000000 to #000, etc.
+  if (color.match(/^#([a-fA-F0-9])\1([a-fA-F0-9])\2([a-fA-F0-9])\3$/)) {
+    return `#${color[1]}${color[3]}${color[5]}`.toLowerCase();
+  }
+  return color;
+}
+
+/**
+ * Helper function to convert rgba/hsla to modern color function notation
+ */
+function normalizeColorFunction(color: string): string {
+  // Convert decimal alpha values to percentages in rgb() functions
+  return (
+    color
+      .replace(/rgb\(([^)]+)\s*\/\s*(0\.\d+)\)/g, (match, colorPart, alpha) => {
+        const alphaPercent = Math.round(parseFloat(alpha) * 100);
+        return `rgb(${colorPart} / ${alphaPercent}%)`;
+      })
+      .replace(
+        /rgba?\(([^,]+),\s*([^,]+),\s*([^,]+),\s*([^)]+)\)/g,
+        (match, r, g, b, a) => {
+          const alpha = parseFloat(a);
+          const alphaPercent = Math.round(alpha * 100);
+          return `rgb(${r.trim()} ${g.trim()} ${b.trim()} / ${alphaPercent}%)`;
+        }
+      )
+      .replace(/rgba?\(([^,]+),\s*([^,]+),\s*([^)]+)\)/g, (match, r, g, b) => {
+        return `rgb(${r.trim()} ${g.trim()} ${b.trim()})`;
+      })
+      // Handle shadow values that might contain multiple rgba functions
+      .replace(
+        /(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)/g,
+        (match, r, g, b, a) => {
+          if (parseFloat(a) < 1) {
+            const alphaPercent = Math.round(parseFloat(a) * 100);
+            return `${r} ${g} ${b} / ${alphaPercent}%`;
+          }
+          return match;
+        }
+      )
+  );
+}
+
+/**
+ * Helper function to convert camelCase to kebab-case
+ */
+function toKebabCase(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
 /**
@@ -662,10 +720,10 @@ export function generateDesignTokenCSS(): string {
   return `
 :root {
   /* Brand Colors */
-  --brand-primary: ${BRAND_COLORS.primary};
-  --brand-secondary: ${BRAND_COLORS.secondary};
-  --brand-tertiary: ${BRAND_COLORS.tertiary};
-  --brand-neutral: ${BRAND_COLORS.neutral};
+  --brand-primary: ${normalizeHexColor(BRAND_COLORS.primary)};
+  --brand-secondary: ${normalizeHexColor(BRAND_COLORS.secondary)};
+  --brand-tertiary: ${normalizeHexColor(BRAND_COLORS.tertiary)};
+  --brand-neutral: ${normalizeHexColor(BRAND_COLORS.neutral)};
 
   /* Theme Colors (Light) */
 ${createThemeCSS('light')}
@@ -706,7 +764,7 @@ ${Object.entries(BORDER_RADIUS_TOKENS)
 
   /* Shadows */
 ${Object.entries(SHADOW_TOKENS)
-  .map(([key, value]) => `  --shadow-${key}: ${value};`)
+  .map(([key, value]) => `  --shadow-${key}: ${normalizeColorFunction(value)};`)
   .join('\n')}
 
   /* Animation */
@@ -715,12 +773,13 @@ ${Object.entries(ANIMATION_TOKENS.duration)
   .join('\n')}
 
 ${Object.entries(ANIMATION_TOKENS.easing)
-  .map(([key, value]) => `  --easing-${key}: ${value};`)
+  .filter(([key]) => !key.startsWith('ease-')) // Filter out kebab-case duplicates
+  .map(([key, value]) => `  --easing-${toKebabCase(key)}: ${value};`)
   .join('\n')}
 
   /* Z-Index */
 ${Object.entries(Z_INDEX_TOKENS)
-  .map(([key, value]) => `  --z-index-${key}: ${value};`)
+  .map(([key, value]) => `  --z-index-${toKebabCase(key)}: ${value};`)
   .join('\n')}
 }
 
