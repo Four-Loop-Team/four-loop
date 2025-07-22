@@ -1,14 +1,14 @@
 # Dependency Report
 
-> 🤖 Auto-generated on 2025-07-22T03:54:04.005Z
+> 🤖 Auto-generated on 2025-07-22T22:32:35.842Z
 
 ## 📊 Summary
 
-| Type | Count |
-|------|-------|
-| Production Dependencies | 3 |
-| Development Dependencies | 54 |
-| **Total Dependencies** | **57** |
+| Type                     | Count  |
+| ------------------------ | ------ |
+| Production Dependencies  | 3      |
+| Development Dependencies | 52     |
+| **Total Dependencies**   | **55** |
 
 ## 🏗️ Production Dependencies
 
@@ -27,7 +27,6 @@
 - **@mui/icons-material**: ^7.1.2
 - **@mui/material**: ^7.1.2
 - **@playwright/test**: ^1.53.1
-- **@tailwindcss/postcss**: ^4.1.10
 - **@testing-library/dom**: ^10.4.0
 - **@testing-library/jest-dom**: ^6.6.3
 - **@testing-library/react**: ^16.3.0
@@ -68,7 +67,6 @@
 - **stylelint**: ^16.2.1
 - **stylelint-config-prettier-scss**: ^1.0.0
 - **stylelint-config-standard-scss**: ^13.0.0
-- **tailwindcss**: ^4.1.10
 - **ts-jest**: ^29.1.2
 - **tsx**: ^4.20.3
 - **typescript**: ^5.3.3
@@ -90,4 +88,4 @@ npm install package-name@latest
 
 ---
 
-*This report is automatically generated from package.json.*
+_This report is automatically generated from package.json._
