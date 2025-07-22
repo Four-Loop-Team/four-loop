@@ -61,20 +61,25 @@ open http://localhost:3000
 
 ### Available Scripts
 
-| Script                  | Description                          |
-| ----------------------- | ------------------------------------ |
-| `npm run dev`           | Start development server             |
-| `npm run build`         | Production build with quality checks |
-| `npm run start`         | Start production server              |
-| `npm run lint`          | Run all linting checks               |
-| `npm run lint:fix`      | Fix auto-fixable linting issues      |
-| `npm run format`        | Format code with Prettier            |
-| `npm run type-check`    | Run TypeScript type checking         |
-| `npm test`              | Run test suite                       |
-| `npm run test:coverage` | Run tests with coverage report       |
-| `npm run test:e2e`      | Run end-to-end tests                 |
-| `npm run quality:check` | Comprehensive quality validation     |
-| `npm run docs:generate` | Generate documentation               |
+| Script                  | Description                                |
+| ----------------------- | ------------------------------------------ |
+| `npm run dev`           | Start development server                   |
+| `npm run build`         | Production build with quality checks       |
+| `npm run build:dev`     | Development build with SCSS generation     |
+| `npm run build:ci`      | CI build optimized for automation          |
+| `npm run start`         | Start production server                    |
+| `npm run scss:generate` | Generate SCSS variables from design tokens |
+| `npm run scss:watch`    | Watch mode SCSS generation                 |
+| `npm run scss:validate` | Validate generated SCSS files              |
+| `npm run lint`          | Run all linting checks                     |
+| `npm run lint:fix`      | Fix auto-fixable linting issues            |
+| `npm run format`        | Format code with Prettier                  |
+| `npm run type-check`    | Run TypeScript type checking               |
+| `npm test`              | Run test suite                             |
+| `npm run test:coverage` | Run tests with coverage report             |
+| `npm run test:e2e`      | Run end-to-end tests                       |
+| `npm run quality:check` | Comprehensive quality validation           |
+| `npm run docs:generate` | Generate documentation                     |
 
 ### Technology Stack
 
@@ -85,6 +90,20 @@ open http://localhost:3000
 - **Testing**: Jest 30 + React Testing Library + Playwright
 - **Quality**: ESLint 8 + Prettier 3 + Stylelint 16
 - **Automation**: Husky 9 + lint-staged 15
+
+### Build System
+
+The project includes a comprehensive build system with specialized scripts for SCSS variable
+generation:
+
+- **Build Scripts**: TypeScript-based build automation in `scripts/` directory
+- **SCSS Generation**: Automated conversion of design tokens to SCSS variables and CSS custom
+  properties
+- **Watch Mode**: Real-time regeneration of SCSS files during development
+- **Validation**: Automated linting and validation of generated files
+- **Shell Interface**: Convenient command-line wrapper (`./scripts/build-scss.sh`)
+
+For detailed build system documentation, see [`scripts/README.md`](scripts/README.md).
 
 ## 🏗️ Project Structure
 
