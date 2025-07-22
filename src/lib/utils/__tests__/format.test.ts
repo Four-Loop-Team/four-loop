@@ -1,4 +1,3 @@
-/* eslint-disable jest/prefer-to-have-length */
 import {
   capitalize,
   debounce,

@@ -119,8 +119,8 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   maxDate,
   disabledDates,
   firstDayOfWeek,
-  multiple: _multiple,
-  range: _range,
+  multiple: _multiple, // TODO: Implement multiple date selection
+  range: _range, // TODO: Implement date range selection
   onDateClick,
   renderDate,
   showWeekNumbers,
@@ -250,10 +250,10 @@ const TimePicker: React.FC<TimePickerProps> = ({
   value,
   onChange,
   format = '24h',
-  minTime: _minTime,
-  maxTime: _maxTime,
+  minTime: _minTime, // TODO: Implement time constraints
+  maxTime: _maxTime, // TODO: Implement time constraints
   minuteStep = 1,
-  hourStep: _hourStep = 1,
+  hourStep: _hourStep = 1, // TODO: Implement hour stepping
   size = 'md',
   className = '',
   disabled = false,

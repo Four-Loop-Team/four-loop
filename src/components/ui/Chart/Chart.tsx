@@ -66,8 +66,9 @@ const Chart: React.FC<ChartProps> = ({
   'data-testid': testId = 'chart',
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [_isHovered, _setIsHovered] = useState(false);
+  const [_isHovered, _setIsHovered] = useState(false); // TODO: Implement hover states
   const [_hoveredPoint, _setHoveredPoint] = useState<{
+    // TODO: Implement point hover detection
     datasetIndex: number;
     pointIndex: number;
     x: number;
@@ -417,7 +418,7 @@ const Chart: React.FC<ChartProps> = ({
     // Simple hit detection for demonstration
     // In a real implementation, you'd calculate which data point was clicked
     // Chart clicked at coordinates for potential point detection
-    const _clickData = { x, y };
+    const _clickData = { x, y }; // TODO: Implement click data processing
   };
 
   useEffect(() => {

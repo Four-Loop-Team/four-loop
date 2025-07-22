@@ -206,6 +206,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
   const handlePaste = useCallback(
     (_e: React.ClipboardEvent<HTMLDivElement>) => {
+      // TODO: Implement advanced paste handling
       if (disabled || readOnly) return;
 
       // Allow default paste behavior but trigger change

@@ -105,7 +105,7 @@ function extractComponentDocs(): ComponentDoc[] {
     });
     const componentDocs: ComponentDoc[] = [];
 
-    componentFiles.forEach((filePath) => {
+    componentFiles.forEach((filePath: string) => {
       const fullPath = path.join(rootDir, filePath);
       try {
         const content = fs.readFileSync(fullPath, 'utf8');

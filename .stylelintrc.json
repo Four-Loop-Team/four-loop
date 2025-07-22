@@ -3,6 +3,7 @@
     "stylelint-config-standard-scss",
     "stylelint-config-prettier-scss"
   ],
+  "ignoreFiles": ["**/generated-*", "**/_generated-*"],
   "rules": {
     "declaration-no-important": [
       true,

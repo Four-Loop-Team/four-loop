@@ -72,7 +72,7 @@ async function measureCoreWebVitals(): Promise<void> {
         const clsObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             if (!(entry as any).hadRecentInput) {
-              clsValue += entry.value;
+              clsValue += (entry as any).value;
             }
           }
           (window as any).vitalsData.cls = clsValue;

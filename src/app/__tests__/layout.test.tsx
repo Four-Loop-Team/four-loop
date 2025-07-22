@@ -1,3 +1,4 @@
+import * as structuredDataModule from '@/lib/structured-data';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import RootLayout from '../layout';
@@ -117,10 +118,6 @@ describe('RootLayout', () => {
     render(<RootLayout>{testContent}</RootLayout>);
 
     // Check if structured data functions were called
-    const structuredDataModule = require('@/lib/structured-data') as {
-      generateOrganizationSchema: jest.Mock;
-      generateWebSiteSchema: jest.Mock;
-    };
     expect(structuredDataModule.generateOrganizationSchema).toHaveBeenCalled();
     expect(structuredDataModule.generateWebSiteSchema).toHaveBeenCalled();
   });

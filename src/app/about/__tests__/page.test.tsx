@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import AboutPage from '../page';
 import {
   generateWebPageSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+import AboutPage, * as pageModule from '../page';
 
 // Mock the metadata utilities
 jest.mock('@/lib/metadata', () => ({
@@ -180,7 +180,6 @@ describe('AboutPage', () => {
 
   it('includes proper meta information through metadata export', () => {
     // This test verifies the metadata export exists
-    const pageModule = require('../page') as { metadata?: unknown };
     expect(pageModule.metadata).toBeDefined();
   });
 

@@ -41,6 +41,7 @@ export interface InputProps
  */
 const StyledTextField = styled(TextField)<TextFieldProps>(
   ({ variant: _variant }) => ({
+    // TODO: Implement variant-based styling
     '& .MuiInputLabel-root': {
       color: colors.textDark,
       '&.Mui-focused': {

@@ -1,122 +1,13 @@
 /**
- * Design System CSS Utilities
- * Generated utility classes based on design tokens
+ * Design System SCSS Utilities
+ * Utility classes and component presets based on design tokens
  */
 
-/* Import design tokens as CSS variables */
-:root {
-  /* BRAND COLORS - Only these 4 colors should be used */
-  --color-highlight: #e2e891; /* Yellow-green highlight/attention color */
-  --color-background-primary: #353535; /* Main website background */
-  --color-background-secondary: #232323; /* Darker background for standout content */
-  --color-text-light: #fff; /* Text and borders on dark backgrounds */
+// Import auto-generated SCSS variables from TypeScript source of truth
+@import '../app/ui/styles/generated-variables';
 
-  /* Legacy/Compatibility Colors (mapped to brand colors) */
-  --color-primary: #e2e891; /* Same as highlight */
-  --color-primary-300: #e2e891; /* Same as highlight */
-  --color-secondary: #232323; /* Same as background-secondary */
-  --color-background: #353535; /* Same as background-primary */
-  --color-text-primary: #fff; /* Same as text-light */
-  --color-border-light: #fff; /* Same as text-light */
-  --color-border-dark: #353535; /* Same as background-primary */
-  --color-surface-inverse: #353535; /* Same as background-primary */
-  --color-border-inverse: #fff; /* Same as text-light */
-
-  /* MUI State Colors (keep these for MUI components) */
-  --color-success-500: #22c55e;
-  --color-warning-500: #f59e0b;
-  --color-error-500: #ef4444;
-  --color-info-500: #3b82f6;
-
-  /* Spacing */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-2xl: 3rem;
-  --spacing-3xl: 4rem;
-
-  /* Typography */
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.875rem;
-  --font-size-4xl: 2.25rem;
-  --font-weight-light: 300;
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --line-height-tight: 1.1;
-  --line-height-snug: 1.2;
-  --line-height-normal: 1.4;
-  --line-height-relaxed: 1.6;
-
-  /* Border Radius */
-  --border-radius-none: 0;
-  --border-radius-sm: 0.25rem;
-  --border-radius-md: 0.375rem;
-  --border-radius-lg: 0.5rem;
-  --border-radius-xl: 0.75rem;
-  --border-radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%);
-  --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
-
-  /* Animation */
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
-  --easing-ease-out: ease-out;
-  --easing-ease-in-out: ease-in-out;
-  --easing-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Dark theme */
-[data-theme='dark'] {
-  --color-surface-primary: #353535;
-  --color-surface-secondary: #5a5a5a;
-  --color-surface-tertiary: #6a6a6a;
-  --color-surface-inverse: #fff;
-  --color-surface-overlay: rgb(0 0 0 / 70%);
-  --color-border-default: #6a6a6a;
-  --color-border-muted: #5a5a5a;
-  --color-border-emphasis: #818181;
-  --color-border-interactive: #d6de5f;
-  --color-border-inverse: #fff;
-  --color-text-primary: #fff;
-  --color-text-secondary: #353535;
-  --color-text-tertiary: #9a9a9a;
-  --color-text-inverse: #353535;
-  --color-text-brand: #d6de5f;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --color-surface-primary: #353535;
-    --color-surface-secondary: #5a5a5a;
-    --color-surface-tertiary: #6a6a6a;
-    --color-surface-inverse: #fff;
-    --color-surface-overlay: rgb(0 0 0 / 70%);
-    --color-border-default: #6a6a6a;
-    --color-border-muted: #5a5a5a;
-    --color-border-emphasis: #818181;
-    --color-border-interactive: #d6de5f;
-    --color-border-inverse: #fff;
-    --color-text-primary: #fff;
-    --color-text-secondary: #353535;
-    --color-text-tertiary: #9a9a9a;
-    --color-text-inverse: #353535;
-    --color-text-brand: #d6de5f;
-  }
-}
+// Import auto-generated CSS custom properties for runtime theming
+@import './generated-design-system.css';
 
 /* Color Utilities */
 .text-primary {
@@ -643,6 +534,6 @@
 
 /* Ensure primary brand background throughout application */
 .brand-background {
-  background-color: #353535;
+  background-color: $secondary; // Use SCSS variable for consistency
   min-height: 100vh;
 }
