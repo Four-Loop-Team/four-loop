@@ -15,7 +15,7 @@ interface PresentationProps {
 
 export default function MarkdownPresentation({
   markdownContent,
-  title = 'Presentation',
+  title: _title = 'Presentation',
 }: PresentationProps) {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -186,7 +186,7 @@ export default function MarkdownPresentation({
 
         // Code blocks
         if (trimmedLine.startsWith('```')) {
-          const language = trimmedLine.slice(3);
+          const _language = trimmedLine.slice(3);
           const codeLines: string[] = [];
           let i = index + 1;
 

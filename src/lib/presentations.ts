@@ -14,47 +14,74 @@ interface PresentationMeta {
 export const presentations: PresentationMeta[] = [
   {
     title: 'Design Tokens System',
-    description: 'Comprehensive overview of our design token system, including brand colors, typography scale, and implementation guidelines.',
+    description:
+      'Comprehensive overview of our design token system, including brand colors, typography scale, and implementation guidelines.',
     duration: '15-20 minutes',
-    topics: ['Design Tokens', 'Brand Colors', 'Typography', 'CSS/SCSS Implementation'],
+    topics: [
+      'Design Tokens',
+      'Brand Colors',
+      'Typography',
+      'CSS/SCSS Implementation',
+    ],
     filename: 'design-tokens',
-    markdownPath: 'src/content/presentations/design-tokens.md'
+    markdownPath: 'src/content/presentations/design-tokens.md',
   },
   {
     title: 'Design System Overview',
-    description: 'Complete guide to Four Loop\'s design system architecture, components, and best practices.',
+    description:
+      "Complete guide to Four Loop's design system architecture, components, and best practices.",
     duration: '25-30 minutes',
     topics: ['Design System', 'Components', 'Architecture', 'Best Practices'],
     filename: 'design-system',
-    markdownPath: 'docs/DESIGN_SYSTEM.md'
+    markdownPath: 'docs/DESIGN_SYSTEM.md',
   },
   {
     title: 'Design Tokens (PowerPoint Ready)',
-    description: 'Executive-friendly presentation of design tokens with business context and implementation strategy.',
+    description:
+      'Executive-friendly presentation of design tokens with business context and implementation strategy.',
     duration: '10-15 minutes',
-    topics: ['Business Value', 'Design Tokens', 'Implementation Strategy', 'ROI'],
+    topics: [
+      'Business Value',
+      'Design Tokens',
+      'Implementation Strategy',
+      'ROI',
+    ],
     filename: 'design-tokens-powerpoint',
-    markdownPath: 'docs/presentations/Design-Tokens-PowerPoint-Ready.md'
+    markdownPath: 'docs/presentations/Design-Tokens-PowerPoint-Ready.md',
   },
   {
     title: 'Color Guidelines',
-    description: 'Detailed exploration of our brand color palette, usage guidelines, and accessibility considerations.',
+    description:
+      'Detailed exploration of our brand color palette, usage guidelines, and accessibility considerations.',
     duration: '15-20 minutes',
-    topics: ['Brand Colors', 'Accessibility', 'Usage Guidelines', 'Color Theory'],
+    topics: [
+      'Brand Colors',
+      'Accessibility',
+      'Usage Guidelines',
+      'Color Theory',
+    ],
     filename: 'color-guidelines',
-    markdownPath: 'docs/COLOR_GUIDELINES.md'
+    markdownPath: 'docs/COLOR_GUIDELINES.md',
   },
   {
     title: 'Styling Architecture',
-    description: 'Technical deep-dive into our styling system architecture, methodology, and implementation patterns.',
+    description:
+      'Technical deep-dive into our styling system architecture, methodology, and implementation patterns.',
     duration: '30-35 minutes',
-    topics: ['CSS Architecture', 'Methodology', 'Best Practices', 'Performance'],
+    topics: [
+      'CSS Architecture',
+      'Methodology',
+      'Best Practices',
+      'Performance',
+    ],
     filename: 'styling-architecture',
-    markdownPath: 'docs/STYLING_ARCHITECTURE_PROPOSAL.md'
-  }
+    markdownPath: 'docs/STYLING_ARCHITECTURE_PROPOSAL.md',
+  },
 ];
 
-export async function generateRevealPresentation(presentation: PresentationMeta): Promise<string> {
+export async function generateRevealPresentation(
+  presentation: PresentationMeta
+): Promise<string> {
   try {
     const markdownPath = path.join(process.cwd(), presentation.markdownPath);
     const markdownContent = await fs.readFile(markdownPath, 'utf8');
@@ -64,14 +91,17 @@ export async function generateRevealPresentation(presentation: PresentationMeta)
 
     return generateRevealHTML(presentation, slides);
   } catch (error) {
-    console.error(`Failed to generate presentation for ${presentation.filename}:`, error);
+    console.error(
+      `Failed to generate presentation for ${presentation.filename}:`,
+      error
+    );
     return generateErrorPresentation(presentation);
   }
 }
 
 function parseMarkdownToSlides(content: string, title: string): string[] {
   // Split by --- first (explicit slide breaks)
-  let slides = content.split('---').map(slide => slide.trim());
+  let slides = content.split('---').map((slide) => slide.trim());
 
   // If no explicit breaks, split by ## headers
   if (slides.length === 1) {
@@ -106,13 +136,14 @@ function parseMarkdownToSlides(content: string, title: string): string[] {
 function parseSlideContent(content: string): string {
   return content
     .split('\n')
-    .filter(line => line.trim())
-    .map(line => {
+    .filter((line) => line.trim())
+    .map((line) => {
       const t = line.trim();
       if (t.startsWith('# ')) return `<h1>${t.slice(2)}</h1>`;
       if (t.startsWith('## ')) return `<h2>${t.slice(3)}</h2>`;
       if (t.startsWith('### ')) return `<h3>${t.slice(4)}</h3>`;
-      if (t.startsWith('**') && t.endsWith('**')) return `<p class="mono">${t.slice(2, -2)}</p>`;
+      if (t.startsWith('**') && t.endsWith('**'))
+        return `<p class="mono">${t.slice(2, -2)}</p>`;
 
       // Handle code blocks
       if (t.startsWith('```')) {
@@ -133,34 +164,45 @@ function parseSlideContent(content: string): string {
     .join('\n');
 }
 
-function generateRevealHTML(presentation: PresentationMeta, slides: string[]): string {
-  const slideElements = slides.map((slide, index) => {
-    const isTitle = index === 0;
-    const parsedContent = parseSlideContent(slide);
+function generateRevealHTML(
+  presentation: PresentationMeta,
+  slides: string[]
+): string {
+  const slideElements = slides
+    .map((slide, index) => {
+      const isTitle = index === 0;
+      const parsedContent = parseSlideContent(slide);
 
-    // Check if slide should have sub-slides (contains multiple ## headers)
-    const headers = slide.split('\n').filter(line => line.startsWith('## '));
+      // Check if slide should have sub-slides (contains multiple ## headers)
+      const headers = slide
+        .split('\n')
+        .filter((line) => line.startsWith('## '));
 
-    if (headers.length > 1 && !isTitle) {
-      // Create vertical slides
-      const sections = slide.split(/(?=## )/g).filter(s => s.trim());
-      return `
+      if (headers.length > 1 && !isTitle) {
+        // Create vertical slides
+        const sections = slide.split(/(?=## )/g).filter((s) => s.trim());
+        return `
         <section>
-          ${sections.map(section => `
+          ${sections
+            .map(
+              (section) => `
             <section>
               ${parseSlideContent(section)}
             </section>
-          `).join('')}
+          `
+            )
+            .join('')}
         </section>
       `;
-    } else {
-      return `
+      } else {
+        return `
         <section${isTitle ? ' class="title"' : ''}>
           ${parsedContent}
         </section>
       `;
-    }
-  }).join('\n');
+      }
+    })
+    .join('\n');
 
   return `<!DOCTYPE html>
 <html lang="en">
