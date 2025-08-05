@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Tokens: Complete Guide - Reveal.js</title>
+
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="../lib/reveal/reveal.css">
+  <link rel="stylesheet" href="../lib/reveal/theme/black.css">
+
+  <!-- Custom styles -->
+  <style>
+    .reveal {
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal .slides section {
+      text-align: left;
+    }
+
+    .reveal .slides section.title {
+      text-align: center;
+    }
+
+    .reveal h1 {
+      color: #e2e891;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, #e2e891, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    .reveal h2 {
+      color: #e2e891;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .reveal p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .reveal pre {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .reveal code {
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 0.2rem 0.4rem;
+      font-family: 'SF Mono', Monaco, monospace;
+      color: #e2e891;
+    }
+
+    .reveal ul, .reveal ol {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .reveal li {
+      margin-bottom: 0.5rem;
+    }
+
+    .reveal .backgrounds {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .exit-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Title Slide -->
+      <section class="title">
+        <h1>Design Tokens: The Foundation of Modern Design Systems</h1>
+        <h2>A Comprehensive Guide to Four Loop's Token Architecture</h2>
+      </section>
+
+      <!-- Table of Contents -->
+      <section>
+        <h2>Table of Contents</h2>
+        <ol>
+          <li><strong>What Are Design Tokens?</strong></li>
+          <li><strong>The Problem We Solve</strong></li>
+          <li><strong>Benefits & Business Value</strong></li>
+          <li><strong>Four Loop's Token Architecture</strong></li>
+          <li><strong>Token Layers & Hierarchy</strong></li>
+          <li><strong>Real-World Implementation</strong></li>
+          <li><strong>Multi-Platform Output</strong></li>
+          <li><strong>Developer Experience</strong></li>
+          <li><strong>Maintenance & Scalability</strong></li>
+          <li><strong>Future-Proofing Your Design System</strong></li>
+        </ol>
+      </section>
+
+      <!-- Slide 1: What Are Design Tokens? -->
+      <section>
+        <h2>What Are Design Tokens?</h2>
+        <h3>🎨 <strong>Definition</strong></h3>
+        <blockquote>
+          Design tokens are <strong>named entities</strong> that store visual design attributes. They are the <strong>smallest atoms</strong> of a design system.
+        </blockquote>
+
+        <h3><strong>Instead of this:</strong></h3>
+        <pre><code class="css">/* Scattered hardcoded values */
+.button {
+  background: #e2e891;
+  padding: 16px 24px;
+}
+.nav-item {
+  background: #e2e891;
+}
+.highlight {
+  background: #e2e891;
+}</code></pre>
+
+        <h3><strong>We use this:</strong></h3>
+        <pre><code class="typescript">// Single source of truth
+BRAND_COLORS.primary = '#e2e891';
+// ✨ Automatic propagation everywhere</code></pre>
+      </section>
+
+      <!-- Slide 2: The Problem We Solve -->
+      <section>
+        <h2>The Problem We Solve</h2>
+
+        <h3><strong>Before Design Tokens:</strong></h3>
+        <ul>
+          <li>❌ <strong>Inconsistent spacing</strong> across components</li>
+          <li>❌ <strong>Color variations</strong> from manual copying</li>
+          <li>❌ <strong>Maintenance nightmare</strong> when rebranding</li>
+          <li>❌ <strong>Designer-developer disconnect</strong></li>
+          <li>❌ <strong>Platform fragmentation</strong></li>
+        </ul>
+
+        <h3><strong>After Design Tokens:</strong></h3>
+        <ul>
+          <li>✅ <strong>Perfect consistency</strong> across all touchpoints</li>
+          <li>✅ <strong>Single source of truth</strong> for all design decisions</li>
+          <li>✅ <strong>Effortless rebranding</strong> with global updates</li>
+          <li>✅ <strong>Shared vocabulary</strong> between teams</li>
+          <li>✅ <strong>Multi-platform harmony</strong></li>
+        </ul>
+      </section>
+
+      <!-- Slide 3: Benefits & Business Value -->
+      <section>
+        <h2>Benefits & Business Value</h2>
+
+        <h3>🚀 <strong>Developer Benefits</strong></h3>
+        <ul>
+          <li><strong>Type Safety</strong>: IDE autocomplete prevents errors</li>
+          <li><strong>Maintainability</strong>: Change once, update everywhere</li>
+          <li><strong>Self-Documenting</strong>: <code>COLOR_TOKENS.text.primary</code> vs <code>#353535</code></li>
+        </ul>
+
+        <h3>🎨 <strong>Design Benefits</strong></h3>
+        <ul>
+          <li><strong>Consistency</strong>: Uniform visual language</li>
+          <li><strong>Efficiency</strong>: Pre-defined component styles</li>
+          <li><strong>Collaboration</strong>: Shared vocabulary with developers</li>
+        </ul>
+
+        <h3>💼 <strong>Business Benefits</strong></h3>
+        <ul>
+          <li><strong>Faster Development</strong>: Reduced decision fatigue</li>
+          <li><strong>Lower Maintenance</strong>: Fewer bugs and inconsistencies</li>
+          <li><strong>Brand Consistency</strong>: Professional appearance across platforms</li>
+          <li><strong>Scalability</strong>: Easy to add new features and platforms</li>
+        </ul>
+      </section>
+
+      <!-- Slide 4: Four Loop's Token Architecture -->
+      <section>
+        <h2>Four Loop's Token Architecture Overview</h2>
+
+        <h3><strong>🏗️ Sophisticated Multi-Layer System</strong></h3>
+        <pre><code>🔹 Layer 1: BRAND FOUNDATION (4 core colors)
+🔹 Layer 2: SEMANTIC COLORS (usage-based)
+🔹 Layer 3: COMPONENT TOKENS (context-specific)
+🔹 Layer 4: PLATFORM VARIANTS (iOS, Android, Web)</code></pre>
+
+        <p>Each layer builds upon the previous, creating a <strong>hierarchical system</strong> that ensures consistency while allowing platform-specific optimizations.</p>
+      </section>
+
+      <!-- Additional slides can be added here following the same pattern -->
+
+      <!-- Final Slide -->
+      <section class="title">
+        <h1>Questions?</h1>
+        <p>Ready to implement design tokens in your next project?</p>
+      </section>
+
+    </div>
+  </div>
+
+  <button class="exit-btn" onclick="window.location.href='/demo/presentations'">Exit</button>
+
+  <!-- Reveal.js JavaScript -->
+  <script src="../lib/reveal/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      controls: true,
+      progress: true,
+      center: false,
+      transition: 'slide',
+      slideNumber: true
+    });
+  </script>
+</body>
+</html>

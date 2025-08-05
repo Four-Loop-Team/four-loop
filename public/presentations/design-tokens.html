@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Tokens Presentation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; font-family: system-ui, -apple-system, sans-serif; }
+
+    .presentation {
+      width: 100vw; height: 100vh;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white; position: relative; overflow: hidden;
+    }
+
+    .slide {
+      width: 100%; height: calc(100% - 120px); display: none;
+      align-items: center; justify-content: center; padding: 4rem;
+      position: absolute; top: 0; left: 0;
+    }
+    .slide.active { display: flex; }
+    .slide-content { max-width: 1200px; width: 100%; }
+    .slide.title .slide-content { text-align: center; }
+
+    .slide-group { position: relative; width: 100%; height: 100%; }
+    .sub-slide {
+      width: 100%; height: calc(100% - 120px); display: none;
+      align-items: center; justify-content: center; padding: 4rem;
+      position: absolute; top: 0; left: 0;
+    }
+    .sub-slide.active { display: flex; }
+
+    h1 {
+      font-size: 4rem; font-weight: 800; margin-bottom: 2rem;
+      background: linear-gradient(45deg, #e2e891, #ffffff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem; color: #e2e891; }
+    p { font-size: 1.4rem; line-height: 1.6; margin-bottom: 1rem; opacity: 0.9; }
+    .mono { font-family: monospace; font-weight: 700; font-size: 1.8rem; }
+
+    .code-block {
+      background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2); margin: 2rem 0;
+    }
+    pre { font-size: 1.2rem; line-height: 1.6; margin: 0; font-family: monospace; }
+
+    .controls {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+      background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px);
+      display: flex; align-items: center; justify-content: space-between; padding: 0 3rem;
+      border-top: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .slide-counter { font-size: 1.2rem; font-weight: 600; opacity: 0.9; }
+    .dots { display: flex; gap: 1rem; align-items: center; }
+    .dot {
+      width: 12px; height: 12px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s;
+    }
+    .dot.active { background: #e2e891; transform: scale(1.2); }
+
+    button {
+      background: rgba(255,255,255,0.2); border: none; color: white;
+      padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;
+      font-size: 1rem; font-weight: 600; transition: all 0.3s;
+    }
+    button:hover:not(:disabled) { background: rgba(255,255,255,0.3); }
+    button:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); cursor: not-allowed; }
+    button.primary { background: #e2e891; color: #000; font-weight: 700; }
+    button.primary:hover { background: #f0f6a1; }
+
+    .exit-btn { position: absolute; top: 2rem; right: 2rem; }
+    .nav-buttons { display: flex; gap: 1rem; }
+
+    .color-demo {
+      display: flex; gap: 2rem; margin: 2rem 0; align-items: center;
+    }
+    .color-swatch {
+      width: 80px; height: 80px; border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: #000; font-size: 0.9rem;
+    }
+    .primary { background: #e2e891; }
+    .secondary { background: #353535; color: #fff; }
+    .tertiary { background: #232323; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="presentation">
+    <!-- Slide 1: Title -->
+    <div class="slide active title" data-slide="0">
+      <div class="slide-content">
+        <h1>Design Tokens System</h1>
+        <p style="font-size: 1.8rem; margin-bottom: 1rem;">Four Loop Digital Brand Standards</p>
+        <p>A comprehensive system of design decisions translated into reusable, platform-agnostic tokens that maintain consistency across all digital touchpoints.</p>
+      </div>
+    </div>
+
+    <!-- Slide 2: Brand Colors -->
+    <div class="slide" data-slide="1">
+      <div class="slide-content">
+        <h1>Brand Colors</h1>
+
+        <div style="margin: 3rem 0;">
+          <h2>Primary Color</h2>
+          <div class="color-demo">
+            <div class="color-swatch primary">#e2e891</div>
+            <p>Used for primary actions, highlights, and brand accent elements</p>
+          </div>
+        </div>
+
+        <div style="margin: 3rem 0;">
+          <h2>Secondary Color</h2>
+          <div class="color-demo">
+            <div class="color-swatch secondary">#353535</div>
+            <p>Used for text, borders, and secondary interface elements</p>
+          </div>
+        </div>
+
+        <div style="margin: 3rem 0;">
+          <h2>Tertiary Color</h2>
+          <div class="color-demo">
+            <div class="color-swatch tertiary">#232323</div>
+            <p>Used for backgrounds, containers, and depth layering</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Typography - Split into sub-slides -->
+    <div class="slide" data-slide="2">
+      <div class="slide-group">
+        <!-- Typography Overview -->
+        <div class="sub-slide active" data-sub="0">
+          <div class="slide-content">
+            <h1>Typography Scale</h1>
+            <p style="font-size: 1.8rem; margin-bottom: 2rem; opacity: 0.8;">Our systematic approach to text hierarchy</p>
+
+            <div style="margin: 2rem 0;">
+              <h2>Display</h2>
+              <p class="mono">64px / 4rem</p>
+              <p>Hero headings and major display text</p>
+            </div>
+
+            <div style="margin: 2rem 0;">
+              <h2>Heading 1</h2>
+              <p class="mono">48px / 3rem</p>
+              <p>Primary page headings</p>
+            </div>
+
+            <p style="margin-top: 3rem; opacity: 0.6; font-size: 1.1rem;">↓ Press down arrow for more typography levels</p>
+          </div>
+        </div>
+
+        <!-- Typography Details -->
+        <div class="sub-slide" data-sub="1">
+          <div class="slide-content">
+            <h1>Typography Scale</h1>
+            <p style="font-size: 1.8rem; margin-bottom: 2rem; opacity: 0.8;">Body text and interface typography</p>
+
+            <div style="margin: 2rem 0;">
+              <h2>Heading 2</h2>
+              <p class="mono">32px / 2rem</p>
+              <p>Section headings and subheadings</p>
+            </div>
+
+            <div style="margin: 2rem 0;">
+              <h2>Body Large</h2>
+              <p class="mono">24px / 1.5rem</p>
+              <p>Important body text and descriptions</p>
+            </div>
+
+            <div style="margin: 2rem 0;">
+              <h2>Body Regular</h2>
+              <p class="mono">16px / 1rem</p>
+              <p>Standard body text and interface copy</p>
+            </div>
+
+            <p style="margin-top: 3rem; opacity: 0.6; font-size: 1.1rem;">↑ Press up arrow to go back</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Implementation - Split into sub-slides -->
+    <div class="slide" data-slide="3">
+      <div class="slide-group">
+        <!-- CSS Implementation -->
+        <div class="sub-slide active" data-sub="0">
+          <div class="slide-content">
+            <h1>Implementation</h1>
+            <p style="font-size: 1.8rem; margin-bottom: 2rem; opacity: 0.8;">CSS Custom Properties</p>
+
+            <div class="code-block">
+              <pre>--brand-primary: #e2e891;
+--brand-secondary: #353535;
+--brand-tertiary: #232323;
+--spacing-sm: 0.5rem;
+--spacing-md: 1rem;
+--spacing-lg: 2rem;
+--border-radius: 8px;</pre>
+            </div>
+
+            <p>Modern CSS approach using custom properties for dynamic theming and runtime updates.</p>
+
+            <p style="margin-top: 3rem; opacity: 0.6; font-size: 1.1rem;">↓ Press down arrow for SCSS variables</p>
+          </div>
+        </div>
+
+        <!-- SCSS Implementation -->
+        <div class="sub-slide" data-sub="1">
+          <div class="slide-content">
+            <h1>Implementation</h1>
+            <p style="font-size: 1.8rem; margin-bottom: 2rem; opacity: 0.8;">SCSS Variables</p>
+
+            <div class="code-block">
+              <pre>$brand-primary: #e2e891;
+$brand-secondary: #353535;
+$brand-tertiary: #232323;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+$border-radius: 8px;</pre>
+            </div>
+
+            <p>Traditional SCSS approach for compile-time constants and better IDE support.</p>
+
+            <p style="margin-top: 2rem; opacity: 0.7;">Press <strong>F</strong> for fullscreen • <strong>ESC</strong> to exit</p>
+            <p style="margin-top: 1rem; opacity: 0.6; font-size: 1.1rem;">↑ Press up arrow to go back</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="slide-counter"><span id="current">1</span> of 4</div>
+      <div class="dots">
+        <button class="dot active" onclick="goTo(0)"></button>
+        <button class="dot" onclick="goTo(1)"></button>
+        <button class="dot" onclick="goTo(2)"></button>
+        <button class="dot" onclick="goTo(3)"></button>
+      </div>
+      <div class="nav-buttons">
+        <button id="prev" onclick="prev()" disabled>Previous</button>
+        <button id="next" onclick="next()" class="primary">Next</button>
+        <button onclick="fullscreen()">Fullscreen (F)</button>
+      </div>
+    </div>
+    <button class="exit-btn" onclick="exitPresentation()">Exit</button>
+  </div>
+
+  <script>
+    let current = 0;
+    let currentSub = 0;
+    const total = 4;
+
+    // Track which slides have sub-slides
+    const slidesWithSubs = {
+      2: 2, // Typography has 2 sub-slides
+      3: 2  // Implementation has 2 sub-slides
+    };
+
+    function show(slideIndex, subIndex = 0) {
+      // Hide all slides
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+
+      // Show current slide
+      const currentSlide = document.querySelector('[data-slide="' + slideIndex + '"]');
+      currentSlide.classList.add('active');
+
+      // Handle sub-slides if they exist
+      if (slidesWithSubs[slideIndex]) {
+        const subSlides = currentSlide.querySelectorAll('.sub-slide');
+        subSlides.forEach(s => s.classList.remove('active'));
+        const targetSub = currentSlide.querySelector('[data-sub="' + subIndex + '"]');
+        if (targetSub) targetSub.classList.add('active');
+      }
+
+      // Update UI
+      document.getElementById('current').textContent = slideIndex + 1;
+      document.querySelectorAll('.dot').forEach((d, idx) => d.classList.toggle('active', idx === slideIndex));
+      document.getElementById('prev').disabled = slideIndex === 0 && subIndex === 0;
+      document.getElementById('next').disabled = slideIndex === total - 1 && (!slidesWithSubs[slideIndex] || subIndex === slidesWithSubs[slideIndex] - 1);
+      document.getElementById('next').classList.toggle('primary', !(slideIndex === total - 1 && (!slidesWithSubs[slideIndex] || subIndex === slidesWithSubs[slideIndex] - 1)));
+    }
+
+    function next() {
+      if (slidesWithSubs[current] && currentSub < slidesWithSubs[current] - 1) {
+        // Move to next sub-slide
+        currentSub++;
+        show(current, currentSub);
+      } else if (current < total - 1) {
+        // Move to next main slide
+        current++;
+        currentSub = 0;
+        show(current, currentSub);
+      }
+    }
+
+    function prev() {
+      if (currentSub > 0) {
+        // Move to previous sub-slide
+        currentSub--;
+        show(current, currentSub);
+      } else if (current > 0) {
+        // Move to previous main slide
+        current--;
+        currentSub = slidesWithSubs[current] ? slidesWithSubs[current] - 1 : 0;
+        show(current, currentSub);
+      }
+    }
+
+    function goTo(slideIndex) {
+      current = slideIndex;
+      currentSub = 0;
+      show(current, currentSub);
+    }
+
+    function goDown() {
+      if (slidesWithSubs[current] && currentSub < slidesWithSubs[current] - 1) {
+        currentSub++;
+        show(current, currentSub);
+      }
+    }
+
+    function goUp() {
+      if (currentSub > 0) {
+        currentSub--;
+        show(current, currentSub);
+      }
+    }
+
+    function fullscreen() { document.documentElement.requestFullscreen(); }
+    function exitPresentation() {
+      if (window.opener) {
+        window.close();
+      } else {
+        window.location.href = '/';
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      switch(e.key) {
+        case 'ArrowRight': case ' ': e.preventDefault(); next(); break;
+        case 'ArrowLeft': e.preventDefault(); prev(); break;
+        case 'ArrowDown': e.preventDefault(); goDown(); break;
+        case 'ArrowUp': e.preventDefault(); goUp(); break;
+        case 'f': case 'F': e.preventDefault(); fullscreen(); break;
+        case 'Escape': e.preventDefault(); exitPresentation(); break;
+        default:
+          const n = parseInt(e.key);
+          if (n >= 1 && n <= total) { e.preventDefault(); goTo(n-1); }
+      }
+    });
+
+    // Initialize
+    show(0, 0);
+  </script>
+</body>
+</html>

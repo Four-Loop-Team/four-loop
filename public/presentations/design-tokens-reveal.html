@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Tokens - Reveal.js</title>
+
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="../lib/reveal/reveal.css">
+  <link rel="stylesheet" href="../lib/reveal/theme/black.css">
+
+  <!-- Custom styles -->
+  <style>
+    .reveal {
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal .slides section {
+      text-align: left;
+    }
+
+    .reveal .slides section.title {
+      text-align: center;
+    }
+
+    .reveal h1 {
+      color: #e2e891;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, #e2e891, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    .reveal h2 {
+      color: #e2e891;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .reveal p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .reveal .subtitle {
+      font-size: 1.5rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+
+    .reveal .mono {
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #e2e891;
+    }
+
+    .reveal pre {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+
+    .reveal code {
+      color: #e2e891;
+    }
+
+    .color-demo {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem 0;
+      align-items: center;
+    }
+
+    .color-swatch {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .primary { background: #e2e891; color: #000; }
+    .secondary { background: #353535; color: #fff; }
+    .tertiary { background: #232323; color: #fff; }
+
+    .reveal .progress {
+      color: #e2e891;
+    }
+
+    .reveal .controls {
+      color: #e2e891;
+    }
+
+    .reveal .slide-number {
+      color: #e2e891;
+    }
+
+    /* Custom background */
+    .reveal .backgrounds {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .exit-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      z-index: 1000;
+    }
+
+    .exit-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .navigation-hint {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Title Slide -->
+      <section class="title">
+        <h1>Design Tokens System</h1>
+        <p class="subtitle">Four Loop Digital Brand Standards</p>
+        <p>A comprehensive system of design decisions translated into reusable, platform-agnostic tokens that maintain consistency across all digital touchpoints.</p>
+      </section>
+
+      <!-- Brand Colors -->
+      <section>
+        <section>
+          <h1>Brand Colors</h1>
+          <p class="subtitle">Our foundational color palette</p>
+
+          <div style="margin: 3rem 0;">
+            <h2>Primary Color</h2>
+            <div class="color-demo">
+              <div class="color-swatch primary">#e2e891</div>
+              <p>Used for primary actions, highlights, and brand accent elements</p>
+            </div>
+          </div>
+
+          <div class="navigation-hint">↓ Press down for more colors</div>
+        </section>
+
+        <section>
+          <h1>Brand Colors</h1>
+
+          <div style="margin: 3rem 0;">
+            <h2>Secondary Color</h2>
+            <div class="color-demo">
+              <div class="color-swatch secondary">#353535</div>
+              <p>Used for text, borders, and secondary interface elements</p>
+            </div>
+          </div>
+
+          <div style="margin: 3rem 0;">
+            <h2>Tertiary Color</h2>
+            <div class="color-demo">
+              <div class="color-swatch tertiary">#232323</div>
+              <p>Used for backgrounds, containers, and depth layering</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Typography -->
+      <section>
+        <section>
+          <h1>Typography Scale</h1>
+          <p class="subtitle">Our systematic approach to text hierarchy</p>
+
+          <div style="margin: 2rem 0;">
+            <h2>Display</h2>
+            <p class="mono">64px / 4rem</p>
+            <p>Hero headings and major display text</p>
+          </div>
+
+          <div style="margin: 2rem 0;">
+            <h2>Heading 1</h2>
+            <p class="mono">48px / 3rem</p>
+            <p>Primary page headings</p>
+          </div>
+
+          <div class="navigation-hint">↓ Press down for more typography levels</div>
+        </section>
+
+        <section>
+          <h1>Typography Scale</h1>
+          <p class="subtitle">Body text and interface typography</p>
+
+          <div style="margin: 2rem 0;">
+            <h2>Heading 2</h2>
+            <p class="mono">32px / 2rem</p>
+            <p>Section headings and subheadings</p>
+          </div>
+
+          <div style="margin: 2rem 0;">
+            <h2>Body Large</h2>
+            <p class="mono">24px / 1.5rem</p>
+            <p>Important body text and descriptions</p>
+          </div>
+
+          <div style="margin: 2rem 0;">
+            <h2>Body Regular</h2>
+            <p class="mono">16px / 1rem</p>
+            <p>Standard body text and interface copy</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- Implementation -->
+      <section>
+        <section>
+          <h1>Implementation</h1>
+          <p class="subtitle">CSS Custom Properties</p>
+
+          <pre><code class="css">--brand-primary: #e2e891;
+--brand-secondary: #353535;
+--brand-tertiary: #232323;
+--spacing-sm: 0.5rem;
+--spacing-md: 1rem;
+--spacing-lg: 2rem;
+--border-radius: 8px;</code></pre>
+
+          <p>Modern CSS approach using custom properties for dynamic theming and runtime updates.</p>
+
+          <div class="navigation-hint">↓ Press down for SCSS variables</div>
+        </section>
+
+        <section>
+          <h1>Implementation</h1>
+          <p class="subtitle">SCSS Variables</p>
+
+          <pre><code class="scss">$brand-primary: #e2e891;
+$brand-secondary: #353535;
+$brand-tertiary: #232323;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+$border-radius: 8px;</code></pre>
+
+          <p>Traditional SCSS approach for compile-time constants and better IDE support.</p>
+
+          <p style="margin-top: 2rem; opacity: 0.7;">
+            Press <strong>F</strong> for fullscreen • <strong>ESC</strong> to exit
+          </p>
+        </section>
+      </section>
+
+    </div>
+  </div>
+
+  <button class="exit-btn" onclick="exitPresentation()">Exit</button>
+
+  <!-- Reveal.js JavaScript -->
+  <script src="../lib/reveal/reveal.js"></script>
+
+  <script>
+    Reveal.initialize({
+      hash: true,
+      controls: true,
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+
+      // Keyboard shortcuts
+      keyboard: {
+        70: function() { // F key
+          Reveal.toggleFullscreen();
+        },
+        27: function() { // ESC key
+          exitPresentation();
+        }
+      },
+
+      // Navigation settings
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+
+      // Display settings
+      display: 'block',
+      embedded: false,
+
+      // Slide number
+      slideNumber: true,
+      slideNumberFormat: '%c of %t'
+    });
+
+    function exitPresentation() {
+      if (window.opener) {
+        window.close();
+      } else {
+        window.location.href = '/';
+      }
+    }
+  </script>
+</body>
+</html>

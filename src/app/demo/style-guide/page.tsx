@@ -11,6 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import Link from 'next/link';
 
 interface ColorSwatch {
   name: string;
@@ -149,7 +150,23 @@ export default function StyleGuide() {
             This style guide documents the design tokens, components, and
             patterns used throughout the Four Loop Digital design system.
           </Typography>
-        </Box>{' '}
+
+          {/* Navigation Links */}
+          <Box sx={{ mt: 3 }}>
+            <Stack direction='row' spacing={2}>
+              <Link href='/demo/components' style={{ textDecoration: 'none' }}>
+                <Button variant='outline'>🧩 Components</Button>
+              </Link>
+              <Link
+                href='/demo/presentations'
+                style={{ textDecoration: 'none' }}
+              >
+                <Button variant='outline'>🎯 Presentations</Button>
+              </Link>
+            </Stack>
+          </Box>
+        </Box>
+
         {/* Color Palette */}
         <Paper
           elevation={1}

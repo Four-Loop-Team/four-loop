@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Tokens: Complete Guide - Reveal.js</title>
+
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="../lib/reveal/reveal.css">
+  <link rel="stylesheet" href="../lib/reveal/theme/black.css">
+
+  <!-- Custom styles -->
+  <style>
+    .reveal {
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal .slides section {
+      text-align: left;
+    }
+
+    .reveal .slides section.title {
+      text-align: center;
+    }
+
+    .reveal h1 {
+      color: #e2e891;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, #e2e891, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    .reveal h2 {
+      color: #e2e891;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .reveal p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .reveal pre {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .reveal code {
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 0.2rem 0.4rem;
+      font-family: 'SF Mono', Monaco, monospace;
+      color: #e2e891;
+    }
+
+    .reveal ul, .reveal ol {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .reveal li {
+      margin-bottom: 0.5rem;
+    }
+
+    .reveal .backgrounds {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .exit-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      z-index: 1000;
+    }
+
+    .exit-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <!-- Title Slide -->
+      <section class="title">
+        <h1>Design Tokens: Complete Guide</h1>
+        <p><strong>Comprehensive presentation covering token architecture, business value, implementation strategies, and developer experience</strong></p>
+      </section>
+
+      <!-- Slide 1: What are Design Tokens? -->
+      <section>
+        <h2>What are Design Tokens?</h2>
+        <p><strong>Design tokens are the visual design atoms of the design system</strong></p>
+        <p>They are named entities that store visual design attributes. We use them in place of hard-coded values to maintain a scalable and consistent visual system.</p>
+
+        <h3>Examples:</h3>
+        <pre><code>// Instead of this:
+color: #e2e891;
+font-size: 16px;
+margin: 24px;
+
+// We use this:
+color: var(--color-primary);
+font-size: var(--font-size-base);
+margin: var(--spacing-lg);
+
+// ✨ Automatic propagation everywhere</code></pre>
+      </section>
+
+      <!-- Slide 2: The Problem We Solve -->
+      <section>
+        <h2>The Problem We Solve</h2>
+
+        <h3><strong>Before Design Tokens:</strong></h3>
+        <ul>
+          <li>❌ <strong>Inconsistent spacing</strong> across components</li>
+          <li>❌ <strong>Color variations</strong> from manual copying</li>
+          <li>❌ <strong>Maintenance nightmare</strong> when rebranding</li>
+          <li>❌ <strong>Designer-developer disconnect</strong></li>
+          <li>❌ <strong>Platform fragmentation</strong></li>
+        </ul>
+
+        <h3><strong>After Design Tokens:</strong></h3>
+        <ul>
+          <li>✅ <strong>Perfect consistency</strong> across all touchpoints</li>
+          <li>✅ <strong>Single source of truth</strong> for all design decisions</li>
+          <li>✅ <strong>Effortless rebranding</strong> with global updates</li>
+          <li>✅ <strong>Shared vocabulary</strong> between teams</li>
+          <li>✅ <strong>Multi-platform harmony</strong></li>
+        </ul>
+      </section>
+
+      <!-- Slide 3: Benefits & Business Value -->
+      <section>
+        <h2>Benefits & Business Value</h2>
+
+        <h3>🚀 <strong>Developer Benefits</strong></h3>
+        <ul>
+          <li><strong>Type Safety</strong>: IDE autocomplete prevents errors</li>
+          <li><strong>Maintainability</strong>: Change once, update everywhere</li>
+          <li><strong>Self-Documenting</strong>: <code>COLOR_TOKENS.text.primary</code> vs <code>#353535</code></li>
+        </ul>
+
+        <h3>🎨 <strong>Design Benefits</strong></h3>
+        <ul>
+          <li><strong>Consistency</strong>: Uniform visual language</li>
+          <li><strong>Efficiency</strong>: Pre-defined component styles</li>
+          <li><strong>Collaboration</strong>: Shared vocabulary with developers</li>
+        </ul>
+
+        <h3>💼 <strong>Business Benefits</strong></h3>
+        <ul>
+          <li><strong>Faster Development</strong>: Reduced decision fatigue</li>
+          <li><strong>Lower Maintenance</strong>: Fewer bugs and inconsistencies</li>
+          <li><strong>Brand Consistency</strong>: Professional appearance across platforms</li>
+          <li><strong>Scalability</strong>: Easy to add new features and platforms</li>
+        </ul>
+      </section>
+
+      <!-- Slide 4: Token Architecture Overview -->
+      <section>
+        <h2>Four Loop's Token Architecture Overview</h2>
+
+        <h3><strong>🏗️ Sophisticated Multi-Layer System</strong></h3>
+        <pre><code>🔹 Layer 1: BRAND FOUNDATION (4 core colors)
+🔹 Layer 2: SEMANTIC COLORS (usage-based)
+🔹 Layer 3: COMPONENT TOKENS (contextual)
+🔹 Layer 4: TYPOGRAPHY SCALE (systematic)
+🔹 Layer 5: SPACING SYSTEM (mathematical)</code></pre>
+
+        <p><strong>Each layer builds upon the previous, creating a coherent design language that scales from individual components to entire product suites.</strong></p>
+      </section>
+
+      <!-- Slide 5: Brand Foundation -->
+      <section>
+        <h2>Brand Foundation (Layer 1)</h2>
+
+        <h3><strong>🎨 Core Brand Colors</strong></h3>
+        <pre><code>export const BRAND_COLORS = {
+  primary: '#e2e891',     // Four Loop Green
+  secondary: '#8b5a3c',   // Warm Brown
+  accent: '#d4af37',      // Gold Accent
+  neutral: '#2c3e50'      // Deep Blue-Gray
+} as const;</code></pre>
+
+        <p><strong>These four colors form the foundation of our entire visual identity. Every other color in the system derives from or complements these core values.</strong></p>
+      </section>
+
+      <!-- Slide 6: Implementation Strategy -->
+      <section>
+        <h2>Implementation Strategy</h2>
+
+        <h3><strong>📋 Phased Rollout Approach</strong></h3>
+        <ol>
+          <li><strong>Phase 1</strong>: Define core token system</li>
+          <li><strong>Phase 2</strong>: Convert existing components</li>
+          <li><strong>Phase 3</strong>: Establish usage guidelines</li>
+          <li><strong>Phase 4</strong>: Team training and adoption</li>
+          <li><strong>Phase 5</strong>: Continuous refinement</li>
+        </ol>
+
+        <h3><strong>🔧 Technical Implementation</strong></h3>
+        <ul>
+          <li>TypeScript interfaces for type safety</li>
+          <li>CSS custom properties for runtime flexibility</li>
+          <li>Automated testing for token compliance</li>
+          <li>Documentation generation from code</li>
+        </ul>
+      </section>
+
+      <!-- Slide 7: Developer Experience -->
+      <section>
+        <h2>Developer Experience</h2>
+
+        <h3><strong>💻 Intelligent IDE Support</strong></h3>
+        <pre><code>// TypeScript autocomplete guides developers
+const buttonStyle = {
+  backgroundColor: TOKENS.color.primary,  // ✅ Autocomplete
+  padding: TOKENS.spacing.md,             // ✅ Type safety
+  fontSize: TOKENS.typography.body.size   // ✅ Documentation
+};</code></pre>
+
+        <h3><strong>🎯 Key DX Features</strong></h3>
+        <ul>
+          <li><strong>Autocomplete</strong>: Never guess token names</li>
+          <li><strong>Type Safety</strong>: Catch errors at compile time</li>
+          <li><strong>Documentation</strong>: Inline usage examples</li>
+          <li><strong>Validation</strong>: Automated compliance checking</li>
+        </ul>
+      </section>
+
+      <!-- Slide 8: Multi-Platform Output -->
+      <section>
+        <h2>Multi-Platform Output Formats</h2>
+
+        <h3><strong>🌐 Single Source, Multiple Targets</strong></h3>
+        <pre><code>// TypeScript/JavaScript
+export const TOKENS = { color: { primary: '#e2e891' } };
+
+// CSS Custom Properties
+:root { --color-primary: #e2e891; }
+
+// SCSS Variables
+$color-primary: #e2e891;
+
+// JSON for APIs
+{ "color": { "primary": "#e2e891" } }</code></pre>
+
+        <p><strong>Our token system automatically generates optimized formats for web, mobile, and design tools from a single source of truth.</strong></p>
+      </section>
+
+      <!-- Final Slide: Questions & Next Steps -->
+      <section class="title">
+        <h1>Questions & Next Steps</h1>
+        <p><strong>Ready to implement design tokens?</strong></p>
+        <ul>
+          <li>🔍 Review the documentation</li>
+          <li>🛠️ Start with component conversion</li>
+          <li>📚 Join team training sessions</li>
+          <li>💬 Ask questions in #design-system</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <button class="exit-btn" onclick="window.location.href='/demo/presentations'">Exit</button>
+
+  <!-- Reveal.js JavaScript -->
+  <script src="../lib/reveal/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      controls: true,
+      progress: true,
+      center: false,
+      transition: 'slide',
+      slideNumber: true,
+      keyboard: {
+        27: function() { window.location.href = '/demo/presentations'; }, // ESC key
+        81: function() { window.location.href = '/demo/presentations'; }  // Q key
+      }
+    });
+  </script>
+</body>
+</html>

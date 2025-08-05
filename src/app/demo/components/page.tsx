@@ -24,6 +24,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import Link from 'next/link';
 import { useState } from 'react';
 
 interface TabPanelProps {
@@ -164,6 +165,18 @@ export default function ComponentsShowcase() {
           states, configurations, and usage examples. All components are built
           with accessibility, performance, and developer experience in mind.
         </Typography>
+
+        {/* Navigation Links */}
+        <Box sx={{ mt: 3 }}>
+          <Stack direction='row' spacing={2}>
+            <Link href='/demo/style-guide' style={{ textDecoration: 'none' }}>
+              <Button variant='outline'>📋 Style Guide</Button>
+            </Link>
+            <Link href='/demo/presentations' style={{ textDecoration: 'none' }}>
+              <Button variant='outline'>🎯 Presentations</Button>
+            </Link>
+          </Stack>
+        </Box>
       </Box>
 
       {/* Navigation Tabs */}

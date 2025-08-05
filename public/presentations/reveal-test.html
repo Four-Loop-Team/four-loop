@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reveal.js Test</title>
+
+  <link rel="stylesheet" href="../lib/reveal/reveal.css">
+  <link rel="stylesheet" href="../lib/reveal/theme/black.css">
+
+  <style>
+    .reveal h1 { color: #e2e891; }
+    .reveal h2 { color: #e2e891; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h1>Slide 1</h1>
+        <p>This is the first slide.</p>
+      </section>
+
+      <section>
+        <h1>Slide 2</h1>
+        <p>This is the second slide.</p>
+      </section>
+
+      <section>
+        <section>
+          <h1>Slide 3</h1>
+          <p>This is a vertical slide.</p>
+          <p>Press down arrow for sub-slide.</p>
+        </section>
+        <section>
+          <h1>Slide 3.1</h1>
+          <p>This is the sub-slide.</p>
+        </section>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="../lib/reveal/reveal.js"></script>
+  <script>
+    console.log('Reveal object:', typeof Reveal);
+    Reveal.initialize({
+      hash: true,
+      controls: true,
+      progress: true,
+      center: true,
+      transition: 'slide'
+    }).then(() => {
+      console.log('Reveal.js initialized successfully');
+    }).catch(error => {
+      console.error('Reveal.js initialization failed:', error);
+    });
+  </script>
+</body>
+</html>

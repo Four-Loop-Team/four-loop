@@ -1,0 +1,391 @@
+@use '../../../app/ui/styles/variables';
+
+/* Hide main site elements when presentation is active */
+.presentation ~ * {
+  display: none;
+}
+
+/* Force hide navigation and layout elements */
+:global {
+  body:has(.presentation) {
+    nav,
+    header,
+    .MuiAppBar-root,
+    #main-content > *:not(:has(.presentation)) {
+      display: none;
+    }
+  }
+}
+
+/* High specificity to override layout constraints */
+html body .presentation {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #000 100%);
+  color: white;
+  overflow: hidden;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  /* Override parent container constraints */
+  transform: none;
+  clip: none;
+  clip-path: none;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.loadingContent {
+  text-align: center;
+}
+
+.spinner {
+  width: 8rem;
+  height: 8rem;
+  border: 2px solid transparent;
+  border-bottom: 2px solid variables.$brand-primary;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  color: #9ca3af;
+}
+
+.slideContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #000 100%);
+  color: white;
+}
+
+.navigationControls {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.navDot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #4b5563;
+}
+
+.navDot:hover {
+  background-color: #6b7280;
+}
+
+.navDot.active {
+  background-color: variables.$brand-primary;
+  transform: scale(1.25);
+}
+
+.slideNavigation {
+  position: fixed;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.navButton {
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: rgb(31 41 55 / 80%);
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton:hover {
+  background-color: rgb(55 65 81 / 80%);
+}
+
+.slideCounter {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 10;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.mainContent {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.contentWrapper {
+  max-width: 64rem;
+  width: 100%;
+}
+
+.slideContent {
+  transition: all 0.5s ease-in-out;
+}
+
+.title {
+  font-size: 3.75rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+  background: linear-gradient(to right, variables.$brand-primary, #fde047);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.subtitle {
+  font-size: 1.875rem;
+  text-align: center;
+  color: #d1d5db;
+  margin-bottom: 3rem;
+}
+
+.content {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.logo {
+  margin: 0 auto 1.5rem;
+  opacity: 0.8;
+}
+
+.logoMain {
+  margin: 0 auto 1.5rem;
+}
+
+.description {
+  font-size: 1.25rem;
+  color: #d1d5db;
+  margin-bottom: 2rem;
+}
+
+.navigation {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.blockquote {
+  font-size: 1.125rem;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: rgb(31 41 55 / 50%);
+  border-radius: 0.5rem;
+  border-left: 4px solid variables.$brand-primary;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (width >= 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .title {
+    font-size: 4.5rem;
+  }
+
+  .subtitle {
+    font-size: 2.25rem;
+  }
+}
+
+.colorSection {
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: variables.$brand-primary;
+}
+
+.colorItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.colorSwatch {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.375rem;
+}
+
+.colorSwatchYellow {
+  background-color: variables.$brand-primary;
+}
+
+.colorSwatchGray {
+  background-color: variables.$brand-secondary;
+  border: 1px solid #4b5563;
+}
+
+.colorSwatchBlack {
+  background-color: variables.$brand-tertiary;
+}
+
+.colorInfo {
+  flex: 1;
+}
+
+.colorCode {
+  font-family: Monaco, Menlo, 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.colorLabel {
+  color: #9ca3af;
+}
+
+.typographyScale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.typeHeadingLarge {
+  font-size: 1.875rem;
+  font-weight: bold;
+}
+
+.typeHeadingMedium {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.typeHeadingSmall {
+  font-size: 1.25rem;
+}
+
+.typeBody {
+  font-size: 1rem;
+}
+
+.typeCaption {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.thankYouTitle {
+  font-size: 1.875rem;
+  margin-bottom: 1.5rem;
+  color: variables.$brand-primary;
+}
+
+.thankYouDescription {
+  font-size: 1.25rem;
+  color: #d1d5db;
+  margin-bottom: 2rem;
+}
+
+.companyInfo {
+  color: #9ca3af;
+}
+
+.progressBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: #1f2937;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(to right, variables.$brand-primary, #fde047);
+  transition: width 0.3s ease-out;
+}
+
+.iconItems {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.iconItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.25rem;
+}
+
+.iconGradient {
+  background: linear-gradient(to right, #ef4444, #3b82f6);
+}
+
+.iconText {
+  background-color: #4b5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.iconBorder {
+  border: 2px solid #9ca3af;
+}
+
+.iconShadow {
+  background-color: #374151;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%);
+}
