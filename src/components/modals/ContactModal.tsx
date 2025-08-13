@@ -168,7 +168,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               mt: '32px',
             }}
           >
-            <Button type='submit' variant='primary' colorVariant='secondary'>
+            <Button type='submit' variant='outlined' color='dark'>
               Let&apos;s Talk
             </Button>
           </Box>

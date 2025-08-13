@@ -12,15 +12,15 @@
  * import { Button } from '@/components/ui/Button';
  * import type { ButtonProps } from '@/components/ui/Button';
  *
- * <Button variant="primary" onClick={handleClick}>
+ * <Button variant="outlined" onClick={handleClick}>
  *   Let's Collaborate
  * </Button>
  *
- * <Button variant="secondary" onClick={handleClick}>
- *   Secondary Action
+ * <Button variant="contained" onClick={handleClick}>
+ *   Contained Action
  * </Button>
  *
- * <Button variant="primary" colorVariant="secondary" onClick={handleClick}>
+ * <Button variant="outlined" color="dark" onClick={handleClick}>
  *   Dark on Light Background
  * </Button>
  * ```

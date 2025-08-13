@@ -1,23 +1,23 @@
 'use client';
 
 import { useDesignSystem } from '@/lib/hooks';
-import { colors as brandColors } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
-import MuiButton from '@mui/material/Button';
 import EastIcon from '@mui/icons-material/East';
-import React, { forwardRef, useEffect, useState } from 'react';
 import type { ButtonProps as MuiButtonProps } from '@mui/material/Button';
+import MuiButton from '@mui/material/Button';
 import type { SxProps, Theme } from '@mui/material/styles';
+import React, { forwardRef, useEffect, useState } from 'react';
 
 /**
  * Button component props interface
  */
-export interface ButtonProps extends Omit<MuiButtonProps, 'variant' | 'size'> {
+export interface ButtonProps
+  extends Omit<MuiButtonProps, 'variant' | 'size' | 'color'> {
   /** Button variant style */
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'outlined' | 'contained' | 'text';
   /** Button color scheme */
-  colorVariant?: 'primary' | 'secondary';
+  color?: 'light' | 'dark';
   /** Button size */
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'small' | 'medium' | 'large';
   /** Shows loading spinner when true */
   loading?: boolean;
   /** Icon to display on the left side */
@@ -35,26 +35,37 @@ export interface ButtonProps extends Omit<MuiButtonProps, 'variant' | 'size'> {
  * @component
  * @example
  * ```tsx
- * // Basic usage
- * <Button variant="primary">Click me</Button>
+ * // Basic outlined button (default)
+ * <Button variant="outlined">Click me</Button>
+ *
+ * // Contained button
+ * <Button variant="contained">Contained Button</Button>
+ *
+ * // Text button
+ * <Button variant="text">Text Button</Button>
  *
  * // With loading state
  * <Button loading>Loading...</Button>
+ *
+ * // Different sizes
+ * <Button size="small">Small Button</Button>
+ * <Button size="medium">Medium Button</Button>
+ * <Button size="large">Large Button</Button>
  *
  * // Full width button
  * <Button fullWidth>Full Width</Button>
  *
  * // Secondary color variant for light backgrounds
- * <Button variant="primary" colorVariant="secondary">Dark on Light</Button>
+ * <Button variant="outlined" color="dark">Dark on Light</Button>
  * ```
  */
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
-      variant = 'primary',
-      colorVariant = 'primary',
-      size = 'md',
+      variant = 'outlined',
+      color = 'light',
+      size = 'medium',
       loading = false,
       leftIcon,
       rightIcon,
@@ -66,55 +77,53 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const [isMounted, setIsMounted] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     const { colors, spacing, typography } = useDesignSystem();
 
     useEffect(() => {
       setIsMounted(true);
     }, []);
 
-    // Map our custom sizes to MUI sizes
-    const muiSizeMap = {
-      sm: 'small' as const,
-      md: 'medium' as const,
-      lg: 'large' as const,
-    };
-
-    // Map our custom variants to MUI variants
-    const getMuiVariant = (): 'text' | 'outlined' | 'contained' => {
-      switch (variant) {
-        case 'primary':
-          return 'outlined';
-        case 'secondary':
-          return 'contained';
-        case 'outline':
-          return 'outlined';
-        case 'ghost':
-          return 'text';
-        default:
-          return 'outlined';
-      }
-    };
-
-    // Get color scheme based on colorVariant
+    // Get color scheme based on color
     const colorScheme =
-      colorVariant === 'secondary'
+      color === 'dark'
         ? {
-            borderColor: brandColors.textDark,
-            textColor: brandColors.textDark,
-            hoverBackground: brandColors.textDark,
-            hoverText: brandColors.textLight,
+            borderColor: colors.text.primary,
+            textColor: colors.text.primary,
+            backgroundColor: colors.background.accent,
           }
         : {
             borderColor: colors.text.inverse,
             textColor: colors.text.inverse,
-            hoverBackground: colors.background.accent,
-            hoverText: colors.text.primary,
+            backgroundColor: colors.background.primary,
           };
 
-    // Handle primary variant with integrated ButtonPrimary functionality
-    if (variant === 'primary') {
+    // Handle outlined variant with integrated ButtonPrimary functionality
+    if (variant === 'outlined') {
+      const arrowBackgroundColor = isHovered
+        ? color === 'dark'
+          ? colors.background.accent
+          : colors.background.inverse
+        : color === 'dark'
+          ? colors.text.primary
+          : colors.background.accent;
+
+      const arrowColor =
+        isHovered && color === 'dark'
+          ? colors.text.primary
+          : color === 'dark'
+            ? colors.text.inverse
+            : colors.text.primary;
+
+      const arrowBorder =
+        color === 'dark'
+          ? `1px solid ${colors.border.default}`
+          : `1px solid ${colors.border.inverse}`;
+
+      const arrowMargin = '-1px -1px -1px 0';
+
       const primaryButtonSx: SxProps<Theme> = {
-        backgroundColor: 'transparent',
+        backgroundColor: colorScheme.backgroundColor,
         border: `1px solid ${colorScheme.borderColor}`,
         borderRadius: '30px',
         color: colorScheme.textColor,
@@ -124,8 +133,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         minHeight: 'auto',
         padding: 0,
         '&:hover': {
-          backgroundColor: colorScheme.hoverBackground,
-          color: colorScheme.hoverText,
           borderColor: colorScheme.borderColor,
         },
         '&:disabled': {
@@ -140,11 +147,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <MuiButton
           ref={ref}
-          variant={getMuiVariant()}
-          size={muiSizeMap[size]}
+          variant={variant}
+          size={size}
           disabled={disabled || loading}
           fullWidth={fullWidth}
           sx={primaryButtonSx}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           {...props}
         >
           <span
@@ -166,16 +175,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               borderRadius: '50%',
               width: '42px',
               height: '42px',
-              backgroundColor:
-                colorVariant === 'secondary'
-                  ? brandColors.textDark
-                  : colors.background.accent,
-              color:
-                colorVariant === 'secondary'
-                  ? brandColors.textLight
-                  : colors.text.primary,
+              backgroundColor: arrowBackgroundColor,
+              color: arrowColor,
+              border: arrowBorder,
+              margin: arrowMargin,
               flexShrink: 0,
+              transition:
+                'background-color 0.2s ease, color 0.2s ease, border 0.2s ease',
             }}
+            className='button-arrow'
           >
             {isMounted ? <EastIcon fontSize='small' /> : <span>→</span>}
           </span>
@@ -191,7 +199,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       textTransform: 'none',
       minWidth: '44px',
       minHeight: '44px',
-      ...(variant === 'secondary' && {
+      ...(variant === 'contained' && {
         backgroundColor: colors.background.secondary,
         color: colors.text.inverse,
         '&:hover': {
@@ -199,15 +207,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           opacity: 0.9,
         },
       }),
-      ...(variant === 'outline' && {
-        border: `1px solid ${colors.text.muted}`,
-        color: colors.text.inverse,
-        backgroundColor: 'transparent',
-        '&:hover': {
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        },
-      }),
-      ...(variant === 'ghost' && {
+      ...(variant === 'text' && {
         color: colors.text.inverse,
         backgroundColor: 'transparent',
         '&:hover': {
@@ -224,8 +224,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <MuiButton
         ref={ref}
-        variant={getMuiVariant()}
-        size={muiSizeMap[size]}
+        variant={variant}
+        size={size}
         disabled={disabled || loading}
         fullWidth={fullWidth}
         sx={customButtonSx}

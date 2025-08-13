@@ -155,13 +155,13 @@ export default function StyleGuide() {
           <Box sx={{ mt: 3 }}>
             <Stack direction='row' spacing={2}>
               <Link href='/demo/components' style={{ textDecoration: 'none' }}>
-                <Button variant='outline'>🧩 Components</Button>
+                <Button variant='outlined'>🧩 Components</Button>
               </Link>
               <Link
                 href='/demo/presentations'
                 style={{ textDecoration: 'none' }}
               >
-                <Button variant='outline'>🎯 Presentations</Button>
+                <Button variant='outlined'>🎯 Presentations</Button>
               </Link>
             </Stack>
           </Box>
@@ -798,10 +798,10 @@ export default function StyleGuide() {
                   direction='row'
                   sx={{ flexWrap: 'wrap', gap: 2 }}
                 >
-                  <Button variant='primary'>Primary</Button>
-                  <Button variant='secondary'>Secondary</Button>
-                  <Button variant='outline'>Outline</Button>
-                  <Button variant='ghost'>Ghost</Button>
+                  <Button variant='outlined'>Outlined</Button>
+                  <Button variant='contained'>Contained</Button>
+                  <Button variant='outlined'>Outline</Button>
+                  <Button variant='text'>Text</Button>
                 </Stack>
               </CardContent>
             </Card>

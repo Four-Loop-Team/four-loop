@@ -170,10 +170,10 @@ export default function ComponentsShowcase() {
         <Box sx={{ mt: 3 }}>
           <Stack direction='row' spacing={2}>
             <Link href='/demo/style-guide' style={{ textDecoration: 'none' }}>
-              <Button variant='outline'>📋 Style Guide</Button>
+              <Button variant='outlined'>📋 Style Guide</Button>
             </Link>
             <Link href='/demo/presentations' style={{ textDecoration: 'none' }}>
-              <Button variant='outline'>🎯 Presentations</Button>
+              <Button variant='outlined'>🎯 Presentations</Button>
             </Link>
           </Stack>
         </Box>
@@ -206,10 +206,10 @@ export default function ComponentsShowcase() {
               Standard Button Variants
             </Typography>
             <Stack spacing={2} direction='row' flexWrap='wrap'>
-              <Button variant='primary'>Primary Button</Button>
-              <Button variant='secondary'>Secondary Button</Button>
-              <Button variant='outline'>Outline Button</Button>
-              <Button variant='ghost'>Ghost Button</Button>
+              <Button variant='outlined'>Outlined Button</Button>
+              <Button variant='contained'>Contained Button</Button>
+              <Button variant='outlined'>Outline Button</Button>
+              <Button variant='text'>Text Button</Button>
             </Stack>
 
             <Typography variant='h6' component='h3' sx={{ mt: 3 }}>
@@ -221,8 +221,8 @@ export default function ComponentsShowcase() {
               been integrated into the main Button component.
             </Typography>
             <Stack spacing={2} direction='row' flexWrap='wrap'>
-              <Button variant='primary'>Let&apos;s Collaborate</Button>
-              <Button variant='primary' disabled>
+              <Button variant='outlined'>Let&apos;s Collaborate</Button>
+              <Button variant='outlined' disabled>
                 Disabled CTA
               </Button>
             </Stack>
@@ -231,13 +231,13 @@ export default function ComponentsShowcase() {
               Button Sizes
             </Typography>
             <Stack spacing={2} direction='row' flexWrap='wrap'>
-              <Button variant='secondary' size='sm'>
+              <Button variant='contained' size='small'>
                 Small
               </Button>
-              <Button variant='secondary' size='md'>
+              <Button variant='contained' size='medium'>
                 Medium
               </Button>
-              <Button variant='secondary' size='lg'>
+              <Button variant='contained' size='large'>
                 Large
               </Button>
             </Stack>
@@ -262,7 +262,7 @@ export default function ComponentsShowcase() {
                   </Typography>
                 </CardContent>
                 <CardFooter>
-                  <Button variant='outline' size='sm'>
+                  <Button variant='outlined' size='small'>
                     Action
                   </Button>
                 </CardFooter>
@@ -281,7 +281,7 @@ export default function ComponentsShowcase() {
                   </Typography>
                 </CardContent>
                 <CardFooter>
-                  <Button variant='primary' size='sm'>
+                  <Button variant='outlined' size='small'>
                     Primary Action
                   </Button>
                 </CardFooter>
@@ -410,7 +410,7 @@ export default function ComponentsShowcase() {
           </Typography>
           <Stack spacing={2} direction='row' flexWrap='wrap'>
             <Button
-              variant='outline'
+              variant='outlined'
               onClick={() => {
                 toast?.success?.('This is a success notification');
               }}
@@ -418,7 +418,7 @@ export default function ComponentsShowcase() {
               Show Success Toast
             </Button>
             <Button
-              variant='outline'
+              variant='outlined'
               onClick={() => {
                 toast?.warning?.('This is a warning message');
               }}
@@ -426,7 +426,7 @@ export default function ComponentsShowcase() {
               Show Warning Toast
             </Button>
             <Button
-              variant='outline'
+              variant='outlined'
               onClick={() => {
                 toast?.info?.('This is an informational message');
               }}
@@ -434,7 +434,7 @@ export default function ComponentsShowcase() {
               Info Toast
             </Button>
             <Button
-              variant='outline'
+              variant='outlined'
               onClick={() => {
                 toast?.error?.('Something went wrong');
               }}

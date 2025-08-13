@@ -132,7 +132,7 @@ export const ServicesSection = () => {
                   display: { xs: 'none', lg: 'block' },
                 }}
               >
-                <Button variant='primary' onClick={handleCollaborationClick}>
+                <Button variant='outlined' onClick={handleCollaborationClick}>
                   Let&apos;s Collaborate
                 </Button>
               </Box>
@@ -183,7 +183,7 @@ export const ServicesSection = () => {
                 mt: spacing.layout.xs, // Using layout spacing
               }}
             >
-              <Button variant='primary' onClick={handleCollaborationClick}>
+              <Button onClick={handleCollaborationClick}>
                 Let&apos;s Collaborate
               </Button>
             </Box>

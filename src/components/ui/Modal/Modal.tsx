@@ -68,8 +68,8 @@
  * - High contrast support
  */
 
-import React, { useRef } from 'react';
 import { Modal as MuiModal } from '@mui/material';
+import React, { useRef } from 'react';
 import {
   DESIGN_TOKENS,
   SEMANTIC_SPACING,
