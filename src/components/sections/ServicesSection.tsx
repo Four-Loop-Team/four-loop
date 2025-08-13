@@ -1,9 +1,11 @@
 'use client';
 
+import { ContactModal } from '@/components/modals';
 import { Accordion } from '@/components/ui/Accordion';
 import { Button } from '@/components/ui/Button';
 import { useDesignSystem } from '@/lib/hooks';
 import { Box, Container, Typography } from '@mui/material';
+import { useState } from 'react';
 
 /**
  * Services section component
@@ -17,6 +19,7 @@ import { Box, Container, Typography } from '@mui/material';
  */
 export const ServicesSection = () => {
   const { spacing, typography } = useDesignSystem();
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const services = [
     {
@@ -46,86 +49,138 @@ export const ServicesSection = () => {
   ];
 
   const handleCollaborationClick = () => {
-    // Navigate to contact section or handle collaboration
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    setIsContactModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsContactModalOpen(false);
   };
 
   return (
-    <Box
-      component='section'
-      sx={{
-        pt: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
-        pb: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
-        backgroundColor: 'transparent',
-        color: 'white',
-        position: 'relative',
-      }}
-    >
-      <Container
-        maxWidth={false}
+    <>
+      <Box
+        component='section'
         sx={{
-          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
-          margin: '0 auto', // Center the container
-          px: { xs: spacing.component.sm, md: spacing.section.sm }, // Using spacing tokens (82px ~ section.sm)
+          pt: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
+          pb: { xs: spacing.section.sm, md: spacing.section.md }, // Using section spacing
+          backgroundColor: 'transparent',
+          color: 'white',
+          position: 'relative',
         }}
       >
-        <Box
+        <Container
+          maxWidth={false}
           sx={{
-            mb: { xs: spacing.layout.sm, md: spacing.layout.lg }, // Using layout spacing
+            maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
+            margin: '0 auto', // Center the container
+            px: { xs: spacing.component.sm, md: spacing.section.sm }, // Using spacing tokens (82px ~ section.sm)
           }}
         >
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-              gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
-              mb: { xs: spacing.layout.xs, md: spacing.layout.sm }, // Using layout spacing
+              mb: { xs: spacing.layout.sm, md: spacing.layout.lg }, // Using layout spacing
             }}
           >
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'baseline',
+                justifyContent: 'space-between',
                 gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
+                mb: { xs: spacing.layout.xs, md: spacing.layout.sm }, // Using layout spacing
               }}
             >
-              <Typography
-                variant='h2'
-                component='h2'
+              <Box
                 sx={{
-                  fontSize: {
-                    xs: typography.fontSize['4xl'],
-                    md: typography.fontSize['6xl'],
-                  }, // Using typography tokens
-                  fontWeight: typography.fontWeight.normal, // Using typography tokens
-                  color: 'white',
-                  lineHeight: typography.lineHeight.tight, // Using typography tokens
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: { xs: spacing.component.sm, md: spacing.component.lg }, // Using component spacing
                 }}
               >
-                Services
-              </Typography>
+                <Typography
+                  variant='h2'
+                  component='h2'
+                  sx={{
+                    fontSize: {
+                      xs: typography.fontSize['4xl'],
+                      md: typography.fontSize['6xl'],
+                    }, // Using typography tokens
+                    fontWeight: typography.fontWeight.normal, // Using typography tokens
+                    color: 'white',
+                    lineHeight: typography.lineHeight.tight, // Using typography tokens
+                  }}
+                >
+                  Services
+                </Typography>
 
-              <Typography
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: typography.fontSize.base,
+                      md: typography.fontSize.xl,
+                    }, // Using typography tokens
+                    color: 'white',
+                    fontWeight: typography.fontWeight.light, // Using typography tokens
+                  }}
+                >
+                  /&nbsp;&nbsp;&nbsp;&nbsp;Our areas of expertise
+                </Typography>
+              </Box>
+
+              <Box
                 sx={{
-                  fontSize: {
-                    xs: typography.fontSize.base,
-                    md: typography.fontSize.xl,
-                  }, // Using typography tokens
-                  color: 'white',
-                  fontWeight: typography.fontWeight.light, // Using typography tokens
+                  display: { xs: 'none', lg: 'block' },
                 }}
               >
-                /&nbsp;&nbsp;&nbsp;&nbsp;Our areas of expertise
-              </Typography>
+                <Button variant='primary' onClick={handleCollaborationClick}>
+                  Let&apos;s Collaborate
+                </Button>
+              </Box>
             </Box>
+          </Box>
 
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', lg: 'row' },
+              alignItems: { xs: 'stretch', lg: 'flex-start' },
+              gap: { xs: spacing.section.sm, lg: spacing.section.md }, // Using section spacing
+            }}
+          >
+            {/* Services Accordion */}
             <Box
               sx={{
+                flex: '1 1 70%',
+                width: '100%',
+                maxWidth: { xs: '100%', lg: '70%' },
+              }}
+            >
+              <Accordion
+                items={services}
+                variant='minimal'
+                multiple={false}
+                collapsible={true}
+              />
+            </Box>
+
+            {/* Right Section - 30% width */}
+            <Box
+              sx={{
+                flex: '1 1 30%',
+                width: '100%',
+                maxWidth: { xs: '100%', lg: '30%' },
                 display: { xs: 'none', lg: 'block' },
+              }}
+            >
+              {/* Empty space for layout */}
+            </Box>
+
+            {/* Mobile CTA Section - only show on mobile */}
+            <Box
+              sx={{
+                display: { xs: 'flex', lg: 'none' },
+                justifyContent: 'center',
+                mt: spacing.layout.xs, // Using layout spacing
               }}
             >
               <Button variant='primary' onClick={handleCollaborationClick}>
@@ -133,58 +188,11 @@ export const ServicesSection = () => {
               </Button>
             </Box>
           </Box>
-        </Box>
+        </Container>
+      </Box>
 
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', lg: 'row' },
-            alignItems: { xs: 'stretch', lg: 'flex-start' },
-            gap: { xs: spacing.section.sm, lg: spacing.section.md }, // Using section spacing
-          }}
-        >
-          {/* Services Accordion */}
-          <Box
-            sx={{
-              flex: '1 1 70%',
-              width: '100%',
-              maxWidth: { xs: '100%', lg: '70%' },
-            }}
-          >
-            <Accordion
-              items={services}
-              variant='minimal'
-              multiple={false}
-              collapsible={true}
-            />
-          </Box>
-
-          {/* Right Section - 30% width */}
-          <Box
-            sx={{
-              flex: '1 1 30%',
-              width: '100%',
-              maxWidth: { xs: '100%', lg: '30%' },
-              display: { xs: 'none', lg: 'block' },
-            }}
-          >
-            {/* Empty space for layout */}
-          </Box>
-
-          {/* Mobile CTA Section - only show on mobile */}
-          <Box
-            sx={{
-              display: { xs: 'flex', lg: 'none' },
-              justifyContent: 'center',
-              mt: spacing.layout.xs, // Using layout spacing
-            }}
-          >
-            <Button variant='primary' onClick={handleCollaborationClick}>
-              Let&apos;s Collaborate
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-    </Box>
+      {/* Contact Modal */}
+      <ContactModal isOpen={isContactModalOpen} onClose={handleCloseModal} />
+    </>
   );
 };

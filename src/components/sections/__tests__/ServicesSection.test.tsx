@@ -24,15 +24,24 @@ jest.mock('@/components/ui/Button', () => ({
   ),
 }));
 
-// Mock getElementById for scroll behavior
-const mockScrollIntoView = jest.fn();
-const mockGetElementById = jest.fn();
-
-beforeEach(() => {
-  mockScrollIntoView.mockClear();
-  mockGetElementById.mockClear();
-  global.document.getElementById = mockGetElementById;
-});
+// Mock the ContactModal component
+jest.mock('@/components/modals', () => ({
+  ContactModal: ({
+    isOpen,
+    onClose,
+  }: {
+    isOpen: boolean;
+    onClose: () => void;
+  }) =>
+    isOpen ? (
+      <div data-testid='contact-modal' role='dialog' aria-label='Contact Modal'>
+        <button onClick={onClose} data-testid='modal-close'>
+          Close
+        </button>
+        <h2>Let&apos;s Build Something Amazing</h2>
+      </div>
+    ) : null,
+}));
 
 describe('ServicesSection', () => {
   it('renders services section with heading', () => {
@@ -60,32 +69,41 @@ describe('ServicesSection', () => {
     expect(buttons).toHaveLength(2); // One for desktop header, one for mobile
   });
 
-  it('handles collaborate button click with scroll', () => {
-    const mockElement = { scrollIntoView: mockScrollIntoView };
-    mockGetElementById.mockReturnValue(mockElement);
-
+  it('opens contact modal when collaborate button is clicked', () => {
     render(<ServicesSection />);
     const buttons = screen.getAllByRole('button', {
       name: /let's collaborate/i,
     });
 
-    fireEvent.click(buttons[0]); // Click first button
+    // Modal should not be visible initially
+    expect(screen.queryByTestId('contact-modal')).not.toBeInTheDocument();
 
-    expect(mockGetElementById).toHaveBeenCalledWith('contact');
-    expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+    // Click first button to open modal
+    fireEvent.click(buttons[0]);
+
+    // Modal should now be visible
+    expect(screen.getByTestId('contact-modal')).toBeInTheDocument();
+    expect(
+      screen.getByText("Let's Build Something Amazing")
+    ).toBeInTheDocument();
   });
 
-  it('handles collaborate button click without contact section', () => {
-    mockGetElementById.mockReturnValue(null);
-
+  it('closes contact modal when close button is clicked', () => {
     render(<ServicesSection />);
     const buttons = screen.getAllByRole('button', {
       name: /let's collaborate/i,
     });
 
-    // Should not throw error when contact section is not found
-    expect(() => fireEvent.click(buttons[0])).not.toThrow();
-    expect(mockGetElementById).toHaveBeenCalledWith('contact');
+    // Open modal
+    fireEvent.click(buttons[0]);
+    expect(screen.getByTestId('contact-modal')).toBeInTheDocument();
+
+    // Close modal
+    const closeButton = screen.getByTestId('modal-close');
+    fireEvent.click(closeButton);
+
+    // Modal should be closed
+    expect(screen.queryByTestId('contact-modal')).not.toBeInTheDocument();
   });
 
   it('has proper semantic structure with section element', () => {

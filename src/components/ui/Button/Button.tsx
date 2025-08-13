@@ -1,20 +1,21 @@
 'use client';
 
 import { useDesignSystem } from '@/lib/hooks';
+import { colors as brandColors } from '@/components/system/BrandThemeProvider/BrandThemeProvider';
+import MuiButton from '@mui/material/Button';
 import EastIcon from '@mui/icons-material/East';
-import React, {
-  ButtonHTMLAttributes,
-  forwardRef,
-  useEffect,
-  useState,
-} from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
+import type { ButtonProps as MuiButtonProps } from '@mui/material/Button';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 /**
  * Button component props interface
  */
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends Omit<MuiButtonProps, 'variant' | 'size'> {
   /** Button variant style */
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  /** Button color scheme */
+  colorVariant?: 'primary' | 'secondary';
   /** Button size */
   size?: 'sm' | 'md' | 'lg';
   /** Shows loading spinner when true */
@@ -28,7 +29,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 /**
- * A versatile button component with multiple variants, sizes, and states.
+ * A versatile button component built on Material-UI Button with custom Four Loop branding.
+ * Provides multiple variants, sizes, and states while maintaining consistent theme integration.
  *
  * @component
  * @example
@@ -41,6 +43,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  *
  * // Full width button
  * <Button fullWidth>Full Width</Button>
+ *
+ * // Secondary color variant for light backgrounds
+ * <Button variant="primary" colorVariant="secondary">Dark on Light</Button>
  * ```
  */
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -48,13 +53,14 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       children,
       variant = 'primary',
+      colorVariant = 'primary',
       size = 'md',
       loading = false,
       leftIcon,
       rightIcon,
       fullWidth = false,
       disabled,
-      className = '',
+      sx,
       ...props
     },
     ref
@@ -66,146 +72,165 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       setIsMounted(true);
     }, []);
 
+    // Map our custom sizes to MUI sizes
+    const muiSizeMap = {
+      sm: 'small' as const,
+      md: 'medium' as const,
+      lg: 'large' as const,
+    };
+
+    // Map our custom variants to MUI variants
+    const getMuiVariant = (): 'text' | 'outlined' | 'contained' => {
+      switch (variant) {
+        case 'primary':
+          return 'outlined';
+        case 'secondary':
+          return 'contained';
+        case 'outline':
+          return 'outlined';
+        case 'ghost':
+          return 'text';
+        default:
+          return 'outlined';
+      }
+    };
+
+    // Get color scheme based on colorVariant
+    const colorScheme =
+      colorVariant === 'secondary'
+        ? {
+            borderColor: brandColors.textDark,
+            textColor: brandColors.textDark,
+            hoverBackground: brandColors.textDark,
+            hoverText: brandColors.textLight,
+          }
+        : {
+            borderColor: colors.text.inverse,
+            textColor: colors.text.inverse,
+            hoverBackground: colors.background.accent,
+            hoverText: colors.text.primary,
+          };
+
     // Handle primary variant with integrated ButtonPrimary functionality
     if (variant === 'primary') {
-      // Primary button styles using design system tokens
-      const buttonStyles: React.CSSProperties = {
+      const primaryButtonSx: SxProps<Theme> = {
         backgroundColor: 'transparent',
-        border: `1px solid ${colors.text.inverse}`,
+        border: `1px solid ${colorScheme.borderColor}`,
         borderRadius: '30px',
-        color: colors.text.inverse,
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        display: 'inline-flex',
-        alignItems: 'center',
-        transition: 'all 0.2s ease-in-out',
-        opacity: disabled ? 0.6 : 1,
+        color: colorScheme.textColor,
         fontFamily: typography.fontFamily.primary,
-        textDecoration: 'none',
-        outline: 'none',
-        padding: 0,
-      };
-
-      // CTA and arrow styles using inline styles instead of classes
-      const ctaStyles = {
-        display: 'inline-block',
-        paddingTop: '0.2em',
-        paddingBottom: '0.2em',
-        paddingLeft: '1.8em',
-        paddingRight: '1.8em',
         fontWeight: 500,
-      };
-
-      // Arrow container with correct sizing to match button height
-      const arrowStyles = {
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '50%',
-        width: '42px',
-        height: '42px',
-        backgroundColor: colors.background.accent,
-        color: colors.text.primary,
-        flexShrink: 0,
+        textTransform: 'none',
+        minHeight: 'auto',
+        padding: 0,
+        '&:hover': {
+          backgroundColor: colorScheme.hoverBackground,
+          color: colorScheme.hoverText,
+          borderColor: colorScheme.borderColor,
+        },
+        '&:disabled': {
+          opacity: 0.6,
+          color: colorScheme.textColor,
+          borderColor: colorScheme.borderColor,
+        },
+        ...(fullWidth && { width: '100%' }),
+        ...sx,
       };
 
       return (
-        <button
+        <MuiButton
           ref={ref}
-          style={buttonStyles}
-          disabled={disabled}
-          onMouseEnter={(e) => {
-            if (!disabled) {
-              e.currentTarget.style.backgroundColor = colors.background.accent;
-              e.currentTarget.style.color = colors.text.primary;
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!disabled) {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = colors.text.inverse;
-            }
-          }}
+          variant={getMuiVariant()}
+          size={muiSizeMap[size]}
+          disabled={disabled || loading}
+          fullWidth={fullWidth}
+          sx={primaryButtonSx}
           {...props}
         >
-          <span style={ctaStyles}>{children}</span>
-          <span style={arrowStyles}>
+          <span
+            style={{
+              display: 'inline-block',
+              paddingTop: '0.2em',
+              paddingBottom: '0.2em',
+              paddingLeft: '1.8em',
+              paddingRight: '1.8em',
+            }}
+          >
+            {children}
+          </span>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '50%',
+              width: '42px',
+              height: '42px',
+              backgroundColor:
+                colorVariant === 'secondary'
+                  ? brandColors.textDark
+                  : colors.background.accent,
+              color:
+                colorVariant === 'secondary'
+                  ? brandColors.textLight
+                  : colors.text.primary,
+              flexShrink: 0,
+            }}
+          >
             {isMounted ? <EastIcon fontSize='small' /> : <span>→</span>}
           </span>
-        </button>
+        </MuiButton>
       );
     }
 
-    const baseStyles: React.CSSProperties = {
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+    // For other variants, use MUI Button with custom styling
+    const customButtonSx: SxProps<Theme> = {
       fontWeight: typography.fontWeight.medium,
-      borderRadius: spacing.component.sm, // 8px
-      transition: 'all 0.2s ease-in-out',
-      border: 'none',
-      cursor: 'pointer',
+      borderRadius: spacing.component.sm,
       fontFamily: typography.fontFamily.primary,
-      textDecoration: 'none',
-      outline: 'none',
-    };
-
-    const variantStyles: Record<string, React.CSSProperties> = {
-      secondary: {
+      textTransform: 'none',
+      minWidth: '44px',
+      minHeight: '44px',
+      ...(variant === 'secondary' && {
         backgroundColor: colors.background.secondary,
         color: colors.text.inverse,
-      },
-      outline: {
+        '&:hover': {
+          backgroundColor: colors.background.secondary,
+          opacity: 0.9,
+        },
+      }),
+      ...(variant === 'outline' && {
         border: `1px solid ${colors.text.muted}`,
         color: colors.text.inverse,
         backgroundColor: 'transparent',
-      },
-      ghost: {
+        '&:hover': {
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        },
+      }),
+      ...(variant === 'ghost' && {
         color: colors.text.inverse,
         backgroundColor: 'transparent',
-      },
-    };
-
-    const sizeStyles = {
-      sm: {
-        padding: `${spacing.component.sm} ${spacing.component.md}`,
-        fontSize: typography.fontSize.sm,
-        minWidth: '44px',
-        minHeight: '44px',
-      },
-      md: {
-        padding: `${spacing.component.lg} ${spacing.component.xl}`,
-        fontSize: typography.fontSize.base,
-        minWidth: '44px',
-        minHeight: '44px',
-      },
-      lg: {
-        padding: `${spacing.component.xl} ${spacing.layout.xs}`,
-        fontSize: typography.fontSize.lg,
-        minWidth: '44px',
-        minHeight: '44px',
-      },
-    };
-
-    const combinedStyles: React.CSSProperties = {
-      ...baseStyles,
-      ...variantStyles[variant],
-      ...sizeStyles[size],
-      ...(fullWidth && { width: '100%' }),
-      ...((disabled ?? loading) && {
-        opacity: 0.5,
-        cursor: 'not-allowed',
+        '&:hover': {
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        },
       }),
+      ...(fullWidth && { width: '100%' }),
+      ...((disabled || loading) && {
+        opacity: 0.5,
+      }),
+      ...sx,
     };
 
     return (
-      <button
+      <MuiButton
         ref={ref}
-        style={combinedStyles}
-        className={className}
-        disabled={disabled ?? loading}
+        variant={getMuiVariant()}
+        size={muiSizeMap[size]}
+        disabled={disabled || loading}
+        fullWidth={fullWidth}
+        sx={customButtonSx}
         {...props}
       >
-        {' '}
         {loading && (
           <svg
             style={{
@@ -219,7 +244,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             viewBox='0 0 24 24'
           >
             <circle
-              className='button-icon-opacity-disabled'
+              style={{ opacity: 0.25 }}
               cx='12'
               cy='12'
               r='10'
@@ -227,7 +252,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               strokeWidth='4'
             />
             <path
-              className='button-icon-opacity-loading'
+              style={{ opacity: 0.75 }}
               fill='currentColor'
               d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
             />
@@ -240,7 +265,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {rightIcon && (
           <span style={{ marginLeft: spacing.component.sm }}>{rightIcon}</span>
         )}
-      </button>
+      </MuiButton>
     );
   }
 );

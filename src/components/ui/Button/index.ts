@@ -5,7 +5,7 @@
  * @description
  * Export module for Button components and related types.
  * Re-exports the Button component and its TypeScript definitions for easy importing.
- * The Button component now includes integrated primary variant functionality.
+ * The Button component is built on Material-UI Button with custom Four Loop branding.
  *
  * @example
  * ```tsx
@@ -18,6 +18,10 @@
  *
  * <Button variant="secondary" onClick={handleClick}>
  *   Secondary Action
+ * </Button>
+ *
+ * <Button variant="primary" colorVariant="secondary" onClick={handleClick}>
+ *   Dark on Light Background
  * </Button>
  * ```
  */

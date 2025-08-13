@@ -99,8 +99,8 @@ describe('Button Component', () => {
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
     expect(button).toHaveTextContent('Full Width');
-    // Button should span the full width - we can verify this functionally
-    expect(button.style.width).toBe('100%');
+    // MUI Button adds fullWidth as a prop and CSS classes, not inline styles
+    expect(button).toHaveClass('MuiButton-fullWidth');
   });
 
   it('is disabled when specified', () => {
@@ -108,5 +108,25 @@ describe('Button Component', () => {
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
     expect(button).toHaveTextContent('Disabled');
+  });
+
+  it('renders primary button with different color variants correctly', () => {
+    // Test primary color variant (default)
+    const { rerender } = render(
+      <Button variant='primary'>Primary Default</Button>
+    );
+    const button = screen.getByRole('button');
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent('Primary Default');
+
+    // Test secondary color variant
+    rerender(
+      <Button variant='primary' colorVariant='secondary'>
+        Primary Secondary
+      </Button>
+    );
+    const secondaryButton = screen.getByRole('button');
+    expect(secondaryButton).toHaveTextContent('Primary Secondary');
+    expect(secondaryButton.querySelector('svg')).toBeInTheDocument(); // Should still have arrow icon
   });
 });
