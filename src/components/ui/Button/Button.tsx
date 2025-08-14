@@ -5,7 +5,7 @@ import EastIcon from '@mui/icons-material/East';
 import type { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import MuiButton from '@mui/material/Button';
 import type { SxProps, Theme } from '@mui/material/styles';
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 
 /**
  * Button component props interface
@@ -76,13 +76,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const [isMounted, setIsMounted] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const { colors, spacing, typography } = useDesignSystem();
-
-    useEffect(() => {
-      setIsMounted(true);
-    }, []);
 
     // Get color scheme based on color
     const colorScheme =
@@ -270,7 +265,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               }}
               className='button-arrow'
             >
-              {isMounted ? <EastIcon fontSize='small' /> : <span>→</span>}
+              <EastIcon fontSize='small' />
             </span>
           )}
         </MuiButton>
