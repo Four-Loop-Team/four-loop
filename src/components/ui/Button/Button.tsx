@@ -193,6 +193,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     // For other variants, use MUI Button with custom styling
     const customButtonSx: SxProps<Theme> = {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       fontWeight: typography.fontWeight.medium,
       borderRadius: spacing.component.sm,
       fontFamily: typography.fontFamily.primary,
@@ -208,10 +211,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         },
       }),
       ...(variant === 'text' && {
-        color: colors.text.inverse,
+        color: color === 'dark' ? colors.text.primary : colors.text.inverse,
         backgroundColor: 'transparent',
         '&:hover': {
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          backgroundColor:
+            color === 'dark'
+              ? 'rgba(0, 0, 0, 0.05)'
+              : 'rgba(255, 255, 255, 0.1)',
         },
       }),
       ...(fullWidth && { width: '100%' }),
@@ -259,11 +265,29 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           </svg>
         )}
         {leftIcon && !loading && (
-          <span style={{ marginRight: spacing.component.sm }}>{leftIcon}</span>
+          <span
+            style={{
+              marginRight: spacing.component.sm,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {leftIcon}
+          </span>
         )}
         {children}
         {rightIcon && (
-          <span style={{ marginLeft: spacing.component.sm }}>{rightIcon}</span>
+          <span
+            style={{
+              marginLeft: '0.5rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {rightIcon}
+          </span>
         )}
       </MuiButton>
     );

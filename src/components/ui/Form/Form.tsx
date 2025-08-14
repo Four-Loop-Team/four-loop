@@ -1,6 +1,8 @@
 'use client';
 
+import Button from '@/components/ui/Button/Button';
 import { useDesignSystem } from '@/lib/hooks';
+import EastIcon from '@mui/icons-material/East';
 import { Box, Container, Typography } from '@mui/material';
 import React from 'react';
 
@@ -183,66 +185,16 @@ const Form: React.FC<FormProps> = ({
             mt: spacing.layout.sm,
           }}
         >
-          <Box
-            component='button'
+          <Button
             type='submit'
+            variant='text'
+            color={accentBackground ? 'dark' : 'light'}
             disabled={loading}
-            sx={{
-              backgroundColor: 'transparent',
-              color: accentBackground ? colors.text.primary : 'inherit',
-              border: 'none',
-              borderRadius: spacing.component.lg,
-              fontSize: typography.fontSize.lg,
-              fontWeight: typography.fontWeight.medium,
-              padding: `${spacing.component.md} ${spacing.component.lg}`,
-              minWidth: '44px',
-              minHeight: '44px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: spacing.component.xs,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s ease',
-              outline: 'none',
-              fontFamily: typography.fontFamily.primary,
-              textDecoration: 'none',
-              lineHeight: typography.lineHeight.tight,
-              opacity: loading ? 0.6 : 1,
-              '&:hover': {
-                opacity: loading ? 0.6 : 0.8,
-                transform: loading ? 'none' : 'translateY(-1px)',
-              },
-              '&:active': {
-                transform: loading ? 'none' : 'translateY(0)',
-              },
-              '& *': {
-                color: accentBackground ? colors.text.primary : 'inherit',
-              },
-            }}
+            size='large'
+            rightIcon={!loading ? <EastIcon fontSize='small' /> : undefined}
           >
-            <Box
-              component='span'
-              sx={{
-                color: accentBackground ? colors.text.primary : 'inherit',
-                fontSize: typography.fontSize.lg,
-                fontWeight: typography.fontWeight.medium,
-              }}
-            >
-              {loading ? 'Submitting...' : submitText}
-            </Box>
-            {!loading && (
-              <Box
-                component='span'
-                sx={{
-                  fontSize: '1.2em',
-                  color: accentBackground ? colors.text.primary : 'inherit',
-                  marginLeft: spacing.component.sm,
-                }}
-              >
-                →
-              </Box>
-            )}
-          </Box>
+            {loading ? 'Submitting...' : submitText}
+          </Button>
         </Box>
       </Box>
     </Box>
