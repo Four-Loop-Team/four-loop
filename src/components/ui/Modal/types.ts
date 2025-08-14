@@ -32,7 +32,6 @@ export interface ModalProps {
 export interface ModalHeaderProps {
   children: React.ReactNode;
   className?: string;
-  onClose?: () => void;
   'data-testid'?: string;
 }
 

@@ -122,6 +122,62 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
       const arrowMargin = '-1px -1px -1px 0';
 
+      // Small outlined buttons use compact style without arrow (for modal close buttons)
+      if (size === 'small') {
+        const smallButtonSx: SxProps<Theme> = {
+          backgroundColor: colorScheme.backgroundColor,
+          border: `1px solid ${colorScheme.borderColor}`,
+          borderRadius: '50%', // Circular like original modal close button
+          color: colorScheme.textColor,
+          fontFamily: typography.fontFamily.primary,
+          fontWeight: 300, // Thinner weight for wider appearance
+          textTransform: 'none',
+          minWidth: '50px', // Larger 50px size
+          minHeight: '50px',
+          width: '50px',
+          height: '50px',
+          padding: 0,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          fontSize: '36px', // Larger font for wider minus sign
+          lineHeight: 1,
+          '&:hover': {
+            borderColor: colorScheme.borderColor,
+            backgroundColor: isHovered
+              ? color === 'dark'
+                ? colors.background.accent
+                : colors.background.inverse
+              : colorScheme.backgroundColor,
+          },
+          '&:disabled': {
+            opacity: 0.6,
+            color: colorScheme.textColor,
+            borderColor: colorScheme.borderColor,
+          },
+          ...sx,
+        };
+
+        return (
+          <MuiButton
+            ref={ref}
+            variant={variant}
+            size={size}
+            disabled={disabled || loading}
+            sx={smallButtonSx}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            {...props}
+          >
+            {leftIcon && leftIcon}
+            {children}
+            {rightIcon && rightIcon}
+          </MuiButton>
+        );
+      }
+
+      // Medium and large outlined buttons use the standard style with arrow
       const primaryButtonSx: SxProps<Theme> = {
         backgroundColor: colorScheme.backgroundColor,
         border: `1px solid ${colorScheme.borderColor}`,
@@ -156,37 +212,67 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           onMouseLeave={() => setIsHovered(false)}
           {...props}
         >
+          {leftIcon && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingLeft: '1.2em',
+                paddingTop: '0.2em',
+                paddingBottom: '0.2em',
+              }}
+            >
+              {leftIcon}
+            </span>
+          )}
           <span
             style={{
               display: 'inline-block',
               paddingTop: '0.2em',
               paddingBottom: '0.2em',
-              paddingLeft: '1.8em',
-              paddingRight: '1.8em',
+              paddingLeft: leftIcon ? '0.5em' : '1.8em',
+              paddingRight: rightIcon ? '0.5em' : '1.8em',
             }}
           >
             {children}
           </span>
-          <span
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '50%',
-              width: '42px',
-              height: '42px',
-              backgroundColor: arrowBackgroundColor,
-              color: arrowColor,
-              border: arrowBorder,
-              margin: arrowMargin,
-              flexShrink: 0,
-              transition:
-                'background-color 0.2s ease, color 0.2s ease, border 0.2s ease',
-            }}
-            className='button-arrow'
-          >
-            {isMounted ? <EastIcon fontSize='small' /> : <span>→</span>}
-          </span>
+          {rightIcon && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingRight: '1.2em',
+                paddingTop: '0.2em',
+                paddingBottom: '0.2em',
+              }}
+            >
+              {rightIcon}
+            </span>
+          )}
+          {!leftIcon && !rightIcon && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '50%',
+                width: '42px',
+                height: '42px',
+                backgroundColor: arrowBackgroundColor,
+                color: arrowColor,
+                border: arrowBorder,
+                margin: arrowMargin,
+                flexShrink: 0,
+                transition:
+                  'background-color 0.2s ease, color 0.2s ease, border 0.2s ease',
+              }}
+              className='button-arrow'
+            >
+              {isMounted ? <EastIcon fontSize='small' /> : <span>→</span>}
+            </span>
+          )}
         </MuiButton>
       );
     }

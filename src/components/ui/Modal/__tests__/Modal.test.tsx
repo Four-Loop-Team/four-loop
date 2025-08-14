@@ -297,32 +297,7 @@ describe('Modal', () => {
 });
 
 describe('ModalHeader', () => {
-  it('renders children and close button', () => {
-    const onClose = jest.fn();
-    render(
-      <ModalHeader onClose={onClose}>
-        <h2>Test Title</h2>
-      </ModalHeader>
-    );
-
-    expect(screen.getByText('Test Title')).toBeInTheDocument();
-    expect(screen.getByTestId('modal-close-button')).toBeInTheDocument();
-    expect(screen.getByLabelText('Close modal')).toBeInTheDocument();
-  });
-
-  it('calls onClose when close button is clicked', async () => {
-    const onClose = jest.fn();
-    render(
-      <ModalHeader onClose={onClose}>
-        <h2>Test Title</h2>
-      </ModalHeader>
-    );
-
-    await userEvent.click(screen.getByTestId('modal-close-button'));
-    expect(onClose).toHaveBeenCalled();
-  });
-
-  it('renders without close button when onClose is not provided', () => {
+  it('renders children', () => {
     render(
       <ModalHeader>
         <h2>Test Title</h2>
@@ -330,7 +305,17 @@ describe('ModalHeader', () => {
     );
 
     expect(screen.getByText('Test Title')).toBeInTheDocument();
-    expect(screen.queryByTestId('modal-close-button')).not.toBeInTheDocument();
+  });
+
+  it('renders only title content', () => {
+    render(
+      <ModalHeader>
+        <h2>Test Title</h2>
+      </ModalHeader>
+    );
+
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
+    // ModalHeader no longer contains a close button - that's handled by the Modal component
   });
 
   it('applies custom className', () => {
@@ -572,7 +557,7 @@ describe('Modal Integration', () => {
 
     render(
       <Modal isOpen={true} onClose={onClose} size='lg'>
-        <ModalHeader onClose={onClose}>
+        <ModalHeader>
           <h2>Complete Modal</h2>
         </ModalHeader>
         <ModalBody>
@@ -592,8 +577,8 @@ describe('Modal Integration', () => {
     expect(screen.getByText('Cancel')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
 
-    // Test closing via header button
-    await userEvent.click(screen.getByTestId('modal-close-button'));
+    // Test closing via external close button
+    await userEvent.click(screen.getByTestId('modal-external-close-button'));
     expect(onClose).toHaveBeenCalled();
   });
 });

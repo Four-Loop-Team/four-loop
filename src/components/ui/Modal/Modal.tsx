@@ -74,6 +74,7 @@ import {
   DESIGN_TOKENS,
   SEMANTIC_SPACING,
 } from '../../../constants/design-tokens-consolidated';
+import Button from '../Button/Button';
 import {
   ConfirmDialogProps,
   ModalBodyProps,
@@ -206,55 +207,32 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div style={{ position: 'relative', outline: 'none' }}>
         {/* Close button positioned outside modal */}
-        <button
-          onClick={onClose}
-          className='modal-external-close-button'
-          aria-label='Close modal'
-          data-testid='modal-external-close-button'
+        <div
           style={{
             position: 'absolute',
             top: '0px',
             right: '0px',
-            width: '40px',
-            height: '40px',
-            backgroundColor: colors.text.primary,
-            border: `1px solid ${colors.background.accent}`,
-            borderRadius: '50%',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             zIndex: 2,
-            boxShadow: shadows.lg,
-            transition: 'all 0.2s ease-in-out',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = colors.background.secondary;
-            e.currentTarget.style.transform = 'scale(1.1)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = colors.text.primary;
-            e.currentTarget.style.transform = 'scale(1)';
           }}
         >
-          <svg
-            style={{
-              width: '16px',
-              height: '16px',
-              color: colors.background.accent,
+          <Button
+            variant='outlined'
+            color='light'
+            size='small'
+            onClick={onClose}
+            aria-label='Close modal'
+            data-testid='modal-external-close-button'
+            sx={{
+              boxShadow: DESIGN_TOKENS.shadows.lg,
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
             }}
-            fill='none'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
           >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M5 12h14'
-            />
-          </svg>
-        </button>
+            −
+          </Button>
+        </div>
 
         {/* Modal content with Four Loop branding */}
         <div
@@ -287,7 +265,6 @@ const Modal: React.FC<ModalProps> = ({
 // Modal Header component
 const ModalHeader: React.FC<ModalHeaderProps> = ({
   children,
-  onClose,
   className = '',
   'data-testid': testId = 'modal-header',
 }) => {
@@ -320,53 +297,6 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
       >
         {children}
       </div>
-      {onClose && (
-        <button
-          onClick={onClose}
-          className='modal-close-button'
-          aria-label='Close modal'
-          data-testid='modal-close-button'
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: spacing.micro.xs,
-            borderRadius: '0.375rem', // sm radius
-            color: colors.text.muted,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition:
-              'color 150ms ease-in-out, background-color 150ms ease-in-out',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = colors.background.secondary;
-            e.currentTarget.style.color = colors.text.primary;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.color = colors.text.muted;
-          }}
-        >
-          <svg
-            className='modal-close-icon'
-            style={{
-              width: '20px',
-              height: '20px',
-            }}
-            fill='none'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M5 12h14'
-            />
-          </svg>
-        </button>
-      )}
     </div>
   );
 };
