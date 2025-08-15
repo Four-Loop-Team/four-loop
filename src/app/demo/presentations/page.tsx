@@ -177,15 +177,19 @@ function PresentationCard({
           <Box sx={{ flexShrink: 0 }}>
             <Stack spacing={2}>
               <Button
-                variant='primary'
-                size='lg'
+                variant='outlined'
+                size='large'
                 onClick={handlePresentationClick}
                 disabled={status === 'planned'}
               >
                 Start Presentation
               </Button>
               {filename === 'design-tokens' && (
-                <Button variant='outline' size='lg' onClick={handleStaticClick}>
+                <Button
+                  variant='outlined'
+                  size='large'
+                  onClick={handleStaticClick}
+                >
                   Static Version
                 </Button>
               )}

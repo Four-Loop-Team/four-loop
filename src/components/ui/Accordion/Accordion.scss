@@ -138,6 +138,12 @@
   height: 84px;
 }
 
+// Enhanced hover states
+.accordion-trigger-hovered {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
+}
+
 // =============================================================================
 // ACCORDION SIZE VARIANTS
 // =============================================================================
@@ -308,6 +314,12 @@
   &:hover {
     background-color: vars.$color-surface-secondary;
   }
+}
+
+// Enhanced hover states for collapsible
+.collapsible-trigger-hovered {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
 }
 
 // =============================================================================

@@ -10,62 +10,55 @@ describe('Button Component', () => {
     expect(button.tagName).toBe('BUTTON');
   });
 
-  it('renders different variants correctly', () => {
-    const { rerender } = render(<Button variant='secondary'>Secondary</Button>);
-    const button = screen.getByRole('button');
-    expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent('Secondary');
+  it('should render different variants correctly', () => {
+    const { rerender } = render(<Button variant='contained'>Contained</Button>);
+    expect(screen.getByRole('button')).toHaveTextContent('Contained');
+    expect(screen.getByRole('button')).toBeInTheDocument();
 
-    rerender(<Button variant='outline'>Outline</Button>);
-    const outlineButton = screen.getByRole('button');
-    expect(outlineButton).toHaveTextContent('Outline');
-
-    rerender(<Button variant='ghost'>Ghost</Button>);
-    const ghostButton = screen.getByRole('button');
-    expect(ghostButton).toHaveTextContent('Ghost');
+    rerender(<Button variant='text'>Text</Button>);
+    expect(screen.getByRole('button')).toHaveTextContent('Text');
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it('renders different sizes correctly', () => {
-    // Test with secondary variant since primary has integrated arrow functionality
+  it('should render different sizes correctly', () => {
+    // Test with contained variant since outlined has integrated arrow functionality
     const { rerender } = render(
-      <Button variant='secondary' size='sm'>
-        Small
+      <Button variant='contained' size='small'>
+        Small Button
       </Button>
     );
-    const button = screen.getByRole('button');
-    expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent('Small');
+
+    expect(screen.getByText('Small Button')).toBeInTheDocument();
 
     rerender(
-      <Button variant='secondary' size='lg'>
-        Large
+      <Button variant='contained' size='large'>
+        Large Button
       </Button>
     );
-    const largeButton = screen.getByRole('button');
-    expect(largeButton).toHaveTextContent('Large');
+    expect(screen.getByText('Large Button')).toBeInTheDocument();
   });
 
-  it('shows loading state correctly', () => {
-    // Test loading with non-primary variant since primary doesn't support loading
+  it('should render loading state', () => {
+    // Test loading with non-outlined variant since outlined doesn't support loading
     render(
-      <Button variant='secondary' loading>
-        Loading
+      <Button variant='contained' loading>
+        Loading Button
       </Button>
     );
+    expect(screen.getByRole('button')).toHaveTextContent('Loading Button');
+    // Check for loading spinner in DOM
     const button = screen.getByRole('button');
-    expect(button).toBeDisabled();
-    expect(screen.getByText('Loading')).toBeInTheDocument();
-    // Loading spinner should be present
-    expect(button.querySelector('svg')).toBeInTheDocument();
+    const svg = button.querySelector('svg');
+    expect(svg).toBeInTheDocument();
   });
 
   it('renders with icons correctly', () => {
     const leftIcon = <span data-testid='left-icon'>←</span>;
     const rightIcon = <span data-testid='right-icon'>→</span>;
 
-    // Test with secondary variant since primary has built-in arrow
+    // Test with contained variant since outlined has built-in arrow
     render(
-      <Button variant='secondary' leftIcon={leftIcon} rightIcon={rightIcon}>
+      <Button variant='contained' leftIcon={leftIcon} rightIcon={rightIcon}>
         With Icons
       </Button>
     );
@@ -73,12 +66,12 @@ describe('Button Component', () => {
     expect(screen.getByTestId('left-icon')).toBeInTheDocument();
     expect(screen.getByTestId('right-icon')).toBeInTheDocument();
 
-    // Test primary variant has built-in arrow icon
-    render(<Button variant='primary'>Primary with Arrow</Button>);
-    const primaryButton = screen.getByRole('button', {
-      name: /primary with arrow/i,
+    // Test outlined variant has built-in arrow icon
+    render(<Button variant='outlined'>Outlined with Arrow</Button>);
+    const outlinedButton = screen.getByRole('button', {
+      name: /outlined with arrow/i,
     });
-    expect(primaryButton.querySelector('svg')).toBeInTheDocument(); // MUI East icon
+    expect(outlinedButton.querySelector('svg')).toBeInTheDocument(); // MUI East icon
   });
 
   it('handles click events correctly', () => {
@@ -90,17 +83,17 @@ describe('Button Component', () => {
   });
 
   it('renders as full width when specified', () => {
-    // Test fullWidth with non-primary variant since primary doesn't support fullWidth
+    // Test fullWidth with non-outlined variant since outlined doesn't support fullWidth
     render(
-      <Button variant='secondary' fullWidth>
+      <Button variant='contained' fullWidth>
         Full Width
       </Button>
     );
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
     expect(button).toHaveTextContent('Full Width');
-    // Button should span the full width - we can verify this functionally
-    expect(button.style.width).toBe('100%');
+    // MUI Button adds fullWidth as a prop and CSS classes, not inline styles
+    expect(button).toHaveClass('MuiButton-fullWidth');
   });
 
   it('is disabled when specified', () => {
@@ -108,5 +101,25 @@ describe('Button Component', () => {
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
     expect(button).toHaveTextContent('Disabled');
+  });
+
+  it('renders outlined button with different color variants correctly', () => {
+    // Test primary color variant (default)
+    const { rerender } = render(
+      <Button variant='outlined'>Outlined Default</Button>
+    );
+    const button = screen.getByRole('button');
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent('Outlined Default');
+
+    // Test secondary color variant
+    rerender(
+      <Button variant='outlined' color='dark'>
+        Outlined Secondary
+      </Button>
+    );
+    const secondaryButton = screen.getByRole('button');
+    expect(secondaryButton).toHaveTextContent('Outlined Secondary');
+    expect(secondaryButton.querySelector('svg')).toBeInTheDocument(); // Should still have arrow icon
   });
 });

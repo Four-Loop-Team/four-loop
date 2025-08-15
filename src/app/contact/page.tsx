@@ -1,25 +1,30 @@
-import { SEMANTIC_SPACING } from '@/constants/spacing';
+import { GridContainer, GridItem } from '@/components/system/Grid/Grid';
+import Form from '@/components/ui/Form/Form';
+import { Input } from '@/components/ui/Input';
+import {
+  DESIGN_TOKENS,
+  SEMANTIC_SPACING,
+} from '@/constants/design-tokens-consolidated';
 import { contactMetadata } from '@/lib/metadata';
 import {
   generateWebPageSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
 import { Email, LocationOn, Schedule } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = contactMetadata;
 
 export default function ContactPage() {
+  const colors = DESIGN_TOKENS.colors;
+  const spacing = {
+    component: SEMANTIC_SPACING.component,
+    section: SEMANTIC_SPACING.section,
+    layout: SEMANTIC_SPACING.layout,
+  };
+  const typography = DESIGN_TOKENS.typography;
+
   const webPageSchema = generateWebPageSchema({
     name: 'Contact Four Loop Digital',
     description:
@@ -53,204 +58,348 @@ export default function ContactPage() {
         }}
       />
 
-      <Container
-        maxWidth={false}
+      {/* Hero Section */}
+      <Box
         sx={{
-          maxWidth: { xs: '100%', md: '1160px' }, // Limit to 1160px on desktop
-          margin: '0 auto', // Center the container
-          px: { xs: 2, md: 3 }, // Add some padding
-          py: 8,
+          backgroundColor: 'transparent',
+          pt: { xs: spacing.section.sm, md: spacing.section.md },
+          pb: { xs: spacing.section.sm, md: spacing.section.md },
+          color: 'white',
         }}
       >
-        {/* Hero Section */}
-        <Box textAlign='center' sx={{ mb: SEMANTIC_SPACING.section.lg }}>
-          <Typography variant='h1' component='h1' gutterBottom>
-            Contact Us
-          </Typography>
+        <Box
+          sx={{
+            maxWidth: { xs: '100%', md: '1160px' },
+            margin: '0 auto',
+            px: { xs: spacing.component.sm, md: spacing.component.lg },
+            textAlign: 'center',
+          }}
+        >
           <Typography
-            variant='h5'
-            color='text.secondary'
-            sx={{ mb: SEMANTIC_SPACING.layout.sm }}
+            variant='h1'
+            component='h1'
+            sx={{
+              fontSize: {
+                xs: typography.fontSize['4xl'],
+                md: typography.fontSize['6xl'],
+              },
+              fontWeight: typography.fontWeight.normal,
+              color: 'white',
+              lineHeight: typography.lineHeight.tight,
+              mb: spacing.component.lg,
+            }}
           >
-            Get in touch with our team to discuss your next digital project.
+            Let&apos;s Build Something Amazing
           </Typography>
           <Typography
             variant='body1'
-            color='text.secondary'
-            sx={{ maxWidth: '800px', mx: 'auto' }}
+            sx={{
+              fontSize: {
+                xs: typography.fontSize.lg,
+                md: typography.fontSize.xl,
+              },
+              color: colors.text.muted,
+              fontWeight: typography.fontWeight.light,
+              maxWidth: '600px',
+              mx: 'auto',
+              lineHeight: typography.lineHeight.relaxed,
+            }}
           >
             Ready to start your digital transformation journey? We&apos;d love
             to hear about your project and explore how we can help you achieve
-            your business objectives through innovative digital solutions.
+            your business objectives.
           </Typography>
         </Box>
+      </Box>
 
-        <Grid container spacing={6}>
+      {/* Main Contact Section */}
+      <Box
+        sx={{
+          maxWidth: { xs: '100%', md: '1160px' },
+          margin: '0 auto',
+          px: { xs: spacing.component.sm, md: spacing.component.lg },
+          pb: { xs: spacing.section.sm, md: spacing.section.md },
+        }}
+      >
+        <GridContainer gap='lg'>
           {/* Contact Form */}
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Card>
-              <CardContent sx={{ p: SEMANTIC_SPACING.layout.sm }}>
-                <Typography variant='h4' component='h2' gutterBottom>
-                  Start Your Project
-                </Typography>
-                <Typography
-                  variant='body1'
-                  color='text.secondary'
-                  sx={{ mb: SEMANTIC_SPACING.layout.sm }}
-                >
-                  Fill out the form below and we&apos;ll get back to you within
-                  24 hours.
-                </Typography>
-
-                <Box
-                  component='form'
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: SEMANTIC_SPACING.component.xl,
-                  }}
-                >
-                  <Grid container spacing={2}>
-                    <Grid size={{ xs: 12, sm: 6 }}>
-                      <TextField
-                        fullWidth
-                        label='First Name'
-                        name='firstName'
-                        required
-                        variant='outlined'
-                      />
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6 }}>
-                      <TextField
-                        fullWidth
-                        label='Last Name'
-                        name='lastName'
-                        required
-                        variant='outlined'
-                      />
-                    </Grid>
-                  </Grid>
-
-                  <TextField
-                    fullWidth
-                    label='Email Address'
-                    name='email'
-                    type='email'
+          <GridItem xs={12} lg={8}>
+            <Form
+              title='Start Your Project'
+              description='/&nbsp;&nbsp;&nbsp;&nbsp;Tell us about your vision'
+              submitText='Send Message'
+              accentBackground={true}
+              contained={false}
+            >
+              <GridContainer gap='md'>
+                <GridItem xs={12} sm={6}>
+                  <Input
+                    label='First Name'
+                    name='firstName'
                     required
-                    variant='outlined'
+                    placeholder='Enter your first name'
+                    variant='filled'
                   />
-
-                  <TextField
-                    fullWidth
-                    label='Project Description'
-                    name='description'
-                    multiline
-                    rows={4}
-                    placeholder='Tell us about your project...'
-                    variant='outlined'
+                </GridItem>
+                <GridItem xs={12} sm={6}>
+                  <Input
+                    label='Last Name'
+                    name='lastName'
+                    required
+                    placeholder='Enter your last name'
+                    variant='filled'
                   />
+                </GridItem>
+              </GridContainer>
 
-                  <Button
-                    type='submit'
-                    variant='contained'
-                    size='large'
-                    sx={{
-                      alignSelf: 'flex-start',
-                      mt: SEMANTIC_SPACING.component.md,
-                    }}
-                  >
-                    Send Message
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+              <Input
+                label='Email Address'
+                name='email'
+                type='email'
+                required
+                placeholder='your.email@example.com'
+                helperText="We'll never share your email address"
+                variant='filled'
+              />
+
+              <Input
+                label='Project Description'
+                name='description'
+                multiline
+                rows={4}
+                placeholder='Tell us about your project goals, timeline, and requirements...'
+                helperText='The more details you provide, the better we can help you'
+                variant='filled'
+              />
+            </Form>
+          </GridItem>
 
           {/* Contact Information */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Box>
-              <Typography variant='h4' component='h2' gutterBottom>
+          <GridItem xs={12} lg={4}>
+            <Box
+              sx={{
+                pl: { xs: 0, lg: spacing.component.lg },
+                pt: { xs: spacing.section.sm, lg: 0 },
+              }}
+            >
+              <Typography
+                variant='h3'
+                component='h2'
+                sx={{
+                  fontSize: {
+                    xs: typography.fontSize['2xl'],
+                    md: typography.fontSize['3xl'],
+                  },
+                  fontWeight: typography.fontWeight.medium,
+                  color: 'white',
+                  mb: spacing.component.xl,
+                  lineHeight: typography.lineHeight.tight,
+                }}
+              >
                 Get in Touch
               </Typography>
 
-              <Card sx={{ mb: SEMANTIC_SPACING.component.xl }}>
-                <CardContent>
-                  <Box
+              {/* Contact Cards */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: spacing.component.lg,
+                }}
+              >
+                {/* Email Card */}
+                <Card
+                  sx={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: spacing.component.lg,
+                  }}
+                >
+                  <CardContent
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      mb: SEMANTIC_SPACING.component.md,
+                      p: spacing.component.lg,
+                      '&:last-child': { pb: spacing.component.lg },
                     }}
                   >
-                    <Email
+                    <Box
                       sx={{
-                        mr: SEMANTIC_SPACING.component.md,
-                        color: 'primary.main',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: spacing.component.md,
                       }}
-                    />
-                    <Box>
-                      <Typography variant='h6'>Email Us</Typography>
-                      <Typography variant='body2' color='text.secondary'>
-                        hello@fourloop.digital
-                      </Typography>
+                    >
+                      <Box
+                        sx={{
+                          backgroundColor: colors.background.accent,
+                          borderRadius: '50%',
+                          p: spacing.component.sm,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          minWidth: '48px',
+                          minHeight: '48px',
+                        }}
+                      >
+                        <Email
+                          sx={{ color: colors.text.primary, fontSize: 24 }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography
+                          variant='h6'
+                          sx={{
+                            color: 'white',
+                            fontWeight: typography.fontWeight.medium,
+                            mb: spacing.component.xs,
+                          }}
+                        >
+                          Email Us
+                        </Typography>
+                        <Typography
+                          variant='body2'
+                          sx={{
+                            color: colors.text.muted,
+                            fontSize: typography.fontSize.sm,
+                          }}
+                        >
+                          hello@fourloop.digital
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
 
-              <Card sx={{ mb: SEMANTIC_SPACING.component.xl }}>
-                <CardContent>
-                  <Box
+                {/* Business Hours Card */}
+                <Card
+                  sx={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: spacing.component.lg,
+                  }}
+                >
+                  <CardContent
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      mb: SEMANTIC_SPACING.component.md,
+                      p: spacing.component.lg,
+                      '&:last-child': { pb: spacing.component.lg },
                     }}
                   >
-                    <Schedule
+                    <Box
                       sx={{
-                        mr: SEMANTIC_SPACING.component.md,
-                        color: 'primary.main',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: spacing.component.md,
                       }}
-                    />
-                    <Box>
-                      <Typography variant='h6'>Business Hours</Typography>
-                      <Typography variant='body2' color='text.secondary'>
-                        Monday - Friday: 9AM - 6PM EST
-                      </Typography>
+                    >
+                      <Box
+                        sx={{
+                          backgroundColor: colors.background.accent,
+                          borderRadius: '50%',
+                          p: spacing.component.sm,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          minWidth: '48px',
+                          minHeight: '48px',
+                        }}
+                      >
+                        <Schedule
+                          sx={{ color: colors.text.primary, fontSize: 24 }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography
+                          variant='h6'
+                          sx={{
+                            color: 'white',
+                            fontWeight: typography.fontWeight.medium,
+                            mb: spacing.component.xs,
+                          }}
+                        >
+                          Business Hours
+                        </Typography>
+                        <Typography
+                          variant='body2'
+                          sx={{
+                            color: colors.text.muted,
+                            fontSize: typography.fontSize.sm,
+                          }}
+                        >
+                          Monday - Friday: 9AM - 6PM EST
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
 
-              <Card>
-                <CardContent>
-                  <Box
+                {/* Location Card */}
+                <Card
+                  sx={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: spacing.component.lg,
+                  }}
+                >
+                  <CardContent
                     sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      mb: SEMANTIC_SPACING.component.md,
+                      p: spacing.component.lg,
+                      '&:last-child': { pb: spacing.component.lg },
                     }}
                   >
-                    <LocationOn
+                    <Box
                       sx={{
-                        mr: SEMANTIC_SPACING.component.md,
-                        color: 'primary.main',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: spacing.component.md,
                       }}
-                    />
-                    <Box>
-                      <Typography variant='h6'>Location</Typography>
-                      <Typography variant='body2' color='text.secondary'>
-                        Remote-First, Worldwide
-                      </Typography>
+                    >
+                      <Box
+                        sx={{
+                          backgroundColor: colors.background.accent,
+                          borderRadius: '50%',
+                          p: spacing.component.sm,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          minWidth: '48px',
+                          minHeight: '48px',
+                        }}
+                      >
+                        <LocationOn
+                          sx={{ color: colors.text.primary, fontSize: 24 }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography
+                          variant='h6'
+                          sx={{
+                            color: 'white',
+                            fontWeight: typography.fontWeight.medium,
+                            mb: spacing.component.xs,
+                          }}
+                        >
+                          Location
+                        </Typography>
+                        <Typography
+                          variant='body2'
+                          sx={{
+                            color: colors.text.muted,
+                            fontSize: typography.fontSize.sm,
+                          }}
+                        >
+                          Remote-First, Worldwide
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Box>
             </Box>
-          </Grid>
-        </Grid>
-      </Container>
+          </GridItem>
+        </GridContainer>
+      </Box>
     </>
   );
 }

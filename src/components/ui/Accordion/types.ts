@@ -57,6 +57,8 @@ export interface AccordionItemProps {
   isExpanded: boolean;
   /** Function to toggle item expansion */
   onToggle: () => void;
+  /** MUI Accordion onChange handler */
+  onChange?: (event: React.SyntheticEvent, isExpanded: boolean) => void;
   /** Accordion variant */
   variant?: 'default' | 'bordered' | 'filled' | 'minimal';
   /** Accordion size */

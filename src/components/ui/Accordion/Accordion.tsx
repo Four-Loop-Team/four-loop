@@ -1,25 +1,24 @@
 /**
- * @fileoverview Accordion and Collapsible Components - Expandable content sections
+ * @fileoverview Accordion and Collapsible Components - Four Loop branded MUI Accordion
  * @component Accordion
  *
  * @description
- * Flexible accordion and collapsible components for organizing expandable content with:
- * - Single and multiple expansion modes
- * - Controlled and uncontrolled states
- * - Multiple visual variants
- * - Smooth animations and transitions
+ * Four Loop branded accordion components built on top of MUI Accordion for:
+ * - Full accessibility and ARIA compliance
  * - Keyboard navigation support
- * - Accessibility features built-in
- * - Customizable styling options
+ * - Focus management
+ * - Screen reader compatibility
+ * - Four Loop visual branding
+ * - Custom hover states and animations
  *
  * @features
+ * - ✅ Built on MUI Accordion foundation
  * - ✅ Single/multiple expansion modes
  * - ✅ Controlled/uncontrolled behavior
  * - ✅ Multiple visual variants
- * - ✅ Smooth animations
- * - ✅ Keyboard navigation
- * - ✅ Icon customization
- * - ✅ ARIA compliance
+ * - ✅ Enhanced hover states
+ * - ✅ Four Loop branding
+ * - ✅ Full accessibility
  * - ✅ TypeScript support
  *
  * @example
@@ -29,12 +28,12 @@
  *   items={[
  *     {
  *       id: '1',
- *       title: 'Section 1',
+ *       trigger: 'Section 1',
  *       content: <div>Content for section 1</div>
  *     },
  *     {
  *       id: '2',
- *       title: 'Section 2',
+ *       trigger: 'Section 2',
  *       content: <div>Content for section 2</div>
  *     }
  *   ]}
@@ -47,18 +46,10 @@
  *   defaultExpandedItems={['1', '3']}
  *   variant="bordered"
  * />
- *
- * // Individual collapsible component
- * <Collapsible
- *   title="Expandable Section"
- *   isExpanded={isExpanded}
- *   onToggle={setIsExpanded}
- * >
- *   <p>This content can be expanded or collapsed</p>
- * </Collapsible>
  * ```
  *
  * @accessibility
+ * - Full MUI Accordion accessibility
  * - ARIA expanded/collapsed states
  * - Keyboard navigation (Enter, Space, Arrow keys)
  * - Focus management
@@ -69,14 +60,12 @@
 'use client';
 
 import { useDesignSystem } from '@/lib/hooks';
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import './Accordion.scss';
+import {
+  Accordion as MuiAccordion,
+  AccordionDetails as MuiAccordionDetails,
+  AccordionSummary as MuiAccordionSummary,
+} from '@mui/material';
+import React, { createContext, useCallback, useState } from 'react';
 import {
   AccordionContextValue,
   AccordionItemProps,
@@ -105,6 +94,7 @@ const Accordion: React.FC<AccordionProps> = ({
   itemClassName = '',
   'data-testid': testId = 'accordion',
 }) => {
+  const { colors } = useDesignSystem();
   const isControlled = controlledExpandedItems !== undefined;
   const [internalExpandedItems, setInternalExpandedItems] =
     useState<string[]>(defaultExpandedItems);
@@ -113,19 +103,11 @@ const Accordion: React.FC<AccordionProps> = ({
     ? controlledExpandedItems
     : internalExpandedItems;
 
-  const toggleItem = useCallback(
-    (itemId: string) => {
-      const isCurrentlyExpanded = expandedItems.includes(itemId);
+  const handleChange = useCallback(
+    (itemId: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
       let newExpandedItems: string[];
 
-      if (isCurrentlyExpanded) {
-        if (collapsible) {
-          newExpandedItems = expandedItems.filter((id) => id !== itemId);
-          onCollapse?.(itemId);
-        } else {
-          return; // Don't allow collapsing if collapsible is false
-        }
-      } else {
+      if (isExpanded) {
         if (multiple) {
           newExpandedItems = [...expandedItems, itemId];
         } else {
@@ -138,6 +120,13 @@ const Accordion: React.FC<AccordionProps> = ({
           });
         }
         onExpand?.(itemId);
+      } else {
+        if (collapsible) {
+          newExpandedItems = expandedItems.filter((id) => id !== itemId);
+          onCollapse?.(itemId);
+        } else {
+          return; // Don't allow collapsing if collapsible is false
+        }
       }
 
       if (!isControlled) {
@@ -158,7 +147,10 @@ const Accordion: React.FC<AccordionProps> = ({
 
   const contextValue: AccordionContextValue = {
     expandedItems,
-    toggleItem,
+    toggleItem: (itemId: string) => {
+      const isExpanded = expandedItems.includes(itemId);
+      handleChange(itemId)({} as React.SyntheticEvent, !isExpanded);
+    },
     multiple,
     variant,
     size,
@@ -166,26 +158,55 @@ const Accordion: React.FC<AccordionProps> = ({
     animationDuration,
   };
 
-  const variantClasses = {
-    default: 'accordion-default',
-    bordered: 'accordion-bordered',
-    filled: 'accordion-filled',
-    minimal: 'accordion-minimal',
+  const getContainerStyles = () => {
+    const baseStyles = {
+      backgroundColor: 'transparent',
+      borderTop: `1px solid ${colors.border.inverse}`, // White border above
+      borderBottom: `1px solid ${colors.border.inverse}`, // White border below
+      borderRadius: 0,
+      boxShadow: 'none',
+      overflow: 'visible', // Prevent content clipping
+      margin: '8px 0', // Allow natural spacing for content push-down
+      padding: '0', // Remove padding to let items handle their own spacing
+    };
+
+    switch (variant) {
+      case 'bordered':
+        return {
+          ...baseStyles,
+          border: `1px solid ${colors.border.inverse}`, // All borders white
+          borderRadius: '12px',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          backgroundColor: colors.surface.primary,
+        };
+      case 'filled':
+        return {
+          ...baseStyles,
+          backgroundColor: colors.surface.secondary,
+          padding: '16px',
+          borderRadius: '12px',
+        };
+      case 'minimal':
+        return baseStyles;
+      default:
+        return baseStyles; // Always use minimal style as base
+    }
   };
 
   return (
     <AccordionContext.Provider value={contextValue}>
       <div
-        className={`${variantClasses[variant]} ${className}`}
+        className={className}
         data-testid={testId}
-        style={variant === 'minimal' ? { backgroundColor: 'transparent' } : {}}
+        style={getContainerStyles()}
       >
         {items.map((item) => (
           <AccordionItem
             key={item.id}
             item={item}
             isExpanded={expandedItems.includes(item.id)}
-            onToggle={() => toggleItem(item.id)}
+            onToggle={() => contextValue.toggleItem(item.id)}
+            onChange={handleChange(item.id)}
             variant={variant}
             size={size}
             animated={animated}
@@ -198,197 +219,283 @@ const Accordion: React.FC<AccordionProps> = ({
   );
 };
 
-// AccordionItem component
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// AccordionItem component using MUI Accordion
 const AccordionItem: React.FC<AccordionItemProps> = ({
   item,
   isExpanded,
-  onToggle,
+  onChange,
   variant = 'default',
   size = 'md',
-  animated = true,
-  animationDuration = 200, // Animation duration is handled by CSS classes
   className = '',
   'data-testid': testId = 'accordion-item',
 }) => {
-  // Animation duration is handled by CSS classes but kept for API compatibility
-  void animationDuration;
   const { colors } = useDesignSystem();
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState<number | undefined>(
-    isExpanded ? undefined : 0
-  );
 
-  useEffect(() => {
-    if (animated && contentRef.current) {
-      if (isExpanded) {
-        setContentHeight(contentRef.current.scrollHeight);
-      } else {
-        setContentHeight(0);
-      }
-    }
-  }, [isExpanded, animated]);
-
-  const sizeClasses = {
-    sm: 'accordion-size-sm', // Updated for 44px min touch target
-    md: 'accordion-size-md', // Updated for 44px min touch target
-    lg: 'accordion-size-lg', // Updated for 44px min touch target
-  };
-
-  const getVariantClasses = () => {
-    switch (variant) {
-      case 'bordered':
+  const getSizeStyles = () => {
+    switch (size) {
+      case 'sm':
         return {
-          item: 'accordion-item-bordered',
-          trigger: 'accordion-trigger-bordered',
-          content: 'accordion-content-bordered',
+          minHeight: '44px',
+          fontSize: '14px',
+          padding: '8px 16px',
         };
-      case 'filled':
+      case 'lg':
         return {
-          item: 'accordion-item-filled',
-          trigger: 'accordion-trigger-filled',
-          content: 'accordion-content-filled',
-        };
-      case 'minimal':
-        return {
-          item: 'accordion-item-minimal',
-          trigger: 'accordion-trigger-minimal',
-          content: 'accordion-content-minimal',
+          minHeight: '64px',
+          fontSize: '18px',
+          padding: '16px 24px',
         };
       default:
         return {
-          item: 'accordion-item-default',
-          trigger: 'accordion-trigger-default',
-          content: 'accordion-content-default',
+          minHeight: '54px',
+          fontSize: '16px',
+          padding: '12px 20px',
         };
     }
   };
 
-  const variantClasses = getVariantClasses();
+  const getVariantStyles = () => {
+    const sizeStyles = getSizeStyles();
 
-  const handleToggle = () => {
-    if (!item.disabled) {
-      onToggle();
+    switch (variant) {
+      case 'minimal':
+        return {
+          backgroundColor: 'transparent',
+          border: 'none',
+          borderBottom: `1px solid ${colors.border.inverse}`, // Changed to inverse border
+          borderRadius: 0,
+          color: colors.text.inverse,
+          minHeight: '84px', // Changed from height to minHeight to allow expansion
+          '&:last-child': {
+            borderBottom: 'none',
+          },
+          // Remove the margin override to allow natural MUI behavior
+          // '&.Mui-expanded': {
+          //   margin: 0,
+          // },
+          '& .MuiAccordionSummary-root': {
+            backgroundColor: 'transparent',
+            padding: '0',
+            minHeight: '84px',
+            color: colors.text.inverse,
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header now uses 19px
+            '&:hover': {
+              backgroundColor: 'transparent',
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                borderRadius: '50%',
+                transition:
+                  'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            },
+          },
+          '& .MuiAccordionSummary-content': {
+            margin: 0,
+            alignItems: 'center',
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header content also uses 19px
+          },
+          '& .MuiAccordionSummary-expandIconWrapper': {
+            color: colors.text.accent,
+            transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)',
+            transition: 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+          },
+          '& .MuiAccordionDetails-root': {
+            padding: `0 0 24px 0`, // Fixed padding to prevent overlap
+            backgroundColor: 'transparent',
+            color: colors.text.inverse,
+            fontSize: '16px', // Content now uses default size (16px)
+            lineHeight: 1.6, // Consistent line height
+            marginBottom: '16px', // Add margin to prevent overlap with content below
+          },
+        };
+      case 'bordered':
+        return {
+          border: 'none',
+          borderBottom: `1px solid ${colors.border.inverse}`, // Changed to inverse border
+          borderRadius: 0,
+          boxShadow: 'none',
+          '&:last-child': {
+            borderBottom: 'none',
+          },
+          // Remove the margin override to allow natural MUI behavior
+          // '&.Mui-expanded': {
+          //   margin: 0,
+          // },
+          '& .MuiAccordionSummary-root': {
+            backgroundColor: colors.surface.primary,
+            minHeight: sizeStyles.minHeight,
+            padding: sizeStyles.padding,
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header now uses 19px
+            '&:hover': {
+              backgroundColor: colors.surface.primary,
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '50%',
+                transition:
+                  'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            },
+          },
+          '& .MuiAccordionDetails-root': {
+            padding: sizeStyles.padding,
+            borderTop: `1px solid ${colors.border.inverse}`, // Changed to inverse border
+            fontSize: '16px', // Content now uses default size (16px)
+            lineHeight: 1.6, // Consistent line height
+            marginBottom: '16px', // Add margin to prevent overlap
+          },
+        };
+      case 'filled':
+        return {
+          backgroundColor: colors.surface.secondary,
+          margin: '4px 0',
+          borderRadius: '8px',
+          '&.Mui-expanded': {
+            margin: '4px 0',
+          },
+          '& .MuiAccordionSummary-root': {
+            backgroundColor: colors.surface.primary,
+            minHeight: sizeStyles.minHeight,
+            padding: sizeStyles.padding,
+            borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header now uses 19px
+            '&:hover': {
+              backgroundColor: colors.surface.primary,
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '50%',
+                transition:
+                  'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            },
+          },
+          '& .MuiAccordionDetails-root': {
+            padding: sizeStyles.padding,
+            backgroundColor: colors.surface.secondary,
+            fontSize: '16px', // Content now uses default size (16px)
+            lineHeight: 1.6, // Consistent line height
+            marginBottom: '16px', // Add margin to prevent overlap
+          },
+        };
+      default:
+        return {
+          backgroundColor: colors.surface.primary,
+          margin: '8px 0',
+          borderRadius: '12px',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          border: `1px solid ${colors.border.inverse}`, // Changed to inverse border
+          '&.Mui-expanded': {
+            margin: '8px 0',
+          },
+          '& .MuiAccordionSummary-root': {
+            minHeight: sizeStyles.minHeight,
+            padding: sizeStyles.padding,
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header now uses 19px
+            '&:hover': {
+              backgroundColor: colors.surface.primary,
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '50%',
+                transition:
+                  'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            },
+          },
+          '& .MuiAccordionDetails-root': {
+            padding: sizeStyles.padding,
+            fontSize: '16px', // Content now uses default size (16px)
+            lineHeight: 1.6, // Consistent line height
+            marginBottom: '16px', // Add margin to prevent overlap
+          },
+        };
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleToggle();
+  const getExpandIcon = () => {
+    if (variant === 'minimal') {
+      return (
+        <svg
+          width='30'
+          height='30'
+          fill='none'
+          viewBox='0 0 24 24'
+          stroke={colors.text.accent}
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            d='M12 6v12m6-6H6'
+          />
+        </svg>
+      );
     }
+
+    return (
+      <svg
+        width='20'
+        height='20'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke='currentColor'
+        strokeWidth={2}
+      >
+        <path strokeLinecap='round' strokeLinejoin='round' d='M19 9l-7 7-7-7' />
+      </svg>
+    );
   };
 
   return (
-    <div
-      className={`${variantClasses.item} ${className}`}
+    <MuiAccordion
+      expanded={isExpanded}
+      onChange={onChange || (() => {})}
+      disabled={item.disabled || false}
+      className={className}
       data-testid={`${testId}-${item.id}`}
-      style={variant === 'minimal' ? { backgroundColor: 'transparent' } : {}}
+      sx={getVariantStyles()}
+      disableGutters
+      elevation={0}
     >
-      {/* Trigger */}
-      <button
-        className={`accordion-trigger ${variantClasses.trigger} ${sizeClasses[size]} ${
-          item.disabled
-            ? 'accordion-trigger-disabled'
-            : 'accordion-trigger-enabled'
-        } ${
-          variant === 'minimal'
-            ? 'accordion-trigger-minimal-layout'
-            : 'accordion-trigger-focus'
-        }`}
-        onClick={handleToggle}
-        onKeyDown={handleKeyDown}
-        disabled={item.disabled}
-        aria-expanded={isExpanded}
-        aria-controls={`accordion-content-${item.id}`}
-        id={`accordion-trigger-${item.id}`}
-        style={
-          variant === 'minimal'
-            ? { backgroundColor: 'transparent', border: 'none', color: 'white' }
-            : {}
-        }
-      >
-        <div className='accordion-trigger-content'>
-          {item.icon && (
-            <span className='accordion-trigger-icon'>{item.icon}</span>
-          )}
-          <span
-            className={`accordion-trigger-text ${variant === 'minimal' ? 'accordion-trigger-text-minimal' : ''}`}
-            style={variant === 'minimal' ? { color: 'white' } : {}}
-          >
-            {item.trigger}
-          </span>
-        </div>
-        {variant === 'minimal' ? (
-          <svg
-            className={`accordion-icon-minimal ${isExpanded ? 'accordion-icon-expanded' : ''}`}
-            style={{
-              width: '30px',
-              height: '30px',
-            }}
-            fill='none'
-            viewBox='0 0 24 24'
-            stroke={colors.text.accent}
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d='M12 6v12m6-6H6'
-            />
-          </svg>
-        ) : (
-          <svg
-            className={`accordion-icon-default ${isExpanded ? 'accordion-icon-expanded' : ''}`}
-            fill='none'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M19 9l-7 7-7-7'
-            />
-          </svg>
-        )}
-      </button>
-
-      {/* Content */}
-      <div
-        className={`accordion-content ${variantClasses.content}`}
-        style={{
-          height: animated ? `${contentHeight}px` : isExpanded ? 'auto' : '0px',
-          backgroundColor: variant === 'minimal' ? 'transparent' : undefined,
-          border: variant === 'minimal' ? 'none' : undefined,
+      <MuiAccordionSummary
+        expandIcon={getExpandIcon()}
+        sx={{
+          transition: 'all 0.2s ease-in-out',
+          '& .MuiAccordionSummary-content': {
+            alignItems: 'center',
+            gap: '8px',
+          },
         }}
-        aria-labelledby={`accordion-trigger-${item.id}`}
-        id={`accordion-content-${item.id}`}
-        role='region'
       >
-        <div
-          ref={contentRef}
-          className={`accordion-content-inner ${variant === 'minimal' ? 'accordion-content-minimal-inner' : `${sizeClasses[size]} accordion-content-bordered-inner`}`}
+        {item.icon && (
+          <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+            {item.icon}
+          </span>
+        )}
+        <span
           style={{
-            ...(variant === 'minimal'
-              ? {
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  color: 'white',
-                }
-              : {}),
-            visibility: isExpanded ? 'visible' : 'hidden',
+            fontWeight: 500,
+            color: variant === 'minimal' ? colors.text.inverse : 'inherit',
           }}
         >
-          {item.content}
-        </div>
-      </div>
-    </div>
+          {item.trigger}
+        </span>
+      </MuiAccordionSummary>
+      <MuiAccordionDetails>{item.content}</MuiAccordionDetails>
+    </MuiAccordion>
   );
 };
 
-// Standalone Collapsible component
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// Standalone Collapsible component using MUI Accordion
 const Collapsible: React.FC<CollapsibleProps> = ({
   trigger,
   children,
@@ -397,141 +504,217 @@ const Collapsible: React.FC<CollapsibleProps> = ({
   disabled = false,
   variant = 'default',
   size = 'md',
-  animated = true,
-  animationDuration = 200, // Animation duration is handled by CSS classes
   onChange,
   className = '',
   triggerClassName = '',
   contentClassName = '',
   'data-testid': testId = 'collapsible',
 }) => {
-  // Animation duration is handled by CSS classes but kept for API compatibility
-  void animationDuration;
+  const { colors } = useDesignSystem();
   const isControlled = controlledIsExpanded !== undefined;
   const [internalIsExpanded, setInternalIsExpanded] = useState(defaultExpanded);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState<number | undefined>(
-    defaultExpanded ? undefined : 0
-  );
 
   const isExpanded = isControlled ? controlledIsExpanded : internalIsExpanded;
 
-  useEffect(() => {
-    if (animated && contentRef.current) {
-      if (isExpanded) {
-        setContentHeight(contentRef.current.scrollHeight);
-      } else {
-        setContentHeight(0);
-      }
-    }
-  }, [isExpanded, animated]);
-
-  const handleToggle = () => {
+  const handleChange = (_event: React.SyntheticEvent, expanded: boolean) => {
     if (disabled) return;
 
-    const newExpanded = !isExpanded;
     if (!isControlled) {
-      setInternalIsExpanded(newExpanded);
+      setInternalIsExpanded(expanded);
     }
-    onChange?.(newExpanded);
+    onChange?.(expanded);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleToggle();
-    }
-  };
-
-  const sizeClasses = {
-    sm: 'collapsible-size-sm', // Updated for 44px min touch target
-    md: 'collapsible-size-md', // Updated for 44px min touch target
-    lg: 'collapsible-size-lg', // Updated for 44px min touch target
-  };
-
-  const getVariantClasses = () => {
-    switch (variant) {
-      case 'bordered':
+  const getSizeStyles = () => {
+    switch (size) {
+      case 'sm':
         return {
-          container: 'collapsible-container-bordered',
-          trigger: 'collapsible-trigger-bordered',
-          content: 'collapsible-content-bordered',
+          minHeight: '44px',
+          fontSize: '14px',
+          padding: '8px 16px',
         };
-      case 'filled':
+      case 'lg':
         return {
-          container: 'collapsible-container-filled',
-          trigger: 'collapsible-trigger-filled',
-          content: 'collapsible-content-filled',
-        };
-      case 'minimal':
-        return {
-          container: 'collapsible-container-minimal',
-          trigger: 'collapsible-trigger-minimal',
-          content: 'collapsible-content-minimal',
+          minHeight: '64px',
+          fontSize: '18px',
+          padding: '16px 24px',
         };
       default:
         return {
-          container: 'collapsible-container-default',
-          trigger: 'collapsible-trigger-default',
-          content: 'collapsible-content-default',
+          minHeight: '54px',
+          fontSize: '16px',
+          padding: '12px 20px',
         };
     }
   };
 
-  const variantClasses = getVariantClasses();
+  const getVariantStyles = () => {
+    const sizeStyles = getSizeStyles();
+
+    switch (variant) {
+      case 'bordered':
+        return {
+          border: `1px solid ${colors.border.inverse}`, // Changed to inverse border
+          borderRadius: '8px',
+          overflow: 'hidden',
+          '& .MuiAccordionSummary-root': {
+            backgroundColor: colors.surface.primary,
+            borderBottom: `1px solid ${colors.border.inverse}`, // Changed to inverse border
+            minHeight: sizeStyles.minHeight,
+            padding: sizeStyles.padding,
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header now uses 19px
+            '&:hover': {
+              backgroundColor: colors.surface.primary,
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '50%',
+                transition:
+                  'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            },
+          },
+          '& .MuiAccordionDetails-root': {
+            padding: sizeStyles.padding,
+            fontSize: '16px', // Content now uses default size (16px)
+            lineHeight: 1.6, // Consistent line height
+            marginBottom: '16px', // Add margin to prevent overlap
+          },
+        };
+      case 'filled':
+        return {
+          backgroundColor: colors.surface.secondary,
+          borderRadius: '8px',
+          '& .MuiAccordionSummary-root': {
+            backgroundColor: colors.surface.primary,
+            minHeight: sizeStyles.minHeight,
+            padding: sizeStyles.padding,
+            borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header now uses 19px
+            '&:hover': {
+              backgroundColor: colors.surface.primary,
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '50%',
+                transition:
+                  'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            },
+          },
+          '& .MuiAccordionDetails-root': {
+            padding: sizeStyles.padding,
+            backgroundColor: colors.surface.secondary,
+            fontSize: '16px', // Content now uses default size (16px)
+            lineHeight: 1.6, // Consistent line height
+            marginBottom: '16px', // Add margin to prevent overlap
+          },
+        };
+      case 'minimal':
+        return {
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          '& .MuiAccordionSummary-root': {
+            backgroundColor: 'transparent',
+            minHeight: sizeStyles.minHeight,
+            padding: sizeStyles.padding,
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header now uses 19px
+            '&:hover': {
+              backgroundColor: 'transparent',
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                borderRadius: '50%',
+                transition:
+                  'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            },
+          },
+          '& .MuiAccordionDetails-root': {
+            padding: sizeStyles.padding,
+            backgroundColor: colors.surface.primary,
+            fontSize: '16px', // Content now uses default size (16px)
+            lineHeight: 1.6, // Consistent line height
+            marginBottom: '16px', // Add margin to prevent overlap
+          },
+        };
+      default:
+        return {
+          backgroundColor: colors.surface.primary,
+          border: `1px solid ${colors.border.inverse}`, // Changed to inverse border
+          borderRadius: '12px',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          '& .MuiAccordionSummary-root': {
+            minHeight: sizeStyles.minHeight,
+            padding: sizeStyles.padding,
+            fontWeight: 300, // Match info section styling
+            lineHeight: 1.6, // Match info section styling
+            fontSize: '19px', // Header now uses 19px
+            '&:hover': {
+              backgroundColor: colors.surface.primary,
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '50%',
+                transition:
+                  'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              },
+            },
+          },
+          '& .MuiAccordionDetails-root': {
+            padding: sizeStyles.padding,
+            fontSize: '16px', // Content now uses default size (16px)
+            lineHeight: 1.6, // Consistent line height
+            marginBottom: '16px', // Add margin to prevent overlap
+          },
+        };
+    }
+  };
 
   return (
-    <div
-      className={`${variantClasses.container} ${className}`}
-      data-testid={testId}
-    >
-      {/* Trigger */}
-      <button
-        className={`collapsible-trigger ${sizeClasses[size]} ${variantClasses.trigger} ${triggerClassName} ${
-          disabled
-            ? 'collapsible-trigger-disabled'
-            : 'collapsible-trigger-enabled'
-        } collapsible-trigger-focus`}
-        onClick={handleToggle}
-        onKeyDown={handleKeyDown}
+    <div className={className} data-testid={testId}>
+      <MuiAccordion
+        expanded={isExpanded}
+        onChange={handleChange}
         disabled={disabled}
-        aria-expanded={isExpanded}
-        aria-controls='collapsible-content'
-        id='collapsible-trigger'
+        sx={getVariantStyles()}
+        disableGutters
+        elevation={0}
       >
-        <span className='collapsible-trigger-text'>{trigger}</span>
-        <svg
-          className={`collapsible-arrow ${isExpanded ? 'collapsible-arrow-expanded' : ''}`}
-          fill='none'
-          viewBox='0 0 24 24'
-          stroke='currentColor'
+        <MuiAccordionSummary
+          expandIcon={
+            <svg
+              width='20'
+              height='20'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M19 9l-7 7-7-7'
+              />
+            </svg>
+          }
+          className={triggerClassName}
+          sx={{
+            transition: 'all 0.2s ease-in-out',
+            '& .MuiAccordionSummary-content': {
+              alignItems: 'center',
+            },
+          }}
         >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M19 9l-7 7-7-7'
-          />
-        </svg>
-      </button>
-
-      {/* Content */}
-      <div
-        className={`collapsible-content ${variantClasses.content} ${contentClassName}`}
-        style={{
-          height: animated ? `${contentHeight}px` : isExpanded ? 'auto' : '0px',
-        }}
-        aria-labelledby='collapsible-trigger'
-        id='collapsible-content'
-        role='region'
-      >
-        <div
-          ref={contentRef}
-          className={`${sizeClasses[size]} ${variant !== 'minimal' ? 'collapsible-content-inner-bordered' : 'collapsible-content-inner-minimal'}`}
-        >
+          <span style={{ fontWeight: 500 }}>{trigger}</span>
+        </MuiAccordionSummary>
+        <MuiAccordionDetails className={contentClassName}>
           {children}
-        </div>
-      </div>
+        </MuiAccordionDetails>
+      </MuiAccordion>
     </div>
   );
 };

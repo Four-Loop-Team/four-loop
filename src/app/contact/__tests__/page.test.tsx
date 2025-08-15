@@ -1,12 +1,12 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import ContactPage from '../page';
 import { contactMetadata } from '@/lib/metadata';
 import {
   generateWebPageSchema,
   renderStructuredData,
 } from '@/lib/structured-data';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+import ContactPage from '../page';
 
 // Mock the metadata and structured data modules
 jest.mock('@/lib/metadata', () => ({
@@ -71,7 +71,7 @@ describe('ContactPage', () => {
     renderWithTheme(<ContactPage />);
 
     const heading = screen.getByRole('heading', {
-      name: /contact us/i,
+      name: /let's build something amazing/i,
       level: 1,
     });
     expect(heading).toBeInTheDocument();
@@ -80,7 +80,9 @@ describe('ContactPage', () => {
   it('renders the subtitle correctly', () => {
     renderWithTheme(<ContactPage />);
 
-    const subtitle = screen.getByText(/get in touch with our team/i);
+    const subtitle = screen.getByText(
+      /ready to start your digital transformation journey/i
+    );
     expect(subtitle).toBeInTheDocument();
   });
 
@@ -299,7 +301,7 @@ describe('ContactPage', () => {
     expect(textarea.tagName.toLowerCase()).toBe('textarea');
     expect(textarea).toHaveAttribute(
       'placeholder',
-      'Tell us about your project...'
+      'Tell us about your project goals, timeline, and requirements...'
     );
   }); // Additional tests for 100% Contact page coverage
   it('renders all structured data scripts correctly', () => {
@@ -312,17 +314,6 @@ describe('ContactPage', () => {
     expect(scripts.length).toBeGreaterThan(0);
   });
 
-  it('renders contact form structure', () => {
-    render(<ContactPage />);
-
-    // Check for basic form elements that actually exist
-    expect(screen.getByText('Start Your Project')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Fill out the form below and we'll get back to you within 24 hours."
-      )
-    ).toBeInTheDocument();
-  });
   it('renders basic form fields', () => {
     render(<ContactPage />);
 

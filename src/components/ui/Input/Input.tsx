@@ -1,7 +1,9 @@
+'use client';
+
 import { COLOR_TOKENS } from '@/constants/design-tokens-consolidated';
-import { useDesignSystemMUI } from '@/lib/hooks';
 import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { forwardRef } from 'react';
+import { useDesignSystemMUI } from '../../../hooks/useDesignSystem';
 
 /**
  * Input component props interface extending Material-UI TextField
@@ -71,7 +73,7 @@ const StyledTextField = (props: TextFieldProps) => {
           backgroundColor: 'rgba(53, 53, 53, 0.08)',
         },
         '&:before': {
-          borderBottomColor: muiTheme.palette.text.primary,
+          borderBottomColor: COLOR_TOKENS.border.muted,
         },
         '&:hover:before': {
           borderBottomColor: muiTheme.palette.text.primary,

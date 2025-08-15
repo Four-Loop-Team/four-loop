@@ -54,6 +54,19 @@ export default function RootLayout({
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5' />
         <meta name='msapplication-TileColor' content='#da532c' />
 
+        {/* Preload Material-UI icons to prevent FOUC - load synchronously before JS */}
+        <link rel='preconnect' href='https://fonts.googleapis.com' />
+        <link
+          rel='preconnect'
+          href='https://fonts.gstatic.com'
+          crossOrigin=''
+        />
+        <link
+          href='https://fonts.googleapis.com/icon?family=Material+Icons&display=block'
+          rel='stylesheet'
+          // Load synchronously to prevent FOUC
+        />
+
         {/* Structured Data */}
         <script
           type='application/ld+json'
