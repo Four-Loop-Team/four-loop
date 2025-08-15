@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-08-14T03:08:21.367Z
+> 🤖 Auto-generated on 2025-08-15T01:17:17.257Z
 
 ## Component API Reference
 
@@ -366,27 +366,26 @@
 
 **File**: `src/components/ui/Accordion/Accordion.tsx`
 
-* @fileoverview Accordion and Collapsible Components - Expandable content sections
+* @fileoverview Accordion and Collapsible Components - Four Loop branded MUI Accordion
  @component Accordion
 
  @description
- Flexible accordion and collapsible components for organizing expandable content with:
- - Single and multiple expansion modes
- - Controlled and uncontrolled states
- - Multiple visual variants
- - Smooth animations and transitions
+ Four Loop branded accordion components built on top of MUI Accordion for:
+ - Full accessibility and ARIA compliance
  - Keyboard navigation support
- - Accessibility features built-in
- - Customizable styling options
+ - Focus management
+ - Screen reader compatibility
+ - Four Loop visual branding
+ - Custom hover states and animations
 
  @features
+ - ✅ Built on MUI Accordion foundation
  - ✅ Single/multiple expansion modes
  - ✅ Controlled/uncontrolled behavior
  - ✅ Multiple visual variants
- - ✅ Smooth animations
- - ✅ Keyboard navigation
- - ✅ Icon customization
- - ✅ ARIA compliance
+ - ✅ Enhanced hover states
+ - ✅ Four Loop branding
+ - ✅ Full accessibility
  - ✅ TypeScript support
 
  @example
@@ -396,12 +395,12 @@
    items={[
      {
        id: '1',
-       title: 'Section 1',
+       trigger: 'Section 1',
        content: <div>Content for section 1</div>
      },
      {
        id: '2',
-       title: 'Section 2',
+       trigger: 'Section 2',
        content: <div>Content for section 2</div>
      }
    ]}
@@ -414,18 +413,10 @@
    defaultExpandedItems={['1', '3']}
    variant="bordered"
  />
-
- // Individual collapsible component
- <Collapsible
-   title="Expandable Section"
-   isExpanded={isExpanded}
-   onToggle={setIsExpanded}
- >
-   <p>This content can be expanded or collapsed</p>
- </Collapsible>
  ```
 
  @accessibility
+ - Full MUI Accordion accessibility
  - ARIA expanded/collapsed states
  - Keyboard navigation (Enter, Space, Arrow keys)
  - Focus management
@@ -698,6 +689,15 @@
 **File**: `src/components/ui/Form/Form.tsx`
 
 * Props for the Form component
+
+---
+
+### IconLoader
+
+**File**: `src/components/ui/IconLoader/IconLoader.tsx`
+
+* Universal icon loader that provides consistent rendering for all MUI icons.
+ Uses a very short delay to ensure fonts are loaded, with minimal fallback usage.
 
 ---
 
