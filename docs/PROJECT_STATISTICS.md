@@ -1,30 +1,30 @@
 # Project Statistics
 
-> 🤖 Auto-generated on 2025-07-22T22:32:35.837Z
+> 🤖 Auto-generated on 2025-08-15T01:58:41.604Z
 
 ## 📊 Overview
 
 | Metric              | Count |
 | ------------------- | ----- |
-| Components          | 81    |
+| Components          | 82    |
 | Test Files          | 120   |
-| Documentation Pages | 69    |
-| Dependencies        | 55    |
+| Documentation Pages | 71    |
+| Dependencies        | 56    |
 | Hooks               | 1     |
 | Utils               | 0     |
-| Types               | 4     |
+| Types               | 5     |
 
 ## 🧩 Components
 
-- **Total Components**: 81
+- **Total Components**: 82
 - **Documented Components**: 38
-- **Documentation Coverage**: 47%
+- **Documentation Coverage**: 46%
 
 ## 📦 Dependencies
 
-- **Production**: 3
+- **Production**: 4
 - **Development**: 52
-- **Total**: 55
+- **Total**: 56
 
 ## 🧪 Testing
 
@@ -33,8 +33,8 @@
 
 ## 📝 Documentation
 
-- **Documentation Pages**: 69
-- **Last Updated**: 2025-07-22T22:32:35.838Z
+- **Documentation Pages**: 71
+- **Last Updated**: 2025-08-15T01:58:41.605Z
 
 ---
 
