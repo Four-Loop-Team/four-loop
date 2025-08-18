@@ -1,20 +1,21 @@
 # Dependency Report
 
-> 🤖 Auto-generated on 2025-08-15T01:58:41.608Z
+> 🤖 Auto-generated on 2025-08-18T22:58:19.085Z
 
 ## 📊 Summary
 
-| Type                     | Count  |
-| ------------------------ | ------ |
-| Production Dependencies  | 4      |
-| Development Dependencies | 52     |
-| **Total Dependencies**   | **56** |
+| Type | Count |
+|------|-------|
+| Production Dependencies | 5 |
+| Development Dependencies | 52 |
+| **Total Dependencies** | **57** |
 
 ## 🏗️ Production Dependencies
 
 - **next**: ^15.3.4
 - **react**: ^19.1.0
 - **react-dom**: ^19.1.0
+- **resend**: ^6.0.1
 - **reveal.js**: ^5.2.1
 
 ## 🔧 Development Dependencies
@@ -89,4 +90,4 @@ npm install package-name@latest
 
 ---
 
-_This report is automatically generated from package.json._
+*This report is automatically generated from package.json.*

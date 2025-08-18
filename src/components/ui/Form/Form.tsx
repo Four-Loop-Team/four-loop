@@ -3,7 +3,15 @@
 import Button from '@/components/ui/Button/Button';
 import { useDesignSystem } from '@/lib/hooks';
 import EastIcon from '@mui/icons-material/East';
-import { Box, Container, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Container,
+  Fade,
+  FormControl,
+  FormHelperText,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 
 /**
@@ -19,7 +27,7 @@ export interface FormProps {
   /** Submit button text */
   submitText?: string;
   /** Form submission handler */
-  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void | Promise<void>;
   /** Whether the form is in a loading state */
   loading?: boolean;
   /** Additional styling */
@@ -28,8 +36,22 @@ export interface FormProps {
   contained?: boolean;
   /** Whether to use the accent background styling (default: true) */
   accentBackground?: boolean;
+  /** Button color variant */
+  buttonColor?: 'light' | 'dark';
   /** ID attribute for the form section */
   id?: string;
+  /** Success message to show after form submission */
+  successMessage?: string;
+  /** Error message to show if form submission fails */
+  errorMessage?: string;
+  /** Whether to show success state */
+  showSuccess?: boolean;
+  /** Whether to show error state */
+  showError?: boolean;
+  /** Callback when form is successfully submitted */
+  onSuccess?: () => void;
+  /** Callback when form submission fails */
+  onError?: (error: string) => void;
 }
 
 /**
@@ -67,13 +89,28 @@ const Form: React.FC<FormProps> = ({
   sx = {},
   contained = true,
   accentBackground = true,
+  buttonColor,
   id,
+  successMessage = 'Thank you! Your message has been sent successfully.',
+  errorMessage,
+  showSuccess = false,
+  showError = false,
+  onSuccess,
+  onError,
 }) => {
   const { colors, spacing, typography } = useDesignSystem();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit?.(event);
+
+    try {
+      await onSubmit?.(event);
+      onSuccess?.();
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'An error occurred';
+      onError?.(errorMessage);
+    }
   };
 
   const formContent = (
@@ -94,7 +131,7 @@ const Form: React.FC<FormProps> = ({
         <Box
           sx={{
             borderBottom: accentBackground
-              ? `1px solid ${colors.text.muted}`
+              ? `1px solid ${colors.text.primary}`
               : 'none',
           }}
         >
@@ -154,9 +191,11 @@ const Form: React.FC<FormProps> = ({
       )}
 
       {/* Form Section */}
-      <Box
+      <FormControl
         component='form'
         onSubmit={handleSubmit}
+        fullWidth
+        error={showError}
         sx={{
           paddingTop: title || description ? spacing.layout.sm : 0,
           paddingBottom: spacing.layout.xs,
@@ -169,7 +208,6 @@ const Form: React.FC<FormProps> = ({
             display: 'flex',
             flexDirection: 'column',
             '& > *:not(:last-child)': {
-              mb: spacing.layout.xs,
               mt: spacing.component.lg,
             },
           }}
@@ -177,29 +215,96 @@ const Form: React.FC<FormProps> = ({
           {children}
         </Box>
 
+        {/* General Form Helper Text for accessibility */}
+        {(showError || showSuccess) && (
+          <FormHelperText
+            sx={{
+              textAlign: 'center',
+              fontSize: typography.fontSize.xs,
+              mt: spacing.component.xs,
+              visibility: 'hidden', // Hidden but available for screen readers
+            }}
+          >
+            {showSuccess
+              ? 'Form submitted successfully'
+              : showError
+                ? 'Form contains errors'
+                : ''}
+          </FormHelperText>
+        )}
+
+        {/* Success Message */}
+        {showSuccess && (
+          <Fade in={showSuccess}>
+            <Alert
+              severity='success'
+              sx={{
+                mt: spacing.layout.sm,
+                borderRadius: '12px',
+                '& .MuiAlert-message': {
+                  fontSize: typography.fontSize.sm,
+                  fontWeight: typography.fontWeight.medium,
+                },
+              }}
+            >
+              {successMessage}
+            </Alert>
+          </Fade>
+        )}
+
+        {/* Error Message */}
+        {showError && errorMessage && (
+          <Fade in={showError}>
+            <Alert
+              severity='error'
+              sx={{
+                mt: spacing.layout.sm,
+                borderRadius: '12px',
+                '& .MuiAlert-message': {
+                  fontSize: typography.fontSize.sm,
+                  fontWeight: typography.fontWeight.medium,
+                },
+              }}
+            >
+              {errorMessage}
+            </Alert>
+          </Fade>
+        )}
+
         {/* Submit Button */}
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'center',
-            mt: spacing.layout.sm,
+            mt: spacing.component.sm,
           }}
         >
           <Button
             type='submit'
             variant='text'
-            color={accentBackground ? 'dark' : 'light'}
-            disabled={loading}
+            color={buttonColor || (accentBackground ? 'dark' : 'light')}
+            disabled={loading || showSuccess}
             size='large'
-            rightIcon={!loading ? <EastIcon fontSize='small' /> : undefined}
+            endIcon={!loading ? <EastIcon fontSize='small' /> : undefined}
+            sx={{
+              color: colors.text.primary,
+              fontWeight: typography.fontWeight.medium,
+              fontFamily: typography.fontFamily.primary,
+              textTransform: 'none',
+              minWidth: '44px',
+              minHeight: '44px',
+            }}
           >
-            {loading ? 'Submitting...' : submitText}
+            {loading
+              ? 'Submitting...'
+              : showSuccess
+                ? 'Message Sent!'
+                : submitText}
           </Button>
         </Box>
-      </Box>
+      </FormControl>
     </Box>
   );
-
   if (!contained) {
     return formContent;
   }

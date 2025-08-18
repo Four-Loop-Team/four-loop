@@ -9,11 +9,10 @@ describe('ContactSection', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders contact description text', () => {
+  it('renders correct title and structure', () => {
     render(<ContactSection />);
+    expect(screen.getByText(/get in touch/i)).toBeInTheDocument();
     expect(screen.getByText(/tell us about your project/i)).toBeInTheDocument();
-    expect(screen.getByText(/where can we reach you/i)).toBeInTheDocument();
-    expect(screen.getByText(/what can we help you build/i)).toBeInTheDocument();
   });
 
   it('renders call to action button', () => {
@@ -30,16 +29,23 @@ describe('ContactSection', () => {
     expect(emailInput).toHaveAttribute('required');
   });
 
-  it('renders project textarea field', () => {
+  it('renders message input field', () => {
     render(<ContactSection />);
-    const projectInput = screen.getByLabelText(/what can we help you build/i);
-    expect(projectInput).toBeInTheDocument();
-    expect(projectInput).toHaveAttribute('required');
+    const messageInput = screen.getByLabelText(/what can we help you build/i);
+    expect(messageInput).toBeInTheDocument();
+    expect(messageInput).toHaveAttribute('required');
+  });
+
+  it('renders submit button', () => {
+    render(<ContactSection />);
+    const submitButton = screen.getByRole('button', { name: /let's talk/i });
+    expect(submitButton).toBeInTheDocument();
+    expect(submitButton).toHaveAttribute('type', 'submit');
   });
 
   it('has proper semantic structure', () => {
     const { container } = render(<ContactSection />);
-    const section = container.querySelector('section#contact');
+    const section = container.querySelector('section');
     expect(section).toBeInTheDocument();
     expect(section).toHaveAttribute('id', 'contact');
   });

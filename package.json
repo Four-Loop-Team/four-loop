@@ -72,6 +72,7 @@
     "next": "^15.3.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "resend": "^6.0.1",
     "reveal.js": "^5.2.1"
   },
   "devDependencies": {

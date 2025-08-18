@@ -54,7 +54,7 @@ const StyledTextField = (props: TextFieldProps) => {
       },
       '& .MuiOutlinedInput-root': {
         '& fieldset': {
-          borderColor: COLOR_TOKENS.border.muted,
+          borderColor: COLOR_TOKENS.border.default,
         },
         '&:hover fieldset': {
           borderColor: muiTheme.palette.text.primary,
@@ -73,7 +73,7 @@ const StyledTextField = (props: TextFieldProps) => {
           backgroundColor: 'rgba(53, 53, 53, 0.08)',
         },
         '&:before': {
-          borderBottomColor: COLOR_TOKENS.border.muted,
+          borderBottomColor: COLOR_TOKENS.border.default,
         },
         '&:hover:before': {
           borderBottomColor: muiTheme.palette.text.primary,

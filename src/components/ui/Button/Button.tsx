@@ -297,8 +297,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         '&:hover': {
           backgroundColor:
             color === 'dark'
-              ? 'rgba(0, 0, 0, 0.05)'
-              : 'rgba(255, 255, 255, 0.1)',
+              ? 'rgba(53, 53, 53, 0.12)'
+              : 'rgba(255, 255, 255, 0.08)',
         },
       }),
       ...(fullWidth && { width: '100%' }),

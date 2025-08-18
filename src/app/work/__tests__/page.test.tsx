@@ -58,7 +58,9 @@ describe('WorkPage', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: /^Partners$/ })
     ).toBeInTheDocument();
-    expect(screen.getByText(/get in touch/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /get in touch/i })
+    ).toBeInTheDocument();
   });
 
   test('has proper semantic structure', () => {
