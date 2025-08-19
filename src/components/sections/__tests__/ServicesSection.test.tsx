@@ -61,12 +61,12 @@ describe('ServicesSection', () => {
     expect(screen.getByTestId('accordion')).toBeInTheDocument();
   });
 
-  it('renders collaborate buttons (desktop and mobile)', () => {
+  it('renders collaborate button', () => {
     render(<ServicesSection />);
     const buttons = screen.getAllByRole('button', {
       name: /let's collaborate/i,
     });
-    expect(buttons).toHaveLength(2); // One for desktop header, one for mobile
+    expect(buttons).toHaveLength(1); // Single button that shows on all screen sizes
   });
 
   it('opens contact modal when collaborate button is clicked', () => {

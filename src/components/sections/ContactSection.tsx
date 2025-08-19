@@ -255,7 +255,7 @@ export const ContactSection = () => {
               display: 'flex',
               justifyContent: 'flex-end',
               alignItems: 'center',
-              mt: `-${spacing.component.xl}`, // Move up to align with button row
+              mt: { xs: spacing.component.sm, md: `-${spacing.component.xl}` }, // Different margins for mobile vs desktop
               position: 'relative',
               pr: spacing.component.md,
               pointerEvents: 'none', // Allow clicks to pass through

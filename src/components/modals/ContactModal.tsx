@@ -164,7 +164,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
           <Box
             sx={{
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: { xs: 'flex-end', md: 'center' },
               mt: '32px',
             }}
           >

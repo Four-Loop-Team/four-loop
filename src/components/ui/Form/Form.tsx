@@ -275,7 +275,7 @@ const Form: React.FC<FormProps> = ({
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: { xs: 'flex-end', md: 'center' },
             mt: spacing.component.sm,
           }}
         >

@@ -129,7 +129,7 @@ export const ServicesSection = () => {
 
               <Box
                 sx={{
-                  display: { xs: 'none', lg: 'block' },
+                  display: { xs: 'block', lg: 'block' },
                 }}
               >
                 <Button variant='outlined' onClick={handleCollaborationClick}>
@@ -178,7 +178,7 @@ export const ServicesSection = () => {
             {/* Mobile CTA Section - only show on mobile */}
             <Box
               sx={{
-                display: { xs: 'flex', lg: 'none' },
+                display: 'none',
                 justifyContent: 'center',
                 mt: spacing.layout.xs, // Using layout spacing
               }}

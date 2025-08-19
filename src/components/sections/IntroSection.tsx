@@ -55,8 +55,11 @@ export const IntroSection = () => {
               alignItems: 'center',
               gap: spacing.layout.xs, // Using layout spacing
               position: 'relative',
-              borderTop: `1px solid ${colors.text.inverse}`,
-              borderBottom: `1px solid ${colors.text.inverse}`,
+              borderTop: { xs: 'none', md: `1px solid ${colors.text.inverse}` },
+              borderBottom: {
+                xs: 'none',
+                md: `1px solid ${colors.text.inverse}`,
+              },
               paddingTop: spacing.layout.xs, // Using layout spacing (32px)
               paddingBottom: spacing.layout.xs, // Using layout spacing (32px)
             }}
@@ -72,6 +75,14 @@ export const IntroSection = () => {
                 paddingY: spacing.layout.xs, // Using layout spacing (32px)
                 paddingLeft: spacing.component.xl, // Using component spacing (similar to 28px)
                 paddingRight: spacing.layout.lg, // Using layout spacing (similar to 100px)
+                borderTop: {
+                  xs: `1px solid ${colors.text.inverse}`,
+                  md: 'none',
+                },
+                paddingTop: {
+                  xs: spacing.layout.xs,
+                  md: spacing.layout.xs,
+                },
               }}
             >
               <Typography
