@@ -1,19 +1,13 @@
 'use client';
 
 import { useDesignSystem } from '@/lib/hooks';
-import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Box,
   Button,
   Container,
-  Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   Toolbar,
   useMediaQuery,
   useTheme,
@@ -176,91 +170,6 @@ export default function Navigation() {
   if (!mounted) {
     return <NavigationSkeleton />;
   }
-
-  // Mobile drawer content
-  const drawer = (
-    <Box
-      sx={{
-        width: 'var(--nav-mobile-width)',
-        height: '100%',
-        bgcolor: 'transparent',
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          p: spacing.component.lg, // Using component spacing
-          borderBottom: '1px solid rgba(226, 232, 145, 0.2)',
-        }}
-      >
-        <IconButton
-          onClick={handleDrawerToggle}
-          sx={{
-            color: 'white',
-            minWidth: '44px',
-            minHeight: '44px',
-            p: spacing.component.xs, // Using component spacing
-            '&:hover': {
-              backgroundColor: 'rgba(226, 232, 145, 0.1)',
-            },
-          }}
-        >
-          <CloseIcon sx={{ fontSize: '1.5rem' }} />
-        </IconButton>
-      </Box>
-      <List sx={{ px: spacing.component.lg, pt: spacing.component.md }}>
-        {navigationItems.map((item) => {
-          const active = isActive(item.href);
-          return (
-            <ListItem key={item.label} disablePadding sx={{ mb: 1.5 }}>
-              <Link
-                href={item.href}
-                className='nav-link'
-                onClick={handleNavClick}
-                prefetch={true}
-              >
-                <ListItemButton
-                  sx={{
-                    borderRadius: spacing.component.lg, // Using component spacing
-                    color: active
-                      ? 'var(--text-accent)'
-                      : 'var(--text-inverse)',
-                    backgroundColor: active
-                      ? 'var(--background-accent)'
-                      : 'transparent',
-                    border: active
-                      ? '1px solid var(--border-accent)'
-                      : '1px solid transparent',
-                    py: 'var(--space-lg)',
-                    px: 'var(--space-2xl)',
-                    transition: 'var(--nav-button-transition)',
-                    '&:hover': {
-                      backgroundColor: active
-                        ? 'var(--background-accent)'
-                        : 'rgba(255, 255, 255, 0.08)',
-                      transform: 'translateX(4px)',
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary={item.label}
-                    sx={{
-                      '& .MuiTypography-root': {
-                        fontSize: '1.1rem',
-                        fontWeight: active ? 600 : 500,
-                        letterSpacing: '0.02em',
-                      },
-                    }}
-                  />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          );
-        })}
-      </List>
-    </Box>
-  );
 
   return (
     <>
@@ -443,33 +352,70 @@ export default function Navigation() {
         </Container>
       </AppBar>
 
-      {/* Mobile Drawer */}
-      {mounted && (
-        <Drawer
-          variant='temporary'
-          anchor='right'
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile
-          }}
-          PaperProps={{
-            id: 'mobile-navigation-menu',
-            role: 'navigation',
-            'aria-label': 'Mobile navigation menu',
-          }}
+      {/* Mobile Dropdown Menu */}
+      {mounted && isMobile && (
+        <Box
+          role='navigation'
+          aria-label='Mobile navigation menu'
+          id='mobile-navigation-menu'
           sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: 'var(--nav-mobile-width)',
-              backgroundColor: 'var(--background-primary)',
-              backgroundImage: `linear-gradient(135deg, var(--background-primary) 0%, ${colors.background.accent} 100%)`,
-            },
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
+            backgroundColor: colors.background.accent,
+            transform: mobileOpen ? 'translateY(0)' : 'translateY(-100%)',
+            opacity: mobileOpen ? 1 : 0,
+            visibility: mobileOpen ? 'visible' : 'hidden',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            zIndex: 1000,
+            borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           }}
         >
-          {drawer}
-        </Drawer>
+          <Box sx={{ px: spacing.component.lg, py: spacing.component.md }}>
+            {navigationItems.map((item, index) => {
+              const active = isActive(item.href);
+              return (
+                <Box
+                  key={item.label}
+                  sx={{
+                    borderBottom:
+                      index < navigationItems.length - 1
+                        ? `1px solid ${colors.text.primary}`
+                        : 'none',
+                    py: spacing.component.lg,
+                  }}
+                >
+                  <Link
+                    href={item.href}
+                    className='nav-link'
+                    onClick={handleNavClick}
+                    prefetch={true}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <Box
+                      sx={{
+                        color: active
+                          ? colors.text.accent
+                          : colors.text.primary,
+                        fontSize: '1.25rem',
+                        fontWeight: active ? 600 : 400,
+                        transition: 'color 0.2s ease',
+                        cursor: 'pointer',
+                        '&:hover': {
+                          color: colors.text.accent,
+                        },
+                      }}
+                    >
+                      {item.label}
+                    </Box>
+                  </Link>
+                </Box>
+              );
+            })}
+          </Box>
+        </Box>
       )}
     </>
   );
