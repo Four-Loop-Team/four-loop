@@ -139,6 +139,25 @@
   --breakpoint-xl: #{variables.$breakpoint-xl};
 }
 
+/* Navigation Link Styles */
+.nav-brand-link,
+.nav-menu-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-brand-link:hover,
+.nav-brand-link:focus,
+.nav-brand-link:visited,
+.nav-brand-link:active,
+.nav-menu-link:hover,
+.nav-menu-link:focus,
+.nav-menu-link:visited,
+.nav-menu-link:active {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* Global Font Styles */
 html {
   font-family:
