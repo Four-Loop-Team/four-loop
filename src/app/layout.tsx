@@ -1,5 +1,6 @@
 import { poppins } from '@/app/ui/fonts';
 import { Navigation, SkipNavigationLink } from '@/components/layout';
+import { SphereLoader } from '@/components/layout/SphereLoader/SphereLoader';
 import BrandThemeProvider from '@/components/system/BrandThemeProvider/BrandThemeProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { homeMetadata } from '@/lib/metadata';
@@ -67,6 +68,10 @@ export default function RootLayout({
           // Load synchronously to prevent FOUC
         />
 
+        {/* Preload background sphere images to prevent flash on load */}
+        <link rel='preload' as='image' href='/top-sphere.png' />
+        <link rel='preload' as='image' href='/right-sphere.png' />
+
         {/* Structured Data */}
         <script
           type='application/ld+json'
@@ -82,6 +87,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${poppins.variable} antialiased layout-body`}>
+        <SphereLoader />
         <ThemeProvider defaultTheme='auto'>
           <SkipNavigationLink />
           <BrandThemeProvider>

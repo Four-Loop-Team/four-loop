@@ -11,7 +11,7 @@ export default function NavigationSkeleton() {
       elevation={0}
       component='nav'
       sx={{
-        backgroundColor: 'var(--background-primary)',
+        backgroundColor: 'transparent',
         borderBottom: 'none',
         boxShadow: 'none',
       }}

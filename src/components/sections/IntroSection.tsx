@@ -40,7 +40,9 @@ export const IntroSection = () => {
       >
         <Box
           sx={{
-            backgroundColor: colors.background.secondary,
+            backgroundColor: 'rgba(30, 30, 30, 0.7)', // Calculated to result in #252525 over #353535 background
+            backdropFilter: 'blur(10px)', // Add blur for better readability
+            WebkitBackdropFilter: 'blur(10px)', // Safari support
             borderRadius: '86px',
             paddingTop: spacing.section.sm, // Using section spacing (64px)
             paddingBottom: spacing.section.sm, // Using section spacing (64px)

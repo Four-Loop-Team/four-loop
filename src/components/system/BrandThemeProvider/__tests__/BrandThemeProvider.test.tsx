@@ -98,7 +98,7 @@ describe('BrandThemeProvider', () => {
     );
 
     expect(screen.getByTestId('font-family')).toHaveTextContent(
-      'var(--font-poppins), sans-serif'
+      'var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     );
   });
 
@@ -181,13 +181,13 @@ describe('BrandThemeProvider', () => {
       </BrandThemeProvider>
     );
 
-    expect(screen.getByTestId('error-color')).toHaveTextContent('#f44336');
-    expect(screen.getByTestId('warning-color')).toHaveTextContent('#ff9800');
-    expect(screen.getByTestId('info-color')).toHaveTextContent('#2196f3');
-    expect(screen.getByTestId('success-color')).toHaveTextContent('#4caf50');
+    expect(screen.getByTestId('error-color')).toHaveTextContent('#ef4444');
+    expect(screen.getByTestId('warning-color')).toHaveTextContent('#f59e0b');
+    expect(screen.getByTestId('info-color')).toHaveTextContent('#3b82f6');
+    expect(screen.getByTestId('success-color')).toHaveTextContent('#22c55e');
     expect(screen.getByTestId('primary-light')).toHaveTextContent('#f0f4a6');
     expect(screen.getByTestId('primary-dark')).toHaveTextContent('#d1d57a');
-    expect(screen.getByTestId('primary-contrast')).toHaveTextContent('#232323');
+    expect(screen.getByTestId('primary-contrast')).toHaveTextContent('#353535');
   });
 
   it('provides all typography variants with proper styling', () => {

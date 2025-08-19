@@ -1,6 +1,6 @@
 # API Documentation
 
-> 🤖 Auto-generated on 2025-08-19T02:59:55.352Z
+> 🤖 Auto-generated on 2025-08-19T22:14:03.475Z
 
 ## Component API Reference
 
@@ -147,6 +147,15 @@
 
 ---
 
+### SphereLoader
+
+**File**: `src/components/layout/SphereLoader/SphereLoader.tsx`
+
+* Client-side component to initialize sphere loading.
+ Prevents flash by loading sphere images before displaying them.
+
+---
+
 ### ContactModal
 
 **File**: `src/components/modals/ContactModal.tsx`
@@ -245,7 +254,7 @@
 **File**: `src/components/system/BrandThemeProvider/BrandThemeProvider.tsx`
 
 * Brand colors object for use in sx props and components
- These match our theme palette and SCSS variables
+ These are now synchronized with design tokens
 
 ---
 

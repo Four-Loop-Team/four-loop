@@ -63,7 +63,7 @@ John Smith`,
     <body style="font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #353535; background-color: #f8f9fa; padding: 20px; margin: 0;">
       <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);">
                         <div style="background: linear-gradient(135deg, #353535 0%, #232323 100%); padding: 40px 30px; text-align: center; position: relative; border-bottom: 4px solid #e2e891;">
-                    <img src="https://fourloopdigital.com/logo-email.png" alt="Four Loop Digital Logo" width="65" height="80" style="margin-bottom: 16px; display: block; margin-left: auto; margin-right: auto;" />
+                    <img src="http://localhost:3000/logo-email.png" alt="Four Loop Digital Logo" width="65" height="80" style="margin-bottom: 16px; display: block; margin-left: auto; margin-right: auto;" />
           <h1 style="color: #ffffff; font-size: 24px; font-weight: 600; margin: 0 0 8px 0; letter-spacing: -0.025em;">New Contact Form Submission</h1>
           <p style="color: #e2e891; font-size: 14px; font-weight: 400; margin: 0;">Your website has a new inquiry</p>
         </div>

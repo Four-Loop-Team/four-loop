@@ -251,13 +251,15 @@
 // =============================================================================
 
 .layout-body {
-  background-color: var(--color-background);
   min-height: 100vh;
+
+  /* Background color is set on body element globally */
 }
 
 .layout-main {
-  background-color: var(--color-background);
   min-height: 100vh;
+  position: relative; /* Ensure main content appears above background spheres */
+  z-index: 2; /* Above background spheres (z-index: 1) */
 }
 
 // =============================================================================

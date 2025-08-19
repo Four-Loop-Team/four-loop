@@ -1,79 +1,84 @@
 'use client';
 
 /* eslint-disable no-restricted-syntax */
-// This file contains legitimate hardcoded brand colors as part of the theme definition
+// This file uses design tokens as the source of truth for Material-UI theming
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React from 'react';
-import { SEMANTIC_SPACING, SPACING_SCALE } from '../../../constants/spacing';
+import {
+  BRAND_COLORS,
+  COLOR_TOKENS,
+  SEMANTIC_SPACING,
+  TYPOGRAPHY_TOKENS,
+} from '../../../constants/design-tokens-consolidated';
 
 const theme = createTheme({
   palette: {
     mode: 'dark', // Enable dark mode for better contrast
     primary: {
-      main: '#e2e891', // Primary brand color - matches SCSS
+      main: BRAND_COLORS.primary, // #e2e891 - from design tokens
       light: '#f0f4a6',
       dark: '#d1d57a',
-      contrastText: '#232323',
+      contrastText: BRAND_COLORS.secondary, // #353535 - from design tokens
     },
     secondary: {
-      main: '#353535', // Dark gray - matches SCSS
+      main: BRAND_COLORS.secondary, // #353535 - from design tokens
       light: '#4a4a4a',
       dark: '#2a2a2a',
-      contrastText: '#ffffff',
+      contrastText: BRAND_COLORS.neutral, // #ffffff - from design tokens
     },
     background: {
-      default: '#353535', // Dark background - matches SCSS
-      paper: '#232323',
+      default: COLOR_TOKENS.background.primary, // Uses design token
+      paper: COLOR_TOKENS.background.secondary, // Uses design token
     },
     text: {
-      primary: '#ffffff', // High contrast white text
+      primary: COLOR_TOKENS.text.inverse, // Uses design token
       secondary: 'rgba(255, 255, 255, 0.85)', // Slightly dimmed but still accessible
     },
     error: {
-      main: '#f44336',
-      contrastText: '#ffffff',
+      main: COLOR_TOKENS.state.error, // Uses design token
+      contrastText: BRAND_COLORS.neutral,
     },
     warning: {
-      main: '#ff9800',
+      main: COLOR_TOKENS.state.warning, // Uses design token
       contrastText: '#000000',
     },
     info: {
-      main: '#2196f3',
-      contrastText: '#ffffff',
+      main: COLOR_TOKENS.state.info, // Uses design token
+      contrastText: BRAND_COLORS.neutral,
     },
     success: {
-      main: '#4caf50',
-      contrastText: '#ffffff',
+      main: COLOR_TOKENS.state.success, // Uses design token
+      contrastText: BRAND_COLORS.neutral,
     },
   },
   typography: {
-    fontFamily: 'var(--font-poppins), sans-serif',
+    fontFamily: TYPOGRAPHY_TOKENS.fontFamily.primary, // Uses design token
     // Ensure proper contrast ratios for all text variants
     h1: {
-      color: '#ffffff',
-      fontWeight: 600,
+      color: COLOR_TOKENS.text.inverse, // Uses design token
+      fontWeight: TYPOGRAPHY_TOKENS.fontWeight.semibold, // Uses design token
     },
     h2: {
-      color: '#ffffff',
-      fontWeight: 600,
+      color: COLOR_TOKENS.text.inverse, // Uses design token
+      fontWeight: TYPOGRAPHY_TOKENS.fontWeight.semibold, // Uses design token
     },
     h3: {
-      color: '#ffffff',
-      fontWeight: 500,
+      color: COLOR_TOKENS.text.inverse, // Uses design token
+      fontWeight: TYPOGRAPHY_TOKENS.fontWeight.medium, // Uses design token
     },
     h4: {
-      color: '#ffffff',
-      fontWeight: 500,
+      color: COLOR_TOKENS.text.inverse, // Uses design token
+      fontWeight: TYPOGRAPHY_TOKENS.fontWeight.medium, // Uses design token
     },
     h5: {
       color: 'rgba(255, 255, 255, 0.95)', // High contrast for subtitles
-      fontWeight: 400,
+      fontWeight: TYPOGRAPHY_TOKENS.fontWeight.normal, // Uses design token
     },
     h6: {
       color: 'rgba(255, 255, 255, 0.9)', // Good contrast for smaller headings
-      fontWeight: 400,
+      fontWeight: TYPOGRAPHY_TOKENS.fontWeight.normal, // Uses design token
     },
     body1: {
       color: 'rgba(255, 255, 255, 0.87)', // WCAG AA compliant
@@ -99,22 +104,18 @@ const theme = createTheme({
         },
       },
     },
-    // Ensure CssBaseline applies our background consistently
+    // Ensure CssBaseline applies our background consistently using design tokens
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: '#353535',
-          minHeight: '100vh',
-          margin: 0,
-          padding: 0,
+          backgroundColor: COLOR_TOKENS.background.primary, // Uses design token
+          color: COLOR_TOKENS.text.inverse, // Uses design token
         },
         html: {
-          backgroundColor: '#353535',
-          minHeight: '100vh',
+          backgroundColor: COLOR_TOKENS.background.primary, // Uses design token
         },
-        '#root, #__next': {
-          backgroundColor: '#353535',
-          minHeight: '100vh',
+        '#__next': {
+          backgroundColor: COLOR_TOKENS.background.primary, // Uses design token
         },
       },
     },
@@ -123,22 +124,22 @@ const theme = createTheme({
 
 /**
  * Brand colors object for use in sx props and components
- * These match our theme palette and SCSS variables
+ * These are now synchronized with design tokens
  */
 export const colors = {
-  highlight: '#e2e891', // Primary brand color
-  backgroundPrimary: '#353535', // Main background
-  backgroundSecondary: '#232323', // Card/paper background
-  textLight: '#ffffff', // Primary text color (white)
-  textDark: '#353535', // Dark text for light backgrounds
-  textMuted: '#666666', // Muted text for secondary content
-  accent: '#2d4747', // Accent color for gradients and special elements
-  error: '#ef4444', // Error state color
+  highlight: BRAND_COLORS.primary, // Primary brand color from tokens
+  backgroundPrimary: COLOR_TOKENS.background.primary, // Main background from tokens
+  backgroundSecondary: COLOR_TOKENS.background.secondary, // Card/paper background from tokens
+  textLight: COLOR_TOKENS.text.inverse, // Primary text color from tokens
+  textDark: COLOR_TOKENS.text.primary, // Dark text from tokens
+  textMuted: COLOR_TOKENS.text.muted, // Muted text from tokens
+  accent: BRAND_COLORS.secondary, // Accent color from tokens
+  error: COLOR_TOKENS.state.error, // Error state color from tokens
 } as const;
 
 /**
  * Brand spacing tokens for consistent spacing across components
- * Based on 8px grid system for visual harmony
+ * Based on design token spacing system
  */
 export const spacing = {
   // Component spacing (most commonly used)
@@ -157,55 +158,51 @@ export const spacing = {
     lg: SEMANTIC_SPACING.layout.lg, // 96px
     xl: SEMANTIC_SPACING.layout.xl, // 128px
   },
-  // Section spacing (for page-level spacing)
+  // Section spacing (for page-level spacing) - using layout since section.xs doesn't exist
   section: {
-    xs: SEMANTIC_SPACING.section.xs, // 64px
-    sm: SEMANTIC_SPACING.section.sm, // 80px
-    md: SEMANTIC_SPACING.section.md, // 96px
-    lg: SEMANTIC_SPACING.section.lg, // 128px
-    xl: SEMANTIC_SPACING.section.xl, // 160px
+    sm: SEMANTIC_SPACING.layout.sm, // 48px
+    md: SEMANTIC_SPACING.layout.md, // 64px
+    lg: SEMANTIC_SPACING.layout.lg, // 96px
+    xl: SEMANTIC_SPACING.layout.xl, // 128px
   },
-  // Direct access to base scale
-  scale: SPACING_SCALE,
 } as const;
 
 /**
  * Brand typography tokens for consistent text styling
- * Matches Material-UI theme typography with brand-specific values
+ * Synchronized with design token typography system
  */
 export const typography = {
-  // Font families
+  // Font families from design tokens
   fontFamily: {
-    primary: 'var(--font-poppins), sans-serif',
-    fallback:
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    primary: TYPOGRAPHY_TOKENS.fontFamily.primary,
+    mono: TYPOGRAPHY_TOKENS.fontFamily.mono,
   },
-  // Font weights
+  // Font weights from design tokens
   fontWeight: {
-    light: 300,
-    regular: 400,
-    medium: 500,
-    semibold: 600,
-    bold: 700,
+    light: TYPOGRAPHY_TOKENS.fontWeight.light,
+    normal: TYPOGRAPHY_TOKENS.fontWeight.normal,
+    medium: TYPOGRAPHY_TOKENS.fontWeight.medium,
+    semibold: TYPOGRAPHY_TOKENS.fontWeight.semibold,
+    bold: TYPOGRAPHY_TOKENS.fontWeight.bold,
   },
-  // Font sizes (following Material-UI conventions)
+  // Font sizes from design tokens
   fontSize: {
-    xs: '0.75rem', // 12px
-    sm: '0.875rem', // 14px
-    base: '1rem', // 16px
-    lg: '1.125rem', // 18px
-    xl: '1.25rem', // 20px
-    '2xl': '1.5rem', // 24px
-    '3xl': '1.875rem', // 30px
-    '4xl': '2.25rem', // 36px
-    '5xl': '3rem', // 48px
-    '6xl': '4rem', // 64px
+    xs: TYPOGRAPHY_TOKENS.fontSize.xs,
+    sm: TYPOGRAPHY_TOKENS.fontSize.sm,
+    base: TYPOGRAPHY_TOKENS.fontSize.base,
+    lg: TYPOGRAPHY_TOKENS.fontSize.lg,
+    xl: TYPOGRAPHY_TOKENS.fontSize.xl,
+    '2xl': TYPOGRAPHY_TOKENS.fontSize['2xl'],
+    '3xl': TYPOGRAPHY_TOKENS.fontSize['3xl'],
+    '4xl': TYPOGRAPHY_TOKENS.fontSize['4xl'],
+    '5xl': TYPOGRAPHY_TOKENS.fontSize['5xl'],
+    '6xl': TYPOGRAPHY_TOKENS.fontSize['6xl'],
   },
-  // Line heights
+  // Line heights from design tokens
   lineHeight: {
-    tight: 1.1,
-    normal: 1.4,
-    relaxed: 1.6,
+    tight: TYPOGRAPHY_TOKENS.lineHeight.tight,
+    normal: TYPOGRAPHY_TOKENS.lineHeight.normal,
+    relaxed: TYPOGRAPHY_TOKENS.lineHeight.relaxed,
   },
 } as const;
 
@@ -217,8 +214,12 @@ interface BrandThemeProviderProps {
  * Four Loop Digital Brand Theme Provider Component
  *
  * This component provides consistent theming across all Material-UI components,
- * implementing the Four Loop Digital brand colors, typography, and design tokens.
- * Includes dark mode support and accessibility-compliant color contrasts.
+ * implementing the Four Loop Digital brand colors, typography, and design tokens
+ * sourced from the centralized design token system. Includes dark mode support
+ * and accessibility-compliant color contrasts.
+ *
+ * **Now Token-Powered**: All colors and typography values come from
+ * design-tokens-consolidated.ts to ensure consistency with the rest of the application.
  *
  * @component
  * @example
@@ -239,10 +240,10 @@ interface BrandThemeProviderProps {
  * - High contrast text and background combinations
  *
  * @design
- * - Primary: #e2e891 (brand yellow-green)
- * - Secondary: #353535 (dark gray)
- * - Background: #232323 (deep dark)
- * - Typography: Poppins font family
+ * - Primary: Dynamic from BRAND_COLORS.primary (design token)
+ * - Secondary: Dynamic from BRAND_COLORS.secondary (design token)
+ * - Background: Dynamic from COLOR_TOKENS.background.primary (design token)
+ * - Typography: Dynamic from TYPOGRAPHY_TOKENS (design token)
  */
 export default function BrandThemeProvider({
   children,

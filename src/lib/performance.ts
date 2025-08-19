@@ -108,6 +108,18 @@ export const preloadResources = [
     as: 'image',
     type: 'image/png',
   },
+
+  // Background sphere decorative images - preload to prevent flash on load
+  {
+    href: '/top-sphere.png',
+    as: 'image',
+    type: 'image/png',
+  },
+  {
+    href: '/right-sphere.png',
+    as: 'image',
+    type: 'image/png',
+  },
 ];
 
 /**

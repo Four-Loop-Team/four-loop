@@ -32,12 +32,12 @@ $border-inverse: $brand-neutral; // Borders on dark backgrounds (#fff)
 
 // Legacy compatibility aliases (maintain existing functionality)
 $color-highlight: $brand-primary; // #e2e891
-$color-background-primary: $brand-secondary; // #353535
+$color-background-primary: $brand-secondary; // #353535 - Back to secondary
 $color-background-secondary: $brand-tertiary; // #232323
 $color-text-light: $brand-neutral; // #fff
 $color-primary: $brand-primary; // #e2e891
 $color-secondary: $brand-tertiary; // #232323
-$color-background: $brand-secondary; // #353535
+$color-background: $brand-secondary; // #353535 - Back to secondary
 $color-text-primary: $brand-neutral; // #fff
 
 // MUI State Colors (matching design-system.css values)
@@ -75,7 +75,7 @@ $color-border-interactive: $border-accent; // Interactive border color (#e2e891)
 $font-weight-medium: 500;
 
 // Navigation-specific semantic variables (using new semantic system)
-$nav-background: $background-primary; // #353535 (same as before)
+$nav-background: $background-primary; // #353535 - Back to secondary background
 $nav-container-background: $background-accent; // #e2e891 (same as before)
 $nav-slider-background: $background-secondary; // #232323 (same as before)
 $nav-slider-border: $border-accent; // #e2e891 (same as before)
@@ -84,7 +84,7 @@ $nav-text-inactive: $text-primary; // #353535 (same as before)
 $nav-text-hover: $text-inverse; // #fff (same as before)
 
 // Mobile drawer semantic variables (using new semantic system)
-$drawer-background: $background-primary; // #353535 (same as before)
+$drawer-background: $background-primary; // #353535 - Back to secondary background
 $drawer-active-background: rgba(
   $background-accent,
   0.15

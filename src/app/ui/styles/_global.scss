@@ -63,16 +63,16 @@
   --border-inverse: #{variables.$border-inverse};
 
   /* Legacy Brand Color Variables - Source of Truth (maintain compatibility) */
-  --color-highlight: #{variables.$brand-primary};
-  --color-background-primary: #{variables.$brand-secondary};
-  --color-background-secondary: #{variables.$brand-tertiary};
-  --color-text-light: #{variables.$brand-neutral};
+  --color-highlight: #{variables.$color-highlight};
+  --color-background-primary: #{variables.$color-background-primary};
+  --color-background-secondary: #{variables.$color-background-secondary};
+  --color-text-light: #{variables.$color-text-light};
 
   /* Legacy Color Variables (for compatibility) */
-  --color-primary: #{variables.$brand-primary};
-  --color-secondary: #{variables.$brand-tertiary};
-  --color-background: #{variables.$brand-secondary};
-  --color-text-primary: #{variables.$brand-neutral};
+  --color-primary: #{variables.$color-primary};
+  --color-secondary: #{variables.$color-secondary};
+  --color-background: #{variables.$color-background};
+  --color-text-primary: #{variables.$color-text-primary};
 
   /* Spacing Variables */
   --space-xs: #{variables.$space-xs};
@@ -185,12 +185,17 @@ body {
   padding: 0;
 }
 
-/* Ensure the root div and main containers inherit the background */
+/* Ensure the root div inherits the background */
 /* stylelint-disable-next-line selector-id-pattern */
 #__next,
-#main-content,
 .MuiCssBaseline-root {
   background-color: var(--background-primary);
+  min-height: 100vh;
+}
+
+/* Main content should be transparent to show background spheres */
+/* stylelint-disable-next-line selector-id-pattern */
+#main-content {
   min-height: 100vh;
 }
 
@@ -1001,5 +1006,73 @@ p {
   .xl-flex-col-12 {
     flex: 0 0 var(--col-12);
     max-width: var(--col-12);
+  }
+}
+
+/* =============================================================================
+   Background Decorative Spheres
+   ============================================================================= */
+
+/* Background sphere positioning - ensures spheres appear above body background but behind content */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none; /* Allows clicking through the spheres */
+  z-index: 1; /* Above body background, but below content */
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+/* Fade in spheres once they're loaded */
+body.spheres-loaded::before,
+body.spheres-loaded::after {
+  opacity: 1;
+}
+
+/* Top sphere - positioned at top: 0px, right: 275px (568 x 535 px) */
+body::before {
+  background-image: url('/top-sphere.png');
+  top: 0;
+  right: 275px;
+  width: 568px;
+  height: 535px;
+}
+
+/* Right sphere - positioned at top: 175px, right: 0 (472 x 568 px, flush against right) */
+body::after {
+  background-image: url('/right-sphere.png');
+  top: 175px;
+  right: 0;
+  width: 472px;
+  height: 568px;
+}
+
+/* Responsive sphere sizing - scaled from actual image dimensions */
+@media (max-width: 767px) {
+  /* Mobile: scale down to 70% */
+  body::before {
+    width: 398px; /* 568 * 0.7 */
+    height: 375px; /* 535 * 0.7 */
+  }
+
+  body::after {
+    width: 330px; /* 472 * 0.7 */
+    height: 398px; /* 568 * 0.7 */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet: scale down to 85% */
+  body::before {
+    width: 483px; /* 568 * 0.85 */
+    height: 455px; /* 535 * 0.85 */
+  }
+
+  body::after {
+    width: 401px; /* 472 * 0.85 */
+    height: 483px; /* 568 * 0.85 */
   }
 }

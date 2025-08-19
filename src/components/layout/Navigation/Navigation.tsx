@@ -14,7 +14,13 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import NavigationSkeleton from './NavigationSkeleton';
 
 const navigationItems = [
@@ -57,6 +63,7 @@ export default function Navigation() {
   const { colors } = useDesignSystem();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const pathname = usePathname();
@@ -74,6 +81,20 @@ export default function Navigation() {
     }, 100);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // Add scroll detection with useLayoutEffect to prevent flash
+  useLayoutEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setScrolled(scrollPosition > 50);
+    };
+
+    // Don't call handleScroll immediately - let it start transparent
+    // The scroll listener will handle the state properly
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isActive = useCallback(
@@ -272,8 +293,12 @@ export default function Navigation() {
         elevation={0}
         component='nav'
         aria-label='Main navigation'
+        color='inherit'
         sx={{
-          backgroundColor: colors.background.primary,
+          backgroundColor: scrolled ? colors.background.primary : 'transparent',
+          backdropFilter: scrolled ? 'blur(10px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(10px)' : 'none',
+          transition: 'background-color 0.3s ease, backdrop-filter 0.3s ease',
           borderBottom: 'none',
           boxShadow: 'none',
           zIndex: 1000, // Above the dropdown menu
@@ -282,7 +307,6 @@ export default function Navigation() {
             xs: mobileOpen ? 'translateY(300px)' : 'translateY(0)',
             md: 'translateY(0)', // Never transform on desktop
           },
-          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           // Add fade-out effect using mask for better visibility
           maskImage:
             'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)',
