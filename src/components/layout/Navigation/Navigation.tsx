@@ -54,7 +54,7 @@ const navigationItems = [
  * - Header persistence across page transitions
  */
 export default function Navigation() {
-  const { colors, spacing } = useDesignSystem();
+  const { colors } = useDesignSystem();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const theme = useTheme();
@@ -173,6 +173,100 @@ export default function Navigation() {
 
   return (
     <>
+      {/* Mobile Dropdown Menu - slides down from top */}
+      <Box
+        role='navigation'
+        aria-label='Mobile navigation menu'
+        id='mobile-navigation-menu'
+        sx={{
+          display: { xs: 'block', md: 'none' }, // Use responsive display instead of JS
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: colors.background.accent,
+          // Fixed height to match the transform of sticky nav
+          height: mobileOpen ? '300px' : '0', // Reduced height for better content fit
+          transform: mobileOpen ? 'translateY(0)' : 'translateY(-100%)',
+          opacity: mobileOpen ? 1 : 0,
+          visibility: mobileOpen ? 'visible' : 'hidden',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          zIndex: 999, // Below the sticky nav
+          borderTopLeftRadius: '86px', // Match contact section radius
+          borderTopRightRadius: '86px', // Match contact section radius
+          borderBottom: `1px solid ${colors.border.default}`,
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+          overflow: 'hidden',
+          // Add padding for left/right edges, but handle top spacing separately
+          px: '50px',
+        }}
+      >
+        {/* Menu Handle */}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            pt: '15px', // Exactly 15px from top
+            pb: '8px',
+          }}
+        >
+          <Box
+            sx={{
+              width: '100px', // Increased to 100px long
+              height: '4px',
+              backgroundColor: colors.text.primary,
+              borderRadius: '2px',
+            }}
+          />
+        </Box>
+
+        {/* Menu Items */}
+        <Box
+          sx={{
+            // Reduced from 50px to 35px (50px - 15px)
+            pt: '35px',
+            pb: '16px', // Minimal bottom padding
+          }}
+        >
+          {navigationItems.map((item, index) => {
+            const active = isActive(item.href);
+            return (
+              <Box
+                key={item.label}
+                sx={{
+                  borderTop:
+                    index === 0 ? `1px solid ${colors.text.primary}` : 'none', // Line above first item
+                  borderBottom: `1px solid ${colors.text.primary}`, // Line below every item
+                }}
+              >
+                <Box
+                  component={Link}
+                  href={item.href}
+                  onClick={handleNavClick}
+                  prefetch={true}
+                  sx={{
+                    display: 'block',
+                    textDecoration: 'none',
+                    color: active ? colors.text.primary : colors.text.primary, // Always use primary text color for visibility
+                    fontSize: '1.25rem',
+                    fontWeight: active ? 600 : 400,
+                    transition: 'all 0.2s ease',
+                    cursor: 'pointer',
+                    py: '16px', // Minimal padding - just enough for touch targets
+                    '&:hover': {
+                      color: colors.text.primary,
+                      opacity: 0.7, // Use opacity for hover instead of color change
+                    },
+                  }}
+                >
+                  {item.label}
+                </Box>
+              </Box>
+            );
+          })}
+        </Box>
+      </Box>
+
       <AppBar
         position='sticky'
         elevation={0}
@@ -181,13 +275,19 @@ export default function Navigation() {
         sx={{
           backgroundColor: colors.background.primary,
           borderBottom: 'none',
-          boxShadow: 'none', // Remove any shadow
-          '&::after': {
-            display: 'none', // Remove any pseudo-element borders
+          boxShadow: 'none',
+          zIndex: 1000, // Above the dropdown menu
+          // Use transform based on mobileOpen state for mobile screens only
+          transform: {
+            xs: mobileOpen ? 'translateY(300px)' : 'translateY(0)',
+            md: 'translateY(0)', // Never transform on desktop
           },
-          '&::before': {
-            display: 'none', // Remove any pseudo-element borders
-          },
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          // Add fade-out effect using mask for better visibility
+          maskImage:
+            'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)',
+          WebkitMaskImage:
+            'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)',
           '& .MuiToolbar-root': {
             borderBottom: 'none !important',
           },
@@ -245,7 +345,7 @@ export default function Navigation() {
             </Link>
 
             {/* Desktop Navigation */}
-            {mounted && !isMobile && (
+            {!isMobile && (
               <Box
                 ref={navContainerRef}
                 sx={{
@@ -328,16 +428,28 @@ export default function Navigation() {
               </Box>
             )}
 
-            {/* Mobile Menu Button */}
-            {mounted && isMobile && (
+            {/* Mobile Menu Button - always render to prevent layout shift */}
+            <Box
+              sx={{
+                display: { xs: 'block', md: 'none' }, // Use responsive display instead of JS
+                minWidth: '60px', // Make it wider
+                minHeight: '48px',
+              }}
+            >
               <IconButton
                 edge='end'
                 onClick={handleDrawerToggle}
                 sx={{
-                  color: 'white',
-                  minWidth: '44px',
-                  minHeight: '44px',
+                  color: colors.text.accent, // Use accent color to match "DIGITAL" text
+                  width: '60px', // Make button wider
+                  minHeight: '48px', // Increased size
+                  padding: '12px', // Add padding for larger touch target
                   alignSelf: 'flex-start', // Align to top to match toolbar positioning
+                  '& .MuiSvgIcon-root': {
+                    fontSize: '2.25rem', // Make the icon even bigger
+                    width: '36px', // Make icon wider
+                    height: '36px', // Make icon taller
+                  },
                 }}
                 aria-label={
                   mobileOpen ? 'Close navigation menu' : 'Open navigation menu'
@@ -347,76 +459,10 @@ export default function Navigation() {
               >
                 <MenuIcon />
               </IconButton>
-            )}
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>
-
-      {/* Mobile Dropdown Menu */}
-      {mounted && isMobile && (
-        <Box
-          role='navigation'
-          aria-label='Mobile navigation menu'
-          id='mobile-navigation-menu'
-          sx={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            backgroundColor: colors.background.accent,
-            transform: mobileOpen ? 'translateY(0)' : 'translateY(-100%)',
-            opacity: mobileOpen ? 1 : 0,
-            visibility: mobileOpen ? 'visible' : 'hidden',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            zIndex: 1000,
-            borderTop: '1px solid rgba(0, 0, 0, 0.1)',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <Box sx={{ px: spacing.component.lg, py: spacing.component.md }}>
-            {navigationItems.map((item, index) => {
-              const active = isActive(item.href);
-              return (
-                <Box
-                  key={item.label}
-                  sx={{
-                    borderBottom:
-                      index < navigationItems.length - 1
-                        ? `1px solid ${colors.text.primary}`
-                        : 'none',
-                    py: spacing.component.lg,
-                  }}
-                >
-                  <Link
-                    href={item.href}
-                    className='nav-link'
-                    onClick={handleNavClick}
-                    prefetch={true}
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <Box
-                      sx={{
-                        color: active
-                          ? colors.text.accent
-                          : colors.text.primary,
-                        fontSize: '1.25rem',
-                        fontWeight: active ? 600 : 400,
-                        transition: 'color 0.2s ease',
-                        cursor: 'pointer',
-                        '&:hover': {
-                          color: colors.text.accent,
-                        },
-                      }}
-                    >
-                      {item.label}
-                    </Box>
-                  </Link>
-                </Box>
-              );
-            })}
-          </Box>
-        </Box>
-      )}
     </>
   );
 }
