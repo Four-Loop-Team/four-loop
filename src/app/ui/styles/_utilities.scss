@@ -260,6 +260,7 @@
   min-height: 100vh;
   position: relative; /* Ensure main content appears above background spheres */
   z-index: 2; /* Above background spheres (z-index: 1) */
+  background: transparent; /* Allow spheres to show through */
 }
 
 // =============================================================================
