@@ -1,14 +1,16 @@
 # Performance and Visual Regression Testing
 # Runs performance audits and visual regression tests
 # Includes Lighthouse CI, Core Web Vitals monitoring, and Playwright visual tests
+# TEMPORARILY DISABLED - Navigation hidden for development
 
 name: Performance & Visual Testing
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+  # Temporarily disabled while navigation is hidden
+  # push:
+  #   branches: [main, develop]
+  # pull_request:
+  #   branches: [main, develop]
   schedule:
     # Run daily at 2 AM UTC for performance monitoring
     - cron: "0 2 * * *"
