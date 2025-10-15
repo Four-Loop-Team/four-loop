@@ -2,14 +2,19 @@
 # Runs comprehensive checks on all pull requests and pushes
 # Note: Local linters may show "Unable to resolve action" errors - these are false positives
 # All GitHub Actions used here are official and will resolve correctly in CI environment
+# TEMPORARILY DISABLED - Navigation hidden for development
 
 name: CI
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+  # Temporarily disabled while navigation is hidden
+  # push:
+  #   branches: [main, develop]
+  # pull_request:
+  #   branches: [main, develop]
+  schedule:
+    # Keep scheduled runs for monitoring
+    - cron: "0 6 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

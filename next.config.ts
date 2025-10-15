@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   // Static export for GitHub Pages
   output: 'export',
   trailingSlash: true,
-  
+
   sassOptions: {
     includePaths: [join(__dirname, 'styles')],
   },
