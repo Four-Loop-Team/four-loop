@@ -204,6 +204,39 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 🚀 Deploying to Vercel (recommended)
+
+We recommend hosting this Next.js application on Vercel. Vercel fully supports Next.js features
+including API routes, Edge functions, and Image Optimization which are incompatible with a GitHub
+Pages static export.
+
+Quick steps:
+
+1. Go to https://vercel.com/new and import the GitHub repository `Four-Loop-Team/four-loop`.
+2. Framework Preset: Next.js (should be auto-detected).
+3. Root Directory: leave blank unless the app lives in a subfolder.
+4. Build Command: `npm run build` (the project already runs lint, tests, and other validation as
+   part of the build script).
+5. Output Directory: leave blank (Vercel handles Next.js builds automatically).
+6. Add environment variables under Project Settings → Environment Variables. Recommended variables:
+   - `NEXT_PUBLIC_SHOW_NAVIGATION` — Set to `false` to hide the navigation in production, or leave
+     unset/`true` to show it.
+   - Any third-party API keys (Optimizely, Shopify, Resend, etc.) — do not commit secrets to the
+     repo.
+7. Set the Production Branch to `main` and finish the import. Vercel will create Preview deployments
+   for PRs automatically.
+
+Optional files:
+
+- `vercel.json` (included) — minimal config to ensure Next.js is used and API routes are preserved.
+  You can extend this with rewrites or headers if needed.
+
+Cleanup note:
+
+- The GitHub Pages deployment workflow has been disabled and archived at
+  `.github/workflows/disabled/nextjs.pages.yml`. Remove any GitHub Pages settings in the
+  repository's Settings → Pages if you previously enabled them.
+
 **Documentation**: [Complete Documentation Index](./DOCUMENTATION_INDEX.md) | **Architecture**:
 [System Overview][architecture-docs]
 
