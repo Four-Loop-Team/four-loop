@@ -30,7 +30,10 @@ const navigationItems = [
 ];
 
 // Feature flag to temporarily hide navigation while other pages are being prepared
-const SHOW_NAVIGATION_MENU = false;
+// Read from NEXT_PUBLIC_SHOW_NAVIGATION (string) at build time. Defaults to true.
+// Set NEXT_PUBLIC_SHOW_NAVIGATION=false to hide navigation.
+const SHOW_NAVIGATION_MENU: boolean =
+  process.env.NEXT_PUBLIC_SHOW_NAVIGATION !== 'false';
 
 /**
  * Main navigation component with responsive design and optimized client-side routing.
